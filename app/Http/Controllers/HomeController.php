@@ -22,22 +22,25 @@ class HomeController extends Controller
 
     public function StoreSlide(Request $request)
     {
-        // $validated = $request->validate([
-        //     'brand_name' => 'required|unique:brands|min:4',
-        //     'image' => 'required|mimes:jpg,jpeg,png',
-        // ],
+        $validated = $request->validate([
+            'image' => 'required|mimes:jpg,jpeg,png',
+        ],
 
-        // [
-        //     'brand_name.required' => 'Please Input Brand Name',
-        //     'brand_image.min' => 'Brand longer than 4 characters',
-        // ]);
+       );
 
         $slider_image = $request->file('image');
 
-        $name_gen = hexdec(uniqid()) . '.' . $slider_image->getClientOriginalExtension();
-        Image::make($slider_image)->resize(1920, 1088)->save('images/slides/' . $name_gen);
+        $name_gen = hexdec(uniqid());
+        $img_ext = strtolower($slider_image->getClientOriginalExtension());
+        $img_name = $name_gen.'.'.$img_ext;
+        $up_location = 'images/slides/';
+        $last_img = $up_location.$img_name;
+        $slider_image->move($up_location, $img_name);
 
-        $last_img = 'images/slides/' . $name_gen;
+        // $name_gen = hexdec(uniqid()) . '.' . $slider_image->getClientOriginalExtension();
+        // Image::make($slider_image)->resize(1920, 1088)->save('images/slides/' . $name_gen);
+
+        // $last_img = 'images/slides/' . $name_gen;
 
         $data = array();
         $data['title'] = $request->title;
@@ -65,11 +68,18 @@ class HomeController extends Controller
         $oldimage = $request->oldimage;
         $image = $request->image;
         if ($image) {
-            $image_one = uniqid() . '.' . $image->getClientOriginalExtension();
-            Image::make($image)->resize(500, 300)->save('images/slides/' . $image_one);
-            $data['image'] = 'images/slides/' . $image_one;
-            DB::table('sliders')->where('id', $id)->update($data);
+            $name_gen = hexdec(uniqid());
+            $img_ext = strtolower($image->getClientOriginalExtension());
+            $img_name = $name_gen.'.'.$img_ext;
+            $up_location = 'images/slides/';
+            $last_img = $up_location.$img_name;
+            $image->move($up_location, $img_name);
+
+            $data['image'] = $last_img;
+    
             unlink($oldimage);
+            DB::table('sliders')->where('id', $id)->update($data);
+            
 
             return Redirect()->route('home.slider')->with('success', 'Slide updated succesfully');
         } else {
