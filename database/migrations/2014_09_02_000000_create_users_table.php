@@ -15,18 +15,18 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('civilite');
+            $table->string('civilite')->nullable();
             $table->string('nom');
             $table->string('prenom');
             $table->string('email')->unique();
-            $table->string('telephone')->unique();
+            $table->string('telephone')->unique()->nullable();
+            $table->string('password');
             $table->string('photo')->nullable();
-            $table->integer('anciennete');
+            $table->integer('anciennete')->nullable();
             $table->enum('status', ['PARTICULIER', 'ENTREPRISE'])->nullable();
             $table->unsignedBigInteger('profil')->nullable();
             $table->unsignedBigInteger('role')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('profil')->references('id')->on('profile_investisseurs')->onUpdate('cascade')->onDelete('set null');
