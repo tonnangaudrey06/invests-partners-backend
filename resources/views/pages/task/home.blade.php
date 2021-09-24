@@ -3,8 +3,6 @@
 @section('title', 'Projets - ' . config('app.name'))
 
 @section('style')
-    {{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
-
     <!-- Datatable -->
     <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
         type="text/css" />
