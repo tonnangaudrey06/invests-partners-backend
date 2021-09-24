@@ -26,7 +26,7 @@ class UserController extends Controller
 
         $data = User::create($data);
 
-        $this->show($data->id);
+        return $this->show($data->id);
     }
 
     public function delete($id)
