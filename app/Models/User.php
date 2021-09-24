@@ -31,7 +31,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
     
     protected $appends =  [
         'nom_complet'
@@ -43,10 +42,25 @@ class User extends Authenticatable
 
     public function getNomCompletAttribute()
     {
-        return $this->civilite . ' ' . $this->nom . ' ' . $this->prenom;
+        if (empty($this->civilite)) {
+            return $this->nom . ' ' . $this->prenom;
+        } else {
+            return $this->civilite . ' ' . $this->nom . ' ' . $this->prenom;
+        }
     }
 
-    public function role()
+    public function getAnciennetetAttribute($value)
+    {
+        if ($value == 1) {
+            return 'Plus d\'un ans d\'anciennete';
+        } else if ($value == -1) {
+            return 'Moins d\'un ans d\'anciennete';
+        } else {
+            return null;
+        }
+    }
+
+    public function role_data()
     {
         return $this->belongsTo(Role::class, 'role', 'id');
     }

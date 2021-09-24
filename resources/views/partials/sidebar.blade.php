@@ -16,7 +16,7 @@
                 </li>
 
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{ route('projet.home') }}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-projet">Projets</span>
                     </a>
@@ -66,16 +66,9 @@
                 </li>
 
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{ route('category.home') }}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-categorie">Catégories</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="calendar.html" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
-                        <span key="t-role">Roles</span>
                     </a>
                 </li>
 

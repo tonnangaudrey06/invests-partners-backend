@@ -46,23 +46,24 @@
 
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des {{ lcfirst($title) }}</h4>
-                                    <div class="actions">
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                    <div class="actions d-flex align-items-center">
+                                        <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
                                             data-bs-target="#userModal">Nouveau {{ $role->name }}</button>
+                                        <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
 
                                 <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th></th>
-                                            <th>Utilisateur</th>
+                                            <th style="width: 5%"></th>
+                                            <th style="width: 30%">Utilisateur</th>
                                             <th>Email</th>
-                                            <th>Téléphone</th>
+                                            <th style="width: 20%">Téléphone</th>
                                             @if ($role->value == 3)
-                                                <th>Statut</th>
+                                                <th style="width: 20%">Statut</th>
                                             @endif
-                                            <th class="text-center">Actions</th>
+                                            <th class="text-center" style="width: 10%">Actions</th>
                                         </tr>
                                     </thead>
 
@@ -72,7 +73,8 @@
                                                 <td>
                                                     @if (!empty($user->photo))
                                                         <div>
-                                                            <img class="rounded-circle avatar-xs" src="assets/images/users/avatar-2.jpg" alt="">
+                                                            <img class="rounded-circle avatar-xs"
+                                                                src="assets/images/users/avatar-2.jpg" alt="">
                                                         </div>
                                                     @else
                                                         <div class="avatar-xs">
@@ -140,7 +142,7 @@
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label>Prenom</label>
-                                <input type="text" class="form-control" name="prenom" placeholder="Prenom" required>
+                                <input type="text" class="form-control" name="prenom" placeholder="Prenom">
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label>Email</label>
@@ -159,7 +161,7 @@
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Statut</label>
                                     <select class="form-control" name="status" required>
-                                        <option selected>Aucun</option>
+                                        <option selected value="">Aucun</option>
                                         <option value="PARTICULIER">Particulier</option>
                                         <option value="ENTREPRISE">Entreprise</option>
                                     </select>
@@ -167,9 +169,9 @@
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Ancienente</label>
                                     <select class="form-control" name="anciennete">
-                                        <option selected>Aucun</option>
-                                        <option value="PARTICULIER">Plus d'un ans</option>
-                                        <option value="ENTREPRISE">Moins d'un ans</option>
+                                        <option selected value="">Aucun</option>
+                                        <option value="1">Plus d'un ans</option>
+                                        <option value="-1">Moins d'un ans</option>
                                     </select>
                                 </div>
                             @endif

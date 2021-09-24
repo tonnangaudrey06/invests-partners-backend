@@ -45,6 +45,12 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'mobile' => [
+            \App\Http\Middleware\JsonMiddleware::class,
+            'throttle:mobile',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        ],
     ];
 
     /**

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Nos projets - ' . config('app.name'))
+@section('title', 'Projets - ' . config('app.name'))
 
 @section('style')
     {{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
