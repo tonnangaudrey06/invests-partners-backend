@@ -19,10 +19,15 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/auth/logout', [AuthController::class, 'logout']);
+
+    Route::prefix('auth')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/profile', [AuthController::class, 'profile']);
+        Route::post('/refresh/token', [AuthController::class, 'refresh']);
+    });
 
     Route::prefix('user')->group(function () {
-        Route::get('/', [UserController::class, 'index']);
+        Route::post('/', [UserController::class, 'store']);
         Route::get('/{id}', [UserController::class, 'show']);
     });
 

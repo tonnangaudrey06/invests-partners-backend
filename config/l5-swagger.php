@@ -139,6 +139,12 @@ return [
         */
         'securityDefinitions' => [
             'securitySchemes' => [
+                'bearer_token' => [ // Unique name of security
+                    'type' => 'apiKey', // Valid values are "basic", "apiKey" or "oauth2".
+                    'description' => 'Enter token in format (Bearer <token>)',
+                    'name' => 'Authorization', // The name of the header or query parameter to be used.
+                    'in' => 'header', // The location of the API key. Valid values are "query" or "header".
+                 ],
                 /*
                  * Examples of Security schemes
                 */
@@ -240,6 +246,7 @@ return [
          */
         'constants' => [
             'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
+            'L5_SWAGGER_CONST_HOST_2' => env('L5_SWAGGER_CONST_HOST_2', 'http://my-default-host.com'),
         ],
     ],
 ];
