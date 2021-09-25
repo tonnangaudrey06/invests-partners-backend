@@ -22,8 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/profile', [AuthController::class, 'profile']);
-        Route::post('/refresh/token', [AuthController::class, 'refresh']);
+        Route::get('/profile', [AuthController::class, 'profile']);
+        Route::get('/refresh/token', [AuthController::class, 'refresh']);
     });
 
     Route::prefix('user')->group(function () {
