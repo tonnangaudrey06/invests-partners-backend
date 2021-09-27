@@ -24,6 +24,7 @@ class CreateProjetsTable extends Migration
             $table->string('telephone_personne_contacter');
             $table->string('intitule');
             $table->text('description');
+            $table->boolean('complet')->default(false);
             $table->string('logo')->nullable();
             $table->foreign('categorie')->references('id')->on('categories')->onUpdate('cascade')->onDelete('set null');
             $table->foreign('user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');

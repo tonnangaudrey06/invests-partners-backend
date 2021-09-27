@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -16,14 +17,36 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->whereIn('role', array(3, 4))->with(['role_data'])->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return $this->sendError('Échec de l\'authentification', ['error' => 'Unauthorised'], 401);
+        $credentials = $request->only('email', 'password');
+        $remember = false;
+
+        if ($request->has('remember')) {
+            $remember = $request->remember;
+        }
+
+        if (!Auth::attempt($credentials, $remember)) {
+            return $this->sendError('Unauthorized', ['error' => 'Unauthorised'], 401);
         }
 
         $data['user'] = $user;
 
         return $this->sendResponse($data, 'User login');
+    }
+
+    public function register(Request $request)
+    {
+        $data = $request->input();
+        $data['password'] = Hash::make($request->password);
+
+        $data = User::create($data);
+
+        return $this->sendResponse(User::with(['role_data'])->find($data->id), 'User registered');
+    }
+    
+    public function profile(Request $request)
+    {
+        return $this->sendResponse(User::with('role_data')->find($request->user()->id), 'User profile');
     }
 }

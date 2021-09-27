@@ -88,7 +88,7 @@ class AuthController extends Controller
         }
 
         $data['user'] = $user;
-        $data['token'] = $user->createToken($request->email)->plainTextToken;
+        // $data['token'] = $user->createToken($request->email)->plainTextToken;
 
         return $this->sendResponse($data, 'User login');
     }
@@ -208,5 +208,15 @@ class AuthController extends Controller
         $user = $request->user();
         $user->tokens()->delete();
         return $this->sendResponse(['token' => $user->createToken($request->email)->plainTextToken], 'User token refreshed');
+    }
+
+    public function register(Request $request)
+    {
+        $data = $request->input();
+        $data['password'] = Hash::make($request->password);
+
+        $data = User::create($data);
+
+        return $this->sendResponse(User::with(['role_data'])->find($data->id), 'User registered');
     }
 }

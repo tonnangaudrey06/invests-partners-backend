@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        return $this->sendResponse(User::where('role', 3)->get(), 'All Users');
+        return $this->sendResponse(User::where('role', 3)->with(['role_data'])->get(), 'All Users');
     }
 
     public function show($id)

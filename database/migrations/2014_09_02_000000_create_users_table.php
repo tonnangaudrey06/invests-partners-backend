@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('photo')->nullable();
             $table->integer('anciennete')->nullable();
+            $table->boolean('complet')->default(false);
             $table->enum('status', ['PARTICULIER', 'ENTREPRISE'])->nullable();
             $table->unsignedBigInteger('profil')->nullable();
             $table->unsignedBigInteger('role')->nullable();
