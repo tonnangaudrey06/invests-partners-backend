@@ -12,10 +12,10 @@ class Controller extends BaseController
     /**
      * @OA\Info(
      *      version="1.0.0",
-     *      title="Integration Swagger in Laravel with Passport Auth Documentation",
-     *      description="Implementation of Swagger with in Laravel",
+     *      title="Invests & Partners API Documentation",
+     *      description="API version 1.0.0",
      *      @OA\Contact(
-     *          email="admin@admin.com"
+     *          email="donfackeddy12@gmail.com"
      *      ),
      *      @OA\License(
      *          name="Apache 2.0",
@@ -25,10 +25,13 @@ class Controller extends BaseController
      *
      * @OA\Server(
      *      url=L5_SWAGGER_CONST_HOST,
-     *      description="Demo API Server"
+     *      description="Invests & Partners API Documentation"
      * )
-
      *
+     * @OA\Server(
+     *      url=L5_SWAGGER_CONST_HOST_2,
+     *      description="Invests & Partners API Documentation"
+     * )
      *
      */
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;

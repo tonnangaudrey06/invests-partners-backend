@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\AuthController;
+use App\Http\Controllers\Client\SecteurController;
 use App\Http\Controllers\Client\MessageController;
 use App\Http\Controllers\Client\ProfilInvestisseurController;
+use App\Http\Controllers\Client\ProjetController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,6 +61,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/', [ProfilInvestisseurController::class, 'index'])->name('home');
         Route::post('/', [ProfilInvestisseurController::class, 'store'])->name('add');
         Route::post('/{id?}', [ProfilInvestisseurController::class, 'store'])->name('update');
+    });
+
+    Route::prefix('category')->name('category.')->group(function () {
+        Route::get('/', [SecteurController::class, 'index'])->name('home');
+        Route::post('/', [SecteurController::class, 'store'])->name('add');
+        Route::post('/{id?}', [SecteurController::class, 'store'])->name('update');
+    });
+
+    Route::prefix('projet')->name('projet.')->group(function () {
+        Route::get('/', [ProjetController::class, 'index'])->name('home');
+        Route::get('/add', [ProjetController::class, 'add'])->name('add');
+        Route::get('/{id}', [ProjetController::class, 'show'])->name('details');
     });
     
 });

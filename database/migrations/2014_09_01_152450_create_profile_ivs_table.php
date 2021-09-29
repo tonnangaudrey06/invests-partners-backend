@@ -15,7 +15,7 @@ class CreateProfileIvsTable extends Migration
     {
         Schema::create('profile_investisseurs', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['BRONZE', 'EMERALD', ', GOLD', 'PLATINUM'])->default('BRONZE');
+            $table->enum('type', ['BRONZE', 'EMERALD', 'GOLD', 'PLATINUM'])->default('BRONZE');
             $table->unsignedBigInteger('montant_min');
             $table->unsignedBigInteger('montant_max')->nullable();
             $table->timestamps();

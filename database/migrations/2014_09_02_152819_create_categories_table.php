@@ -13,10 +13,11 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('secteurs', function (Blueprint $table) {
             $table->id();
             $table->string('libelle');
             $table->string('slug');
+            $table->string('photo')->nullable();
             $table->unsignedBigInteger('user')->nullable();
             $table->foreign('user')->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
             $table->timestamps();
@@ -30,6 +31,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('secteurs');
     }
 }

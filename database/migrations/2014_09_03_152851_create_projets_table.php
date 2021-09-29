@@ -15,17 +15,21 @@ class CreateProjetsTable extends Migration
     {
         Schema::create('projets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('categorie')->nullable();
-            $table->unsignedBigInteger('user')->nullable();
-            $table->enum('etat', ['IDEE', 'PROTOTYPE', 'SUR_LE_MARCHE'])->default('IDEE');
-            $table->boolean('publier')->default(false);
-            $table->boolean('clotuer')->default(false);
-            $table->string('email_personne_contacter');
-            $table->string('telephone_personne_contacter');
+            $table->unsignedBigInteger('secteur')->nullable();
+            $table->unsignedBigInteger('user');
+            $table->enum('avancement', ['IDEE', 'PROTOTYPE', 'SUR_LE_MARCHE'])->default('IDEE');
+            $table->enum('etat', ['ATTENTE', 'PUBLIER', 'VALIDER', 'REJETER'])->default('ATTENTE');
             $table->string('intitule');
+            $table->string('folder')->nullable();
+            $table->string('doc_presentation')->nullable();
+            $table->string('pays_activite');
+            $table->string('ville_activite');
+            $table->string('site')->nullable();
             $table->text('description');
+            $table->boolean('complet')->default(false);
+            $table->integer('financement');
             $table->string('logo')->nullable();
-            $table->foreign('categorie')->references('id')->on('categories')->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('secteur')->references('id')->on('secteurs')->onUpdate('cascade')->onDelete('set null');
             $table->foreign('user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

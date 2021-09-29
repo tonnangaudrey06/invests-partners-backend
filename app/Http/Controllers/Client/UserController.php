@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function administrateur()
     {
-        $users = User::where('role', 1)->with(['role'])->get();
+        $users = User::where('role', 1)->with(['role_data'])->get();
         $role = (object) [
             'name' => 'administrateur',
             'value' => 1
@@ -22,7 +22,7 @@ class UserController extends Controller
 
     public function conseille()
     {
-        $users = User::where('role', 2)->with(['role'])->get();
+        $users = User::where('role', 2)->with(['role_data'])->get();
         $role = (object) [
             'name' => 'conseillé',
             'value' => 2
@@ -32,7 +32,7 @@ class UserController extends Controller
 
     public function porteurProjet()
     {
-        $users = User::where('role', 3)->with(['role'])->get();
+        $users = User::where('role', 3)->with(['role_data'])->get();
         $role = (object) [
             'name' => 'porteur projet',
             'value' => 3
@@ -42,7 +42,7 @@ class UserController extends Controller
 
     public function investisseur()
     {
-        $users = User::where('role', 4)->with(['role'])->get();
+        $users = User::where('role', 4)->with(['role_data'])->get();
         $role = (object) [
             'name' => 'investisseur',
             'value' => 4

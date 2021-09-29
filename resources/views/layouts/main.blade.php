@@ -44,6 +44,10 @@
             window.location.assign(url);
         }
 
+        function reload() {
+            window.location.reload();
+        }
+
         $(document).ready(function() {
             $("#flip").click(function() {
                 $("#panel").slideDown("slow");

@@ -6,11 +6,14 @@
     {{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
 
     <!-- Datatable -->
-    <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
+        rel="stylesheet" type="text/css" />
 @endsection
 
 
@@ -43,8 +46,10 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des profils disponible pour un investisseurs</h4>
-                                    <div class="actions">
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#profilInvestisseurModal">Nouveau profil</button>
+                                    <div class="actions d-flex align-items-center">
+                                        <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
+                                            data-bs-target="#profilInvestisseurModal">Nouveau profil</button>
+                                        <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
 
@@ -106,17 +111,20 @@
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label>Montant minimal</label>
-                                <input type="number" class="form-control" name="montant_min" min="1" value="1" placeholder="0 XAF">
+                                <input type="number" class="form-control" name="montant_min" min="1" value="1"
+                                    placeholder="0 XAF">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label>Montant maximal</label>
-                                  <input type="number" class="form-control" name="montant_max" min="1" placeholder="0 XAF">
+                                <input type="number" class="form-control" name="montant_max" min="1" placeholder="0 XAF">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary waves-effect" data-bs-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-sm btn-primary waves-effect waves-light">Enregistrement</button>
+                        <button type="button" class="btn btn-sm btn-secondary waves-effect"
+                            data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit"
+                            class="btn btn-sm btn-primary waves-effect waves-light">Enregistrement</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div>
@@ -126,7 +134,7 @@
 
 @section('script')
     {{-- <script type="text/javascript" src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script> --}}
-    
+
     <!-- Required datatable js -->
     <script type="text/javascript" src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
@@ -140,6 +148,6 @@
 
     <!-- Datatable init js -->
     <script type="text/javascript" src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
-    
+
     {{-- <script type="text/javascript" src="{{ asset('assets/js/pages/form-advanced.init.js') }}"></script> --}}
 @endsection

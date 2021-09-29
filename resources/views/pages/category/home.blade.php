@@ -6,11 +6,14 @@
     {{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
 
     <!-- Datatable -->
-    <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
+        rel="stylesheet" type="text/css" />
 @endsection
 
 
@@ -43,29 +46,44 @@
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des catégories (domaines)</h4>
-                                    <div class="actions">
-                                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#profilInvestisseurModal">Nouveau profil</button>
+                                    <div class="actions d-flex align-items-center">
+                                        <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
+                                            data-bs-target="#categorieModal">Nouvelle categorie</button>
+                                        <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
 
                                 <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th>Type</th>
-                                            <th>Montant minimal</th>
-                                            <th>Montant maximal</th>
+                                            <th style="width: 5%"></th>
+                                            <th>Catégorie</th>
+                                            <th style="width: 30%">Spécialiste</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($profils as $profil)
+                                        @foreach ($categories as $categorie)
                                             <tr>
                                                 <td>
-                                                    <strong>{{ $profil->type }}</strong>
+                                                    @if (!empty($categorie->image))
+                                                        <div>
+                                                            <img class="rounded-circle avatar-xs"
+                                                                src="assets/images/users/avatar-2.jpg" alt="">
+                                                        </div>
+                                                    @else
+                                                        <div class="avatar-xs">
+                                                            <span class="avatar-title rounded-circle">
+                                                                {{ strtoupper(substr($categorie->libelle, 0, 1)) }}
+                                                            </span>
+                                                        </div>
+                                                    @endif
                                                 </td>
-                                                <td>{{ $profil->montant_min }}</td>
-                                                <td>{{ $profil->montant_max }}</td>
+                                                <td>
+                                                    <strong>{{ $categorie->libelle }}</strong>
+                                                </td>
+                                                <td>{{ $categorie->user_data->nom_complet ?? 'Aucun' }}</td>
                                                 <td></td>
                                             </tr>
                                         @endforeach
@@ -83,42 +101,38 @@
         @include('partials.footer')
     </div>
 
-    <div id="profilInvestisseurModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel"
-        aria-hidden="true">
-        <form id="profilInvestisseurForm" action="{{ route('profil.investisseur.add') }}" method="POST">
+    <div id="categorieModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <form id="categorieForm" action="{{ route('category.add') }}" method="POST">
             @csrf
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="profilInvestisseurModalLabel">Nouveau profil</h5>
+                        <h5 class="modal-title" id="categorieModalLabel">Nouvelle catégorie</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="form-group col-md-12 mb-3">
-                                <label>Type</label>
-                                <select class="form-control" name="type">
-                                    <option value="BRONZE" selected>BRONZE</option>
-                                    <option value="EMERALD">EMERALD</option>
-                                    <option value="GOLD">GOLD</option>
-                                    <option value="PLATINUM">PLATINUM</option>
+                                <label>Libelle</label>
+                                <input type="text" class="form-control" name="libelle" placeholder="Libelle">
+                            </div>
+                            <div class="form-group col-md-12 mb-3">
+                                <label>Spécialiste</label>
+                                <select class="form-control" name="user">
+                                    <option>Aucun</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->nom_complet }}</option>
+                                    @endforeach
                                 </select>
-                            </div>
-                            <div class="form-group col-md-12 mb-3">
-                                <label>Montant minimal</label>
-                                <input type="number" class="form-control" name="montant_min" min="1" value="1" placeholder="0 XAF">
-                            </div>
-                            <div class="form-group col-md-12 mb-3">
-                                <label>Montant maximal</label>
-                                  <input type="number" class="form-control" name="montant_max" min="1" placeholder="0 XAF">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary waves-effect" data-bs-dismiss="modal">Fermer</button>
-                        <button type="submit" class="btn btn-sm btn-primary waves-effect waves-light">Enregistrement</button>
+                        <button type="button" class="btn btn-sm btn-secondary waves-effect"
+                            data-bs-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-sm btn-primary waves-effect waves-light">Enregistrer</button>
                     </div>
-                </div><!-- /.modal-content -->
+                </div>
             </div>
         </form>
     </div>
@@ -126,7 +140,7 @@
 
 @section('script')
     {{-- <script type="text/javascript" src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script> --}}
-    
+
     <!-- Required datatable js -->
     <script type="text/javascript" src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
@@ -140,6 +154,6 @@
 
     <!-- Datatable init js -->
     <script type="text/javascript" src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
-    
+
     {{-- <script type="text/javascript" src="{{ asset('assets/js/pages/form-advanced.init.js') }}"></script> --}}
 @endsection
