@@ -70,7 +70,7 @@
     <li class="nav-item menu-items">
       <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
         <span class="menu-icon">
-          <i class="mdi mdi-home"></i>
+          <i class="mdi mdi-home"></i> 
         </span>
         <span class="menu-title">Accueil</span>
         <i class="menu-arrow"></i>
@@ -103,7 +103,7 @@
       </a>
       <div class="collapse" id="ui-projet">
         <ul class="nav flex-column sub-menu">
-          <li class="nav-item"> <a class="nav-link" href="   ">Projets</a></li>
+          <li class="nav-item"> <a class="nav-link" href=" {{route('home.project')}}   ">Projets</a></li>
           <li class="nav-item"> <a class="nav-link" href="">Porteurs de projets</a></li>
         </ul>
       </div>

@@ -18,15 +18,21 @@ class CreateProjetsTable extends Migration
             $table->unsignedBigInteger('categorie')->nullable();
             $table->unsignedBigInteger('user')->nullable();
             $table->enum('etat', ['IDEE', 'PROTOTYPE', 'SUR_LE_MARCHE'])->default('IDEE');
-            $table->boolean('publier')->default(false);
-            $table->boolean('clotuer')->default(false);
-            $table->string('email_personne_contacter');
-            $table->string('telephone_personne_contacter');
+            $table->boolean('en_attente')->default(false);
+            $table->boolean('accepté')->default(false);
+            $table->boolean('publié')->default(false);
             $table->string('intitule');
+            $table->string('media')->nullable();
+            $table->string('doc_presentation');
+            $table->string('pays_activite');
+            $table->string('ville_activite');
+            $table->string('site')->nullable();
             $table->text('description');
+            $table->integer('financement');
             $table->string('logo')->nullable();
             $table->foreign('categorie')->references('id')->on('categories')->onUpdate('cascade')->onDelete('set null');
             $table->foreign('user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
