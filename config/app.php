@@ -165,11 +165,8 @@ return [
         /*
          * Package Service Providers...
          */
-<<<<<<< HEAD
         Brian2694\Toastr\ToastrServiceProvider::class,
-=======
         Intervention\Image\ImageServiceProvider::class,
->>>>>>> bfc238138504c70fe66684621e333f5295bb14cf
 
         /*
          * Application Service Providers...
@@ -233,12 +230,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-<<<<<<< HEAD
         'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
-=======
         'Image' => Intervention\Image\Facades\Image::class,
-
->>>>>>> bfc238138504c70fe66684621e333f5295bb14cf
     ],
 
 ];

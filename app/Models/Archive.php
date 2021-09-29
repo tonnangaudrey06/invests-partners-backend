@@ -13,25 +13,39 @@ class Archive extends Model
         'nom',
         'type',
         'url',
-        'user',
+        'source',
         'projet',
-        'actualite',
-        'categorie'
+        'actualite'
     ];
 
-    public function categorie()
+    public static function getAllowedFiles()
     {
-        return $this->belongsTo(Categorie::class, 'categorie', 'id');
+        return ['pdf', 'doc', 'docx', 'pptx', 'ppt', 'xls', 'xlsx', 'txt', 'zip', 'rar', '7z'];
     }
 
-    // public function projet()
-    // {
-    //     return $this->belongsTo(Categorie::class, 'categorie', 'id');
-    // }
+    public static function getAllowedImages()
+    {
+        return ['png', 'jpg', 'jpeg', 'gif'];
+    }
+
+    public static function getAllowedVideos()
+    {
+        return ['mp4', 'avi', 'mkv', 'm4v', 'mpg', 'mpeg', 'mov', '3gp'];
+    }
+
+    public function secteur()
+    {
+        return $this->belongsTo(Secteur::class, 'secteur', 'id');
+    }
+
+    public function projet()
+    {
+        return $this->belongsTo(Secteur::class, 'secteur', 'id');
+    }
 
     // public function actualite()
     // {
-    //     return $this->belongsTo(Categorie::class, 'categorie', 'id');
+    //     return $this->belongsTo(secteur::class, 'secteur', 'id');
     // }
 
     public function user()

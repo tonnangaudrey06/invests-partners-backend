@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\AuthController;
-use App\Http\Controllers\Client\CategorieController;
+use App\Http\Controllers\Client\SecteurController;
 use App\Http\Controllers\Client\MessageController;
 use App\Http\Controllers\Client\ProfilInvestisseurController;
 use App\Http\Controllers\Client\ProjetController;
@@ -64,9 +64,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
     Route::prefix('category')->name('category.')->group(function () {
-        Route::get('/', [CategorieController::class, 'index'])->name('home');
-        Route::post('/', [CategorieController::class, 'store'])->name('add');
-        Route::post('/{id?}', [CategorieController::class, 'store'])->name('update');
+        Route::get('/', [SecteurController::class, 'index'])->name('home');
+        Route::post('/', [SecteurController::class, 'store'])->name('add');
+        Route::post('/{id?}', [SecteurController::class, 'store'])->name('update');
     });
 
     Route::prefix('projet')->name('projet.')->group(function () {

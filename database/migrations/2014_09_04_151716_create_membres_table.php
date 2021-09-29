@@ -15,16 +15,18 @@ class CreateMembresTable extends Migration
     {
         Schema::create('membres', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_membre');
-            $table->string('telephone_membre');
-            $table->string('email_membre');
-            $table->string('photo_membre')->nullable();            
-            $table->string('cni_membre')->nullable();          
-            $table->string('pays_membre')->nullable();          
-            $table->string('ville_membre')->nullable();          
-            $table->string('profession_membre')->nullable();            
-            $table->string('date_naissance_membre')->nullable(); 
-            $table->text('parcours_membre')->nullable(); 
+            $table->string('nom_complet');
+            $table->string('telephone');
+            $table->string('email');
+            $table->string('photo')->nullable();            
+            $table->string('cni')->nullable();          
+            $table->string('pays')->nullable();          
+            $table->string('ville')->nullable();          
+            $table->string('profession')->nullable();            
+            $table->timestamp('date_naissance')->nullable();
+            $table->text('parcours')->nullable();
+            $table->unsignedBigInteger('user')->nullable();
+            $table->foreign('user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

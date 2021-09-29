@@ -64,4 +64,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role', 'id');
     }
+
+    public function projets()
+    {
+        return $this->hasMany(Projet::class, 'user', 'id');
+    }
+
+    public function secteur()
+    {
+        return $this->hasOne(Secteur::class, 'user', 'id');
+    }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categorie extends Model
+class Secteur extends Model
 {
     use HasFactory;
 
@@ -22,6 +22,6 @@ class Categorie extends Model
 
     public function image()
     {
-        return $this->hasOne(Archive::class, 'categorie', 'id');
+        return $this->hasOne(Archive::class, 'secteur', 'id');
     }
 }

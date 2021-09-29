@@ -10,16 +10,17 @@ class Membre extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom_membre',
-        'telephone_membre',
-        'email_membre',
-        'photo_membre',
-        'cni_membre',
-        'pays_membre',
-        'ville_membre',
-        'profession_membre',
-        'date_naissance_membre',
-        'parcours_membre',
+        'nom_complet',
+        'telephone',
+        'email',
+        'photo',
+        'cni',
+        'pays',
+        'ville',
+        'profession',
+        'date_naissance',
+        'parcours',
+        'user',
     ];
 
     public function projet(){

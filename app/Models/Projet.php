@@ -8,13 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Projet extends Model
 {
     use HasFactory;
-<<<<<<< HEAD
-}
-=======
-
+    
     protected $fillable = [
         'intitule',
-        'media',
+        'folder',
         'pays_activite',
         'ville_activite',
         'site',
@@ -22,17 +19,20 @@ class Projet extends Model
         'financement',
         'doc_presentation',
         'logo',
-        'categorie',
+        'secteur',
         'user',
         'etat',
-        'accepté',
-        'en_attente',
-        'publié',
+        'avancement',
+        'complet',
     ];
 
     public function membres(){
         return $this->hasMany(Equipe::class, 'projet', 'id');
     }
+
+    public function user_data()
+    {
+        return $this->belongsTo(Role::class, 'user', 'id');
+    }
 }
 
->>>>>>> bfc238138504c70fe66684621e333f5295bb14cf
