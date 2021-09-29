@@ -23,11 +23,20 @@ class CreateUsersTable extends Migration
             $table->string('telephone')->unique()->nullable();
             $table->string('password');
             $table->string('photo')->nullable();
+<<<<<<< HEAD
             $table->integer('anciennete')->nullable();
             $table->boolean('complet')->default(false);
+=======
+            $table->string('date_naissance')->nullable();
+            $table->integer('anciennete');
+>>>>>>> bfc238138504c70fe66684621e333f5295bb14cf
             $table->enum('status', ['PARTICULIER', 'ENTREPRISE'])->nullable();
             $table->unsignedBigInteger('profil')->nullable();
             $table->unsignedBigInteger('role')->nullable();
+            $table->string('pays')->nullable();
+            $table->string('ville')->nullable();
+            $table->string('profession')->nullable();
+            $table->text('parcours')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
