@@ -18,12 +18,14 @@ class ModuleSeeder extends Seeder
         Module::create(['module' => 'Investisseur']);
         Module::create(['module' => 'Administrateur']);
         Module::create(['module' => 'Conseiller']);
-        Module::create(['module' => 'Poteur projet']);
+        Module::create(['module' => 'Porteur projet']);
         Module::create(['module' => 'Investissement']);
+        Module::create(['module' => 'Profil_investisseur']);
         Module::create(['module' => 'Evenement']);
         Module::create(['module' => 'Message']);
         Module::create(['module' => 'Privilege']);
         Module::create(['module' => 'Categorie']);
         Module::create(['module' => 'Site']);
+        Module::create(['module' => 'Archives']);
     }
 }

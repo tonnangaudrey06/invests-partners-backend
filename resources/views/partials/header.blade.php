@@ -159,6 +159,13 @@
                             class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
                             key="t-settings">Paramètres</span></a>
                     <div class="dropdown-divider"></div>
+                    @if (Auth::user()->role == 1)
+                    <a class="dropdown-item d-block" href="{{route('add.writer')}}"><i
+                        class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
+                        key="t-settings">Ajouter privilèges</span></a>
+                <div class="dropdown-divider"></div>
+                    @endif
+
                     <a class="dropdown-item text-danger" href="{{ route('auth.logout') }}"><i
                             class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
                             key="t-logout">Déconnexion</span></a>

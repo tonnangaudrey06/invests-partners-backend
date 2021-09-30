@@ -17,10 +17,10 @@ class CreatePrivilegesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('role');
             $table->unsignedBigInteger('module');
-            $table->boolean('consulter')->default(true);
-            $table->boolean('modifier')->default(true);
-            $table->boolean('ajouter')->default(true);
-            $table->boolean('supprimer')->default(true);
+            $table->boolean('consulter')->default(true)->nullable();
+            $table->boolean('modifier')->default(true)->nullable();
+            $table->boolean('ajouter')->default(true)->nullable();
+            $table->boolean('supprimer')->default(true)->nullable();
             $table->foreign('role')->references('id')->on('roles')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('module')->references('id')->on('modules')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

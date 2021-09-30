@@ -26,11 +26,12 @@ class Projet extends Model
         'complet',
     ];
 
-    public function membres(){
-        return $this->hasMany(Equipe::class, 'projet', 'id');
+    public function membres()
+    {
+        return $this->belongsToMany(Membre::class, 'equipes', 'projet', 'membre')->withPivot('statut');
     }
 
-    public function secteur(){
+    public function secteur_data(){
         return $this->belongsTo(Secteur::class, 'secteur', 'id');
     }
 

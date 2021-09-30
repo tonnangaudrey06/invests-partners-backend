@@ -6,6 +6,7 @@ use App\Http\Controllers\Client\SecteurController;
 use App\Http\Controllers\Client\MessageController;
 use App\Http\Controllers\Client\ProfilInvestisseurController;
 use App\Http\Controllers\Client\ProjetController;
+use App\Http\Controllers\PrivilegeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -76,3 +77,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
     
 });
+
+// Privilèges Routes
+
+Route::get('/add/writer', [PrivilegeController::class, 'InsertWriter'])->name('add.writer');
+Route::get('/all/writer', [PrivilegeController::class, 'AllWriter'])->name('all.writer');
+Route::post('/store/writer', [PrivilegeController::class, 'StoreWriter'])->name('store.writer');

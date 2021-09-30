@@ -26,6 +26,7 @@ class Membre extends Model
     public function projet(){
         return $this->belongsTo(Projet::class, 'projet', 'id');
     }
+
 }
 
 

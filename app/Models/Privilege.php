@@ -24,4 +24,5 @@ class Privilege extends Model
         'ajouter' => 'boolean',
         'supprimer' => 'boolean'
     ];
+    
 }
