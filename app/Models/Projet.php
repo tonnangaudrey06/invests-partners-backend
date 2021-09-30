@@ -30,9 +30,17 @@ class Projet extends Model
         return $this->hasMany(Equipe::class, 'projet', 'id');
     }
 
+    public function secteur(){
+        return $this->belongsTo(Secteur::class, 'secteur', 'id');
+    }
+
+    public function medias(){
+        return $this->hasMany(Archive::class, 'projet', 'id');
+    }
+
     public function user_data()
     {
-        return $this->belongsTo(Role::class, 'user', 'id');
+        return $this->belongsTo(User::class, 'user', 'id');
     }
 }
 

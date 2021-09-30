@@ -12,6 +12,6 @@ class Equipe extends Model
     protected $fillable = [
         'projet',
         'membre',
-        'role',
+        'statut'
     ];
 }

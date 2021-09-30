@@ -25,6 +25,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::prefix('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'profile']);
+    Route::post('/register', [AuthController::class, 'register']);
     Route::get('/refresh/token', [AuthController::class, 'refresh']);
 });
 
