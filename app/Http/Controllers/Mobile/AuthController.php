@@ -27,7 +27,7 @@ class AuthController extends Controller
         }
 
         if (!Auth::attempt($credentials, $remember)) {
-            return $this->sendError('Unauthorized', ['error' => 'Unauthorised'], 401);
+            return $this->sendError('Votre email ou mot de passe est incorrect. Veuillez réessayer.', ['error' => 'Unauthorised'], 401);
         }
 
         $data['user'] = $user;

@@ -96,7 +96,7 @@ class ProjectController extends Controller
         // Save actual member
         if (!empty($photo)) {
             $filename = hexdec(uniqid()) . '.' . $photo->getClientOriginalExtension();
-            $membre['url'] = url('storage/uploads/membres/') . '/' . $filename;
+            $membre['photo'] = url('storage/uploads/membres/') . '/' . $filename;
             $photo->storeAs('uploads/membres/', $filename, ['disk' => 'public']);
         }
 
@@ -117,17 +117,16 @@ class ProjectController extends Controller
         // Add all members to project
         foreach ($membres as $membre) {
             $data_json = json_decode($membre);
-            $data = [
+            Equipe::create([
                 'projet' => $projet->id,
                 'membre' => $data_json->membre->id,
                 'statut' => $data_json->statut
-            ];
-            Equipe::create($data);
+            ]);
         }
 
 
         // Retrieve projects informations
-        $projet = Projet::with(['user_data', 'membres']);
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur'])->where('id', $projet->id)->first();
 
         return $this->sendResponse($projet, 'Project');
     }
