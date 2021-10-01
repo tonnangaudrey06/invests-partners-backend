@@ -73,7 +73,7 @@
                                             <h5 class="font-size-15">
                                                 <a href="{{ route('projet.details', ['id' => $projet->id]) }}"
                                                     class="text-dark">
-                                                    {{ $projet->intitule }} sdfds sdsdvs dsvds fsd fds dsf ds dsf dsf ds  dsf dsf ds
+                                                    {{ $projet->intitule }}
                                                 </a>
                                             </h5>
 
