@@ -130,7 +130,7 @@
                 <li>
                     <a href="{{ route('category.home') }}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
-                        <span key="t-categorie">Catégories</span>
+                        <span key="t-categorie">Secteurs d'activités</span>
                     </a>
                 </li>
 
@@ -143,7 +143,7 @@
 
                 @foreach ($privileges as $privilege)
 
-                @if( Auth::user()->role == 1 && $privilege->module == 10 && $privilege->consulter == 1)
+                @if( $privilege->module == 10 && $privilege->consulter == 1)
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">

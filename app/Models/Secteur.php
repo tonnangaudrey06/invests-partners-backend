@@ -12,7 +12,8 @@ class Secteur extends Model
     protected $fillable = [
         'libelle',
         'slug',
-        'user'
+        'user',
+        'photo',
     ];
 
     public function user_data()
@@ -20,8 +21,5 @@ class Secteur extends Model
         return $this->belongsTo(User::class, 'user', 'id');
     }
 
-    public function image()
-    {
-        return $this->hasOne(Archive::class, 'secteur', 'id');
-    }
+    
 }

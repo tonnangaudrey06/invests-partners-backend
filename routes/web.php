@@ -6,7 +6,7 @@ use App\Http\Controllers\Client\SecteurController;
 use App\Http\Controllers\Client\MessageController;
 use App\Http\Controllers\Client\ProfilInvestisseurController;
 use App\Http\Controllers\Client\ProjetController;
-use App\Http\Controllers\PrivilegeController;
+use App\Http\Controllers\Client\PrivilegeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -67,13 +67,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::prefix('category')->name('category.')->group(function () {
         Route::get('/', [SecteurController::class, 'index'])->name('home');
         Route::post('/', [SecteurController::class, 'store'])->name('add');
-        Route::post('/{id?}', [SecteurController::class, 'store'])->name('update');
+        // Route::post('/', [SecteurController::class, 'edit'])->name('edit');
+        Route::post('/{id?}', [SecteurController::class, 'update'])->name('update');
     });
 
     Route::prefix('projet')->name('projet.')->group(function () {
         Route::get('/', [ProjetController::class, 'index'])->name('home');
         Route::get('/add', [ProjetController::class, 'add'])->name('add');
         Route::get('/{id}', [ProjetController::class, 'show'])->name('details');
+        Route::get('/admin/validate/{id}', [ProjetController::class, 'AdminValidate'])->name('admin.validate');
+        Route::get('/validate/{id}', [ProjetController::class, 'CIValidate'])->name('civalidate');
     });
     
 });
@@ -83,3 +86,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::get('/add/writer', [PrivilegeController::class, 'InsertWriter'])->name('add.writer');
 Route::get('/all/writer', [PrivilegeController::class, 'AllWriter'])->name('all.writer');
 Route::post('/store/writer', [PrivilegeController::class, 'StoreWriter'])->name('store.writer');
+
+Route::get('/get/user/{user_id}', [SecteurController::class, 'GetUserEdit']);
+
