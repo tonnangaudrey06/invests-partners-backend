@@ -18,7 +18,7 @@ class CreateProjetsTable extends Migration
             $table->unsignedBigInteger('secteur')->nullable();
             $table->unsignedBigInteger('user');
             $table->enum('avancement', ['IDEE', 'PROTOTYPE', 'SUR_LE_MARCHE'])->default('IDEE');
-            $table->enum('etat', ['ATTENTE', 'PUBLIER', 'VALIDE', 'COMPLET', 'ATTENTE_VALIDATION_ADMIN', 'ATTENTE_PAIEMENT', 'REJETE'])->default('ATTENTE');
+            $table->enum('etat', ['ATTENTE', 'PUBLIE', 'VALIDE', 'COMPLET', 'ATTENTE_VALIDATION_ADMIN', 'ATTENTE_PAIEMENT', 'REJETE', 'CLOTURE'])->default('ATTENTE');
             $table->string('intitule');
             $table->string('folder')->nullable();
             $table->string('doc_presentation')->nullable();
