@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -16,6 +16,7 @@ class User extends Authenticatable
         'civilite',
         'prenom',
         'nom',
+        'folder',
         'email',
         'telephone',
         'password',
@@ -70,8 +71,13 @@ class User extends Authenticatable
         return $this->hasMany(Projet::class, 'user', 'id');
     }
 
-    public function secteur()
+    public function documents_fiscaux()
     {
-        return $this->hasOne(Secteur::class, 'user', 'id');
+        return $this->hasMany(DocumentFiscaux::class, 'user', 'id');
+    }
+
+    public function secteurs()
+    {
+        return $this->hasMany(Secteur::class, 'user', 'id');
     }
 }

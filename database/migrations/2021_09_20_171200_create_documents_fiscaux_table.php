@@ -16,10 +16,9 @@ class CreateDocumentsFiscauxTable extends Migration
         Schema::create('documents_fiscaux', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['DSF', 'COMPTE_EXPLOITATION', 'RCCM', 'CARTE_CONTRIBUABLE', 'ANR', 'ATTESTATION_DOMICILIATION_BANCAIRE'])->default('DSF');
-            $table->unsignedBigInteger('document');
+            $table->string('document');
             $table->unsignedBigInteger('user');
             $table->timestamps();
-            $table->foreign('document')->references('id')->on('archives')->onUpdate('cascade');
             $table->foreign('user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }

@@ -11,5 +11,11 @@ class SecteurController extends Controller
     {
         $secteurs = Secteur::all();
         return $this->sendResponse($secteurs, 'All domaines');
-    }   
+    }
+    
+    public function show($id)
+    {
+        $secteurs = Secteur::with(['conseille'])->find($id);
+        return $this->sendResponse($secteurs, 'Get one domaine');
+    } 
 }

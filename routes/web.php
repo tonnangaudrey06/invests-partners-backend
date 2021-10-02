@@ -33,7 +33,7 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     Route::view('/dashboard', 'pages.dashboard.home')->name('dashboard');
 

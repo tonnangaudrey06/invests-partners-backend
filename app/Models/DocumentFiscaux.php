@@ -5,21 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Secteur extends Model
+class DocumentFiscaux extends Model
 {
     use HasFactory;
 
+    protected $table = 'documents_fiscaux';
+
     protected $fillable = [
-        'libelle',
-        'slug',
-        'user',
-        'photo',
+        'type',
+        'document',
+        'user'
     ];
 
-    public function conseille()
-    {
+    public function user_data(){
         return $this->belongsTo(User::class, 'user', 'id');
     }
-
-    
 }
