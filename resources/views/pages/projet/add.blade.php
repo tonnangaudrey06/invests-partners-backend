@@ -35,7 +35,7 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title mb-4">Modifier le projet</h4>
+                                <h4 class="card-title mb-4">Ajouter un projet</h4>
                                 <form>
                                     <div class="row mb-4">
                                         <label for="projectname" class="col-form-label col-lg-2">Intitule</label>

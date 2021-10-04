@@ -94,34 +94,6 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                         </a>
                                     </h5>
 
-<<<<<<< HEAD
-                                        <div class="flex-grow-1 overflow-hidden">
-                                            <h5 class="font-size-15">
-                                                <a href="{{ route('projet.details', ['id' => $projet->id]) }}"
-                                                    class="text-dark">
-                                                    {{ $projet->intitule }}
-                                                </a>
-                                            </h5>
-
-                                            <div
-                                                class="d-flex flex-wrap justify-content-between align-items-center mt-4 mb-4 font-size-14 font-weight-bolder">
-                                                <p class="text-muted">{{ $projet->avancement }}</p>
-                                                <p class="text-primary">{{ $projet->financement }} XAF</p>
-                                            </div>
-
-                                            <div class="avatar-group">
-                                                @foreach ($projet->membres as $item)
-                                                    <div class="avatar-group-item">
-                                                        <a href="javascript: void(0);" class="d-inline-block">
-                                                            <img src="{{ asset($item->photo) }}" alt=""
-                                                                class="rounded-circle avatar-sm">
-                                                        </a>
-                                                    </div>
-                                                @endforeach
-
-
-                                            </div>
-=======
                                     <div
                                         class="d-flex flex-wrap justify-content-between align-items-center mt-4 mb-4 font-size-14 font-weight-bolder">
                                         <p class="text-muted">STATUT : {{ $projet->avancement }}</p>
@@ -135,7 +107,6 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                                 <img src="{{ asset($item->photo) }}" alt=""
                                                     class="rounded-circle avatar-sm">
                                             </a>
->>>>>>> 22a28282fde812ceea5cef0c373b75b39e15461a
                                         </div>
                                         @endforeach
 
