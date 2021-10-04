@@ -24,10 +24,10 @@ class UserController extends Controller
     {
         $users = User::where('role', 2)->with(['role_data'])->get();
         $role = (object) [
-            'name' => 'conseillé',
+            'name' => 'conseiller',
             'value' => 2
         ];
-        return view('pages.user.home')->with('users', $users)->with('role', $role)->with('title', 'Conseillés d’investissement');
+        return view('pages.user.home')->with('users', $users)->with('role', $role)->with('title', 'Conseillers en investissement');
     }
 
     public function porteurProjet()

@@ -68,7 +68,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/', [SecteurController::class, 'index'])->name('home');
         Route::post('/', [SecteurController::class, 'store'])->name('add');
         // Route::post('/', [SecteurController::class, 'edit'])->name('edit');
-        Route::post('/{id?}', [SecteurController::class, 'update'])->name('update');
+        Route::post('/{id}', [SecteurController::class, 'update'])->name('update');
     });
 
     Route::prefix('projet')->name('projet.')->group(function () {

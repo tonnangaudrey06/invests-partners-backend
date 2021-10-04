@@ -87,7 +87,7 @@
                         @foreach ($privileges as $privilege)
 
                         @if( $privilege->module == 4 && $privilege->consulter == 1)
-                        <li><a href="{{ route('user.conseille') }}" key="t-counsellor">Conseillés</a></li>
+                        <li><a href="{{ route('user.conseille') }}" key="t-counsellor">Conseillers </a></li>
                         @endif
                         @endforeach
 

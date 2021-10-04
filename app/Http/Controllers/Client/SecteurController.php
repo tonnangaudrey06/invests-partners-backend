@@ -33,19 +33,22 @@ class SecteurController extends Controller
 
     public function update($id, Request $request)
     {
-        // $data = $request->input();
-        // $data['slug'] = Str::slug($request->libelle);
+        $data = $request->input();
+        $data['slug'] = Str::slug($request->libelle);
         // $data['libelle'] = Str::libelle($request->libelle);
         // $data['user'] = Str::user($request->specialiste);
 
-        // Secteur::where('id', $id)->update($data);
+        dd($data);
+        Secteur::where('id', $id)->update($data);
 
-        $data = Secteur::find($id);
-        $data->update([
-            'libelle' => $request->libelle,
-            'libelle' => $request->specialiste,
-            'slug' => $request->libelle
-        ]);
+        // $data = Secteur::find($id);
+        // $data->update([
+        //     'libelle' => $request->libelle,
+        //     'libelle' => $request->specialiste,
+        //     'slug' => $request->libelle
+        // ]);
+
+        
 
         Toastr::success('Catégorie mis à jour avec succès!)', 'Success');
 

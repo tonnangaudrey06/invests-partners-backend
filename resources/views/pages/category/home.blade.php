@@ -268,19 +268,32 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
   		}).on("show.bs.modal", function(event){
   		  var button = $(event.relatedTarget); // button the triggered modal
   			var personId = button.data("id"); 
+
+
   			if(personId) {
                   $.ajax({
                       url: "{{  url('/get/user/') }}/"+personId,
                       type:"GET",
                       dataType:"json",
                       success:function(data) {
-                          console.log($("#secteur-intitule"));
-                          console.log(data);
+                        //   console.log($("#secteur-intitule"));
+                        //   console.log(data);
                          $("#secteur-intitule").val(data.libelle)
                          $("#secteur-specialiste").val(data.user).change()
                       },
                      
                   });
+
+                //   $(document).querySelector('#categorieFormEdit-form').addEventListener('submit', (e) => {
+                //     e.preventDefault();
+                //     var formData = new FormData(e.target);
+                //     fetch("{{ route('category/update' $personId) }}", { 
+                //         method: 'POST',
+                //         body: formData
+                //     }).then(() => console.log('success'));
+                //     });
+
+                  
               } else {
                   alert('danger');
               }
@@ -291,29 +304,15 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
 </script>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-          $('categorieFormEdit').on("show.bs.modal", function(event){
-  		  var button = $(event.relatedTarget); // button the triggered modal
-  			var personId = button.data("id"); 
-              if(form_edit) {
-                  $.ajax({
-                      url: "{{  url('/category/') }}/"+personId,
-                      type:"GET",
-                      dataType:"json",
-                      success:function(data) {
-                        //  $("#subcategory_id").empty();
-                        //        $.each(data,function(key,value){
-                        //            $("#subcategory_id").append('<option value="'+value.id+'">'+value.subcategory_en+'</option>');
-                        //        });
-                        console.log(data);
-                      },
-                     
-                  });
-              } else {
-                  alert('danger');
-              }
-          });
-      });
+    document.querySelector('#categorieFormEdit-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  var formData = new FormData(e.target);
+  var personId = button.data("id"); 
+  fetch("{{ route('category/update', $personId) }}", { 
+    method: 'POST',
+    body: formData
+  }).then(() => console.log('success'));
+});
 </script>
 
 @endsection
