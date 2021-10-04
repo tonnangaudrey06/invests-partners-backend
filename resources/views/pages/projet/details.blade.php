@@ -60,6 +60,8 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             @if ($projet->etat == 'ATTENTE_VALIDATION_ADMIN')
                             <a href="{{ route('projet.admin.validate', $projet->id) }}"
                                 class="btn btn-sm btn-success me-2">Approuver</a>
+                                <a href="{{ route('projet.admin.infosupp', $projet->id) }}"
+                                    class="btn btn-sm btn-info me-2">Demander info supp</a>
                             <a href="{{ route('projet.add') }}" class="btn btn-sm btn-dark me-2">Rejeter</a>
                             @else
                             <a href="{{ route('projet.admin.validate', $projet->id) }}"
@@ -83,9 +85,10 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             @endforeach
 
                             @if($projet->etat == 'VALIDE')
-                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-warning me-2">Modifier</a>
+                            <a href="{{ route('projet.edit', $projet->id) }}"
+                                class="btn btn-sm btn-warning me-2">Modifier</a>
                             @else
-                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-warning disabled me-2">Modifier</a>
+                            <a class="btn btn-sm btn-warning disabled me-2">Modifier</a>
                             @endif
 
                             <a href="{{ route('projet.add') }}" class="btn btn-sm btn-info me-2">Actualités</a>
@@ -99,11 +102,11 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
                             @if (Auth()->user()->role == 1 )
                             @if($projet->etat == 'COMPLET')
-                                <a href="{{ route('projet.add') }}" class="btn btn-sm btn-primary me-2">Publier</a>
-                                @else
-                                <a href="{{ route('projet.add') }}" class="btn btn-sm btn-primary disabled me-2">Publier</a>
-                             @endif
-                                
+                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-primary me-2">Publier</a>
+                            @else
+                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-primary disabled me-2">Publier</a>
+                            @endif
+
                             @endif
 
                             {{-- <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button> --}}
@@ -135,8 +138,8 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                         </div>
 
                                         <div class="flex-grow-1 overflow-hidden">
-                                            <h5 class="text-truncate font-size-18">{{ $projet->intitule }}</h5>
-                                            <p class=" text-primary font-size-15">{{ $projet->financement }} XAF</p>
+                                            <strong><h4 class="text-truncate font-size-18">{{ $projet->intitule }}</h4></strong>
+                                            <strong> <p class=" text-primary font-size-15">{{ $projet->financement }} XAF</p> </strong>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -167,14 +170,23 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                                 </div>
                                             </div> --}}
                                     </div>
-                                    {{-- <div class="text-muted mt-4">
-                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> To achieve this, it would be
-                                                necessary</p>
-                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Separate existence is a myth.
+                                    @if($projet->duree)
+                                    <div class="text-muted mt-4 ">
+                                        <strong>
+                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> TAUX DE
+                                                RENTABILITE : <span class="text-primary">{{$projet->taux_rentabilite}} %</span> </p>
+                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> RESTOUR SUR
+                                                INVESTISSEMENT: <span class="text-primary">{{$projet->delai_recup}} mois</span>
                                             </p>
-                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> If several languages coalesce
-                                            </p>
-                                        </div> --}}
+                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> CA PREVISIONNEL:
+                                                <span class="text-primary">{{$projet->ca_previsionnel}} XAF</span>
+                                                <p><i class="mdi mdi-chevron-right text-primary me-1"></i> DUREE DU
+                                                    PROJET: <span class="text-primary">{{$projet->duree}} mois</span>
+                                                </p>
+                                        </strong>
+
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

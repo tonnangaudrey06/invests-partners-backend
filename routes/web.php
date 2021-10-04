@@ -74,7 +74,10 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('projet')->name('projet.')->group(function () {
         Route::get('/', [ProjetController::class, 'index'])->name('home');
         Route::get('/add', [ProjetController::class, 'add'])->name('add');
+        Route::get('/edit/{id}', [ProjetController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [ProjetController::class, 'update'])->name('update');
         Route::get('/{id}', [ProjetController::class, 'show'])->name('details');
+        Route::get('/admin/validate/{id}', [ProjetController::class, 'AdminValidate'])->name('admin.validate');
         Route::get('/admin/validate/{id}', [ProjetController::class, 'AdminValidate'])->name('admin.validate');
         Route::get('/validate/{id}', [ProjetController::class, 'CIValidate'])->name('civalidate');
     });
