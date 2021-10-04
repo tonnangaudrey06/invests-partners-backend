@@ -12,6 +12,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.6",
         "laravel/framework": "^8.54",
+        "laravel/passport": "^10.1",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5"
     },
@@ -51,7 +52,10 @@
         ],
         "post-install-cmd": [
             "php artisan clear-compiled",
-            "chmod -R 777 public/"
+            "php artisan optimize",
+            "chmod -R 777 public/",
+            "chmod -R 777 storage",
+            "php artisan passport:keys"
         ]
     },
     "extra": {

@@ -21,6 +21,11 @@ class CreateProjetsTable extends Migration
             $table->enum('etat', ['ATTENTE', 'PUBLIE', 'VALIDE', 'COMPLET', 'ATTENTE_VALIDATION_ADMIN', 'ATTENTE_PAIEMENT', 'REJETE', 'CLOTURE'])->default('ATTENTE');
             $table->string('intitule');
             $table->string('folder')->nullable();
+            $table->integer('taux_rentabilite')->nullable();
+            $table->timestamp('date_debut')->nullable();
+            $table->string('duree')->nullable();
+            $table->integer('rsi')->nullable();
+            $table->integer('ca_previsionnel')->nullable();
             $table->string('doc_presentation')->nullable();
             $table->string('pays_activite');
             $table->string('ville_activite');

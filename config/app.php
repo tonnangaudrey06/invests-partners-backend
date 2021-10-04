@@ -167,6 +167,7 @@ return [
          */
         Brian2694\Toastr\ToastrServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
         /*
          * Application Service Providers...

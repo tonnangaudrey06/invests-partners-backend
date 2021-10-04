@@ -7,66 +7,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
-    /**
-     * @OA\Post(
-     **  path="/auth/login",
-     *   tags={"Authentification"},
-     *   summary="User login",
-     *   operationId="login",
-     * 
-     *   @OA\Parameter(
-     *      name="email",
-     *      in="header",
-     *      required=true,
-     *      @OA\Schema(
-     *           type="string"
-     *      )
-     *   ),
-     *   @OA\Parameter(
-     *      name="password",
-     *      in="header",
-     *      required=true,
-     *      @OA\Schema(
-     *          type="string"
-     *      )
-     *   ),
-     *   @OA\Parameter(
-     *      name="remember",
-     *      in="header",
-     *      required=false,
-     *      @OA\Schema(
-     *          type="boolean"
-     *      )
-     *   ),
-     * 
-     *   @OA\Response(
-     *      response=200,
-     *       description="Success",
-     *      @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *   ),
-     *   @OA\Response(
-     *      response=401,
-     *       description="Unauthenticated"
-     *   ),
-     *   @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     *   @OA\Response(
-     *      response=404,
-     *      description="Not found"
-     *   ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
-     *)
-     **/
     public function login(Request $request)
     {
         $request->validate([
@@ -74,135 +19,39 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->whereIn('role', array(3, 4))->with(['role_data', 'documents_fiscaux'])->first();
 
-        $credentials = $request->only('email', 'password');
-        $remember = false;
-
-        if ($request->has('remember')) {
-            $remember = $request->remember;
+        if(empty($user)) {
+            return $this->sendError('Le compte utilisateur n\'existe pas. Veuillez d\'abord créer un compte.', null, 401);
         }
 
-        if (!Auth::attempt($credentials, $remember)) {
-            return $this->sendError('Votre email ou mot de passe est incorrect. Veuillez réessayer.', ['error' => 'Unauthorised'], 401);
+        $credentials = $request->only('email', 'password');
+
+        if (!$request->has('remember') || !$request->remember) {
+            Passport::personalAccessTokensExpireIn(now()->addMinutes(1));
+        }
+
+        if (!Auth::attempt($credentials)) {
+            return $this->sendError('Votre email ou mot de passe est incorrect. Veuillez réessayer.', null, 401);
         }
 
         $data['user'] = $user;
-        // $data['token'] = $user->createToken($request->email)->plainTextToken;
+        $data['token'] = $user->createToken($request->email)->accessToken;
 
         return $this->sendResponse($data, 'User login');
     }
 
-    /**
-     * @OA\Post(
-     **  path="/auth/logout",
-     *   tags={"Authentification"},
-     *   summary="User logout",
-     *   operationId="logout",
-     *   security={{"bearer_token": {}}},
-     *
-     *   @OA\Response(
-     *      response=200,
-     *       description="Success",
-     *      @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *   ),
-     *   @OA\Response(
-     *      response=401,
-     *       description="Unauthenticated"
-     *   ),
-     *   @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     *   @OA\Response(
-     *      response=404,
-     *      description="Not found"
-     *   ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
-     *)
-     **/
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
-        return $this->sendResponse([], 'User logout');
+        $request->user()->token()->revoke();
+        return $this->sendResponse(null, 'User logout');
     }
 
-    /**
-     * @OA\Get(
-     **  path="/auth/profile",
-     *   tags={"Authentification"},
-     *   summary="Get current user profile",
-     *   operationId="profil",
-     *   security={{"bearer_token": {}}},
-     *
-     *   @OA\Response(
-     *      response=200,
-     *       description="Success",
-     *      @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *   ),
-     *   @OA\Response(
-     *      response=401,
-     *       description="Unauthenticated"
-     *   ),
-     *   @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     *   @OA\Response(
-     *      response=404,
-     *      description="Not found"
-     *   ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
-     *)
-     **/
     public function profile(Request $request)
     {
-        return $this->sendResponse(User::with('role_data')->find($request->user()->id), 'User profile');
+        return $this->sendResponse(User::with(['role_data', 'documents_fiscaux'])->find($request->user()->id), 'User profile');
     }
 
-    /**
-     * @OA\Get(
-     **  path="/auth/refresh/token",
-     *   tags={"Authentification"},
-     *   summary="User token refresh",
-     *   operationId="refresh_token",
-     *   security={{"bearer_token": {}}},
-     *
-     *   @OA\Response(
-     *      response=200,
-     *       description="Success",
-     *      @OA\MediaType(
-     *           mediaType="application/json",
-     *      )
-     *   ),
-     *   @OA\Response(
-     *      response=401,
-     *       description="Unauthenticated"
-     *   ),
-     *   @OA\Response(
-     *      response=400,
-     *      description="Bad Request"
-     *   ),
-     *   @OA\Response(
-     *      response=404,
-     *      description="Not found"
-     *   ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
-     *)
-     **/
     public function refresh(Request $request)
     {
         $user = $request->user();
@@ -214,9 +63,27 @@ class AuthController extends Controller
     {
         $data = $request->input();
         $data['password'] = Hash::make($request->password);
+        $data['folder'] = hexdec(uniqid());
+
+        $email = User::where('email', $request->email)->exists();
+        $telephone = User::where('telephone', $request->telephone)->exists();
+
+        if($email) {
+            return $this->sendError('L\'email est déjà utilisé.', null, 401);
+        }
+
+        if($telephone) {
+            return $this->sendError('Le numéro de téléphone est déjà utilisé.', null, 401);
+        }
+
+        try {
+            Storage::disk('public')->makeDirectory('uploads/'. $data['folder']);
+        } catch (\Throwable $th) {
+            return $this->sendError('Erreur de creation de compte', null, 401);
+        }
 
         $data = User::create($data);
 
-        return $this->sendResponse(User::with(['role_data'])->find($data->id), 'User registered');
+        return $this->sendResponse(User::with(['role_data', 'documents_fiscaux'])->find($data->id), 'User registered');
     }
 }
