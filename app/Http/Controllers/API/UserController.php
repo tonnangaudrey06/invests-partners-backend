@@ -29,16 +29,13 @@ class UserController extends Controller
 
     public function updatePassword($id, Request $request)
     {
-        $password = Hash::make($request->password);
-        $old_password = Hash::make($request->old_password);
-
         $user = User::find($id);
 
-        if($user->password != $old_password) {
+        if(!empty($user) && !Hash::check($request->old, $user->password)) {
             return $this->sendError('Mot de passe incorrect', null, 401);
         }
 
-        $user->password = $password;
+        $user->password = Hash::make($request->new);
         $user->save();
 
         return $this->sendResponse(null, 'Mot de passe modifié');
@@ -89,7 +86,7 @@ class UserController extends Controller
     {
         $document = $request->file('document');
         $user = User::find($id);
-        $exist = DocumentFiscaux::where('type', $request->type)->first();
+        $exist = DocumentFiscaux::where('type', $request->type)->where('user', $id)->first();
 
         $data = [
             'type' => $request->type,

@@ -18,7 +18,7 @@ class Investissement extends Model
 
 
     public function projet_data(){
-        return $this->belongsTo(Projet::class, 'projet', 'id');
+        return $this->belongsTo(Projet::class, 'projet', 'id')->with(['secteur_data']);
     }
 
 

@@ -34,7 +34,8 @@ class User extends Authenticatable
     ];
     
     protected $appends =  [
-        'nom_complet'
+        'nom_complet',
+        'anciennete_complet'
     ];
 
     protected $casts = [
@@ -50,7 +51,7 @@ class User extends Authenticatable
         }
     }
 
-    public function getAnciennetetAttribute($value)
+    public function getAncienneteCompletAttribute($value)
     {
         if ($value == 1) {
             return 'Plus d\'un ans d\'anciennete';

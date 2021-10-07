@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\ProfilInvestisseurController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\InvestissementController;
 use App\Http\Controllers\API\MembreController;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\SecteurController;
@@ -26,7 +27,7 @@ Route::post('/auth/register', [AuthController::class, 'register']);
 Route::get('/routes', function () {
     $routes = [];
     foreach (Route::getRoutes() as $route) {
-        if(Str::startsWith($route->uri, 'api')) {
+        if (Str::startsWith($route->uri, 'api')) {
             array_push($routes, (object)[
                 'route' => $route->uri,
                 'methods' => $route->methods,
@@ -37,13 +38,14 @@ Route::get('/routes', function () {
     return response()->json($routes);
 });
 
-Route::prefix('secteur')->group(function () {
-    Route::get('/', [SecteurController::class, 'index']);
-    Route::get('/{id}/town', [SecteurController::class, 'index']);
-    Route::get('/{id}/town/city', [SecteurController::class, 'index']);
-});
+Route::get('secteur', [SecteurController::class, 'index']);
 
 Route::middleware('auth:api')->group(function () {
+    Route::prefix('secteur')->group(function () {
+        Route::get('/{id}', [SecteurController::class, 'show']);
+        Route::get('/{id}/{town}', [ProjectController::class, 'projetsTown']);
+    });
+
     Route::prefix('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/profile', [AuthController::class, 'profile']);
@@ -61,6 +63,8 @@ Route::middleware('auth:api')->group(function () {
             Route::post('/document/fiscal', [UserController::class, 'uploadDocumentFiscal']);
         });
         Route::get('/{id}/membres', [MembreController::class, 'index']);
+        Route::get('/{id}/projets', [ProjectController::class, 'projets']);
+        Route::get('/{id}/projets/invest', [InvestissementController::class, 'projectInvest']);
     });
 
     Route::prefix('profil-investisseur')->group(function () {
