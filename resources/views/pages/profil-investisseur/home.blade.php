@@ -73,7 +73,7 @@
                                                 </td>
                                                 <td>{{ $profil->montant_min }}</td>
                                                 <td>{{ $profil->montant_max }}</td>
-                                                <td>{{ $profil->montant_abonnement }}</td>
+                                                <td>{{ $profil->frais_abonnement }}</td>
                                                 <td>
                                                     <a href="{{route('profil.investisseur.edit', $profil->id)}}" class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
                                                     <a href="{{route('profil.investisseur.delete', $profil->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-xs btn-danger pull-right"><i class="bx bx-trash"></i></i></a>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Projet extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'intitule',
         'folder',
@@ -26,6 +26,7 @@ class Projet extends Model
         'secteur',
         'user',
         'etat',
+        'type',
         'avancement',
         'complet',
     ];
@@ -35,11 +36,13 @@ class Projet extends Model
         return $this->belongsToMany(Membre::class, 'equipes', 'projet', 'membre')->withPivot('statut');
     }
 
-    public function secteur_data(){
+    public function secteur_data()
+    {
         return $this->belongsTo(Secteur::class, 'secteur', 'id');
     }
 
-    public function medias(){
+    public function medias()
+    {
         return $this->hasMany(Archive::class, 'projet', 'id');
     }
 
@@ -48,4 +51,3 @@ class Projet extends Model
         return $this->belongsTo(User::class, 'user', 'id');
     }
 }
-

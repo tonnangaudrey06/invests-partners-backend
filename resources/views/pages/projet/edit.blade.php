@@ -42,11 +42,23 @@
                                 @csrf
 
                                 <div class="row mb-4">
+                                    <label for="projectdesc" class="col-form-label col-lg-2">Description</label>
+                                    <div class="col-lg-10">
+                                        <textarea class="form-control" name="description" rows="3"
+                                            >{{$projet->description}}</textarea>
+                                    </div>
+
+                                    @error('description')
+                                        <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
+                                </div>
+
+                                <div class="row mb-4">
                                     <label for="taux_rentabilite" class="col-form-label col-lg-2">Taux de
                                         rentabilité *</label>
                                     <div class="col-lg-10">
                                         <input id="taux_rentabilite" name="taux_rentabilite" type="text"
-                                            class="form-control">
+                                            class="form-control" value="{{$projet->taux_rentabilite}}">
 
                                             @error('taux_rentabilite')
                                                 <span class="text-danger"> {{ $message }}</span>
@@ -57,7 +69,7 @@
                                 <div class="row mb-4">
                                     <label for="duree" class="col-form-label col-lg-2">Durée du projet (en mois) *</label>
                                     <div class="col-lg-10">
-                                        <input id="duree" name="duree" type="text" class="form-control">
+                                        <input id="duree" name="duree" type="text" class="form-control" value="{{$projet->duree}}">
 
                                             @error('duree')
                                                 <span class="text-danger"> {{ $message }}</span>
@@ -69,7 +81,7 @@
                                     <label for="delai_recup" class="col-form-label col-lg-2">Délai de recupération (en
                                         mois) *</label>
                                     <div class="col-lg-10">
-                                        <input id="delai_recup" name="delai_recup" type="text" class="form-control">
+                                        <input id="delai_recup" name="delai_recup" type="text" class="form-control" value="{{$projet->rsi}}">
 
                                             @error('delai_recup')
                                                 <span class="text-danger"> {{ $message }}</span>
@@ -82,7 +94,7 @@
                                         prévisionnel *</label>
                                     <div class="col-lg-10">
                                         <input id="ca_previsionnel" name="ca_previsionnel" type="text"
-                                            class="form-control">
+                                            class="form-control" value="{{$projet->ca_previsionnel}}">
 
                                             @error('ca_previsionnel')
                                                 <span class="text-danger"> {{ $message }}</span>

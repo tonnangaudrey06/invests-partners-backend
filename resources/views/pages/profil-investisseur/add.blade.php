@@ -68,10 +68,10 @@
                                 </div>
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Montant abonnement</label>
-                                    <input type="number" class="form-control" name="montant_abonnement" min="1"
+                                    <input type="number" class="form-control" name="frais_abonnement" 
                                         placeholder="0 XAF">
 
-                                        @error('montant_max')
+                                        @error('frais_abonnement')
                                     <span class="text-danger"> {{ $message }}</span>
                                     @enderror
                                 </div>
