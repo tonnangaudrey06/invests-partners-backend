@@ -26,13 +26,13 @@ class ProfilInvestisseurController extends Controller
         $validated = $request->validate(
             [
                 'montant_min' => 'required|:profile_investisseurs',
-                'montant_abonnement' => 'required|:profile_investisseurs',
+                'frais_abonnement' => 'required|:profile_investisseurs',
                 'type' => 'required|unique:profile_investisseurs',
             ],
 
             [
                 'montant_min.required' => 'Champ obligatoire!',
-                'montant_abonnement.required' => 'Champ obligatoire!',
+                'frais_abonnement.required' => 'Champ obligatoire!',
                 'type.required' => 'Champ obligatoire!',
                 'type.unique' => 'Ce champ a déja été ajouté!',
             ]
@@ -59,13 +59,13 @@ class ProfilInvestisseurController extends Controller
         $validated = $request->validate(
             [
                 'montant_min' => 'required|:profile_investisseurs',
-                'montant_abonnement' => 'required|:profile_investisseurs',
+                'frais_abonnement' => 'required|:profile_investisseurs',
                 'type' => 'required|:profile_investisseurs',
             ],
 
             [
                 'montant_min.required' => 'Champ obligatoire!',
-                'montant_abonnement.required' => 'Champ obligatoire!',
+                'frais_abonnement.required' => 'Champ obligatoire!',
                 'type.required' => 'Champ obligatoire!',
             ]
         );

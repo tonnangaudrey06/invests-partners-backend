@@ -15,7 +15,7 @@ class ProfilInvestisseur extends Model
         'type',
         'montant_min',
         'montant_max',
-        'montant_abonnement'
+        'frais_abonnement'
     ];
 
     public function getMontantMaxAttribute($value)

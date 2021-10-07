@@ -90,6 +90,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [ProjetController::class, 'index'])->name('home');
         Route::get('/add', [ProjetController::class, 'add'])->name('add');
         Route::get('/edit/{id}', [ProjetController::class, 'edit'])->name('edit');
+        Route::post('/store', [ProjetController::class, 'store'])->name('store');
         Route::post('/update/{id}', [ProjetController::class, 'update'])->name('update');
         Route::get('/publish/{id}', [ProjetController::class, 'publish'])->name('publish');
         Route::get('/{id}', [ProjetController::class, 'show'])->name('details');

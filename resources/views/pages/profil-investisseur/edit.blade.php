@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Montant abonnement</label>
-                                    <input type="number" class="form-control" name="montant_abonnement" value={{$profil->montant_abonnement}}
+                                    <input type="number" class="form-control" name="frais_abonnement" value={{$profil->frais_abonnement}}
                                         >
 
                                         @error('montant_max')

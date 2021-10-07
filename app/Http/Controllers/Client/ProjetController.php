@@ -29,7 +29,116 @@ class ProjetController extends Controller
 
     public function add()
     {
-        return view('pages.projet.add');
+        $secteurs = Secteur::all();
+        return view('pages.projet.add', compact('secteurs'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'intitule' => 'bail|required|:projets',
+            'pays_activite' => 'bail|required|string|:projets',
+            'ville_activite' => 'bail|required|string|:projets',
+            'description' => 'bail|required|:projets',
+            'financement' => 'bail|required|string|:projets',
+            'secteur' => 'bail|required|:projets',
+            'logo' => 'mimes:jpg,jpeg,png',
+            'taux_rentabilite' => 'required|:projets',
+            'duree' => 'required|:projets',
+            'delai_recup' => 'required|:projets',
+            'ca_previsionnel' => 'required|:projets',
+        ],
+    
+        [
+            'taux_rentabilite.required' => 'Champ obligatoire!',
+            'duree.required' => 'Champ obligatoire!',
+            'delai_recup.required' => 'Champ obligatoire!',
+            'ca_previsionnel.required' => 'Champ obligatoire!',
+            'intitule.required' => 'Champ obligatoire!',
+            'pays_activite.required' => 'Champ obligatoire!',
+            'ville_activite.required' => 'Champ obligatoire!',
+            'description.required' => 'Champ obligatoire!',
+            'financement.required' => 'Champ obligatoire!',
+            'secteur.required' => 'Champ obligatoire!',
+        ]
+    );
+
+        $logo = $request->file('logo');
+
+        $data = array();
+        $data['intitule'] = $request->intitule;
+        $data['pays_activite'] = $request->pays_activite;
+        $data['ville_activite'] = $request->ville_activite;
+        $data['description'] = $request->description;
+        $data['secteur'] = $request->secteur;
+        $data['financement'] = $request->financement;
+        $data['taux_rentabilite'] = $request->taux_rentabilite;
+        $data['duree'] = $request->duree;
+        $data['delai_recup'] = $request->delai_recup;
+        $data['ca_previsionnel'] = $request->ca_previsionnel;
+        $data['avancement'] = $request->avancement;
+       
+        $data['user'] = Auth()->user()->id;
+        $data['type'] = 'IP';
+        $data['etat'] = 'PUBLIE';
+
+        $medias = $request->has('medias') ? $request->file('medias') : [];
+
+        // return $this->sendResponse($membres, 'Project');
+
+        // Save project
+        $data['folder'] = hexdec(uniqid());
+
+        if (!empty($logo)) {
+            $filename = 'logo.' . $logo->getClientOriginalExtension();
+            $data['logo'] = url('storage/uploads/projets/' . $data['folder']) . '/' . $filename;
+            $logo->storeAs('uploads/projets/' . $data['folder'] . '/', $filename, ['disk' => 'public']);
+        }
+
+        // return response()->json($data);
+        $projet = Projet::create($data);
+
+        // Save all project medias
+        foreach ($medias as $media) {
+            $extension = $media->getClientOriginalExtension();
+            
+            $data = [
+                'projet' => $projet->id,
+                'nom' => $media->getClientOriginalName()
+            ];
+
+            if (in_array($extension, Archive::getAllowedFiles())) {
+                $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/documents') . '/' . $data['nom'];
+                $data['type'] = 'FICHIER';
+                $media->storeAs('uploads/projets/' . $projet->folder . '/documents/', $data['nom'], ['disk' => 'public']);
+            } else if(in_array($extension, Archive::getAllowedImages())) {
+                $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/images') . '/' . $data['nom'];
+                $data['type'] = 'IMAGE';
+                $media->storeAs('uploads/projets/' . $projet->folder . '/images/', $data['nom'], ['disk' => 'public']);
+            } else {
+                $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/videos') . '/' . $data['nom'];
+                $data['type'] = 'VIDEO';
+                $media->storeAs('uploads/projets/' . $projet->folder . '/videos/', $data['nom'], ['disk' => 'public']);
+            }
+
+            Archive::create($data);
+        }
+
+        
+        // Save actual member
+        if (!empty($photo)) {
+            $filename = hexdec(uniqid()) . '.' . $photo->getClientOriginalExtension();
+            $membre['photo'] = url('storage/uploads/membres/') . '/' . $filename;
+            $photo->storeAs('uploads/membres/', $filename, ['disk' => 'public']);
+        }
+
+
+        // Retrieve projects informations
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('id', $projet->id)->first();
+
+        Toastr::success('Projet ajouté avec succès!', 'Succès');
+
+        return redirect()->route('projet.home');
     }
 
     public function edit($id)
@@ -46,6 +155,7 @@ class ProjetController extends Controller
                 'duree' => 'required|:projets|max:255',
                 'delai_recup' => 'required|:projets|max:255',
                 'ca_previsionnel' => 'required|:projets|max:255',
+                'description' => 'required|:projets|',
             ],
 
             [
@@ -53,6 +163,7 @@ class ProjetController extends Controller
                 'duree.required' => 'Champ obligatoire!',
                 'delai_recup.required' => 'Champ obligatoire!',
                 'ca_previsionnel.required' => 'Champ obligatoire!',
+                'description.required' => 'Champ obligatoire!',
             ]
         );
 
@@ -62,6 +173,7 @@ class ProjetController extends Controller
         $projet->duree = $request->duree;
         $projet->rsi = $request->delai_recup;
         $projet->ca_previsionnel = $request->ca_previsionnel;
+        $projet->description = $request->description;
         $projet->etat = 'COMPLET';
 
         $projet->save();

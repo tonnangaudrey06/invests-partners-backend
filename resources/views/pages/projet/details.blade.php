@@ -88,7 +88,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
                             @endforeach
 
-                            @if($projet->etat == 'VALIDE')
+                            @if($projet->etat == 'VALIDE' || $projet->etat == 'COMPLET' || $projet->etat == 'PUBLIE')
                             <a href="{{ route('projet.edit', $projet->id) }}"
                                 class="btn btn-sm btn-warning me-2">Modifier</a>
                             @else

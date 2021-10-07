@@ -26,6 +26,7 @@ class Projet extends Model
         'secteur',
         'user',
         'etat',
+        'type',
         'avancement',
         'complet',
     ];
