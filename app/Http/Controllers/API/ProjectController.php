@@ -35,14 +35,14 @@ class ProjectController extends Controller
 
         if (!empty($logo)) {
             $filename = 'logo.' . $logo->getClientOriginalExtension();
-            $data['logo'] = url('storage/uploads/'.$user->folder.'/projets/' . $data['folder']) . '/' . $filename;
-            $logo->storeAs('uploads/'.$user->folder.'/projets/' . $data['folder'] . '/', $filename, ['disk' => 'public']);
+            $data['logo'] = url('storage/uploads/' . $user->folder . '/projets/' . $data['folder']) . '/' . $filename;
+            $logo->storeAs('uploads/' . $user->folder . '/projets/' . $data['folder'] . '/', $filename, ['disk' => 'public']);
         }
 
         if (!empty($doc_presentation)) {
             $filename = $doc_presentation->getClientOriginalName();
-            $data['doc_presentation'] = url('storage/uploads/'.$user->folder.'/projets/' . $data['folder'] . '/documents') . '/' . $filename;
-            $doc_presentation->storeAs('uploads/'.$user->folder.'/projets/' . $data['folder'] . '/documents/', $filename, ['disk' => 'public']);
+            $data['doc_presentation'] = url('storage/uploads/' . $user->folder . '/projets/' . $data['folder'] . '/documents') . '/' . $filename;
+            $doc_presentation->storeAs('uploads/' . $user->folder . '/projets/' . $data['folder'] . '/documents/', $filename, ['disk' => 'public']);
         }
 
         $projet = Projet::create($data);
@@ -50,24 +50,24 @@ class ProjectController extends Controller
         // Save all project medias
         foreach ($medias as $media) {
             $extension = $media->getClientOriginalExtension();
-            
+
             $data = [
                 'projet' => $projet->id,
                 'nom' => $media->getClientOriginalName()
             ];
 
             if (in_array($extension, Archive::getAllowedFiles())) {
-                $data['url'] = url('storage/uploads/'.$user->folder.'/projets/' . $projet->folder . '/documents') . '/' . $data['nom'];
+                $data['url'] = url('storage/uploads/' . $user->folder . '/projets/' . $projet->folder . '/documents') . '/' . $data['nom'];
                 $data['type'] = 'FICHIER';
-                $media->storeAs('uploads/'.$user->folder.'/projets/' . $projet->folder . '/documents/', $data['nom'], ['disk' => 'public']);
-            } else if(in_array($extension, Archive::getAllowedImages())) {
-                $data['url'] = url('storage/uploads/'.$user->folder.'/projets/' . $projet->folder . '/images') . '/' . $data['nom'];
+                $media->storeAs('uploads/' . $user->folder . '/projets/' . $projet->folder . '/documents/', $data['nom'], ['disk' => 'public']);
+            } else if (in_array($extension, Archive::getAllowedImages())) {
+                $data['url'] = url('storage/uploads/' . $user->folder . '/projets/' . $projet->folder . '/images') . '/' . $data['nom'];
                 $data['type'] = 'IMAGE';
-                $media->storeAs('uploads/'.$user->folder.'/projets/' . $projet->folder . '/images/', $data['nom'], ['disk' => 'public']);
+                $media->storeAs('uploads/' . $user->folder . '/projets/' . $projet->folder . '/images/', $data['nom'], ['disk' => 'public']);
             } else {
-                $data['url'] = url('storage/uploads/'.$user->folder.'/projets/' . $projet->folder . '/videos') . '/' . $data['nom'];
+                $data['url'] = url('storage/uploads/' . $user->folder . '/projets/' . $projet->folder . '/videos') . '/' . $data['nom'];
                 $data['type'] = 'VIDEO';
-                $media->storeAs('uploads/'.$user->folder.'/projets/' . $projet->folder . '/videos/', $data['nom'], ['disk' => 'public']);
+                $media->storeAs('uploads/' . $user->folder . '/projets/' . $projet->folder . '/videos/', $data['nom'], ['disk' => 'public']);
             }
 
             Archive::create($data);
@@ -84,20 +84,29 @@ class ProjectController extends Controller
 
 
         // Retrieve projects informations
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('id', $projet->id)->first();
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
 
         return $this->sendResponse($projet, 'Project');
     }
 
     public function show($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->find($id);
         return $this->sendResponse($projet, 'Project');
     }
 
     public function projets($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('user', $id)->get();
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('user', $id)->get();
+        return $this->sendResponse($projet, 'Projects');
+    }
+
+    public function projetsTown($id, $town)
+    {
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])
+            ->where('secteur', $id)
+            ->where('ville_activite', 'like', $town)
+            ->get();
         return $this->sendResponse($projet, 'Projects');
     }
 }

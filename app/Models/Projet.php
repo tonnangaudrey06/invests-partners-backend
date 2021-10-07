@@ -87,12 +87,17 @@ class Projet extends Model
 
     public function secteur_data()
     {
-        return $this->belongsTo(Secteur::class, 'secteur', 'id')->with(['conseille']);
+        return $this->belongsTo(Secteur::class, 'secteur', 'id')->with(['conseiller_data']);
     }
 
     public function medias()
     {
         return $this->hasMany(Archive::class, 'projet', 'id');
+    }
+
+    public function investissements()
+    {
+        return $this->hasMany(Investissement::class, 'projet', 'id')->with(['user_data']);
     }
 
     public function user_data()
