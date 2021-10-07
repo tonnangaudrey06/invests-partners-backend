@@ -28,38 +28,29 @@
                     <div class="col-xl-4">
                         <div class="card">
                             <div class="card-body">
-                                <div class="float-end dropdown ms-2">
-                                    <a class="text-muted" href="#" role="button" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="mdi mdi-dots-horizontal font-size-18"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="mb-4 me-3">
+                                
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="mb-4 pt-0 mt-0 col-2">
                                         <i class="mdi mdi-account-circle text-primary h1"></i>
                                     </div>
+                                    <div class="mb-4 mt-2 col-10">
+                                        <h4 class="card-title"><span>INVESTISSEURS</span></h4> 
+                                    </div>
 
-                                    <div>
-                                        <h5>Henry Wells</h5>
-                                        <p class="text-muted mb-1">henrywells@abc.com</p>
-                                        <p class="text-muted mb-0">Id no: #SK0234</p>
+                                    <div class="row">
+                                        <h5>Total: <span class="badge  bg-primary font-size-15">{{ $investisseurs->count() }}</span></h5>
+                                        <h5>Montant investi : <span class="badge bg-primary font-size-15">{{ $investissement }} FCFA </span></h5>
 
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="card-body border-top">
+                            <!--<div class="card-body border-top">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div>
                                             <p class="fw-medium mb-2">Balance :</p>
-                                            <h4>$ 6134.39</h4>
+                                            <h4>{{ $porteurs->count() }}</h4>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -102,12 +93,56 @@
                                     <a href="javascript: void(0);" class="btn btn-outline-light me-2 w-md">Deposit</a>
                                     <a href="javascript: void(0);" class="btn btn-primary me-2 w-md">Buy / Sell</a>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
 
-                    <div class="col-xl-8">
+                    <div class="col-xl-4">
+
                         <div class="card">
+                            <div class="card-body">
+                                
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="mb-4 pt-0 mt-0 col-2">
+                                        <i class="mdi mdi-account-circle text-success h1"></i>
+                                    </div>
+                                    <div class="mb-4 mt-2 col-10">
+                                        <h4 class="card-title"><span>PORTEURS DE PROJETS</span></h4> 
+                                    </div>
+
+                                    <div class="row">
+                                        <h5>Total: <span class="badge  bg-success font-size-15">{{ $porteurs->count() }}</span></h5>
+                                        <h5>Montant levé : <span class="badge bg-success font-size-15">100M XAF</span></h5>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="col-xl-4">
+
+                            <div class="card">
+                                <div class="card-body">
+                                    
+                                    <div class="row align-items-center justify-content-between">
+                                        <div class="mb-4 pt-0 mt-0 col-2">
+                                            <i class="mdi mdi-account-circle text-warning h1"></i>
+                                        </div>
+                                        <div class="mb-4 mt-2 col-10">
+                                            <h4 class="card-title"><span>CONSEILLERS</span></h4> 
+                                        </div>
+    
+                                        <div class="row">
+                                            <h5>Total: <span class="badge  bg-warning font-size-15">{{ $conseiller->count() }}</span></h5>
+                                            <h5>Secteurs couverts : <span class="badge bg-warning font-size-15">1</span></h5>
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="card">
                             <div>
                                 <div class="row">
                                     <div class="col-lg-9 col-sm-8">
@@ -136,86 +171,137 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="text-muted mb-4"><i
-                                                class="mdi mdi-bitcoin h2 text-warning align-middle mb-0 me-3"></i> Bitcoin
-                                        </p>
+                        </div>-->
+                        
+                </div>
+                <div class="row">
+                    <div class="col-xl-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Projets</h4>
 
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div>
-                                                    <h5>$ 9134.39</h5>
-                                                    <p class="text-muted text-truncate mb-0">+ 0.0012 ( 0.2 % ) <i
-                                                            class="mdi mdi-arrow-up ms-1 text-success"></i></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div>
-                                                    <div id="area-sparkline-chart-1" class="apex-charts"></div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="text-center">
+                                    <div class="mb-4">
+                                        <i class="bx bx-map-pin text-info display-4"></i>
                                     </div>
+                                    <h3>{{ $nbProjets->count() }}</h3>
+                                    <p>Nombre de projets enregistrés</p>
                                 </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="text-muted mb-4"><i
-                                                class="mdi mdi-ethereum h2 text-primary align-middle mb-0 me-3"></i>
-                                            Ethereum </p>
 
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div>
-                                                    <h5>$ 245.44</h5>
-                                                    <p class="text-muted text-truncate mb-0">- 4.102 ( 0.1 % ) <i
-                                                            class="mdi mdi-arrow-down ms-1 text-danger"></i></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div>
-                                                    <div id="area-sparkline-chart-2" class="apex-charts"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="text-muted mb-4"><i
-                                                class="mdi mdi-litecoin h2 text-info align-middle mb-0 me-3"></i> litecoin
-                                        </p>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div>
-                                                    <h5>$ 63.61</h5>
-                                                    <p class="text-muted text-truncate mb-0">+ 1.792 ( 0.1 % ) <i
-                                                            class="mdi mdi-arrow-up ms-1 text-success"></i></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div>
-                                                    <div id="area-sparkline-chart-3" class="apex-charts"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
+                                <div class="table-responsive mt-4">
+                                    <table class="table align-middle table-nowrap">
+                                        <tbody>
+                                            @foreach ($secteur as $secteurItem)
+                                            <tr>
+                                                <td style="width: 30%">
+                                                    <p class="mb-0">{{ $secteurItem->libelle }}</p>
+                                                </td>
+                                                @php
+                                                    $nbProjet1=DB::table('projets')->where('secteur',$secteurItem->id)->get()->count();
+                                                @endphp
+                                                <td style="width: 25%">
+                                                    <h5 class="mb-0">{{$nbProjet1}} </h5></td>
+                                                <td>
+                                                    
+                                                    @if((int)($nbProjets->count()) > 0 )
+                                                    <div class="progress bg-transparent progress-sm">
+                                                        <div class="progress-bar bg-info rounded" role="progressbar" style="width: {{ ($nbProjet1/$nbProjets->count())*100 }}%" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
 
+                <!--<div class="row">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="text-muted mb-4">
+                                        <i class="mdi mdi-medal h2 text-warning align-middle mb-0 me-3"></i> 
+                                    </p>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div>
+                                                <h5>{{ $nbProjets->count() }}</h5>
+                                                <p class="text-muted text-truncate mb-0">+ 0.0012 ( 0.2 % ) <i
+                                                        class="mdi mdi-arrow-up ms-1 text-success"></i></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div>
+                                                <div id="area-sparkline-chart-1" class="apex-charts"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="text-muted mb-4"><i
+                                            class="mdi mdi-ethereum h2 text-primary align-middle mb-0 me-3"></i>
+                                        Ethereum </p>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div>
+                                                <h5>$ 245.44</h5>
+                                                <p class="text-muted text-truncate mb-0">- 4.102 ( 0.1 % ) <i
+                                                        class="mdi mdi-arrow-down ms-1 text-danger"></i></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div>
+                                                <div id="area-sparkline-chart-2" class="apex-charts"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="text-muted mb-4"><i
+                                            class="mdi mdi-litecoin h2 text-info align-middle mb-0 me-3"></i> litecoin
+                                    </p>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div>
+                                                <h5>$ 63.61</h5>
+                                                <p class="text-muted text-truncate mb-0">+ 1.792 ( 0.1 % ) <i
+                                                        class="mdi mdi-arrow-up ms-1 text-success"></i></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div>
+                                                <div id="area-sparkline-chart-3" class="apex-charts"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>-->
+
+
+                </div>
+                <!--
                 <div class="row">
                     <div class="col-xl-8">
                         <div class="card">
@@ -322,9 +408,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
-                <div class="row">
+               <!-- <div class="row">
                     <div class="col-xl-4">
                         <div class="card">
                             <div class="card-body">
@@ -1158,7 +1244,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
             </div>
         </div>
