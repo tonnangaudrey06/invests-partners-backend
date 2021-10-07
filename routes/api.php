@@ -61,6 +61,7 @@ Route::middleware('auth:api')->group(function () {
             Route::post('/document/fiscal', [UserController::class, 'uploadDocumentFiscal']);
         });
         Route::get('/{id}/membres', [MembreController::class, 'index']);
+        Route::get('/{id}/projets', [ProjectController::class, 'projets']);
     });
 
     Route::prefix('profil-investisseur')->group(function () {

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Projet extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'intitule',
         'folder',
@@ -26,16 +26,68 @@ class Projet extends Model
         'complet',
     ];
 
+    protected $appends =  [
+        'etat_complet',
+        'avancement_complet'
+    ];
+
+    public function getEtatCompletAttribute()
+    {
+        switch ($this->etat) {
+            case 'ATTENTE':
+                return 'En attente';
+                break;
+            case 'VALIDE':
+                return 'Validé';
+                break;
+            case 'COMPLET':
+                return 'Étude terminé';
+                break;
+            case 'ATTENTE_VALIDATION_ADMIN':
+                return 'En attente de validation administrative';
+                break;
+            case 'ATTENTE_PAIEMENT':
+                return 'En attente de paiement';
+                break;
+            case 'REJETE':
+                return 'Rejeté';
+                break;
+            case 'CLOTURE':
+                return 'Financement colecté';
+                break;
+            default:
+                return 'Publié';
+                break;
+        }
+    }
+
+    public function getAvancementCompletAttribute()
+    {
+        switch ($this->avancement) {
+            case 'IDEE':
+                return 'Juste l\'idée';
+                break;
+            case 'PROTOTYPE':
+                return 'Prototype';
+                break;
+            default:
+                return 'Sur le marché';
+                break;
+        }
+    }
+
     public function membres()
     {
         return $this->belongsToMany(Membre::class, 'equipes', 'projet', 'membre')->withPivot('statut');
     }
 
-    public function secteur_data(){
-        return $this->belongsTo(Secteur::class, 'secteur', 'id');
+    public function secteur_data()
+    {
+        return $this->belongsTo(Secteur::class, 'secteur', 'id')->with(['conseille']);
     }
 
-    public function medias(){
+    public function medias()
+    {
         return $this->hasMany(Archive::class, 'projet', 'id');
     }
 
@@ -44,4 +96,3 @@ class Projet extends Model
         return $this->belongsTo(User::class, 'user', 'id');
     }
 }
-
