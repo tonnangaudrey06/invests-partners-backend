@@ -39,7 +39,7 @@
 
                 @if( $privilege->module == 6 && $privilege->consulter == 1)
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{route('investissement.home')}}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-investment">Investissements</span>
                     </a>
@@ -80,7 +80,7 @@
                         @foreach ($privileges as $privilege)
 
                         @if( $privilege->module == 3 && $privilege->consulter == 1)
-                        <li><a href="{{ route('user.administrateur') }}" key="t-admin">Administrateurs</a></li>
+                        <li><a href="{{ route('user.sous_administrateur') }}" key="t-admin">Sous-administrateurs</a></li>
                         @endif
                         @endforeach
 

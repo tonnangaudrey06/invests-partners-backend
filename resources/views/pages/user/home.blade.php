@@ -57,11 +57,11 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 5%"></th>
-                                            <th style="width: 30%">Utilisateur</th>
-                                            <th>Email</th>
-                                            <th style="width: 20%">Téléphone</th>
-                                            @if ($role->value == 3)
-                                                <th style="width: 20%">Statut</th>
+                                            <th style="width: 20%">Utilisateur</th>
+                                            <th style="width: 10%">Email</th>
+                                            <th style="width: 10%">Téléphone</th>
+                                            @if ($role->value == 3 || $role->value == 4)
+                                                <th style="width: 10%">Statut</th>
                                             @endif
                                             <th class="text-center" style="width: 10%">Actions</th>
                                         </tr>

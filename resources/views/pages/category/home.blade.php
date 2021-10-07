@@ -4,6 +4,7 @@
 
 @section('style')
 {{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
+<meta name="_token" content="{{csrf_token()}}" />
 
 <!-- Datatable -->
 <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
@@ -56,8 +57,9 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                     @foreach ($privileges as $privilege)
 
                                     @if( $privilege->module == 11 && $privilege->ajouter == 1)
-                                    <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
-                                        data-bs-target="#categorieModal">Ajouter</button>
+                                    {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
+                                        data-bs-target="#categorieModal">Ajouter</button> --}}
+                                        <a href="{{route('category.add')}}" class="btn btn-sm btn-primary me-2" >Ajouter</a>
                                     @endif
                                     @endforeach
 
@@ -72,6 +74,7 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                         <th style="width: 5%"></th>
                                         <th>Secteur d'activité</th>
                                         <th style="width: 30%">Expert</th>
+                                        <th style="width: 30%">Image</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -96,16 +99,19 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                         <td>
                                             <strong>{{ $categorie->libelle }}</strong>
                                         </td>
-                                        <td>{{ $categorie->user_data->nom_complet ?? 'Aucun' }}</td>
+                                        <td>{{ $categorie->conseiller_data->nom_complet ?? 'Aucun' }}</td>
+                                        <td><img src="{{asset($categorie->photo)}}" style="height:50px; width: 50px;"></td>
                                         <td class="text-center">
-                                            <button id="categorie-edit-button" type="button"
+                                            {{-- <button id="categorie-edit-button" type="button"
                                                 data-id="{{$categorie->id}}" class=" btn btn-secondary btn-sm"
                                                 data-bs-toggle="modal" data-bs-target="#categorieModalEdit">
                                                 <i class="bx bx-edit"></i>
                                             </button>
                                             <button type="button" class="btn btn-danger btn-sm">
                                                 <i class="bx bx-trash"></i>
-                                            </button>
+                                            </button> --}}
+                                            <a href="{{route('category.edit', $categorie->id)}}" class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
+                                            <a href="{{route('category.delete', $categorie->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-xs btn-danger pull-right"><i class="bx bx-trash"></i></i></a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -191,6 +197,10 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group col-md-12 mb-3">
+                            <label>Image</label>
+                            <input type="file" name="photo" class="form-control">
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -225,6 +235,12 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                 <option value="{{ $user->id }}">{{ $user->nom_complet }} </option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="form-group col-md-12 mb-3">
+                            <label>Image</label>
+
+                            <input type="file" name="photo" class="form-control">
+
                         </div>
                     </div>
                 </div>
@@ -284,14 +300,7 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                      
                   });
 
-                //   $(document).querySelector('#categorieFormEdit-form').addEventListener('submit', (e) => {
-                //     e.preventDefault();
-                //     var formData = new FormData(e.target);
-                //     fetch("{{ route('category/update' $personId) }}", { 
-                //         method: 'POST',
-                //         body: formData
-                //     }).then(() => console.log('success'));
-                //     });
+             
 
                   
               } else {
@@ -303,16 +312,6 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
   	});
 </script>
 
-<script type="text/javascript">
-    document.querySelector('#categorieFormEdit-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  var formData = new FormData(e.target);
-  var personId = button.data("id"); 
-  fetch("{{ route('category/update', $personId) }}", { 
-    method: 'POST',
-    body: formData
-  }).then(() => console.log('success'));
-});
-</script>
+
 
 @endsection

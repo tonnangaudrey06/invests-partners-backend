@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AdminInfoSupp;
 use App\Models\Projet;
 use Illuminate\Support\Facades\Mail;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Mail\CIValidation;
 use App\Mail\AdminValidation;
+use App\Mail\CIInfoSupp;
 use App\Models\Archive;
 use App\Models\Secteur;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image as Image;
 
@@ -59,6 +62,7 @@ class ProjetController extends Controller
         $projet->duree = $request->duree;
         $projet->rsi = $request->delai_recup;
         $projet->ca_previsionnel = $request->ca_previsionnel;
+        $projet->etat = 'COMPLET';
 
         $projet->save();
 
@@ -105,8 +109,29 @@ class ProjetController extends Controller
 
     public function show($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id)->first();
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        
         return view('pages.projet.details', compact('projet'));
+    }
+
+    public function typemessage($id)
+    {
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        
+        return view('pages.projet.askinfo', compact('projet'));
+    }
+
+    public function publish($id)
+    {
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+
+        $projet->update([
+            'etat' => 'PUBLIE',
+        ]);
+
+        Toastr::success('Projet publié avec succès!', 'Succès');
+        
+        return back();
     }
 
     public function AdminValidate($id)
@@ -117,13 +142,58 @@ class ProjetController extends Controller
         Mail::to($projet->user_data->email)
             ->queue(new AdminValidation($projet->toArray()));
 
-        Toastr::success('Mail avec succès!', 'Succès');
+        Toastr::success('Mail envoyé avec succès!', 'Projet epprouvé');
 
         $projet->update([
             'etat' => 'ATTENTE_PAIEMENT',
         ]);
 
         return back();
+    }
+
+
+    public function AdminInfoSupp(Request $request, $id)
+    {
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $conseiller = User::where('id', $projet->secteur_data->id)->first();
+        //  return response()->json($conseiller);
+
+        $data = array();
+        $data['objet'] = $request->objet;
+        $data['message'] = $request->message;
+
+        Mail::to($conseiller->email)
+            ->queue(new AdminInfoSupp($projet->toArray(), $data));
+
+        Toastr::success('Mail envoyé avec succès!', 'Succès');
+
+        $projet->update([
+            'etat' => 'ATTENTE_INFO_SUPPL',
+        ]);
+
+        return redirect()->route('projet.details', $projet->id);
+    }
+
+    public function CIInfoSupp(Request $request, $id)
+    {
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+
+        $data = array();
+        $data['objet'] = $request->objet;
+        $data['message'] = $request->message;
+        
+        // return response()->json($projet);
+
+        Mail::to($projet->user_data->email)
+            ->queue(new CIInfoSupp($projet->toArray(), $data));
+
+        Toastr::success('Mail envoyé avec succès!', 'Succès');
+
+        $projet->update([
+            'etat' => 'ATTENTE_INFO_SUPPL',
+        ]);
+
+        return redirect()->route('projet.details', $projet->id);
     }
 
     public function CIValidate($id)
@@ -134,7 +204,7 @@ class ProjetController extends Controller
         Mail::to('admin@test.com')
             ->queue(new CIValidation($projet->toArray()));
 
-        Toastr::success('Mail avec succès!', 'Succès');
+        Toastr::success('Mail envoyé avec succès!', 'Projet approuvé');
 
         $projet->update([
             'etat' => 'ATTENTE_VALIDATION_ADMIN',

@@ -47,8 +47,9 @@
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des profils disponible pour un investisseurs</h4>
                                     <div class="actions d-flex align-items-center">
-                                        <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
-                                            data-bs-target="#profilInvestisseurModal">Nouveau profil</button>
+                                        {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
+                                            data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
+                                            <a href="{{route('profil.investisseur.add')}}" class="btn btn-sm btn-primary me-2" >Nouveau profil</a>
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -59,6 +60,7 @@
                                             <th>Type</th>
                                             <th>Montant minimal</th>
                                             <th>Montant maximal</th>
+                                            <th>Montant abonnement</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -71,7 +73,12 @@
                                                 </td>
                                                 <td>{{ $profil->montant_min }}</td>
                                                 <td>{{ $profil->montant_max }}</td>
-                                                <td></td>
+                                                <td>{{ $profil->montant_abonnement }}</td>
+                                                <td>
+                                                    <a href="{{route('profil.investisseur.edit', $profil->id)}}" class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
+                                                    <a href="{{route('profil.investisseur.delete', $profil->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-xs btn-danger pull-right"><i class="bx bx-trash"></i></i></a>
+        
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -117,6 +124,10 @@
                             <div class="form-group col-md-12 mb-3">
                                 <label>Montant maximal</label>
                                 <input type="number" class="form-control" name="montant_max" min="1" placeholder="0 XAF">
+                            </div>
+                            <div class="form-group col-md-12 mb-3">
+                                <label>Montant abonnement</label>
+                                <input type="number" class="form-control" name="montant_abonnement" min="1" placeholder="0 XAF">
                             </div>
                         </div>
                     </div>

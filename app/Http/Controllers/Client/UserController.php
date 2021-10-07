@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function administrateur()
+    public function sous_administrateur()
     {
-        $users = User::where('role', 1)->with(['role_data'])->get();
+        $users = User::where('role', 5)->with(['role_data'])->get();
         $role = (object) [
-            'name' => 'administrateur',
-            'value' => 1
+            'name' => 'sous-administrateur',
+            'value' => 5
         ];
-        return view('pages.user.home')->with('users', $users)->with('role', $role)->with('title', 'Administrateurs');
+        return view('pages.user.home')->with('users', $users)->with('role', $role)->with('title', 'Sous-administrateurs');
     }
 
     public function conseille()

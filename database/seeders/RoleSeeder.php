@@ -16,6 +16,8 @@ class RoleSeeder extends Seeder
     {
         Role::create(['libelle' => 'Administrateur']);
         Role::create(['libelle' => 'Conseiller en investissement']);
+        Role::create(['libelle' => 'Porteur de projets']);
+        Role::create(['libelle' => 'Investisseur']);
         Role::create(['libelle' => 'Sous-administrateur']);
     }
 }

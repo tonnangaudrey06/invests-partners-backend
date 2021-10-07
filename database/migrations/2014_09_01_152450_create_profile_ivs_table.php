@@ -16,6 +16,7 @@ class CreateProfileIvsTable extends Migration
         Schema::create('profile_investisseurs', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['IGOLIDE', 'SANJASAWA', 'SAMAKAKA', 'ERE'])->default('IGOLIDE');
+            $table->string('frais_abonnement');
             $table->unsignedBigInteger('montant_min');
             $table->unsignedBigInteger('montant_max')->nullable();
             $table->timestamps();

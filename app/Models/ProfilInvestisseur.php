@@ -14,7 +14,8 @@ class ProfilInvestisseur extends Model
     protected $fillable = [
         'type',
         'montant_min',
-        'montant_max'
+        'montant_max',
+        'montant_abonnement'
     ];
 
     public function getMontantMaxAttribute($value)
@@ -26,6 +27,11 @@ class ProfilInvestisseur extends Model
     }
 
     public function getMontantMinAttribute($value)
+    {
+        return $value . ' XAF';
+    }
+
+    public function getMontantAbonnement($value)
     {
         return $value . ' XAF';
     }
