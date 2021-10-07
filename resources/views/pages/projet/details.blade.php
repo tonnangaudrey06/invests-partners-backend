@@ -57,9 +57,11 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
                             @if (Auth()->user()->role == 1)
 
-                            @if ($projet->etat == 'ATTENTE_VALIDATION_ADMIN')
+                            @if ($projet->etat == 'ATTENTE_VALIDATION_ADMIN' || $projet->etat == 'ATTENTE_INFO_SUPPL')
                             <a href="{{ route('projet.admin.validate', $projet->id) }}"
                                 class="btn btn-sm btn-success me-2">Approuver</a>
+                            <a href="{{ route('projet.askinfosupp', $projet->id) }}"
+                                class="btn btn-sm btn-info me-2">Demander info supp</a>
                             <a href="{{ route('projet.add') }}" class="btn btn-sm btn-dark me-2">Rejeter</a>
                             @else
                             <a href="{{ route('projet.admin.validate', $projet->id) }}"
@@ -68,12 +70,16 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             @endif
 
                             @else
-                            @if ($projet->etat == 'ATTENTE')
+                            @if ($projet->etat == 'ATTENTE' || $projet->etat == 'ATTENTE_INFO_SUPPL')
                             <a href="{{ route('projet.civalidate', $projet->id) }}"
                                 class="btn btn-sm btn-success me-2">Approuver</a>
+                            <a href="{{ route('projet.askinfosupp', $projet->id) }}"
+                                class="btn btn-sm btn-info me-2">Demander info supp</a>
+                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-dark me-2">Rejeter</a>
                             @else
-                            <a href="{{ route('projet.civalidate', $projet->id) }}"
-                                class="btn btn-sm btn-success disabled me-2">Approuver</a>
+                            <a href="" class="btn btn-sm btn-success disabled me-2">Approuver</a>
+                            <a href="" class="btn btn-sm btn-info disabled me-2">Demander info supp</a>
+                            <a href="" class="btn btn-sm btn-dark disabled me-2">Rejeter</a>
                             @endif
 
                             @endif
@@ -83,9 +89,10 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             @endforeach
 
                             @if($projet->etat == 'VALIDE')
-                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-warning me-2">Modifier</a>
+                            <a href="{{ route('projet.edit', $projet->id) }}"
+                                class="btn btn-sm btn-warning me-2">Modifier</a>
                             @else
-                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-warning disabled me-2">Modifier</a>
+                            <a class="btn btn-sm btn-warning disabled me-2">Modifier</a>
                             @endif
 
                             <a href="{{ route('projet.add') }}" class="btn btn-sm btn-info me-2">Actualités</a>
@@ -99,11 +106,11 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
                             @if (Auth()->user()->role == 1 )
                             @if($projet->etat == 'COMPLET')
-                                <a href="{{ route('projet.add') }}" class="btn btn-sm btn-primary me-2">Publier</a>
-                                @else
-                                <a href="{{ route('projet.add') }}" class="btn btn-sm btn-primary disabled me-2">Publier</a>
-                             @endif
-                                
+                            <a href="{{ route('projet.publish', $projet->id) }}" class="btn btn-sm btn-primary me-2">Publier</a>
+                            @else
+                            <a href="" class="btn btn-sm btn-primary disabled me-2">Publier</a>
+                            @endif
+
                             @endif
 
                             {{-- <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button> --}}
@@ -135,8 +142,12 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                         </div>
 
                                         <div class="flex-grow-1 overflow-hidden">
-                                            <h5 class="text-truncate font-size-18">{{ $projet->intitule }}</h5>
-                                            <p class=" text-primary font-size-15">{{ $projet->financement }} XAF</p>
+                                            <strong>
+                                                <h4 class="text-truncate font-size-18">{{ $projet->intitule }}</h4>
+                                            </strong>
+                                            <strong>
+                                                <p class=" text-primary font-size-15">{{ $projet->financement }} XAF</p>
+                                            </strong>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -167,20 +178,31 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                                 </div>
                                             </div> --}}
                                     </div>
-                                    {{-- <div class="text-muted mt-4">
-                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> To achieve this, it would be
-                                                necessary</p>
-                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Separate existence is a myth.
+                                    @if($projet->duree)
+                                    <div class="text-muted mt-4 ">
+                                        <strong>
+                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> TAUX DE
+                                                RENTABILITE : <span class="text-primary">{{$projet->taux_rentabilite}}
+                                                    %</span> </p>
+                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> RESTOUR SUR
+                                                INVESTISSEMENT: <span class="text-primary">{{$projet->delai_recup}}
+                                                    mois</span>
                                             </p>
-                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> If several languages coalesce
-                                            </p>
-                                        </div> --}}
+                                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> CA PREVISIONNEL:
+                                                <span class="text-primary">{{$projet->ca_previsionnel}} XAF</span>
+                                                <p><i class="mdi mdi-chevron-right text-primary me-1"></i> DUREE DU
+                                                    PROJET: <span class="text-primary">{{$projet->duree}} mois</span>
+                                                </p>
+                                        </strong>
+
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
 
 
-                        <div class="col-lg-12">
+                        {{-- <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title mb-4">Commentaires</h4>
@@ -264,7 +286,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="col-lg-12">
                             <div class="card">
@@ -330,60 +352,154 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                         <div class="card-body">
                             <h4 class="card-title mb-4">Fichiers joints</h4>
                             <div class="table-responsive">
-                                <table class="table table-nowrap align-middle table-hover mb-0">
-                                    <tbody>
 
-                                        <tr>
-                                            <td style="width: 45px;">
-                                                <div class="avatar-sm">
-                                                    <span
-                                                        class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
-                                                        <i class="bx bxs-file-doc"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <h5 class="font-size-14 mb-1"><a target="_blank"
-                                                        href="{{ asset($projet->doc_presentation) }}"
-                                                        class="text-dark">Document de présentation</a></h5>
-                                                <small>Important</small>
-                                            </td>
-                                            <td>
-                                                <div class="text-center">
-                                                    <a href="{{ asset($projet->doc_presentation) }}" class="text-dark"
-                                                        download><i class="bx bx-download h3 m-0"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                <div class="accordion" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button fw-medium collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                aria-expanded="false" aria-controls="collapseOne">
+                                                Fichiers #1
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse"
+                                            aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
+                                            <div class="accordion-body">
+                                                @foreach ($projet->medias as $row)
+                                                @if ($row->type == 'FICHIER')
+                                                <table class="table table-nowrap align-middle table-hover mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="width: 10%;">
+                                                                <div class="avatar-sm">
+                                                                    <span
+                                                                        class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
+                                                                        <i class="bx bxs-file-doc"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td style="width: 80%;">
+                                                                <h5 class="font-size-14 mb-1"><a target="_blank"
+                                                                        href="{{ asset($row->url) }}"
+                                                                        class="text-dark">{{ $row->nom }}</a></h5>
+                                                                {{-- <small>{{ $row->type }}</small> --}}
+                                                            </td>
+                                                            <td style="width: 10%;">
+                                                                <div class="text-center">
+                                                                    <a download href="{{ asset($row->url) }}"
+                                                                        class="text-dark"><i
+                                                                            class="bx bx-download h3 m-0"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
 
-                                        @foreach ($projet->medias as $row)
-                                        <tr>
-                                            <td style="width: 45px;">
-                                                <div class="avatar-sm">
-                                                    <span
-                                                        class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
-                                                        <i class="bx bxs-file-doc"></i>
-                                                    </span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <h5 class="font-size-14 mb-1"><a target="_blank"
-                                                        href="{{ asset($row->url) }}"
-                                                        class="text-dark">{{ $row->nom }}</a></h5>
-                                                <small>{{ $row->type }}</small>
-                                            </td>
-                                            <td>
-                                                <div class="text-center">
-                                                    <a download href="{{ asset($row->url) }}" class="text-dark"><i
-                                                            class="bx bx-download h3 m-0"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                @endif
 
 
-                                    </tbody>
-                                </table>
+
+
+
+                                                @endforeach
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button fw-medium collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                aria-expanded="false" aria-controls="collapseTwo">
+                                                Images #2
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse"
+                                            aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                @foreach ($projet->medias as $row)
+                                                @if ($row->type == 'IMAGE')
+                                                <table class="table table-nowrap align-middle table-hover mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="width: 10%;">
+                                                                <div class="avatar-sm">
+                                                                    <span
+                                                                        class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
+                                                                        <i class="mdi mdi-image"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td style="width: 80%;">
+                                                                <h5 class="font-size-14 mb-1"><a target="_blank"
+                                                                        href="{{ asset($row->url) }}"
+                                                                        class="text-dark">{{ $row->nom }}</a></h5>
+                                                                {{-- <small>{{ $row->type }}</small> --}}
+                                                            </td>
+                                                            <td style="width: 10%;">
+                                                                <div class="text-center">
+                                                                    <a download href="{{ asset($row->url) }}"
+                                                                        class="text-dark"><i
+                                                                            class="bx bx-download h3 m-0"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                                @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button fw-medium collapsed" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                                aria-expanded="false" aria-controls="collapseThree">
+                                                Vidéos #3
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse"
+                                            aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                @foreach ($projet->medias as $row)
+                                                @if ($row->type == 'VIDEO')
+                                                <table class="table table-nowrap align-middle table-hover mb-0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="width: 10%;">
+                                                                <div class="avatar-sm">
+                                                                    <span
+                                                                        class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
+                                                                        <i class="mdi mdi-play-circle-outline"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td style="width: 80%;">
+                                                                <h5 class="font-size-14 mb-1"><a target="_blank"
+                                                                        href="{{ asset($row->url) }}"
+                                                                        class="text-dark">{{ $row->nom }}</a></h5>
+                                                                {{-- <small>{{ $row->type }}</small> --}}
+                                                            </td>
+                                                            <td style="width: 10%;">
+                                                                <div class="text-center">
+                                                                    <a download href="{{ asset($row->url) }}"
+                                                                        class="text-dark"><i
+                                                                            class="bx bx-download h3 m-0"></i></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                                @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>

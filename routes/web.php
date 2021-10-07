@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\AuthController;
+use App\Http\Controllers\Client\InvestissementController;
 use App\Http\Controllers\Client\SecteurController;
 use App\Http\Controllers\Client\MessageController;
 use App\Http\Controllers\Client\ProfilInvestisseurController;
@@ -49,7 +50,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', function () {
             return redirect()->route('user.administrateur');
         })->name('home');
-        Route::get('/administrateur', [UserController::class, 'administrateur'])->name('administrateur');
+        Route::get('/sous_administrateur', [UserController::class, 'sous_administrateur'])->name('sous_administrateur');
         Route::get('/conseille', [UserController::class, 'conseille'])->name('conseille');
         Route::get('/porteur-projet', [UserController::class, 'porteurProjet'])->name('porteur.projet');
         Route::get('/investisseur', [UserController::class, 'investisseur'])->name('investisseur');
@@ -60,22 +61,42 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('profil-investisseur')->name('profil.investisseur.')->group(function () {
         Route::get('/', [ProfilInvestisseurController::class, 'index'])->name('home');
-        Route::post('/', [ProfilInvestisseurController::class, 'store'])->name('add');
-        Route::post('/{id?}', [ProfilInvestisseurController::class, 'store'])->name('update');
+        Route::get('/add', [ProfilInvestisseurController::class, 'add'])->name('add');
+        Route::post('/store', [ProfilInvestisseurController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [ProfilInvestisseurController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [ProfilInvestisseurController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [ProfilInvestisseurController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('investissement')->name('investissement.')->group(function () {
+        Route::get('/', [InvestissementController::class, 'index'])->name('home');
+        Route::get('/add', [InvestissementController::class, 'add'])->name('add');
+        Route::post('/store', [InvestissementController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [InvestissementController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [InvestissementController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [InvestissementController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('category')->name('category.')->group(function () {
         Route::get('/', [SecteurController::class, 'index'])->name('home');
-        Route::post('/', [SecteurController::class, 'store'])->name('add');
-        // Route::post('/', [SecteurController::class, 'edit'])->name('edit');
-        Route::post('/{id?}', [SecteurController::class, 'update'])->name('update');
+        Route::get('/add', [SecteurController::class, 'add'])->name('add');
+        Route::get('/edit/{id}', [SecteurController::class, 'edit'])->name('edit');
+        Route::post('/store', [SecteurController::class, 'store'])->name('store');
+        Route::post('/update/{id}', [SecteurController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [SecteurController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('projet')->name('projet.')->group(function () {
         Route::get('/', [ProjetController::class, 'index'])->name('home');
         Route::get('/add', [ProjetController::class, 'add'])->name('add');
+        Route::get('/edit/{id}', [ProjetController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [ProjetController::class, 'update'])->name('update');
+        Route::get('/publish/{id}', [ProjetController::class, 'publish'])->name('publish');
         Route::get('/{id}', [ProjetController::class, 'show'])->name('details');
+        Route::get('/ask/infosupp/{id}', [ProjetController::class, 'typemessage'])->name('askinfosupp');
         Route::get('/admin/validate/{id}', [ProjetController::class, 'AdminValidate'])->name('admin.validate');
+        Route::post('/admin/infosupp/{id}', [ProjetController::class, 'AdminInfoSupp'])->name('admin.infosupp');
+        Route::post('/infosupp/{id}', [ProjetController::class, 'CIInfoSupp'])->name('ci.infosupp');
         Route::get('/validate/{id}', [ProjetController::class, 'CIValidate'])->name('civalidate');
     });
     

@@ -17,7 +17,7 @@ class CreateArchivesTable extends Migration
             $table->id();
             $table->string('nom');
             $table->enum('type', ['FICHIER', 'IMAGE', 'VIDEO'])->default('FICHIER');
-            $table->enum('source', ['PP', 'ADMIN'])->default('PP');
+            $table->enum('source', ['PP', 'CONSEILLER', 'ADMIN'])->default('PP');
             $table->string('url');
             $table->unsignedBigInteger('projet')->nullable();
             $table->unsignedBigInteger('actualite')->nullable();

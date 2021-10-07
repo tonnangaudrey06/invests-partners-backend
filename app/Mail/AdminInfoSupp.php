@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class CIValidation extends Mailable
+class AdminInfoSupp extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -15,14 +15,13 @@ class CIValidation extends Mailable
      * Create a new message instance.
      *
      * @return void
-     * 
      */
+    public $projet, $data;
 
-    public $projet;
-
-    public function __construct(Array $projet)
+    public function __construct(Array $projet, Array $data)
     {
         $this->projet = $projet;
+        $this->data = $data;
     }
 
     /**
@@ -32,7 +31,7 @@ class CIValidation extends Mailable
      */
     public function build()
     {
-        return $this->from('conseiller@investandpartners.com')->view('emails.civalidation')
-                    ->subject("Approbation Projet {$this->projet['intitule']}");
+        return $this->from(Auth()->user()->email)->view('emails.infosupp')
+                    ->subject($this->data['objet']);
     }
 }

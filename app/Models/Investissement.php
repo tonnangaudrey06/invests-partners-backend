@@ -5,21 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Secteur extends Model
+class Investissement extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'libelle',
-        'slug',
         'user',
-        'photo',
+        'projet',
+        'date_versement',
+        'montant',
     ];
 
-    public function conseiller_data()
+
+    public function projet_data(){
+        return $this->belongsTo(Projet::class, 'projet', 'id');
+    }
+
+
+    public function user_data()
     {
         return $this->belongsTo(User::class, 'user', 'id');
     }
-
-    
 }
