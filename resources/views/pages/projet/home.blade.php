@@ -71,7 +71,7 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                 @if (Auth()->user()->role == 1)
                 @foreach ($projets as $projet)
                 <div class="col-xl-4 col-sm-6">
-                    <div class="card " style="border-radius: 0.75rem; box-shadow: 4px 3px 5px #585b60;">
+                    <div class="card " style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%)">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-4">
@@ -100,7 +100,7 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                         <p class="text-primary">{{ $projet->financement }} XAF</p>
                                     </div>
 
-                                    <div class="avatar-group">
+                                    {{-- <div class="avatar-group">
                                         @foreach ($projet->membres as $item)
                                         <div class="avatar-group-item">
                                             <a href="javascript: void(0);" class="d-inline-block">
@@ -111,7 +111,7 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                         @endforeach
 
 
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -173,7 +173,7 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                         <p class="text-primary">{{ $boss->financement }} XAF</p>
                                     </div>
 
-                                    <div class="avatar-group">
+                                    {{-- <div class="avatar-group">
                                         @foreach ($boss->membres as $item)
                                         <div class="avatar-group-item">
                                             <a href="javascript: void(0);" class="d-inline-block">
@@ -184,7 +184,7 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                         @endforeach
 
 
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
