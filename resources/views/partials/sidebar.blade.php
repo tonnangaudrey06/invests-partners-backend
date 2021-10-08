@@ -25,12 +25,24 @@
                 @foreach ($privileges as $privilege)
 
                 @if( $privilege->module == 1 && $privilege->consulter == 1)
-                <li>
+
+                <li class="mm-active">
+                    <a href="javascript: void(0);" class="has-arrow waves-effect" aria-expanded="true">
+                        <i class="bx bx-briefcase-alt-2"></i>
+                        <span key="t-projects">Projects</span>
+                    </a>
+                    <ul class="sub-menu mm-collapse mm-show" aria-expanded="false" style="">
+                        <li><a href="{{ route('projet.home') }}" key="t-p-grid">Plateforme</a></li>
+                        <li><a href="{{ route('projet.home_ip') }}" key="t-p-list">I&P</a></li>
+                    </ul>
+                </li>
+
+                {{-- <li>
                     <a href="{{ route('projet.home') }}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-projet">Projets</span>
                     </a>
-                </li>
+                </li> --}}
 
                 @endif
                 @endforeach

@@ -20,7 +20,16 @@ class ProjetController extends Controller
 {
     public function index()
     {
-        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->get();
+        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'AUTRE')->get();
+        // $sect = Secteur::where('user', Auth()->user()->role)->get();
+        // $pro = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('user', Auth()->user()->id)->get();
+        // return response()->json($projets);
+        return view('pages.projet.home', compact('projets'));
+    }
+
+    public function index_ip()
+    {
+        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'IP')->get();
         // $sect = Secteur::where('user', Auth()->user()->role)->get();
         // $pro = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('user', Auth()->user()->id)->get();
         // return response()->json($projets);

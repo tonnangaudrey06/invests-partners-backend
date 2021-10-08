@@ -38,8 +38,8 @@
                                     </div>
 
                                     <div class="row">
-                                        <h5>Total: <span class="badge  bg-primary font-size-15">{{ $investisseurs->count() }}</span></h5>
-                                        <h5>Montant investi : <span class="badge bg-primary font-size-15">{{ $investissement }} FCFA </span></h5>
+                                        <h5 class="font-size-15">Total: <span class="badge  bg-primary font-size-14">{{ $investisseurs->count() }}</span></h5>
+                                        <h5 class="font-size-15">Montant investi : <span class="badge bg-primary font-size-14">{{ $investissement }} FCFA </span></h5>
 
                                     </div>
                                 </div>
@@ -111,8 +111,8 @@
                                     </div>
 
                                     <div class="row">
-                                        <h5>Total: <span class="badge  bg-success font-size-15">{{ $porteurs->count() }}</span></h5>
-                                        <h5>Montant levé : <span class="badge bg-success font-size-15">100M XAF</span></h5>
+                                        <h5 class="font-size-15">Total: <span class="badge  bg-success font-size-14">{{ $porteurs->count() }}</span></h5>
+                                        <h5 class="font-size-15">Besoin en financement : <span class="badge bg-success font-size-14">{{ $besoinFinancement }} FCFA</span></h5>
 
                                     </div>
                                 </div>
@@ -134,8 +134,8 @@
                                         </div>
     
                                         <div class="row">
-                                            <h5>Total: <span class="badge  bg-warning font-size-15">{{ $conseiller->count() }}</span></h5>
-                                            <h5>Secteurs couverts : <span class="badge bg-warning font-size-15">1</span></h5>
+                                            <h5 class="font-size-15">Total: <span class="badge  bg-warning font-size-14">{{ $conseiller->count() }}</span></h5>
+                                            <h5 class="font-size-15">Secteurs couverts : <span class="badge bg-warning font-size-14">{{$secteurCouv->count()}}</span></h5>
     
                                         </div>
                                     </div>
@@ -175,7 +175,7 @@
                         
                 </div>
                 <div class="row">
-                    <div class="col-xl-8">
+                    <div class="col-xl-6">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Projets</h4>
@@ -185,10 +185,56 @@
                                         <i class="bx bx-map-pin text-info display-4"></i>
                                     </div>
                                     <h3>{{ $nbProjets->count() }}</h3>
-                                    <p>Nombre de projets enregistrés</p>
+                                    <p>Projets enregistrés</p>
+                                </div>
+                                <hr>
+
+                                    <div class="row text-center">
+                                        @php
+                                            $ip = DB::table('projets')->where('type', 'IP')->count();
+                                            $autres = DB::table('projets')->where('type', 'AUTRE')->count();
+                                        @endphp
+                                        
+                                        <div class="col-6">
+                                            <div>
+                                                <strong><p class="text-muted text-truncate mb-2 font-weight-bold"> I&P </p></strong>
+                                                <h5 class="mb-0 text-primary">{{ $ip }}</h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div>
+                                                <strong> <p class="text-muted text-truncate mb-2 font-weight-bold">PLATEFORME</p> </strong>
+                                                <h5 class="mb-0 text-primary">{{ $autres }}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr><br>
+
+                                <div class="row align-items-center text-center">
+                                    @foreach ($etat as $item)
+                                    <div class="mb-4 pt-0 mt-0 col-sm">
+                                        <h5 class="card-title"><span>{{$item->etat}}</span></h5> 
+                                      
+                                            <p>
+                                                
+                                                @if ($item->etat =="COMPLET")
+                                                    <span class="align-items-center justify-content-center badge badge-pill badge-soft-success font-size-15" >{{$item->total_etat}}</span>
+                                                @else
+                                                    <span class="align-items-center justify-content-center badge badge-pill badge-soft-warning font-size-15" >{{$item->total_etat}}</span>
+                                                @endif
+                                            </p>
+                                       
+                                    </div>
+                                        
+                                    @endforeach
+                                    
+                                    
+                                   
                                 </div>
 
-                                <div class="table-responsive mt-4">
+                                <div class="h5 text-center text-info">Secteurs</div>
+
+                                <div class="row table-responsive mt-4">
                                     <table class="table align-middle table-nowrap">
                                         <tbody>
                                             @foreach ($secteur as $secteurItem)
@@ -204,8 +250,13 @@
                                                 <td>
                                                     
                                                     @if((int)($nbProjets->count()) > 0 )
-                                                    <div class="progress bg-transparent progress-sm">
-                                                        <div class="progress-bar bg-info rounded" role="progressbar" style="width: {{ ($nbProjet1/$nbProjets->count())*100 }}%" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    @php
+                                                        $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+                                                        $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].'1'.$rand[rand(0,15)].'f'.'f';
+                                                        $percentage= round(($nbProjet1/$nbProjets->count())*100);
+                                                    @endphp
+                                                    <div class="progress bg-transparent progress-xl">
+                                                        <div class="progress-bar rounded" role="progressbar" style="width: {{ $percentage }}%; background:{{$color}}" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{ $percentage }}%</div>
                                                     </div>
                                                     @endif
                                                 </td>
@@ -214,11 +265,82 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                
+
+                               
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                           
+                            <div class="card-body">
+                                <div class="accordion" id="accordionExample">
+                                    <h4 class="card-title mb-4">Pays</h4>
+                                    @php
+                                        $i=0;
+                                    @endphp
+                                    @foreach ($pays as $item)
+                                        @php
+                                            $projetparVille=DB::table('projets')->select('ville_activite',DB::raw('COUNT(id) as total_ville_projet'))->where('pays_activite',$item->pays_activite)->groupBy('ville_activite')->get();
+
+                                        @endphp
+
+                                    <div class=" accordion-item">
+                                        
+                                        <h2 class="accordion-header" id="heading{{$i}}">
+                                            <button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $i }}" aria-expanded="true" aria-controls="collapse{{ $i }}">
+                                                
+                                                <h5 class="font-size-14">{{ $item->pays_activite }}</h5>
+                                                <div style="width:1%"></div>
+                                                <h5 class="font-size-16"><span class="badge badge-pill badge-soft-success font-size-15">{{ $item->total_projets }}</span></h5>
+                                            </button>
+                                            
+                                        </h2>
+                                            
+                                        
+                                        <div id="collapse{{ $i }}" class="accordion-collapse collapse show" aria-labelledby="heading{{$i}}" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                                
+                                                                <th>Ville</th>
+                                                                <th class="text-end">Projets</th>
+                                                            </tr>
+                                                        </thead>
+                                                        
+                                                        <tbody>
+                                                            @foreach ($projetparVille as $item2)
+                                                                
+                                                                <tr>
+                                                                    
+                                                                    <td>{{ $item2->ville_activite }}</td>
+                                                                    <td class="text-end "><span class="badge badge-pill badge-soft-warning font-size-14">{{ $item2->total_ville_projet }}</span></td>
+                                                                </tr>
+                                                            
+                                                            @endforeach
+                                                    
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php
+                                        $i++;
+                                    @endphp
+                                @endforeach
+                                
                             </div>
                         </div>
                     </div>
 
                 </div>
+
+                
 
                 <!--<div class="row">
                     <div class="row">
