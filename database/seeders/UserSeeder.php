@@ -41,6 +41,7 @@ class UserSeeder extends Seeder
             'email' => 'porteur@test.com',
             'telephone' => $faker->phoneNumber(),
             'role' => 3,
+            'status' => 'PARTICULIER',
             'email_verified_at' => now(),
             'password' => Hash::make('porteur')
         ]);
@@ -50,6 +51,7 @@ class UserSeeder extends Seeder
             'email' => 'investisseur@test.com',
             'telephone' => $faker->phoneNumber(),
             'role' => 4,
+            'status' => 'PARTICULIER',
             'email_verified_at' => now(),
             'password' => Hash::make('investisseur')
         ]);
