@@ -12,13 +12,14 @@ class MessageController extends Controller
 {
     public function show($sender, $receiver)
     {
-        $seen = Message::makeSeen($sender, $receiver);
+        $seen = Message::makevu($sender, $receiver);
         $messages = Message::fetchMessage($sender, $receiver);
         return response()->json($messages, 200);
     }
 
     public function inbox($conversation)
     {
+        $seen = Message::makeSeen($conversation);
         $messages = Message::getLastestMessageQuery($conversation);
         return $this->sendResponse($messages, 'Member delete');
     }
