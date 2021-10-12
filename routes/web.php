@@ -118,6 +118,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/infosupp/{id}', [ProjetController::class, 'AdminInfoSupp'])->name('admin.infosupp');
         Route::post('/infosupp/{id}', [ProjetController::class, 'CIInfoSupp'])->name('ci.infosupp');
         Route::get('/validate/{id}', [ProjetController::class, 'CIValidate'])->name('civalidate');
+        Route::get('/rejet/{id}', [ProjetController::class, 'Rejeter'])->name('rejet');
     });
     
 });
