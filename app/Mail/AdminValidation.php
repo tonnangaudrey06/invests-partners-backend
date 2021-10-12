@@ -30,6 +30,6 @@ class AdminValidation extends Mailable
      */
     public function build()
     {
-        return $this->from('admin@investandpartners.com')->view('emails.adminvalidation');
+        return $this->from('info@invest--partners.com')->view('emails.adminvalidation');
     }
 }

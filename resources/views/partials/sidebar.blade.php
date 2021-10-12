@@ -104,14 +104,14 @@
                 <li class="menu-title" key="t-menu">Site</li>
 
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{route('slider.home')}}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-slide">Slides</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{route('partenaires.home')}}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-partenaire">Partenaires</span>
                     </a>
@@ -260,14 +260,14 @@
                 <li class="menu-title" key="t-menu">Site</li>
 
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{route('slider.home')}}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-slide">Slides</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{route('partenaires.home')}}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-partenaire">Partenaires</span>
                     </a>

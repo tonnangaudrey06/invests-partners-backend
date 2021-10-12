@@ -31,7 +31,7 @@ class AdminInfoSupp extends Mailable
      */
     public function build()
     {
-        return $this->from(Auth()->user()->email)->view('emails.infosupp')
+        return $this->from('info@invest--partners.com')->view('emails.infosupp')
                     ->subject($this->data['objet']);
     }
 }
