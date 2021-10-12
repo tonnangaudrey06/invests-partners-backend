@@ -44,7 +44,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::prefix('chat')->name('chat.')->group(function () {
-        Route::get('/{id?}', [MessageController::class, 'index'])->name('home');
+        Route::get('/', [MessageController::class, 'index'])->name('home');
+        Route::get('/{id}/{conversation}', [MessageController::class, 'index'])->name('conversation');
+        Route::post('/{sender}/send/{receiver}', [MessageController::class, 'send'])->name('send');
     });
 
     Route::get('/chat/{id?}', [MessageController::class, 'index'])->name('chat');

@@ -37,6 +37,14 @@ class Message extends Model
         return 1;
     }
 
+    public static function makeSeen($conversation)
+    {
+        Message::where('conversation', $conversation)
+            ->where('vu', 0)
+            ->update(['vu' => 1]);
+        return 1;
+    }
+
     public function getLastMessageQuery($sender, $receiver)
     {
         return $this->fetchMessagesQuery($sender, $receiver)->latest()->first();
@@ -44,21 +52,15 @@ class Message extends Model
 
     public static function getLastestMessageQuery($conversation)
     {
-        // $conversations = DB::table('messages')
-        //     ->select(['conversation', 'projet'])
-        //     ->distinct()
-        //     ->where('conversation', $conversation)
-        //     ->first();
-        
         return Message::where('conversation', $conversation)
             ->latest()
             ->with(['attachements', 'sender', 'receiver'] )
             ->get();
     }
 
-    public static function countUnvuMessages($sender, $receiver)
+    public static function countUnvuMessages($conversation)
     {
-        return Message::where('recepteur', $receiver)->where('envoyeur', $sender)->where('vu', 0)->count();
+        return Message::where('conversation', $conversation)->where('vu', 0)->count();
     }
 
     public static function getContacts($sender)
