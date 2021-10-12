@@ -18,6 +18,11 @@ class DashboardController extends Controller
         $projet = Projet::all();
         $secteur = Secteur::all();
         $investissement = Investissement::all()->sum('montant');
+        $etat= Projet::select('etat', Projet::raw('COUNT(etat) as total_etat'))->groupBy('etat')->get();
+        $pays= Projet::select( 'pays_activite', Projet::raw('COUNT(id) as total_projets'))->groupBy('pays_activite')->get();
+        $secteurCouv= Projet::select( 'secteur')->groupBy('secteur')->get();
+        $besoinFinancement= Projet::all()->sum('financement');
+
 
         return view('pages/dashboard.home' , [
             'porteurs'=> $users,
@@ -26,7 +31,13 @@ class DashboardController extends Controller
             'nbProjets'=> $projet,
             'secteur'=> $secteur,
             'investissement'=> $investissement,
+            'etat'=>$etat,
+            'pays'=>$pays,
+            'secteurCouv'=>$secteurCouv,
+            'besoinFinancement'=>$besoinFinancement
         ]);
     }
+
+
 
 }

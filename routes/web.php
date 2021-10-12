@@ -90,6 +90,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('projet')->name('projet.')->group(function () {
         Route::get('/', [ProjetController::class, 'index'])->name('home');
+        Route::get('/ip', [ProjetController::class, 'index_ip'])->name('home_ip');
         Route::get('/add', [ProjetController::class, 'add'])->name('add');
         Route::get('/edit/{id}', [ProjetController::class, 'edit'])->name('edit');
         Route::post('/store', [ProjetController::class, 'store'])->name('store');

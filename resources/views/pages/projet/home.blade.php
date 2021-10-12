@@ -22,7 +22,7 @@
 @php
 $privileges = DB::table('privileges')->where('role', Auth()->user()->role)->get();
 
-$pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
+$pro = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
 @endphp
 
 <div class="main-content">
@@ -71,7 +71,8 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                 @if (Auth()->user()->role == 1)
                 @foreach ($projets as $projet)
                 <div class="col-xl-4 col-sm-6">
-                    <div class="card " style="border-radius: 0.75rem; box-shadow: 4px 3px 5px #585b60;">
+                    <div class="card "
+                        style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%)">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-4">
@@ -84,7 +85,6 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                         </span>
                                     </div>
                                 </div>
-
 
                                 <div class="flex-grow-1 overflow-hidden">
                                     <h5 class="font-size-15">
@@ -100,21 +100,11 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                         <p class="text-primary">{{ $projet->financement }} XAF</p>
                                     </div>
 
-                                    <div class="avatar-group">
-                                        @foreach ($projet->membres as $item)
-                                        <div class="avatar-group-item">
-                                            <a href="javascript: void(0);" class="d-inline-block">
-                                                <img src="{{ asset($item->photo) }}" alt=""
-                                                    class="rounded-circle avatar-sm">
-                                            </a>
-                                        </div>
-                                        @endforeach
 
-
-                                    </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="px-4 py-3 border-top">
                             <ul class="list-inline mb-0 d-flex justify-content-between align-items-center w-100">
                                 <li class="list-inline-item me-3">
@@ -128,24 +118,37 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                 </li>
                             </ul>
                         </div>
+
                     </div>
+
                 </div>
+
                 @endforeach
 
                 @else
 
                 @foreach ($pro as $item)
-                
+
+                @php
+                //$prosect = DB::table('projets')->where('secteur', $item->id)->where('type', 'AUTRE')->get();
+                $i = 0;
+                @endphp
+
+
                 <div class="d-flex justify-content-center">
                     <h4 class=" col-md-4 text-center btn btn-primary">{{$item->libelle}}</h4><br><br>
                 </div>
 
+
                 @foreach ($projets as $boss)
 
-                @if($boss->secteur_data->libelle == $item->libelle)
+
+                @if($item->id == $boss->secteur_data->id )
+                
 
                 <div class="col-xl-4 col-sm-6">
-                    <div class="card " style="border-radius: 0.75rem; box-shadow: 4px 3px 5px #585b60;">
+                    <div class="card "
+                        style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%)">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-4">
@@ -173,21 +176,12 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                         <p class="text-primary">{{ $boss->financement }} XAF</p>
                                     </div>
 
-                                    <div class="avatar-group">
-                                        @foreach ($boss->membres as $item)
-                                        <div class="avatar-group-item">
-                                            <a href="javascript: void(0);" class="d-inline-block">
-                                                <img src="{{ asset($item->photo) }}" alt=""
-                                                    class="rounded-circle avatar-sm">
-                                            </a>
-                                        </div>
-                                        @endforeach
 
-
-                                    </div>
                                 </div>
+
                             </div>
                         </div>
+
                         <div class="px-4 py-3 border-top">
                             <ul class="list-inline mb-0 d-flex justify-content-between align-items-center w-100">
                                 <li class="list-inline-item me-3">
@@ -197,22 +191,28 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                     <i class="bx bx-calendar me-1"></i> {{ $boss->created_at }}
                                 </li>
                                 <li class="list-inline-item me-3 text-primary">
-                                    {{-- <i class="bx bxs-data me-1"></i> {{ $projet->secteur_data->libelle }} --}}
+                                    {{-- <i class="bx bxs-data me-1"></i> {{ $projet->secteur_data->libelle }}
+                                    --}}
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                @else
+
+
+                @php
+                $i = 1;
+                @endphp
+                @endif
+
+                @endforeach
+
+                @if( $i == 0)
                 <h5 class="text-center">Aucun Projet disponible</h5><br><br>
                 @endif
 
                 @endforeach
-
-                @endforeach
-
                 @endif
-
 
             </div>
             <!-- end row -->
@@ -245,11 +245,12 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                 </div>
             </div>
             <!-- end row -->
-
         </div>
-    </div>
 
-    @include('partials.footer')
+    </div>
+</div>
+
+@include('partials.footer')
 </div>
 @endsection
 

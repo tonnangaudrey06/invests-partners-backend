@@ -138,18 +138,67 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <div class="flex-shrink-0 me-4">
-                                            <img src="{{ asset($projet->logo) }}" alt="" class="avatar-sm">
+                                            <img src="{{ asset($projet->logo) }}" alt="" class="avatar-md">
                                         </div>
 
-                                        <div class="flex-grow-1 overflow-hidden">
-                                            <strong>
-                                                <h4 class="text-truncate font-size-18">{{ $projet->intitule }}</h4>
-                                            </strong>
-                                            <strong>
-                                                <p class=" text-primary font-size-15">{{ $projet->financement }} XAF</p>
-                                            </strong>
+                                        <div class="row col-10">
+                                            <div class=" col-6 flex-grow-1 overflow-hidden">
+                                                <strong>
+                                                    <h4 class="text-truncate font-size-18">{{ $projet->intitule }} <span class="btn btn-info mr-auto">{{ $projet->etat }}</span></h4>
+                                                </strong>
+                                                <strong>
+                                                    <p class=" text-primary font-size-15">{{ $projet->financement }} XAF</p>
+                                                </strong>
+                                            </div>
+
+                                            <div class=" col-6 flex-grow-1 overflow-hidden">
+
+                                                @php
+                                                    // $invests = DB::table('investissements')->where('projet', $projet->id);
+                                                    $total_invest = DB::table('investissements')->where('projet', $projet->id)->sum('montant');
+                                                    $nber_invest = DB::table('investissements')->where('projet', $projet->id)->count();
+                                                @endphp
+                                                <strong>
+                                                    <h4 class="text-truncate float-end  font-size-16">Investissement(s) recu(s) <span class="btn btn-success mr-auto">{{ $nber_invest }} investisseurs</h4>
+                                                </strong>
+                                                <strong>
+                                                    <p class=" text-primary float-end font-size-15">{{ $total_invest }} XAF</p>
+                                                </strong>
+                                            </div>
+                                        </div>
+
+                                        
+                                    </div>
+                                    <hr>
+
+                                    <div class="row text-center">
+                                        <div class="col-3">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Crée </p>
+                                                <h6 class="mb-0 text-primary">{{ Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Niveau d'avancement</p>
+                                                <h6 class="mb-0 text-primary">{{ $projet->avancement }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Pays</p>
+                                                <h6 class="mb-0 text-primary">{{ $projet->pays_activite }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div>
+                                                <p class="text-muted text-truncate mb-2">Ville</p>
+                                                <h6 class="mb-0 text-primary">{{ $projet->ville_activite }}</h6>
+                                            </div>
                                         </div>
                                     </div>
+                                    <br>
+
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12">
                                             <h5 class="font-size-15 mt-4">Description</h5>
