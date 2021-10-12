@@ -4,6 +4,7 @@ use App\Http\Controllers\API\ProfilInvestisseurController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\InvestissementController;
 use App\Http\Controllers\API\MembreController;
+use App\Http\Controllers\API\MessageController;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\SecteurController;
 use App\Http\Controllers\API\UserController;
@@ -40,6 +41,9 @@ Route::get('/routes', function () {
 
 Route::get('secteur', [SecteurController::class, 'index']);
 
+Route::get('profilinvestisseur', [ProfilInvestisseurController::class, 'index']);
+
+
 Route::middleware('auth:api')->group(function () {
     Route::prefix('secteur')->group(function () {
         Route::get('/{id}', [SecteurController::class, 'show']);
@@ -67,10 +71,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}/projets/invest', [InvestissementController::class, 'projectInvest']);
     });
 
-    Route::prefix('profil-investisseur')->group(function () {
-        Route::get('/', [ProfilInvestisseurController::class, 'index']);
-    });
-
     Route::prefix('projet')->group(function () {
         Route::get('/', [ProjectController::class, 'index']);
         Route::post('/', [ProjectController::class, 'store']);
@@ -81,5 +81,13 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [MembreController::class, 'store']);
         Route::get('/{id}', [MembreController::class, 'show']);
         Route::delete('/{id}', [MembreController::class, 'delete']);
+    });
+
+    Route::prefix('chats')->group(function () {
+        Route::post('/{sender}/send/{receiver}', [MessageController::class, 'send']);
+        Route::get('/{sender}/messages/{receiver}', [MessageController::class, 'show']);
+        Route::get('/{conversation}/inbox', [MessageController::class, 'inbox']);
+        Route::post('/{sender}/seen/{receiver}', [MessageController::class, 'seen']);
+        Route::get('/{sender}/contacts', [MessageController::class, 'showContact']);
     });
 });

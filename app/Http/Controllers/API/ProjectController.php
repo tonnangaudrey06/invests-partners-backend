@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Archive;
 use App\Models\Equipe;
 use App\Models\Membre;
+use App\Models\ProfilInvestisseur;
 use App\Models\Projet;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
@@ -101,11 +103,14 @@ class ProjectController extends Controller
         return $this->sendResponse($projet, 'Projects');
     }
 
-    public function projetsTown($id, $town)
+    public function projetsTown($id, $town, Request $request)
     {
+        $user = $request->user();
+        $profil = DB::table('profile_investisseurs')->find($user->profil);
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])
             ->where('secteur', $id)
             ->where('ville_activite', 'like', $town)
+            ->where('etat', 'PUBLIE')
             ->get();
         return $this->sendResponse($projet, 'Projects');
     }

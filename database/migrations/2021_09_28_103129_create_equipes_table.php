@@ -17,7 +17,7 @@ class CreateEquipesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('projet')->nullable();
             $table->unsignedBigInteger('membre')->nullable();                         
-            $table->enum('statut', ['FONDATEUR', 'CO_FONDATEUR', 'EMPLOYE'])->default('FONDATEUR')->nullable();
+            $table->string('statut')->nullable();
             $table->foreign('projet')->references('id')->on('projets')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('membre')->references('id')->on('membres')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

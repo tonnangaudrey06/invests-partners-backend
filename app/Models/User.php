@@ -81,4 +81,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Secteur::class, 'user', 'id');
     }
+
+    public function profil_invest()
+    {
+        return $this->belongsTo(ProfilInvestisseur::class, 'profil', 'id');
+    }
 }

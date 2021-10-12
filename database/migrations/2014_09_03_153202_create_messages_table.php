@@ -18,14 +18,12 @@ class CreateMessagesTable extends Migration
             $table->unsignedBigInteger('envoyeur');
             $table->unsignedBigInteger('recepteur');
             $table->unsignedBigInteger('projet');
-            $table->unsignedBigInteger('piece_jointe')->nullable();
             $table->text('message');
             $table->uuid('conversation');
             $table->boolean('vu')->default(false);
             $table->foreign('envoyeur')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('recepteur')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('projet')->references('id')->on('projets')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('piece_jointe')->references('id')->on('archives')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
