@@ -83,22 +83,22 @@ $roles = DB::table('roles')->get();
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="consulter" id="consulter"
                                             value="1">
-                                        <label class="form-check-label" for="inlineCheckbox1">Consulter</label>
+                                        <label class="form-check-label" >Consulter</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="modifier" id="modifier"
                                             value="1">
-                                        <label class="form-check-label" for="inlineCheckbox1">Modifier</label>
+                                        <label class="form-check-label" >Modifier</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="ajouter" id="ajouter"
                                             value="1">
-                                        <label class="form-check-label" for="inlineCheckbox1">Ajouter</label>
+                                        <label class="form-check-label" >Ajouter</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" name="supprimer" id="supprimer"
                                             value="1">
-                                        <label class="form-check-label" for="inlineCheckbox1">Supprimer</label>
+                                        <label class="form-check-label" >Supprimer</label>
                                     </div>
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" onClick="toggle(this)"

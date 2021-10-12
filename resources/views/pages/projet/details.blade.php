@@ -169,6 +169,22 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
                                         
                                     </div>
+
+                                    <br>
+
+                                    <ul class="verti-timeline list-unstyled">
+                                        <li class="event-list active">
+                                            <div class="event-timeline-dot">
+                                                <i class="bx bxs-right-arrow-circle font-size-18 bx-fade-right"></i>
+                                            </div>
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <h5 class="font-size-15 text-primary">{{ $projet->secteur_data->libelle }}
+                                                </div>
+                                                
+                                            </div>
+                                        </li>
+                                    </ul>
                                     <hr>
 
                                     <div class="row text-center">
@@ -197,8 +213,9 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                             </div>
                                         </div>
                                     </div>
-                                    <br>
+                                    <br><br>
 
+                                   
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12">
                                             <h5 class="font-size-15 mt-4">Description</h5>
@@ -234,7 +251,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                                 RENTABILITE : <span class="text-primary">{{$projet->taux_rentabilite}}
                                                     %</span> </p>
                                             <p><i class="mdi mdi-chevron-right text-primary me-1"></i> RESTOUR SUR
-                                                INVESTISSEMENT: <span class="text-primary">{{$projet->delai_recup}}
+                                                INVESTISSEMENT: <span class="text-primary">{{$projet->rsi}}
                                                     mois</span>
                                             </p>
                                             <p><i class="mdi mdi-chevron-right text-primary me-1"></i> CA PREVISIONNEL:

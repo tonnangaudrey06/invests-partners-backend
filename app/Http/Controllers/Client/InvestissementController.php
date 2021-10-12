@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AddInvestissement;
+use App\Mail\AddInvestissementP;
 use App\Models\Investissement;
 use App\Models\Projet;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class InvestissementController extends Controller
 {
@@ -56,6 +59,16 @@ class InvestissementController extends Controller
 
         Investissement::create($data);
 
+        $investissement = Investissement::with(['projet_data', 'user_data'])->where('user', $data['user'])->where('montant', $data['montant'])->first();
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('id', $investissement->projet)->first();
+        $admin = User::where('role', 1)->first();
+
+        Mail::to($investissement->user_data->email)
+            ->queue(new AddInvestissement($investissement->toArray(), $admin->toArray(), $projet->toArray()));
+
+        Mail::to($projet->user_data->email)
+            ->queue(new AddInvestissementP($investissement->toArray(), $admin->toArray(), $projet->toArray()));
+
         Toastr::success('Investissement ajouté avec succès!', 'Succès');
 
         return redirect()->intended(route('investissement.home'));
@@ -100,12 +113,12 @@ class InvestissementController extends Controller
         return redirect()->intended(route('investissement.home'));
     }
 
-    public function delete($id){        
+    public function delete($id)
+    {
 
         Investissement::find($id)->delete();
         Toastr::success('Investissement supprimé avec succès!', 'Success');
 
         return redirect()->intended(route('investissement.home'));
-        
     }
 }

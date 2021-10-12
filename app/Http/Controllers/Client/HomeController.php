@@ -46,7 +46,7 @@ class HomeController extends Controller
         $data = array();
         $data['title'] = $request->title;
         $data['description'] = $request->description;
-        $data['image'] = $last_img;
+        $data['image'] = url($up_location) . '/' . $img_name;
         $data['created_at'] = Carbon::now();
         DB::table('sliders')->insert($data);
 
@@ -76,7 +76,7 @@ class HomeController extends Controller
             $last_img = $up_location.$img_name;
             $image->move($up_location, $img_name);
 
-            $data['image'] = $last_img;
+            $data['image'] = url($up_location) . '/' . $img_name;
     
             unlink($oldimage);
             DB::table('sliders')->where('id', $id)->update($data);
@@ -123,7 +123,7 @@ class HomeController extends Controller
             $last_img = 'images/partenaires/' . $name_gen;
 
             $data = array();
-            $data['image'] = $last_img;
+            $data['image'] = url('images/partenaires/') . '/' . $name_gen;
             $data['created_at'] = Carbon::now();
             DB::table('partenaires')->insert($data);
         }  //end of the foreach
@@ -169,7 +169,7 @@ class HomeController extends Controller
         if ($image) {
             $image_one = uniqid() . '.' . $image->getClientOriginalExtension();
             Image::make($image)->resize(500, 300)->save('images/chiffres/' . $image_one);
-            $data['image'] = 'images/chiffres/' . $image_one;
+            $data['image'] = url('images/chiffres/') . '/' . $image_one; 
             DB::table('chiffres')->where('id', $id)->update($data);
             unlink($oldimage);
 

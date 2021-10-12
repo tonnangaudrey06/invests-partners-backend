@@ -111,7 +111,7 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                     <span class="badge bg-success p-2">{{ $projet->etat }}</span>
                                 </li>
                                 <li class="list-inline-item me-3">
-                                    <i class="bx bx-calendar me-1"></i> {{ $projet->created_at }}
+                                    <i class="bx bx-calendar me-1"></i> {{ Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}
                                 </li>
                                 <li class="list-inline-item me-3 text-primary">
                                     <i class="bx bxs-data me-1"></i> {{ $projet->secteur_data->libelle }}

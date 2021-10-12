@@ -4,8 +4,8 @@
     <meta charset="utf-8">
   </head>
   <body>
-    <h2>Refus de votre projet </h2>
-    <p>Bonjour M./Mme/Mlle <strong>{{$projet['user_data']['nom_complet']}}</strong>, L'équipe Invest & Partners doit malheureusement rejeter votre projet <strong>{{$projet['intitule']}}</strong></a> car n'étant pas très viable. Toutefois, vous pouvez soumettre un autre projet sur notre plateforme et nous prendrons le temps neccesaire pour l'étudier. 
+    <h2>Investissement approuvé </h2>
+    <p>Bonjour M./Mme/Mlle <strong>{{$investissement['user_data']['nom_complet']}}</strong>, L'équipe Invest & Partners a le plaisir de vous annocer que votre investissement pour le projet <strong>{{$investissement['projet_data']['intitule']}}</strong></a> a été pris en compte sur notre plateforme. Vous continuerez d'etre informé de tous les avancements dudit projet. 
 
     Cordialement, <br><br>
 
@@ -14,6 +14,7 @@
     
   </body>
 </html>
+
 
 
 
