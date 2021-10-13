@@ -9,6 +9,7 @@ use App\Http\Controllers\Client\MessageController;
 use App\Http\Controllers\Client\ProfilInvestisseurController;
 use App\Http\Controllers\Client\ProjetController;
 use App\Http\Controllers\Client\PrivilegeController;
+use App\Http\Controllers\Client\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,7 +44,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::prefix('chat')->name('chat.')->group(function () {
-        Route::get('/{id?}', [MessageController::class, 'index'])->name('home');
+        Route::get('/', [MessageController::class, 'index'])->name('home');
+        Route::get('/{id}/{conversation}', [MessageController::class, 'index'])->name('conversation');
+        Route::post('/{sender}/send/{receiver}', [MessageController::class, 'send'])->name('send');
     });
 
     Route::get('/chat/{id?}', [MessageController::class, 'index'])->name('chat');
@@ -86,6 +89,21 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [SecteurController::class, 'store'])->name('store');
         Route::post('/update/{id}', [SecteurController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [SecteurController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('slider')->name('slider.')->group(function () {
+        Route::get('/', [HomeController::class, 'HomeSlider'])->name('home');
+        Route::get('/add', [HomeController::class, 'AddSlide'])->name('add');
+        Route::get('/edit/{id}', [HomeController::class, 'EditSlide'])->name('edit');
+        Route::post('/store', [HomeController::class, 'StoreSlide'])->name('store');
+        Route::post('/update/{id}', [HomeController::class, 'UpdateSlide'])->name('update');
+        Route::get('/delete/{id}', [HomeController::class, 'DeleteSlide'])->name('delete');
+    });
+
+    Route::prefix('partenaires')->name('partenaires.')->group(function () {
+        Route::get('/', [HomeController::class, 'HomePartenaires'])->name('home');
+        Route::post('/store', [HomeController::class, 'StorePartenaires'])->name('store');
+        Route::get('/delete/{id}', [HomeController::class, 'DeletePartenaire'])->name('delete');
     });
 
     Route::prefix('projet')->name('projet.')->group(function () {

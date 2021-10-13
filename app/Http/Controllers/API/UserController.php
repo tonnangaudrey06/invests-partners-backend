@@ -14,7 +14,7 @@ class UserController extends Controller
 {
     public function show($id)
     {
-        return $this->sendResponse(User::with(['role_data', 'documents_fiscaux'])->find($id), 'User details');
+        return $this->sendResponse(User::with(['role_data', 'documents_fiscaux', 'profil_invest'])->find($id), 'User details');
     }
 
     public function store(Request $request)

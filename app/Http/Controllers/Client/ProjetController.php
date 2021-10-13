@@ -322,7 +322,7 @@ class ProjetController extends Controller
 
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
 
-        Mail::to('kenouyakevin@gmail.com')
+        Mail::to($projet->user_data->email)
             ->queue(new CIValidation($projet->toArray()));
 
         Toastr::success('Mail envoyé avec succès!', 'Projet approuvé');

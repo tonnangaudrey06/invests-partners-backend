@@ -32,7 +32,7 @@ class CIValidation extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com')->view('emails.civalidation')
+        return $this->from(Auth()->user()->email)->view('emails.civalidation')
                     ->subject("Approbation Projet {$this->projet['intitule']}");
     }
 }
