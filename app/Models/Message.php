@@ -28,21 +28,20 @@ class Message extends Model
             ->orWhere('recepteur', $sender)->where('envoyeur', $receiver);
     }
 
-    public static function makevu($sender, $receiver)
+    public static function makeVu($sender, $receiver)
     {
         Message::where('recepteur', $sender)
             ->where('envoyeur', $receiver)
             ->where('vu', 0)
             ->update(['vu' => 1]);
-        return 1;
     }
 
-    public static function makeSeen($conversation)
+    public static function makeSeen($sender, $conversation)
     {
-        Message::where('conversation', $conversation)
+        Message::where('recepteur', $sender)
+            ->where('conversation', $conversation)
             ->where('vu', 0)
             ->update(['vu' => 1]);
-        return 1;
     }
 
     public function getLastMessageQuery($sender, $receiver)
@@ -58,15 +57,15 @@ class Message extends Model
             ->get();
     }
 
-    public static function countUnvuMessages($conversation)
+    public static function countUnvuMessages($sender, $conversation)
     {
-        return Message::where('conversation', $conversation)->where('vu', 0)->count();
+        return Message::where('recepteur', $sender)->where('conversation', $conversation)->where('vu', 0)->count();
     }
 
     public static function getContacts($sender)
     {
         $contacts = [];
-        $user = User::find($sender);
+        // $user = User::find($sender);
 
         $conversations = DB::table('messages')
             ->select('conversation')
@@ -97,23 +96,11 @@ class Message extends Model
     public static function deleteConversation($conversation)
     {
         try {
-            $piece_jointes = DB::table('messages')
-                ->join('archives', 'archives.id', '=', 'messages.piece_jointe')
-                ->select('archives.*')
-                ->where('messages.conversation', $conversation)
-                ->get();
-
-            foreach ($piece_jointes as $piece_jointe) {
-                if (isset($piece_jointe)) {
-                    $path = storage_path('app/public/.attachments/' . $piece_jointe->filename);
-                    if (File::exists($path)) {
-                        File::delete($path);
-                    }
-                }
-                Archive::find($piece_jointe->id)->delete();
-            }
-
             Message::where('conversation', $conversation)->delete();
+            $path = storage_path('app/public/messages/' . $conversation);
+            if (File::exists($path)) {
+                File::deleteDirectory($path);
+            }
             return 1;
         } catch (Exception $e) {
             return 0;
@@ -122,7 +109,17 @@ class Message extends Model
 
     public static function deleteMessage($message)
     {
-        Message::find($message)->delete();
+        $files = Archive::where('messega', $message);
+        $toDelete = Message::find($message);
+
+        foreach ($files->get() as $file) {
+            $path = storage_path("app/public/messages/$toDelete->conversation/$file->nom");
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+        }
+        $files->delete();
+        $toDelete->delete();
         return 1;
     }
 

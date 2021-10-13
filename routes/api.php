@@ -57,7 +57,6 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::prefix('user')->group(function () {
-        // Route::post('/', [UserController::class, 'store']);
         Route::get('/{id}', [UserController::class, 'show']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::put('/{id}/update/password', [UserController::class, 'updatePassword']);
@@ -75,6 +74,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/', [ProjectController::class, 'index']);
         Route::post('/', [ProjectController::class, 'store']);
         Route::get('/{id}', [ProjectController::class, 'show']);
+        Route::post('/{id}/valide', [ProjectController::class, 'valide']);
     });
 
     Route::prefix('membre')->group(function () {
@@ -83,11 +83,13 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{id}', [MembreController::class, 'delete']);
     });
 
-    Route::prefix('chats')->group(function () {
-        Route::post('/{sender}/send/{receiver}', [MessageController::class, 'send']);
-        Route::get('/{sender}/messages/{receiver}', [MessageController::class, 'show']);
+    Route::prefix('chats/{sender}')->group(function () {
+        Route::post('/interesse/{receiver}', [MessageController::class, 'interesse']);
+        Route::post('/{conversation}/send/{receiver}', [MessageController::class, 'send']);
+        Route::post('/conversation/{receiver}', [MessageController::class, 'newConversation']);
+        Route::get('/messages/{receiver}', [MessageController::class, 'show']);
         Route::get('/{conversation}/inbox', [MessageController::class, 'inbox']);
-        Route::post('/{sender}/seen/{receiver}', [MessageController::class, 'seen']);
-        Route::get('/{sender}/contacts', [MessageController::class, 'showContact']);
+        Route::post('/seen/{receiver}', [MessageController::class, 'seen']);
+        Route::get('/contacts', [MessageController::class, 'showContact']);
     });
 });

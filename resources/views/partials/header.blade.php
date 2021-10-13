@@ -36,7 +36,7 @@
             </div>
 
             <div class="dropdown d-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" onclick="redirectTo('{{ route('chat') }}')">
+                <button type="button" class="btn header-item noti-icon waves-effect" onclick="redirectTo('{{ route('chat.home') }}')">
                     <span class="badge bg-danger rounded-pill">3</span>
                     <i class="bx bx-envelope"></i>
                 </button>
@@ -152,7 +152,7 @@
                     <a class="dropdown-item" href="{{ route('user.profile', ['id' => null]) }}"><i
                             class="bx bx-user font-size-16 align-middle me-1"></i> <span
                             key="t-profile">Profil</span></a>
-                    <a class="dropdown-item" href="{{ route('chat', ['id' => null]) }}"><i
+                    <a class="dropdown-item" href="{{ route('chat.home') }}"><i
                             class="bx bx-user font-size-16 align-middle me-1"></i> <span
                             key="t-profile">Messagerie</span></a>
                     <a class="dropdown-item d-block" href="#"><i
