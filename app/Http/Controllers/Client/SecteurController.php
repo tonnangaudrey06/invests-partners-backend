@@ -62,7 +62,7 @@ class SecteurController extends Controller
         $data['slug'] = Str::slug($request->libelle);
         $data['libelle'] = $request->libelle;
         $data['user'] = $request->user;
-        $data['photo'] = $last_img;
+        $data['photo'] = url($up_location) . '/' . $img_name;
 
 
 
@@ -119,7 +119,7 @@ class SecteurController extends Controller
             
                 $data->libelle = $request->libelle;
                 $data->user = $request->user;
-                $data->photo = $last_img;
+                $data->photo = url($up_location) . '/' . $img_name;
                 $data->slug = Str::slug($request->libelle);
 
                 $data->save();

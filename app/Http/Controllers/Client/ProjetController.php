@@ -10,6 +10,8 @@ use Brian2694\Toastr\Facades\Toastr;
 use App\Mail\CIValidation;
 use App\Mail\AdminValidation;
 use App\Mail\CIInfoSupp;
+use App\Mail\CIModification;
+use App\Mail\RejetMail;
 use App\Models\Archive;
 use App\Models\Secteur;
 use App\Models\User;
@@ -222,6 +224,12 @@ class ProjetController extends Controller
                 }
             }
         }
+
+        $admin = User::where('role', 1)->first();
+
+        Mail::to($admin->email)
+            ->queue(new CIModification($projet->toArray()));
+
         Toastr::success('Projet modifié avec succès!', 'Succès');
 
         return redirect()->route('projet.details', $projet->id);
@@ -321,14 +329,35 @@ class ProjetController extends Controller
     {
 
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $admin = User::where('role', 1)->first();
 
-        Mail::to($projet->user_data->email)
+        // return response()->json($admin);
+
+        Mail::to($admin->email)
             ->queue(new CIValidation($projet->toArray()));
 
         Toastr::success('Mail envoyé avec succès!', 'Projet approuvé');
 
         $projet->update([
             'etat' => 'ATTENTE_VALIDATION_ADMIN',
+        ]);
+
+        return back();
+    }
+
+    public function Rejeter($id)
+    {
+
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $admin = User::where('role', 1)->first();
+
+        Mail::to($projet->user_data->email)
+            ->queue(new RejetMail($projet->toArray(), $admin->toArray()));
+
+        Toastr::success('Mail envoyé avec succès!', 'Projet refusé');
+
+        $projet->update([
+            'etat' => 'REJETE',
         ]);
 
         return back();
