@@ -10,6 +10,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use App\Mail\CIValidation;
 use App\Mail\AdminValidation;
 use App\Mail\CIInfoSupp;
+use App\Mail\CIModification;
 use App\Mail\RejetMail;
 use App\Models\Archive;
 use App\Models\Secteur;
@@ -223,6 +224,12 @@ class ProjetController extends Controller
                 }
             }
         }
+
+        $admin = User::where('role', 1)->first();
+
+        Mail::to($admin->email)
+            ->queue(new CIModification($projet->toArray()));
+
         Toastr::success('Projet modifié avec succès!', 'Succès');
 
         return redirect()->route('projet.details', $projet->id);
