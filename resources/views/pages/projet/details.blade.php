@@ -599,7 +599,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                                 </td>
                                                 <td style="width: 10%;">
                                                     <div class="text-center">
-                                                        <a download href="{{ $row->url }}"
+                                                        <a download href="{{ $row->document }}"
                                                             class="text-dark"><i
                                                                 class="bx bx-download h3 m-0"></i></a>
                                                     </div>
