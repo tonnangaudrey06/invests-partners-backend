@@ -111,8 +111,9 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             <a href="" class="btn btn-sm btn-primary disabled me-2">Publier</a>
                             @endif
 
+                            @if($projet->etat == 'PUBLIE')
                             <a href="{{ route('projet.cloture', $projet->id) }}" class="btn btn-sm btn-success me-2">Cloturer</a>
-
+                            @endif
 
                             @endif
 
@@ -572,7 +573,56 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             </div>
                         </div>
                     </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Documents personnels</h4>
+                            <div class="table-responsive">
+                                <div class="table-responsive">
+                                    <table class="table table-nowrap align-middle table-hover mb-0">
+                                        <tbody>
+                                            @foreach ($docs as $row)
+                                            <tr>
+                                                <td style="width: 10%;">
+                                                    <div class="avatar-sm">
+                                                        <span
+                                                            class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
+                                                            <i class="bx bxs-file-doc"></i>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 80%;">
+                                                    <h5 class="font-size-14 mb-1"><a target="_blank"
+                                                            href="{{ asset($row->document) }}"
+                                                            class="text-dark">{{$row->type}}</a></h5>
+                                                    {{-- <small>{{ $row->type }}</small> --}}
+                                                </td>
+                                                <td style="width: 10%;">
+                                                    <div class="text-center">
+                                                        <a download href="{{ asset($row->url) }}"
+                                                            class="text-dark"><i
+                                                                class="bx bx-download h3 m-0"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                
 
                 
                 <!-- end col -->
