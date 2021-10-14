@@ -152,7 +152,7 @@
     @include('partials.footer')
 </div>
 
-<div id="userModal" class="modal fade" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+{{-- <div id="userModal" class="modal fade" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
     <form id="userForm" action="{{ route('user.add') }}" method="POST">
         @csrf
         <input type="hidden" name="role" value="">
@@ -207,7 +207,7 @@
             </div>
         </div>
     </form>
-</div>
+</div> --}}
 @endsection
 
 @section('script')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Mail\AdminCloture;
+use App\Mail\AdminClotureI;
 use App\Mail\AdminInfoSupp;
 use App\Mail\AdminPublication;
 use App\Models\Projet;
@@ -288,27 +289,12 @@ class ProjetController extends Controller
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
 
-        // $invs = Investissement::with(['projet_data', 'user_data'])->where('projet', $id)->get();
-        // $invests = $invs->groupBy('projet');
-        // $investis = $invests->groupBy('user');
-                                
-                              
-        // return response()->json($projets);
-
-
-
-        // $investisseurs = Investissement::select('*')
-        // ->groupBy('id')
-        // ->groupBy('montant')
-        // ->groupBy('date_versement')
-        // ->groupBy('numero_versement')
-        // ->groupBy('created_at')
-        // ->groupBy('updated_at')
-        // ->groupBy('projet')
-        // ->groupBy('user')
-        // ->where('user', $id)
-        // ->with(['projet_data'])
-        // ->get();
+        $investisseurs = Investissement::select('*')
+        ->groupBy('projet')
+        ->groupBy('user')
+        ->where('projet', $id)
+        ->with(['projet_data', 'user_data'])
+        ->get();
 
         // return response()->json($investisseurs);
 
@@ -319,13 +305,12 @@ class ProjetController extends Controller
         Mail::to($projet->user_data->email)
             ->queue(new AdminCloture($projet->toArray()));
 
-        // foreach($investisseurs as $investisseur){
-        //     Mail::to($projet->user_data->email)
-        //     ->queue(new AdminCloture($projet->toArray()));
-        // }
-
-
-        
+        foreach($investisseurs as $investisseur){
+            // echo($investisseur->user_data->email);
+            
+            Mail::to($investisseur->user_data->email)
+            ->queue(new AdminClotureI($projet->toArray()));
+        }
 
         Toastr::success('Projet cloturé avec succès!', 'Succès');
 
