@@ -15,6 +15,7 @@ use App\Mail\CIInfoSupp;
 use App\Mail\CIModification;
 use App\Mail\RejetMail;
 use App\Models\Archive;
+use App\Models\DocumentFiscaux;
 use App\Models\Investissement;
 use App\Models\Secteur;
 use App\Models\User;
@@ -28,7 +29,7 @@ class ProjetController extends Controller
     {
         $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'AUTRE')->where('etat', '!=', 'CLOTURE')->get();
         // $sect = Secteur::where('user', Auth()->user()->role)->get();
-        // $pro = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('user', Auth()->user()->id)->get();
+        
         // return response()->json($projets);
         return view('pages.projet.home', compact('projets'));
     }
@@ -253,8 +254,11 @@ class ProjetController extends Controller
     public function showp($id)
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+         $docs = DocumentFiscaux::with(['user_data'])->where('user', $projet->user_data->id)->get(); 
 
-        return view('pages.projet.details', compact('projet'));
+        //  return response()->json($doc);
+
+        return view('pages.projet.details', compact('projet', 'docs'));
     }
 
     public function typemessage($id)
@@ -293,16 +297,20 @@ class ProjetController extends Controller
 
 
 
-        $investisseurs = Investissement::select('*')
-        ->groupBy('id')
-        ->groupBy('montant')
-        ->groupBy('projet')
-        ->groupBy('user')
-        ->where('user', $id)
-        ->with(['projet_data'])
-        ->get();
+        // $investisseurs = Investissement::select('*')
+        // ->groupBy('id')
+        // ->groupBy('montant')
+        // ->groupBy('date_versement')
+        // ->groupBy('numero_versement')
+        // ->groupBy('created_at')
+        // ->groupBy('updated_at')
+        // ->groupBy('projet')
+        // ->groupBy('user')
+        // ->where('user', $id)
+        // ->with(['projet_data'])
+        // ->get();
 
-        return response()->json($investisseurs);
+        // return response()->json($investisseurs);
 
         $projet->update([
             'etat' => 'CLOTURE',
@@ -319,7 +327,7 @@ class ProjetController extends Controller
 
         
 
-        Toastr::success('Projet publié avec succès!', 'Succès');
+        Toastr::success('Projet cloturé avec succès!', 'Succès');
 
         return back();
     }
