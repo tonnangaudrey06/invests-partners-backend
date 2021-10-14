@@ -46,10 +46,8 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('chat')->name('chat.')->group(function () {
         Route::get('/', [MessageController::class, 'index'])->name('home');
         Route::get('/{id}/{conversation}', [MessageController::class, 'index'])->name('conversation');
-        Route::post('/{sender}/send/{receiver}', [MessageController::class, 'send'])->name('send');
+        Route::post('/{sender}/{conversation}/send/{receiver}', [MessageController::class, 'send'])->name('send');
     });
-
-    Route::get('/chat/{id?}', [MessageController::class, 'index'])->name('chat');
 
     Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', function () {
@@ -120,6 +118,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/infosupp/{id}', [ProjetController::class, 'AdminInfoSupp'])->name('admin.infosupp');
         Route::post('/infosupp/{id}', [ProjetController::class, 'CIInfoSupp'])->name('ci.infosupp');
         Route::get('/validate/{id}', [ProjetController::class, 'CIValidate'])->name('civalidate');
+        Route::get('/rejet/{id}', [ProjetController::class, 'Rejeter'])->name('rejet');
     });
     
 });

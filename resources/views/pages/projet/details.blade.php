@@ -62,11 +62,11 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                 class="btn btn-sm btn-success me-2">Approuver</a>
                             <a href="{{ route('projet.askinfosupp', $projet->id) }}"
                                 class="btn btn-sm btn-info me-2">Demander info supp</a>
-                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-dark me-2">Rejeter</a>
+                            <a href="{{ route('projet.rejet', $projet->id) }}" class="btn btn-sm btn-dark me-2">Rejeter</a>
                             @else
-                            <a href="{{ route('projet.admin.validate', $projet->id) }}"
+                            <a href=""
                                 class="btn btn-sm btn-success disabled me-2">Approuver</a>
-                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-dark disabled me-2">Rejeter</a>
+                            <a href="" class="btn btn-sm btn-dark disabled me-2">Rejeter</a>
                             @endif
 
                             @else
@@ -75,7 +75,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                 class="btn btn-sm btn-success me-2">Approuver</a>
                             <a href="{{ route('projet.askinfosupp', $projet->id) }}"
                                 class="btn btn-sm btn-info me-2">Demander info supp</a>
-                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-dark me-2">Rejeter</a>
+                            <a href="{{ route('projet.rejet', $projet->id) }}" class="btn btn-sm btn-dark me-2">Rejeter</a>
                             @else
                             <a href="" class="btn btn-sm btn-success disabled me-2">Approuver</a>
                             <a href="" class="btn btn-sm btn-info disabled me-2">Demander info supp</a>
@@ -144,7 +144,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                         <div class="row col-10">
                                             <div class=" col-6 flex-grow-1 overflow-hidden">
                                                 <strong>
-                                                    <h4 class="text-truncate font-size-18">{{ $projet->intitule }} <span class="btn btn-info mr-auto">{{ $projet->etat }}</span></h4>
+                                                    <h4 class="text-wrap font-size-16">{{ $projet->intitule }} <span class="btn btn-info mr-auto">{{ $projet->etat }}</span></h4>
                                                 </strong>
                                                 <strong>
                                                     <p class=" text-primary font-size-15">{{ $projet->financement }} XAF</p>
@@ -159,7 +159,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                                     $nber_invest = DB::table('investissements')->where('projet', $projet->id)->count();
                                                 @endphp
                                                 <strong>
-                                                    <h4 class="text-truncate float-end  font-size-16">Investissement(s) recu(s) <span class="btn btn-success mr-auto">{{ $nber_invest }} investisseurs</h4>
+                                                    <h4 class="text-wrap float-end  font-size-16">Investissement(s) recu(s) <span class="btn btn-success mr-auto">{{ $nber_invest }} investisseurs</h4>
                                                 </strong>
                                                 <strong>
                                                     <p class=" text-primary float-end font-size-15">{{ $total_invest }} XAF</p>
@@ -169,6 +169,22 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
                                         
                                     </div>
+
+                                    <br>
+
+                                    <ul class="verti-timeline list-unstyled">
+                                        <li class="event-list active">
+                                            <div class="event-timeline-dot">
+                                                <i class="bx bxs-right-arrow-circle font-size-18 bx-fade-right"></i>
+                                            </div>
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <h5 class="font-size-15 text-primary">{{ $projet->secteur_data->libelle }}
+                                                </div>
+                                                
+                                            </div>
+                                        </li>
+                                    </ul>
                                     <hr>
 
                                     <div class="row text-center">
@@ -197,8 +213,9 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                             </div>
                                         </div>
                                     </div>
-                                    <br>
+                                    <br><br>
 
+                                   
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12">
                                             <h5 class="font-size-15 mt-4">Description</h5>
@@ -234,7 +251,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                                 RENTABILITE : <span class="text-primary">{{$projet->taux_rentabilite}}
                                                     %</span> </p>
                                             <p><i class="mdi mdi-chevron-right text-primary me-1"></i> RESTOUR SUR
-                                                INVESTISSEMENT: <span class="text-primary">{{$projet->delai_recup}}
+                                                INVESTISSEMENT: <span class="text-primary">{{$projet->rsi}}
                                                     mois</span>
                                             </p>
                                             <p><i class="mdi mdi-chevron-right text-primary me-1"></i> CA PREVISIONNEL:

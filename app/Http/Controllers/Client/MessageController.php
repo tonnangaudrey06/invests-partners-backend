@@ -24,7 +24,7 @@ class MessageController extends Controller
         }
 
         if (!empty($conversation)) {
-            Message::makeSeen($conversation);
+            Message::makeSeen(auth()->user()->id, $conversation);
             $messages = Message::getLastestMessageQuery($conversation);
 
             if (!empty($messages)) {
@@ -33,38 +33,21 @@ class MessageController extends Controller
         }
 
         return view('pages.chat.home')
-        ->with('sender', auth()->user())
-        ->with('receiver', $receiver)
-        ->with('projet', $projet)
-        ->with('messages', $messages)
-        ->with('contacts', $contacts);
+            ->with('sender', auth()->user())
+            ->with('receiver', $receiver)
+            ->with('projet', $projet)
+            ->with('conversation', $conversation)
+            ->with('messages', $messages)
+            ->with('contacts', $contacts);
     }
 
-    public function send($sender, $receiver, Request $request)
+    public function send($sender, $conversation, $receiver, Request $request)
     {
-        $error = (object)[
-            'status' => 0,
-            'message' => null
-        ];
-
-        // $data = $request->input();
-
-        // dd($data);
-
-        $conversationExist = Message::where('projet', $request->projet)->where('recepteur', $receiver)->where('envoyeur', $sender)
-            ->orWhere('recepteur', $sender)->where('envoyeur', $receiver)->exists();
-
-        $conversation = Str::uuid();
-
-        if ($conversationExist) {
-            $conversation = Message::where('recepteur', $receiver)->where('envoyeur', $sender)->orWhere('recepteur', $sender)->where('envoyeur', $receiver)->first()->conversation;
-        }
-
         $data = [
             'recepteur' => $receiver,
             'envoyeur' => $sender,
             'conversation' => $conversation,
-            'projet' => $request->projet,
+            'projet' => $request->has('projet') ? $request->projet : null,
             'message' => html_entity_decode(htmlentities(trim($request->input('body'))))
         ];
 
@@ -91,16 +74,14 @@ class MessageController extends Controller
                         $data['url'] = url('storage/uploads/message') . '/' . $attachment_title;
                         Archive::create($data);
                     } else {
-                        $error->status = 1;
-                        $error->message = "Some files extension are not allowed!";
+                        return back();
                     }
                 } else {
-                    $error->status = 1;
-                    $error->message = "Some files size exceed 150MB!";
+                    return back();
                 }
             }
         }
-        
+
         return back();
     }
 }

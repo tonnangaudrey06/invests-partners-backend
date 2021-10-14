@@ -44,7 +44,7 @@ class Projet extends Model
     {
         switch ($this->etat) {
             case 'ATTENTE':
-                return 'En attente';
+                return 'En attente d\'approbation';
                 break;
             case 'VALIDE':
                 return 'Validé';
@@ -54,6 +54,9 @@ class Projet extends Model
                 break;
             case 'ATTENTE_VALIDATION_ADMIN':
                 return 'En attente de validation administrative';
+                break;
+            case 'ATTENTE_DOCUMENT_SUP':
+                return 'Besoin d\'informations supplementaire';
                 break;
             case 'ATTENTE_PAIEMENT':
                 return 'En attente de paiement';
