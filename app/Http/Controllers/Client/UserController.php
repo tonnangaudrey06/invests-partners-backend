@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
@@ -10,6 +11,16 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function administrateur()
+    {
+        $users = User::where('role', 1)->with(['role_data'])->get();
+        $role = (object) [
+            'name' => 'administrateur',
+            'value' => 1
+        ];
+        return view('pages.user.home')->with('users', $users)->with('role', $role)->with('title', 'Sous-administrateurs');
+    }
+
     public function sous_administrateur()
     {
         $users = User::where('role', 5)->with(['role_data'])->get();
@@ -61,8 +72,29 @@ class UserController extends Controller
         return view('pages.user.profil')->with('user', $user);
     }
 
+    // public function store(Request $request)
+    // {
+    //     $data = $request->input();
+    //     $data['password'] = Hash::make($request->password);
+
+    //     User::create($data);
+
+    //     Toastr::success('Utilisateur ajouté avec succès!', 'Succès');
+
+    //     return back();
+    // }
+
+   
+
+    public function add($id)
+    {
+        $role = Role::find($id);
+        return view('pages.user.add')->with('role', $role);
+    }
+
     public function store(Request $request)
     {
+
         $data = $request->input();
         $data['password'] = Hash::make($request->password);
 
@@ -70,21 +102,42 @@ class UserController extends Controller
 
         Toastr::success('Utilisateur ajouté avec succès!', 'Succès');
 
-        return back();
+        return redirect()->back();
     }
 
-    public function update($id, Request $request)
+    public function edit($id)
     {
+        $user = User::find($id);
+        return view('pages.user.edit')->with('user', $user);
+    }
+
+     public function update($id, Request $request)
+    {
+
+        // dd('tyrt');
         $data = $request->input();
 
         if ($request->has('password')) {
             unset($data['password']);
         }
 
+        $data = $request->except(['_token']);
+
         User::where('id', $id)->update($data);
 
         Toastr::success('Utilisateur mis à jour avec succès!)', 'Success');
 
-        return back();
+        return redirect()->back();
+    }
+
+    public function delete($id){
+        
+        $user = User::find($id);
+
+        User::find($id)->delete();
+        Toastr::success('Utilisateur supprimé avec succès!', 'Success');
+
+        return redirect()->back();
+        
     }
 }

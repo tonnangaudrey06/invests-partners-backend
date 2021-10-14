@@ -5,7 +5,7 @@
   </head>
   <body>
     <h2>Investissement approuvé </h2>
-    <p>Bonjour M./Mme/Mlle <strong>{{$investissement['user_data']['nom_complet']}}</strong>, L'équipe Invest & Partners a le plaisir de vous annocer que votre investissement pour le projet <strong>{{$investissement['projet_data']['intitule']}}</strong></a> a été pris en compte sur notre plateforme. Vous continuerez d'etre informé de tous les avancements dudit projet. 
+    <p>Bonjour M./Mme/Mlle <strong>{{$investissement['user_data']['nom_complet']}}</strong>, L'équipe Invest & Partners a le plaisir de vous annoncer que votre investissement pour le projet <strong>{{$investissement['projet_data']['intitule']}}</strong> a été pris en compte sur notre plateforme. Vous continuerez d'etre informé de tous les avancements dudit projet. 
 
     Cordialement, <br><br>
 
