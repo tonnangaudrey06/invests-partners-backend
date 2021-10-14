@@ -62,6 +62,7 @@
                                         <th>Projet</th>
                                         <th>Montant investi</th>
                                         <th>Date versement</th>
+                                        <th>Numéro versement</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -73,8 +74,9 @@
                                             <strong>{{$investissement->user_data->nom_complet}}</strong>
                                         </td>
                                         <td>{{$investissement->projet_data->intitule}}</td>
-                                        <td>{{$investissement->montant}} XAF</td>
+                                        <td>{{number_format($investissement->montant, 0, ',', ' ')}} XAF</td>
                                         <td>{{$investissement->date_versement}}</td>
+                                        <td>{{$investissement->numero_versement}}</td>
                                         <td>
                                             <a href="{{route('investissement.edit', $investissement->id)}}"
                                                 class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>

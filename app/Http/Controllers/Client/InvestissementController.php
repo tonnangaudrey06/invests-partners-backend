@@ -39,6 +39,7 @@ class InvestissementController extends Controller
                 'investisseur' => 'required|:investissements',
                 'projet' => 'required|:investissements',
                 'montant_investi' => 'required|:investissements',
+                'numero_versement' => 'required|:investissements',
             ],
 
             [
@@ -46,6 +47,7 @@ class InvestissementController extends Controller
                 'investisseur.required' => 'Champ obligatoire!',
                 'projet.required' => 'Champ obligatoire!',
                 'montant_investi.required' => 'Champ obligatoire!',
+                'numero_versement.required' => 'Champ obligatoire!',
             ]
         );
 
@@ -54,6 +56,7 @@ class InvestissementController extends Controller
         $data['projet'] = $request->projet;
         $data['date_versement'] = Carbon::parse($request->date_versement);
         $data['montant'] = $request->montant_investi;
+        $data['numero_versement'] = $request->numero_versement;
 
 
 
@@ -90,13 +93,14 @@ class InvestissementController extends Controller
                 'investisseur' => 'required|:investissements',
                 'projet' => 'required|:investissements',
                 'montant_investi' => 'required|:investissements',
+                'numero_versement' => 'required|:investissements',
             ],
 
             [
                 'date_versement.required' => 'Champ obligatoire!',
                 'investisseur.required' => 'Champ obligatoire!',
                 'projet.required' => 'Champ obligatoire!',
-                'montant_investi.required' => 'Champ obligatoire!',
+                'numero_versement.required' => 'Champ obligatoire!',
             ]
         );
 
@@ -105,7 +109,8 @@ class InvestissementController extends Controller
             'user' => $request->investisseur,
             'projet' => $request->projet,
             'date_versement' => Carbon::parse($request->date_versement),
-            'montant' => $request->montant_investi
+            'montant' => $request->montant_investi,
+            'numero_versement' => $request->numero_versement,
         ]);
 
         Toastr::success('Investissement modifié avec succès!', 'Succès');

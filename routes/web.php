@@ -53,13 +53,19 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', function () {
             return redirect()->route('user.administrateur');
         })->name('home');
+        Route::get('/add/{id}', [UserController::class, 'add'])->name('add');        
+        Route::post('/store', [UserController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [UserController::class, 'update'])->name('update');
+        Route::get('/delete/{id}', [UserController::class, 'delete'])->name('delete');
         Route::get('/sous_administrateur', [UserController::class, 'sous_administrateur'])->name('sous_administrateur');
-        Route::get('/conseille', [UserController::class, 'conseille'])->name('conseille');
+        Route::get('/administrateur', [UserController::class, 'administrateur'])->name('administrateur');
+        Route::get('/conseiller', [UserController::class, 'conseille'])->name('conseiller');
         Route::get('/porteur-projet', [UserController::class, 'porteurProjet'])->name('porteur.projet');
         Route::get('/investisseur', [UserController::class, 'investisseur'])->name('investisseur');
         Route::get('/profile/{id?}', [UserController::class, 'show'])->name('profile');
-        Route::post('/', [UserController::class, 'store'])->name('add');
-        Route::post('/{id?}', [UserController::class, 'store'])->name('update');
+        // Route::post('/', [UserController::class, 'store'])->name('add');
+        // Route::post('/{id?}', [UserController::class, 'store'])->name('update');
     });
 
     Route::prefix('profil-investisseur')->name('profil.investisseur.')->group(function () {
@@ -112,13 +118,17 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [ProjetController::class, 'store'])->name('store');
         Route::post('/update/{id}', [ProjetController::class, 'update'])->name('update');
         Route::get('/publish/{id}', [ProjetController::class, 'publish'])->name('publish');
-        Route::get('/{id}', [ProjetController::class, 'show'])->name('details');
+        Route::get('/cloture/{id}', [ProjetController::class, 'cloture'])->name('cloture');
+
+        Route::get('/{id}', [ProjetController::class, 'showp'])->name('details');
+
         Route::get('/ask/infosupp/{id}', [ProjetController::class, 'typemessage'])->name('askinfosupp');
         Route::get('/admin/validate/{id}', [ProjetController::class, 'AdminValidate'])->name('admin.validate');
         Route::post('/admin/infosupp/{id}', [ProjetController::class, 'AdminInfoSupp'])->name('admin.infosupp');
         Route::post('/infosupp/{id}', [ProjetController::class, 'CIInfoSupp'])->name('ci.infosupp');
         Route::get('/validate/{id}', [ProjetController::class, 'CIValidate'])->name('civalidate');
         Route::get('/rejet/{id}', [ProjetController::class, 'Rejeter'])->name('rejet');
+        Route::get('/archives/pp', [ProjetController::class, 'archives'])->name('archives');
     });
     
 });

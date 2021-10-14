@@ -47,8 +47,9 @@
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des {{ lcfirst($title) }}</h4>
                                     <div class="actions d-flex align-items-center">
-                                        <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
-                                            data-bs-target="#userModal">Nouveau {{ $role->name }}</button>
+                                        {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
+                                            data-bs-target="#userModal">Nouveau {{ $role->name }}</button> --}}
+                                            <a href="{{ route('user.add', $role->value) }}" class="btn btn-sm btn-primary me-2" >Nouveau {{ $role->name }}</a>
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -91,13 +92,9 @@
                                                     <td><strong>{{ $user->status }}</strong></td>
                                                 @endif
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-secondary btn-sm">
-                                                        <i class="bx bx-edit"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-danger btn-sm">
-                                                        <i class="bx bx-trash"></i>
-                                                    </button>
-                                                </td>
+                                                    <a href="{{route('user.edit', $user->id)}}" class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
+                                                    <a href="{{route('user.delete', $user->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-xs btn-danger pull-right"><i class="bx bx-trash"></i></i></a>
+                                                        </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -114,7 +111,7 @@
         @include('partials.footer')
     </div>
 
-    <div id="userModal" class="modal fade" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    {{-- <div id="userModal" class="modal fade" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
         <form id="userForm" action="{{ route('user.add') }}" method="POST">
             @csrf
             <input type="hidden" name="role" value="{{ $role->value }}">
@@ -186,7 +183,7 @@
                 </div>
             </div>
         </form>
-    </div>
+    </div> --}}
 @endsection
 
 @section('script')
