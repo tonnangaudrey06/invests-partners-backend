@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/check/register', [AuthController::class, 'checkRegister']);
 
 Route::get('/routes', function () {
     $routes = [];

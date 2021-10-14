@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\InscriptionMail;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -18,12 +19,15 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'role' => 'required'
         ]);
 
-        $user = User::where('email', $request->email)->whereIn('role', array(3, 4))->with(['role_data', 'documents_fiscaux', 'profil_invest'])->first();
+        $user = User::where('email', $request->email)->where('role', $request->role)->with(['role_data', 'documents_fiscaux', 'profil_invest'])->first();
 
-        if(empty($user)) {
+        // return $this->sendError(null, $user, 500);
+
+        if (empty($user)) {
             return $this->sendError("Ce compte n'existe pas. Créez-en un avant de vous connecter.", null, 500);
         }
 
@@ -33,9 +37,14 @@ class AuthController extends Controller
             Passport::personalAccessTokensExpireIn(now()->addMinutes(1));
         }
 
-        if (!Auth::attempt($credentials)) {
+
+        if (!Hash::check($request->password, $user->password)) {
             return $this->sendError("Votre mot de passe est incorrect. Modifiez-le puis réessayez.", null, 500);
         }
+
+        // if (!Auth::attempt($credentials)) {
+        //     return $this->sendError("Votre mot de passe est incorrect. Modifiez-le puis réessayez.", null, 500);
+        // }
 
         $data['user'] = $user;
         $data['token'] = $user->createToken($request->email)->accessToken;
@@ -67,19 +76,20 @@ class AuthController extends Controller
         $data['password'] = Hash::make($request->password);
         $data['folder'] = hexdec(uniqid());
 
-        $email = User::where('email', $request->email)->first();
-        $telephone = User::where('telephone', $request->telephone)->first();
+        // $email = User::where('email', $request->email)->get();
+        // $telephone = User::where('telephone', $request->telephone)->get();
 
-        if(!empty($email)) {
-            return $this->sendError("L'email '$request->email' à déjà été utilisé pour un compte. Veuillez fournir une autre adresse mail.", null, 500);
-        }
+        // if(!empty($email)) {
 
-        if(!empty($telephone)) {
-            return $this->sendError("Le numéro de téléphone '$request->telephone' à déjà été utilisé pour un compte. Veuillez fournir un autre numéro de téléphone.", null, 500);
-        }
+        //     return $this->sendError("L'email '$request->email' à déjà été utilisé pour un compte. Veuillez fournir une autre adresse mail.", null, 500);
+        // }
+
+        // if(!empty($telephone)) {
+        //     return $this->sendError("Le numéro de téléphone '$request->telephone' à déjà été utilisé pour un compte. Veuillez fournir un autre numéro de téléphone.", null, 500);
+        // }
 
         try {
-            Storage::disk('public')->makeDirectory('uploads/'. $data['folder']);
+            Storage::disk('public')->makeDirectory('uploads/' . $data['folder']);
         } catch (\Throwable $th) {
             return $this->sendError("La création de votre compte a échoué, veuillez réessayer. Si le problème persiste, veuillez contacter Invest & Partners pour obtenir de l'aide.", null, 500);
         }
@@ -92,5 +102,21 @@ class AuthController extends Controller
             ->queue(new InscriptionMail($user->toArray()));
 
         return $this->sendResponse($user, 'User registered');
+    }
+
+    public function checkRegister(Request $request)
+    {
+        $email = User::where('email', $request->email)->where('role', $request->role)->get();
+        $telephone = User::where('telephone', $request->telephone)->where('role', $request->role)->get();
+
+        if (count($email) > 0) {
+            return $this->sendError("L'email '$request->email' à déjà été utilisé pour un compte. Veuillez fournir une autre adresse mail.", null, 500);
+        }
+
+        if (count($telephone) > 0) {
+            return $this->sendError("Le numéro de téléphone '$request->telephone' à déjà été utilisé pour un compte. Veuillez fournir un autre numéro de téléphone.", null, 500);
+        }
+
+        return $this->sendResponse(null, 'User registratioin form OK');
     }
 }
