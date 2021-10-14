@@ -70,7 +70,7 @@ class ProfilInvestisseurController extends Controller
             ]
         );
         
-        $data = $request->except(['_token']);;
+        $data = $request->except(['_token']);
 
         ProfilInvestisseur::where('id', $id)->update($data);
 

@@ -11,8 +11,6 @@
     <br><br>
     
     <p>Cordialement,</p>
-    
-    <br><br>
 
     <p><strong>Invest & Partners</strong></p>
   </body>

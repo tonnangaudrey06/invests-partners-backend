@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AdminCloture;
 use App\Mail\AdminInfoSupp;
+use App\Mail\AdminPublication;
 use App\Models\Projet;
 use Illuminate\Support\Facades\Mail;
 use Brian2694\Toastr\Facades\Toastr;
@@ -13,16 +15,18 @@ use App\Mail\CIInfoSupp;
 use App\Mail\CIModification;
 use App\Mail\RejetMail;
 use App\Models\Archive;
+use App\Models\Investissement;
 use App\Models\Secteur;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image as Image;
 
 class ProjetController extends Controller
 {
     public function index()
     {
-        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'AUTRE')->get();
+        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'AUTRE')->where('etat', '!=', 'CLOTURE')->get();
         // $sect = Secteur::where('user', Auth()->user()->role)->get();
         // $pro = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('user', Auth()->user()->id)->get();
         // return response()->json($projets);
@@ -31,9 +35,18 @@ class ProjetController extends Controller
 
     public function index_ip()
     {
-        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'IP')->get();
+        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'IP')->where('etat', '!=', 'CLOTURE')->get();
         // $sect = Secteur::where('user', Auth()->user()->role)->get();
         // $pro = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('user', Auth()->user()->id)->get();
+        // return response()->json($projets);
+        return view('pages.projet.home', compact('projets'));
+    }
+
+    public function archives()
+    {
+
+        // dd('dfgdfgd');
+        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('etat', 'CLOTURE')->get();
         // return response()->json($projets);
         return view('pages.projet.home', compact('projets'));
     }
@@ -46,33 +59,34 @@ class ProjetController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'intitule' => 'bail|required|:projets',
-            'pays_activite' => 'bail|required|string|:projets',
-            'ville_activite' => 'bail|required|string|:projets',
-            'description' => 'bail|required|:projets',
-            'financement' => 'bail|required|string|:projets',
-            'secteur' => 'bail|required|:projets',
-            'logo' => 'mimes:jpg,jpeg,png',
-            'taux_rentabilite' => 'required|:projets',
-            'duree' => 'required|:projets',
-            'delai_recup' => 'required|:projets',
-            'ca_previsionnel' => 'required|:projets',
-        ],
-    
-        [
-            'taux_rentabilite.required' => 'Champ obligatoire!',
-            'duree.required' => 'Champ obligatoire!',
-            'delai_recup.required' => 'Champ obligatoire!',
-            'ca_previsionnel.required' => 'Champ obligatoire!',
-            'intitule.required' => 'Champ obligatoire!',
-            'pays_activite.required' => 'Champ obligatoire!',
-            'ville_activite.required' => 'Champ obligatoire!',
-            'description.required' => 'Champ obligatoire!',
-            'financement.required' => 'Champ obligatoire!',
-            'secteur.required' => 'Champ obligatoire!',
-        ]
-    );
+        $request->validate(
+            [
+                'intitule' => 'bail|required|:projets',
+                'pays_activite' => 'bail|required|string|:projets',
+                'ville_activite' => 'bail|required|string|:projets',
+                'description' => 'bail|required|:projets',
+                'financement' => 'bail|required|string|:projets',
+                'secteur' => 'bail|required|:projets',
+                'logo' => 'mimes:jpg,jpeg,png',
+                'taux_rentabilite' => 'required|:projets',
+                'duree' => 'required|:projets',
+                'delai_recup' => 'required|:projets',
+                'ca_previsionnel' => 'required|:projets',
+            ],
+
+            [
+                'taux_rentabilite.required' => 'Champ obligatoire!',
+                'duree.required' => 'Champ obligatoire!',
+                'delai_recup.required' => 'Champ obligatoire!',
+                'ca_previsionnel.required' => 'Champ obligatoire!',
+                'intitule.required' => 'Champ obligatoire!',
+                'pays_activite.required' => 'Champ obligatoire!',
+                'ville_activite.required' => 'Champ obligatoire!',
+                'description.required' => 'Champ obligatoire!',
+                'financement.required' => 'Champ obligatoire!',
+                'secteur.required' => 'Champ obligatoire!',
+            ]
+        );
 
         $logo = $request->file('logo');
 
@@ -88,7 +102,7 @@ class ProjetController extends Controller
         $data['delai_recup'] = $request->delai_recup;
         $data['ca_previsionnel'] = $request->ca_previsionnel;
         $data['avancement'] = $request->avancement;
-       
+
         $data['user'] = Auth()->user()->id;
         $data['type'] = 'IP';
         $data['etat'] = 'PUBLIE';
@@ -112,7 +126,7 @@ class ProjetController extends Controller
         // Save all project medias
         foreach ($medias as $media) {
             $extension = $media->getClientOriginalExtension();
-            
+
             $data = [
                 'projet' => $projet->id,
                 'nom' => $media->getClientOriginalName()
@@ -122,7 +136,7 @@ class ProjetController extends Controller
                 $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/documents') . '/' . $data['nom'];
                 $data['type'] = 'FICHIER';
                 $media->storeAs('uploads/projets/' . $projet->folder . '/documents/', $data['nom'], ['disk' => 'public']);
-            } else if(in_array($extension, Archive::getAllowedImages())) {
+            } else if (in_array($extension, Archive::getAllowedImages())) {
                 $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/images') . '/' . $data['nom'];
                 $data['type'] = 'IMAGE';
                 $media->storeAs('uploads/projets/' . $projet->folder . '/images/', $data['nom'], ['disk' => 'public']);
@@ -135,7 +149,7 @@ class ProjetController extends Controller
             Archive::create($data);
         }
 
-        
+
         // Save actual member
         if (!empty($photo)) {
             $filename = hexdec(uniqid()) . '.' . $photo->getClientOriginalExtension();
@@ -236,17 +250,17 @@ class ProjetController extends Controller
     }
 
 
-    public function show($id)
+    public function showp($id)
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
-        
+
         return view('pages.projet.details', compact('projet'));
     }
 
     public function typemessage($id)
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
-        
+
         return view('pages.projet.askinfo', compact('projet'));
     }
 
@@ -258,8 +272,54 @@ class ProjetController extends Controller
             'etat' => 'PUBLIE',
         ]);
 
+        Mail::to($projet->user_data->email)
+            ->queue(new AdminPublication($projet->toArray()));
+
         Toastr::success('Projet publié avec succès!', 'Succès');
+
+        return back();
+    }
+
+    public function cloture($id)
+    {
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+
+        $invs = Investissement::with(['projet_data', 'user_data'])->where('projet', $id)->get();
+        $invests = $invs->groupBy('projet');
+        $investis = $invests->groupBy('user');
+                                
+                              
+        // return response()->json($projets);
+
+
+
+        // $investisseurs = Investissement::select('*')
+        // ->groupBy('projet')
+        // ->groupBy('id')
+        // ->groupBy('user')
+        // ->where('user', $id)
+        // ->with(['projet_data'])
+        // ->get();
+
+        // return response()->json($investis->user_data->email);
+
+        $projet->update([
+            'etat' => 'CLOTURE',
+        ]);
+
+        Mail::to($projet->user_data->email)
+            ->queue(new AdminCloture($projet->toArray()));
+
+        // foreach($investisseurs as $investisseur){
+        //     Mail::to($projet->user_data->email)
+        //     ->queue(new AdminCloture($projet->toArray()));
+        // }
+
+
         
+
+        Toastr::success('Projet publié avec succès!', 'Succès');
+
         return back();
     }
 
@@ -310,7 +370,7 @@ class ProjetController extends Controller
         $data = array();
         $data['objet'] = $request->objet;
         $data['message'] = $request->message;
-        
+
         // return response()->json($projet);
 
         Mail::to($projet->user_data->email)

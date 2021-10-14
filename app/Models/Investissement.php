@@ -13,6 +13,7 @@ class Investissement extends Model
         'user',
         'projet',
         'date_versement',
+        'numero_versement',
         'montant',
     ];
 

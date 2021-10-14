@@ -111,6 +111,9 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             <a href="" class="btn btn-sm btn-primary disabled me-2">Publier</a>
                             @endif
 
+                            <a href="{{ route('projet.cloture', $projet->id) }}" class="btn btn-sm btn-success me-2">Cloturer</a>
+
+
                             @endif
 
                             {{-- <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button> --}}
@@ -425,7 +428,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                             <button class="accordion-button fw-medium collapsed" type="button"
                                                 data-bs-toggle="collapse" data-bs-target="#collapseOne"
                                                 aria-expanded="false" aria-controls="collapseOne">
-                                                Fichiers #1
+                                                Documents #1
                                             </button>
                                         </h2>
                                         <div id="collapseOne" class="accordion-collapse collapse"
@@ -570,6 +573,8 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                         </div>
                     </div>
                 </div>
+
+                
                 <!-- end col -->
             </div>
             <!-- end row -->

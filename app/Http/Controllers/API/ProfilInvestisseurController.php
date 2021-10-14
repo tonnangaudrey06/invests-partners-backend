@@ -11,7 +11,7 @@ class ProfilInvestisseurController extends Controller
     
     public function index()
     {
-        $profils = ProfilInvestisseur::all();
+        $profils = ProfilInvestisseur::orderBy('montant_min', 'asc')->get();
         return $this->sendResponse($profils, 'Investissor profiles');
     }
 }

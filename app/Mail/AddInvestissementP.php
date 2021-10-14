@@ -34,7 +34,7 @@ class AddInvestissementP extends Mailable
      */
     public function build()
     {
-        return $this->from(Auth()->user()->email)->view('emails.investissementP')
+        return $this->from('info@invest--partners.com')->view('emails.investissementP')
                     ->cc(Auth()->user()->role == 1 ? $this->investissement['user_data']['email'] : $this->admin['email'])
                     ->subject("Nouvel Investissement");
     }

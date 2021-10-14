@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\ProfilInvestisseurController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\InvestissementController;
 use App\Http\Controllers\API\MembreController;
 use App\Http\Controllers\API\MessageController;
@@ -24,6 +25,7 @@ use Illuminate\Support\Str;
 
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/check/register', [AuthController::class, 'checkRegister']);
 
 Route::get('/routes', function () {
     $routes = [];
@@ -42,6 +44,12 @@ Route::get('/routes', function () {
 Route::get('secteur', [SecteurController::class, 'index']);
 
 Route::get('profilinvestisseur', [ProfilInvestisseurController::class, 'index']);
+
+Route::prefix('app')->group(function () {
+    Route::get('/slider', [HomeController::class, 'slider']);
+    Route::get('/partenaire', [HomeController::class, 'partenaire']);
+    Route::get('/projet', [HomeController::class, 'projet']);
+});
 
 
 Route::middleware('auth:api')->group(function () {

@@ -63,6 +63,16 @@
                                 </div>
 
                                 <div class="form-group col-md-12 mb-3">
+                                    <label>Numéro du versement</label>
+                                    <input type="text" class="form-control" name="numero_versement" 
+                                    value="{{$investissement->numero_versement}}">
+
+                                        @error('numéro_versement')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-12 mb-3">
                                     <label>Investisseur</label>
 
                                     <select class="form-control" id="investisseur" name="investisseur">

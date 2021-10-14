@@ -52,7 +52,7 @@
                 </li>
 
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{route('projet.archives')}}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-archive">Archives</span>
                     </a>
@@ -66,7 +66,7 @@
                     <ul class="sub-menu" aria-expanded="false">
                         
                         <li><a href="{{ route('user.sous_administrateur') }}" key="t-admin">Sous-administrateurs</a></li>
-                        <li><a href="{{ route('user.conseille') }}" key="t-counsellor">Conseillers </a></li>
+                        <li><a href="{{ route('user.conseiller') }}" key="t-counsellor">Conseillers </a></li>
                         <li><a href="{{ route('user.porteur.projet') }}" key="t-projet-owner">Porteur projets </a></li>
                         <li><a href="{{ route('user.investisseur') }}" key="t-investisor">Investisseurs </a></li>
                        
@@ -177,7 +177,7 @@
                 
                 @if( $privilege->module == 13 && $privilege->consulter == 1)
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{route('projet.archives')}}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-archive">Archives</span>
                     </a>
@@ -199,7 +199,7 @@
                         
 
                         @if( $privilege->module == 4 && $privilege->consulter == 1)
-                        <li><a href="{{ route('user.conseille') }}" key="t-counsellor">Conseillers </a></li>
+                        <li><a href="{{ route('user.conseiller') }}" key="t-counsellor">Conseillers </a></li>
                         @endif
                         
                         @if( $privilege->module == 5 && $privilege->consulter == 1)
