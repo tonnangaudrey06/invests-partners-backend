@@ -593,13 +593,13 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                                 </td>
                                                 <td style="width: 80%;">
                                                     <h5 class="font-size-14 mb-1"><a target="_blank"
-                                                            href="{{ asset($row->document) }}"
+                                                            href="{{ $row->document }}"
                                                             class="text-dark">{{$row->type}}</a></h5>
                                                     {{-- <small>{{ $row->type }}</small> --}}
                                                 </td>
                                                 <td style="width: 10%;">
                                                     <div class="text-center">
-                                                        <a download href="{{ asset($row->url) }}"
+                                                        <a download href="{{ $row->url }}"
                                                             class="text-dark"><i
                                                                 class="bx bx-download h3 m-0"></i></a>
                                                     </div>
