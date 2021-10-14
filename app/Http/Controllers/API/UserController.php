@@ -44,6 +44,18 @@ class UserController extends Controller
     public function update($id, Request $request)
     {
         $data = $request->except('password');
+        $user = User::find($id);
+
+        $email = User::where('email', $request->email)->first();
+        $telephone = User::where('telephone', $request->telephone)->first();
+
+        if($user->email != $request->email && !empty($email)) {
+            return $this->sendError("L'email '$request->email' à déjà été utilisé pour un compte. Veuillez fournir une autre adresse mail.", null, 500);
+        }
+
+        if($user->telephone != $request->telephone && !empty($telephone)) {
+            return $this->sendError("Le numéro de téléphone '$request->telephone' à déjà été utilisé pour un compte. Veuillez fournir un autre numéro de téléphone.", null, 500);
+        }
 
         User::where('id', $id)->update($data);
 

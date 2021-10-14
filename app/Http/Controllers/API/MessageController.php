@@ -171,7 +171,7 @@ class MessageController extends Controller
         $message = Message::create($data);
 
         $projet = Projet::with(['secteur_data'])->where('id', $request->projet)->get();
-        $admin = Projet::where('id', $request->projet)->get();
+        $admin = User::where('role', 1)->get();
         $invest = User::find($sender);
 
         Mail::to($projet->secteur_data->conseiller_data->email)->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));
