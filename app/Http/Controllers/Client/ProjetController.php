@@ -284,24 +284,25 @@ class ProjetController extends Controller
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
 
-        $invs = Investissement::with(['projet_data', 'user_data'])->where('projet', $id)->get();
-        $invests = $invs->groupBy('projet');
-        $investis = $invests->groupBy('user');
+        // $invs = Investissement::with(['projet_data', 'user_data'])->where('projet', $id)->get();
+        // $invests = $invs->groupBy('projet');
+        // $investis = $invests->groupBy('user');
                                 
                               
         // return response()->json($projets);
 
 
 
-        // $investisseurs = Investissement::select('*')
-        // ->groupBy('projet')
-        // ->groupBy('id')
-        // ->groupBy('user')
-        // ->where('user', $id)
-        // ->with(['projet_data'])
-        // ->get();
+        $investisseurs = Investissement::select('*')
+        ->groupBy('id')
+        ->groupBy('montant')
+        ->groupBy('projet')
+        ->groupBy('user')
+        ->where('user', $id)
+        ->with(['projet_data'])
+        ->get();
 
-        // return response()->json($investis->user_data->email);
+        return response()->json($investisseurs);
 
         $projet->update([
             'etat' => 'CLOTURE',

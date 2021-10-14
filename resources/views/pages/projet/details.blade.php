@@ -111,8 +111,9 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             <a href="" class="btn btn-sm btn-primary disabled me-2">Publier</a>
                             @endif
 
+                            @if($projet->etat == 'PUBLIE')
                             <a href="{{ route('projet.cloture', $projet->id) }}" class="btn btn-sm btn-success me-2">Cloturer</a>
-
+                            @endif
 
                             @endif
 
