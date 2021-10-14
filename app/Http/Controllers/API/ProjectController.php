@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CreationProjetMail;
+use App\Mail\PaiementProjetConseilleMail;
+use App\Mail\PaiementProjetPorteurMail;
 use App\Models\Archive;
 use App\Models\Equipe;
 use App\Models\Membre;
@@ -11,6 +14,7 @@ use App\Models\Projet;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ProjectController extends Controller
 {
@@ -84,9 +88,13 @@ class ProjectController extends Controller
             ]);
         }
 
+        $admin = User::where('role', 1)->first();
 
         // Retrieve projects informations
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
+
+        Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
+        Mail::to($admin->email)->queue(new CreationProjetMail($projet->toArray()));
 
         return $this->sendResponse($projet, 'Project');
     }
@@ -101,6 +109,20 @@ class ProjectController extends Controller
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('user', $id)->get();
         return $this->sendResponse($projet, 'Projects');
+    }
+
+    public function valide($id)
+    {
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->find($id);
+        $projet->etat = 'VALIDE';
+        $projet->save();
+
+        $admin = User::where('role', 1)->first();
+
+        Mail::to($projet->secteur_data->conseiller_data->email)->queue(new PaiementProjetConseilleMail($projet->toArray()));
+        Mail::to($projet->user_data->email)->queue(new PaiementProjetPorteurMail($projet->toArray()));
+        Mail::to($admin->email)->queue(new PaiementProjetConseilleMail($projet->toArray()));
+        return $this->sendResponse($projet, 'Project valide');
     }
 
     public function projetsTown($id, $town, Request $request)

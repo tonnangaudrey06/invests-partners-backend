@@ -57,8 +57,9 @@
                             <div>
                                 <h5 class="font-size-14 mb-4">Nouveaux messages</h5>
                                 <ul class="list-unstyled chat-list" data-simplebar style="height: 500px;">
+                                    @if (!empty($contacts))
                                     @foreach($contacts as $key => $contact)
-                                    <li class="active">
+                                    <li>
                                         <a
                                             href="{{ route('chat.conversation', ['id' => $contact->recepteur->id, 'conversation' => $contact->conversation]) }}">
                                             <div class="d-flex">
@@ -80,8 +81,8 @@
                                                 <div class="flex-grow-1 overflow-hidden">
                                                     <h5 class="text-truncate font-size-14 mb-1">{{
                                                         $contact->recepteur->nom_complet }}</h5>
-                                                    <p class="text-truncate mb-0">{{ $contact->projet->intitule }}</p>
-                                                    <p class="text-truncate small mb-0">{{  $contact->message }}</p>
+                                                    <p class="text-truncate mb-0">{{ $contact->projet ? $contact->projet->intitule : 'Conseil' }}</p>
+                                                    <p class="text-truncate small mb-0">{{ $contact->message }}</p>
                                                 </div>
                                                 <div class="font-size-11">{{
                                                     \Carbon\Carbon::parse($contact->created_at)->diffForHumans() }}
@@ -90,6 +91,7 @@
                                         </a>
                                     </li>
                                     @endforeach
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -175,7 +177,7 @@
                             <div class="p-3 chat-input-section">
                                 @if(!empty($messages))
                                 <form
-                                    action="{{ route('chat.send', ['sender' => auth()->user()->id, 'receiver' => $receiver->id]) }}"
+                                    action="{{ route('chat.send', ['sender' => auth()->user()->id, 'conversation' => $conversation, 'receiver' => $receiver->id]) }}"
                                     method="POST">
                                     @csrf
                                     <div class="row">
