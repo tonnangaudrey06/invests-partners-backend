@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Mail\AdminCloture;
+use App\Mail\AdminClotureI;
 use App\Mail\AdminInfoSupp;
 use App\Mail\AdminPublication;
 use App\Models\Projet;
@@ -15,6 +16,7 @@ use App\Mail\CIInfoSupp;
 use App\Mail\CIModification;
 use App\Mail\RejetMail;
 use App\Models\Archive;
+use App\Models\DocumentFiscaux;
 use App\Models\Investissement;
 use App\Models\Secteur;
 use App\Models\User;
@@ -28,7 +30,7 @@ class ProjetController extends Controller
     {
         $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'AUTRE')->where('etat', '!=', 'CLOTURE')->get();
         // $sect = Secteur::where('user', Auth()->user()->role)->get();
-        // $pro = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('user', Auth()->user()->id)->get();
+        
         // return response()->json($projets);
         return view('pages.projet.home', compact('projets'));
     }
@@ -253,8 +255,11 @@ class ProjetController extends Controller
     public function showp($id)
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+         $docs = DocumentFiscaux::with(['user_data'])->where('user', $projet->user_data->id)->get(); 
 
-        return view('pages.projet.details', compact('projet'));
+        //  return response()->json($doc);
+
+        return view('pages.projet.details', compact('projet', 'docs'));
     }
 
     public function typemessage($id)
@@ -284,24 +289,14 @@ class ProjetController extends Controller
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
 
-        $invs = Investissement::with(['projet_data', 'user_data'])->where('projet', $id)->get();
-        $invests = $invs->groupBy('projet');
-        $investis = $invests->groupBy('user');
-                                
-                              
-        // return response()->json($projets);
+        $investisseurs = Investissement::select('*')
+        ->groupBy('projet')
+        ->groupBy('user')
+        ->where('projet', $id)
+        ->with(['projet_data', 'user_data'])
+        ->get();
 
-
-
-        // $investisseurs = Investissement::select('*')
-        // ->groupBy('projet')
-        // ->groupBy('id')
-        // ->groupBy('user')
-        // ->where('user', $id)
-        // ->with(['projet_data'])
-        // ->get();
-
-        // return response()->json($investis->user_data->email);
+        // return response()->json($investisseurs);
 
         $projet->update([
             'etat' => 'CLOTURE',
@@ -310,15 +305,14 @@ class ProjetController extends Controller
         Mail::to($projet->user_data->email)
             ->queue(new AdminCloture($projet->toArray()));
 
-        // foreach($investisseurs as $investisseur){
-        //     Mail::to($projet->user_data->email)
-        //     ->queue(new AdminCloture($projet->toArray()));
-        // }
+        foreach($investisseurs as $investisseur){
+            // echo($investisseur->user_data->email);
+            
+            Mail::to($investisseur->user_data->email)
+            ->queue(new AdminClotureI($projet->toArray()));
+        }
 
-
-        
-
-        Toastr::success('Projet publié avec succès!', 'Succès');
+        Toastr::success('Projet cloturé avec succès!', 'Succès');
 
         return back();
     }

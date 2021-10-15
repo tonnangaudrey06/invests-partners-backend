@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class AdminValidation extends Mailable
+class AdminClotureI extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,6 +30,6 @@ class AdminValidation extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com')->view('emails.adminvalidation')->subject("Validation Projet {$this->projet['intitule']}");;
+        return $this->from('info@invest--partners.com')->view('emails.adminclotureI')->subject("Cloture Projet {$this->projet['intitule']}");;
     }
 }
