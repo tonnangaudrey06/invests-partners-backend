@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProfilInvestisseur;
 use App\Models\Role;
+use App\Models\Secteur;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
@@ -14,7 +16,7 @@ class UserController extends Controller
 {
     public function administrateur()
     {
-        $users = User::where('role', 1)->with(['role_data'])->get();
+        $users = User::where('role', 1)->with(['role_data', 'profil_invest', 'secteurs_data'])->get();
         $role = (object) [
             'name' => 'administrateur',
             'value' => 1
@@ -24,7 +26,7 @@ class UserController extends Controller
 
     public function sous_administrateur()
     {
-        $users = User::where('role', 5)->with(['role_data'])->get();
+        $users = User::where('role', 5)->with(['role_data', 'profil_invest', 'secteurs_data'])->get();
         $role = (object) [
             'name' => 'sous-administrateur',
             'value' => 5
@@ -34,7 +36,7 @@ class UserController extends Controller
 
     public function conseille()
     {
-        $users = User::where('role', 2)->with(['role_data'])->get();
+        $users = User::where('role', 2)->with(['role_data', 'profil_invest', 'secteurs_data'])->get();
         $role = (object) [
             'name' => 'conseiller',
             'value' => 2
@@ -44,7 +46,7 @@ class UserController extends Controller
 
     public function porteurProjet()
     {
-        $users = User::where('role', 3)->with(['role_data'])->get();
+        $users = User::where('role', 3)->with(['role_data', 'profil_invest', 'secteurs_data'])->get();
         $role = (object) [
             'name' => 'porteur projet',
             'value' => 3
@@ -54,7 +56,7 @@ class UserController extends Controller
 
     public function investisseur()
     {
-        $users = User::where('role', 4)->with(['role_data'])->get();
+        $users = User::where('role', 4)->with(['role_data', 'profil_invest', 'secteurs_data'])->get();
         $role = (object) [
             'name' => 'investisseur',
             'value' => 4
@@ -90,7 +92,10 @@ class UserController extends Controller
     public function add($id)
     {
         $role = Role::find($id);
-        return view('pages.user.add')->with('role', $role);
+
+        $profil = ProfilInvestisseur::all();
+        $secteur  = Secteur::all();
+        return view('pages.user.add')->with('role', $role)->with('profil', $profil)->with('secteur', $secteur);
     }
 
     public function store(Request $request)
@@ -100,7 +105,13 @@ class UserController extends Controller
         $data['folder'] = hexdec(uniqid());
         $data['password'] = Hash::make($request->password);
 
-        User::create($data);
+
+
+       $user =  User::create($data);
+
+       Secteur::where('id', $request->secteur)->update([
+        'user' => $user->id,
+       ]);
 
         Toastr::success('Utilisateur ajouté avec succès!', 'Succès');
 
@@ -110,7 +121,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        return view('pages.user.edit')->with('user', $user);
+        $profil = ProfilInvestisseur::all();
+        return view('pages.user.edit')->with('user', $user)->with('profil', $profil);
     }
 
     public function update($id, Request $request)

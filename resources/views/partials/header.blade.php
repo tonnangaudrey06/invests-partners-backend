@@ -37,7 +37,7 @@
 
             <div class="dropdown d-inline-block ms-1">
                 <button type="button" class="btn header-item noti-icon waves-effect" onclick="redirectTo('{{ route('chat.home') }}')">
-                    <span class="badge bg-danger rounded-pill">3</span>
+                    {{-- <span class="badge bg-danger rounded-pill">3</span> --}}
                     <i class="bx bx-envelope"></i>
                 </button>
             </div>
