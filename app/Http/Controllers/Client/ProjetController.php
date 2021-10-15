@@ -22,13 +22,14 @@ use App\Models\Secteur;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image as Image;
 
 class ProjetController extends Controller
 {
     public function index()
     {
-        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'AUTRE')->where('etat', '!=', 'CLOTURE')->get();
+        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'AUTRE')->where('etat', '!=', 'CLOTURE')->where('etat', '!=', 'REJETE')->get();
         // $sect = Secteur::where('user', Auth()->user()->role)->get();
         
         // return response()->json($projets);
@@ -37,7 +38,7 @@ class ProjetController extends Controller
 
     public function index_ip()
     {
-        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'IP')->where('etat', '!=', 'CLOTURE')->get();
+        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('type', 'IP')->where('etat', '!=', 'CLOTURE')->where('etat', '!=', 'REJETE')->get();
         // $sect = Secteur::where('user', Auth()->user()->role)->get();
         // $pro = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('user', Auth()->user()->id)->get();
         // return response()->json($projets);
@@ -47,8 +48,7 @@ class ProjetController extends Controller
     public function archives()
     {
 
-        // dd('dfgdfgd');
-        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('etat', 'CLOTURE')->get();
+        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('etat', 'REJETE')->orwhere('etat', 'CLOTURE')->get();
         // return response()->json($projets);
         return view('pages.projet.home', compact('projets'));
     }
@@ -249,6 +249,20 @@ class ProjetController extends Controller
         Toastr::success('Projet modifié avec succès!', 'Succès');
 
         return redirect()->route('projet.details', $projet->id);
+    }
+
+    public function delete($id){
+        
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+
+        
+        File::deleteDirectory(storage_path('app/public/uploads/') . $projet->user_data->folder . '/' . 'projets/' . $projet->folder);
+        $projet->delete();
+
+        Toastr::success('Projet supprimé avec succès!', 'Success');
+
+        return redirect()->route('projet.home');
+        
     }
 
 

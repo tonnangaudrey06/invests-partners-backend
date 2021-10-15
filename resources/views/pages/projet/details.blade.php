@@ -63,10 +63,10 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             <a href="{{ route('projet.askinfosupp', $projet->id) }}"
                                 class="btn btn-sm btn-info me-2">Demander info supp</a>
                             <a href="{{ route('projet.rejet', $projet->id) }}" class="btn btn-sm btn-dark me-2">Rejeter</a>
-                            @else
+                            {{-- @else
                             <a href=""
                                 class="btn btn-sm btn-success disabled me-2">Approuver</a>
-                            <a href="" class="btn btn-sm btn-dark disabled me-2">Rejeter</a>
+                            <a href="" class="btn btn-sm btn-dark disabled me-2">Rejeter</a> --}}
                             @endif
 
                             @else
@@ -76,10 +76,10 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             <a href="{{ route('projet.askinfosupp', $projet->id) }}"
                                 class="btn btn-sm btn-info me-2">Demander info supp</a>
                             <a href="{{ route('projet.rejet', $projet->id) }}" class="btn btn-sm btn-dark me-2">Rejeter</a>
-                            @else
+                            {{-- @else
                             <a href="" class="btn btn-sm btn-success disabled me-2">Approuver</a>
                             <a href="" class="btn btn-sm btn-info disabled me-2">Demander info supp</a>
-                            <a href="" class="btn btn-sm btn-dark disabled me-2">Rejeter</a>
+                            <a href="" class="btn btn-sm btn-dark disabled me-2">Rejeter</a> --}}
                             @endif
 
                             @endif
@@ -91,24 +91,26 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             @if($projet->etat == 'VALIDE' || $projet->etat == 'COMPLET' || $projet->etat == 'PUBLIE')
                             <a href="{{ route('projet.edit', $projet->id) }}"
                                 class="btn btn-sm btn-warning me-2">Modifier</a>
-                            @else
-                            <a class="btn btn-sm btn-warning disabled me-2">Modifier</a>
+                            {{-- @else
+                            <a class="btn btn-sm btn-warning disabled me-2">Modifier</a> --}}
                             @endif
 
+                            @if( $projet->etat == 'PUBLIE')
                             <a href="{{ route('projet.add') }}" class="btn btn-sm btn-info me-2">Actualités</a>
+                            @endif
 
                             @foreach ($privileges as $privilege)
 
                             @if( $privilege->module == 1 && $privilege->supprimer == 1)
-                            <a href="{{ route('projet.add') }}" class="btn btn-sm btn-danger me-2">Supprimer</a>
+                            <a href="{{ route('projet.delete', $projet->id) }}" class="btn btn-sm btn-danger me-2">Supprimer</a>
                             @endif
                             @endforeach
 
                             @if (Auth()->user()->role == 1 )
                             @if($projet->etat == 'COMPLET')
                             <a href="{{ route('projet.publish', $projet->id) }}" class="btn btn-sm btn-primary me-2">Publier</a>
-                            @else
-                            <a href="" class="btn btn-sm btn-primary disabled me-2">Publier</a>
+                            {{-- @else
+                            <a href="" class="btn btn-sm btn-primary disabled me-2">Publier</a> --}}
                             @endif
 
                             @if($projet->etat == 'PUBLIE')
@@ -117,7 +119,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
                             @endif
 
-                            {{-- <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button> --}}
+                            <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
 
 
                         </div>

@@ -116,6 +116,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/add', [ProjetController::class, 'add'])->name('add');
         Route::get('/edit/{id}', [ProjetController::class, 'edit'])->name('edit');
         Route::post('/store', [ProjetController::class, 'store'])->name('store');
+        Route::get('/delete/{id}', [ProjetController::class, 'delete'])->name('delete');
         Route::post('/update/{id}', [ProjetController::class, 'update'])->name('update');
         Route::get('/publish/{id}', [ProjetController::class, 'publish'])->name('publish');
         Route::get('/cloture/{id}', [ProjetController::class, 'cloture'])->name('cloture');
