@@ -38,8 +38,8 @@
                                     </div>
 
                                     <div class="row">
-                                        <h5 class="font-size-15">Total: <span class="badge  bg-primary font-size-14">{{ $investisseurs->count() }}</span></h5>
-                                        <h5 class="font-size-15">Montant investi : <span class="badge bg-primary font-size-14">{{ $investissement }} FCFA </span></h5>
+                                        <h5 class="font-size-15">Total: <span class="badge  bg-primary font-size-14">@numberFormat($investisseurs->count() )</span></h5>
+                                        <h5 class="font-size-15">Montant investi : <span class="badge bg-primary font-size-14">@numberFormat($investissement) FCFA </span></h5>
 
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                     <div class="col-sm-6">
                                         <div>
                                             <p class="fw-medium mb-2">Balance :</p>
-                                            <h4>{{ $porteurs->count() }}</h4>
+                                            <h4>@numberFormat($porteurs->count())</h4>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -111,8 +111,8 @@
                                     </div>
 
                                     <div class="row">
-                                        <h5 class="font-size-15">Total: <span class="badge  bg-success font-size-14">{{ $porteurs->count() }}</span></h5>
-                                        <h5 class="font-size-15">Besoin en financement : <span class="badge bg-success font-size-14">{{ $besoinFinancement }} FCFA</span></h5>
+                                        <h5 class="font-size-15">Total: <span class="badge  bg-success font-size-14">@numberFormat($porteurs->count() )</span></h5>
+                                        <h5 class="font-size-15">Besoin en financement : <span class="badge bg-success font-size-14">@numberFormat($besoinFinancement ) FCFA</span></h5>
 
                                     </div>
                                 </div>
@@ -134,8 +134,8 @@
                                         </div>
     
                                         <div class="row">
-                                            <h5 class="font-size-15">Total: <span class="badge  bg-warning font-size-14">{{ $conseiller->count() }}</span></h5>
-                                            <h5 class="font-size-15">Secteurs couverts : <span class="badge bg-warning font-size-14">{{$secteurCouv->count()}}</span></h5>
+                                            <h5 class="font-size-15">Total: <span class="badge  bg-warning font-size-14">@numberFormat( $conseiller->count() )</span></h5>
+                                            <h5 class="font-size-15">Secteurs couverts : <span class="badge bg-warning font-size-14">@numberFormat($secteurCouv->count())</span></h5>
     
                                         </div>
                                     </div>
@@ -184,7 +184,7 @@
                                     <div class="mb-4">
                                         <i class="bx bx-map-pin text-info display-4"></i>
                                     </div>
-                                    <h3>{{ $nbProjets->count() }}</h3>
+                                    <h3>@numberFormat($nbProjets->count() )</h3>
                                     <p>Projets enregistrés</p>
                                 </div>
                                 <hr>
@@ -198,13 +198,13 @@
                                         <div class="col-6">
                                             <div>
                                                 <strong><p class="text-muted text-truncate mb-2 font-weight-bold"> I&P </p></strong>
-                                                <h5 class="mb-0 text-primary">{{ $ip }}</h5>
+                                                <h5 class="mb-0 text-primary">@numberFormat($ip )</h5>
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div>
                                                 <strong> <p class="text-muted text-truncate mb-2 font-weight-bold">PLATEFORME</p> </strong>
-                                                <h5 class="mb-0 text-primary">{{ $autres }}</h5>
+                                                <h5 class="mb-0 text-primary">@numberFormat( $autres )</h5>
                                             </div>
                                         </div>
                                     </div>

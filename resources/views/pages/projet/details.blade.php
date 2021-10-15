@@ -153,7 +153,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                                     <h4 class="text-wrap font-size-16">{{ $projet->intitule }} <span class="btn btn-info mr-auto">{{ $projet->etat }}</span></h4>
                                                 </strong>
                                                 <strong>
-                                                    <p class=" text-primary font-size-15">{{ $projet->financement }} XAF</p>
+                                                    <p class=" text-primary font-size-15">{{ number_format($projet->financement, 0, ',', ' ') }} XAF</p>
                                                 </strong>
                                             </div>
 
@@ -168,7 +168,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                                     <h4 class="text-wrap float-end  font-size-16">Investissement(s) recu(s) <span class="btn btn-success mr-auto">{{ $nber_invest }} investisseurs</h4>
                                                 </strong>
                                                 <strong>
-                                                    <p class=" text-primary float-end font-size-15">{{ $total_invest }} XAF</p>
+                                                    <p class=" text-primary float-end font-size-15">{{ number_format($total_invest, 0, ',', ' ') }} XAF</p>
                                                 </strong>
                                             </div>
                                         </div>
@@ -261,7 +261,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                                     mois</span>
                                             </p>
                                             <p><i class="mdi mdi-chevron-right text-primary me-1"></i> CA PREVISIONNEL:
-                                                <span class="text-primary">{{$projet->ca_previsionnel}} XAF</span>
+                                                <span class="text-primary">{{number_format($projet->ca_previsionnel, 0, ',', ' ')}} XAF</span>
                                                 <p><i class="mdi mdi-chevron-right text-primary me-1"></i> DUREE DU
                                                     PROJET: <span class="text-primary">{{$projet->duree}} mois</span>
                                                 </p>
