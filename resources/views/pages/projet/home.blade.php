@@ -97,7 +97,7 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                     <div
                                         class="d-flex flex-wrap justify-content-between align-items-center mt-4 mb-4 font-size-14 font-weight-bolder">
                                         <p class="text-muted">STATUT : {{ $projet->avancement }}</p>
-                                        <p class="text-primary">{{ $projet->financement }} XAF</p>
+                                        <p class="text-primary">@numberFormat($projet->financement) XAF</p>
                                     </div>
 
 

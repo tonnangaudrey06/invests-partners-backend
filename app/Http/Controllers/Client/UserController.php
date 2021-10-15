@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -84,7 +85,7 @@ class UserController extends Controller
     //     return back();
     // }
 
-   
+
 
     public function add($id)
     {
@@ -96,6 +97,7 @@ class UserController extends Controller
     {
 
         $data = $request->input();
+        $data['folder'] = hexdec(uniqid());
         $data['password'] = Hash::make($request->password);
 
         User::create($data);
@@ -111,7 +113,7 @@ class UserController extends Controller
         return view('pages.user.edit')->with('user', $user);
     }
 
-     public function update($id, Request $request)
+    public function update($id, Request $request)
     {
 
         // dd('tyrt');
@@ -130,14 +132,20 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function delete($id){
-        
+    public function delete($id)
+    {
+
         $user = User::find($id);
+
+        if ($user->folder != null) {
+
+            File::deleteDirectory(storage_path('app/public/uploads/') . $user->folder);
+        }
+
 
         User::find($id)->delete();
         Toastr::success('Utilisateur supprimé avec succès!', 'Success');
 
         return redirect()->back();
-        
     }
 }

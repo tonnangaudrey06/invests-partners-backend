@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot()  
     {
         View::share('currentUser', Auth::user());
         if(config('app.env') === 'production') {
@@ -33,5 +34,11 @@ class AppServiceProvider extends ServiceProvider
         }
 
         \Carbon\Carbon::setLocale('fr');
+
+        Blade::directive('numberFormat', function($value){
+
+            return "<?php echo number_format($value, 0, ',', ' ');?> ";
+        });
+        
     }
 }
