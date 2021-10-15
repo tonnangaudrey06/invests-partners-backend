@@ -22,7 +22,7 @@ class HomeController extends Controller
 
     public function projet()
     {
-        $projets =Projet::where('typr', 'IP')->get();
+        $projets =Projet::where('type', 'IP')->get();
         return $this->sendResponse($projets, 'App projets');
     }
 }
