@@ -82,6 +82,8 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('projet')->group(function () {
         Route::get('/', [ProjectController::class, 'index']);
         Route::post('/', [ProjectController::class, 'store']);
+        Route::post('/mobile', [ProjectController::class, 'store2']);
+        Route::post('/mobile/{id}/membre', [ProjectController::class, 'store3']);
         Route::get('/{id}', [ProjectController::class, 'show']);
         Route::post('/{id}/valide', [ProjectController::class, 'valide']);
     });
