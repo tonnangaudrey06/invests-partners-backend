@@ -29,9 +29,7 @@ class ProjectController extends Controller
         $logo = $request->file('logo');
         $doc_presentation = $request->file('doc_presentation');
         $medias = $request->has('medias') ? $request->file('medias') : [];
-
         $membres = $request->has('membres') ? json_decode($request->input('membres')) : [];
-
         $data = json_decode($request->input('projet'), true);
 
         $user = User::find($data['user']);
@@ -93,8 +91,13 @@ class ProjectController extends Controller
         // Retrieve projects informations
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
 
-        Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
-        Mail::to($admin->email)->queue(new CreationProjetMail($projet->toArray()));
+        if (!empty($projet->secteur_data->conseiller_data)) {
+            Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
+        }
+
+        if (!empty($admin)) {
+            Mail::to($admin->email)->queue(new CreationProjetMail($projet->toArray()));
+        }
 
         return $this->sendResponse($projet, 'Project');
     }

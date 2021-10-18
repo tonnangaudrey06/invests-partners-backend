@@ -19,9 +19,12 @@ class CreateEvenementsTable extends Migration
             $table->timestamp('date_evenement');
             $table->time('heure_debut');
             $table->string('lieu');
+            $table->integer('prix')->nullable();
+            $table->integer('places')->nullable();
             $table->integer('duree')->nullable();
-            $table->unsignedBigInteger('organisateur');
-            $table->foreign('organisateur')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('image')->nullable();
+            // $table->unsignedBigInteger('organisateur');
+            // $table->foreign('organisateur')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -36,3 +39,4 @@ class CreateEvenementsTable extends Migration
         Schema::dropIfExists('evenements');
     }
 }
+
