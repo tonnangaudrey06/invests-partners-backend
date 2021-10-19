@@ -115,7 +115,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [EvenementController::class, 'index'])->name('home');
         Route::get('/add', [EvenementController::class, 'add'])->name('add');
         Route::get('/edit/{id}', [EvenementController::class, 'edit'])->name('edit');
-        Route::post('/update/{id}', [EvenementController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [EvenementController::class, 'update'])->name('update');
         Route::post('/store', [EvenementController::class, 'store'])->name('store');
         Route::get('/delete/{id}', [EvenementController::class, 'delete'])->name('delete');
     });
