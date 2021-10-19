@@ -90,13 +90,17 @@ class ProjectController extends Controller
 
         // Retrieve projects informations
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
-
-        if (!empty($projet->secteur_data->conseiller_data)) {
-            Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
-        }
-
-        if (!empty($admin)) {
-            Mail::to($admin->email)->queue(new CreationProjetMail($projet->toArray()));
+        
+        try {
+            if (!empty($projet->secteur_data->conseiller_data)) {
+                Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
+            }
+    
+            if (!empty($admin)) {
+                Mail::to($admin->email)->queue(new CreationProjetMail($projet->toArray()));
+            }
+        } catch (\Throwable $e) {
+            return $this->sendResponse($projet, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
         }
 
         return $this->sendResponse($projet, 'Project');

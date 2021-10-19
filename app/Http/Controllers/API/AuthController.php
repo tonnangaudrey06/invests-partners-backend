@@ -90,7 +90,7 @@ class AuthController extends Controller
 
         try {
             Storage::disk('public')->makeDirectory('uploads/' . $data['folder']);
-        } catch (\Throwable $th) {
+        } catch (\Throwable $e) {
             return $this->sendError("La création de votre compte a échoué, veuillez réessayer. Si le problème persiste, veuillez contacter Invest & Partners pour obtenir de l'aide.", null, 500);
         }
 
