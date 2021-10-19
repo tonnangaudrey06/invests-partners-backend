@@ -50,7 +50,7 @@
 
                                 <div class="row mb-4">
                                     <div class="col-md-6">
-                                        <label for="dateevent">Date de l'événement</label>
+                                        <label git for="dateevent">Date de l'événement</label>
                                         <div class="input-group" id="dateevent">
                                             <input type="text" class="form-control" placeholder="dd M, yyyy"
                                                 data-date-format="dd M, yyyy" data-date-container='#dateevent'
