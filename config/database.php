@@ -2,11 +2,7 @@
 
 use Illuminate\Support\Str;
 
-$url = ["host" => '', "user" => '', "pass" => '', "path" => ''];
-
-if (config('app.env') === 'production') {
-    $url = parse_url('postgres://cmmhulzapkzayr:a83b701eecfff4baca1d1b96c6956482fc86a2f210c96330d04422ea303bb2e8@ec2-34-202-115-62.compute-1.amazonaws.com:5432/dfp12vlt6fq3vo');
-}
+$url = getenv("DATABASE_URL") ? parse_url(getenv("DATABASE_URL")) : ["host" => '', "user" => '', "pass" => '', "path" => ''];
 
 $host = $url["host"];
 $username = $url["user"];
