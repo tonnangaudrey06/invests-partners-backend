@@ -43,14 +43,14 @@
                             <h4 class="card-title mb-4">Créer un nouvel événement</h4>
                             <form>
                                 <div class="row mb-4">
-                                    <label for="projectname" class="col-form-label">Nom de l'événement</label>
+                                    <label for="projectname">Nom de l'événement</label>
                                     <input id="projectname" name="projectname" type="text" class="form-control"
                                         placeholder="Nom">
                                 </div>
 
                                 <div class="row mb-4">
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Date de l'événement</label>
+                                        <label for="dateevent">Date de l'événement</label>
                                         <div class="input-group" id="dateevent">
                                             <input type="text" class="form-control" placeholder="dd M, yyyy"
                                                 data-date-format="dd M, yyyy" data-date-container='#dateevent'
@@ -59,7 +59,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="col-form-label">Heure de l'événement</label>
+                                        <label for="timepicker-input-group2">Heure de l'événement</label>
                                         <div class="input-group" id="timepicker-input-group2">
                                             <input id="timepicker2" type="text" class="form-control"
                                                 data-provide="timepicker">
