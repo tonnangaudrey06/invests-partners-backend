@@ -3,6 +3,7 @@
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\AuthController;
 use App\Http\Controllers\Client\DashboardController;
+use App\Http\Controllers\Client\EvenementController;
 use App\Http\Controllers\Client\InvestissementController;
 use App\Http\Controllers\Client\SecteurController;
 use App\Http\Controllers\Client\MessageController;
@@ -109,6 +110,16 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [HomeController::class, 'StorePartenaires'])->name('store');
         Route::get('/delete/{id}', [HomeController::class, 'DeletePartenaire'])->name('delete');
     });
+
+    Route::prefix('events')->name('events.')->group(function () {
+        Route::get('/', [EvenementController::class, 'index'])->name('home');
+        Route::get('/add', [EvenementController::class, 'add'])->name('add');
+        Route::get('/edit/{id}', [EvenementController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [EvenementController::class, 'edit'])->name('edit');
+        Route::post('/store', [EvenementController::class, 'store'])->name('store');
+        Route::get('/delete/{id}', [EvenementController::class, 'delete'])->name('delete');
+    });
+
 
     Route::prefix('projet')->name('projet.')->group(function () {
         Route::get('/', [ProjetController::class, 'index'])->name('home');

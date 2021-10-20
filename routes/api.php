@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/check/register', [AuthController::class, 'checkRegister']);
+Route::post('/send/mail', [UserController::class, 'sendMailInfo']);
 
 Route::get('/routes', function () {
     $routes = [];
@@ -81,6 +82,8 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('projet')->group(function () {
         Route::get('/', [ProjectController::class, 'index']);
         Route::post('/', [ProjectController::class, 'store']);
+        Route::post('/mobile', [ProjectController::class, 'store2']);
+        Route::post('/mobile/{id}/membre', [ProjectController::class, 'store3']);
         Route::get('/{id}', [ProjectController::class, 'show']);
         Route::post('/{id}/valide', [ProjectController::class, 'valide']);
     });

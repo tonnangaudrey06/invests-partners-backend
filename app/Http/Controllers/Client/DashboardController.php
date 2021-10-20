@@ -37,7 +37,4 @@ class DashboardController extends Controller
             'besoinFinancement'=>$besoinFinancement
         ]);
     }
-
-
-
 }

@@ -45,7 +45,7 @@
                 </li>
 
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{route('events.home')}}" class="waves-effect">
                         <i class="bx bx-calendar"></i>
                         <span key="t-evenement">Événements</span>
                     </a>

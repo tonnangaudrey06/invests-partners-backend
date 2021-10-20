@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ContactMail;
 use App\Models\DocumentFiscaux;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -122,5 +124,14 @@ class UserController extends Controller
         $document = DocumentFiscaux::create($data);
 
         return $this->show($id);
+    }
+    
+    public function sendMailInfo(Request $request)
+    {
+        $data = $request->input();
+        
+        Mail::to('info@invest--partners.com')->queue(new ContactMail($data));
+
+        return $this->sendResponse(null, 'Mail send');
     }
 }
