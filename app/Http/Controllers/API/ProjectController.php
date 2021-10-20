@@ -182,6 +182,8 @@ class ProjectController extends Controller
     {
         $membres = $request->has('membres') ? json_encode($request->input('membres')) : [];
 
+        return $this->sendResponse($membres, 'Project');
+
         // Add all members to project
         foreach ($membres as $membre) {
             Equipe::create([
