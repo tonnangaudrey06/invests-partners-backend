@@ -180,7 +180,7 @@ class ProjectController extends Controller
 
     public function store3($id, Request $request)
     {
-        $membres = $request->has('membres') ? $request->input('membres') : [];
+        $membres = $request->has('membres') ? json_encode($request->input('membres')) : [];
 
         // Add all members to project
         foreach ($membres as $membre) {
