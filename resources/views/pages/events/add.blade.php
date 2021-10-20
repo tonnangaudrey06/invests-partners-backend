@@ -88,15 +88,13 @@
                                         <label class="input-group-text" for="event-image">Télécharger</label>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-12 mb-4">
                                     <label class="form-label">Description</label>
                                     <textarea class="form-control" rows="3"></textarea>
                                 </div>
                             </form>
-                            <div class="row justify-content-end">
-                                <div class="col-lg-10">
-                                    <button type="submit" class="btn btn-primary">Create Project</button>
-                                </div>
+                            <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
                             </div>
 
                         </div>
