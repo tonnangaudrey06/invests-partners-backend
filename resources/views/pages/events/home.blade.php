@@ -3,7 +3,8 @@
 @section('title', 'Évenements - ' . config('app.name'))
 
 @section('style')
-{{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
+{{--
+<link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
 
 <!-- Datatable -->
 <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
@@ -48,7 +49,7 @@
                                 <h4 class="card-title">Liste des différents évenements</h4>
                                 <div class="actions d-flex align-items-center">
                                     {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
-                                            data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
+                                        data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
                                     <a href="{{route('events.add')}}" class="btn btn-sm btn-primary me-2">Nouveau
                                         évenement</a>
                                     <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
@@ -71,51 +72,43 @@
                                 </thead>
 
                                 <tbody>
+                                    @foreach ($events as $event)
                                     <tr>
                                         <td>
-                                            <h5 class="font-size-14 mb-1"><a href="javascript: void(0);" class="text-dark">David McHenry</a></h5>
-                                            <p class="text-muted mb-0">UI/UX Designer</p>
+                                            <h5 class="font-size-14 mb-1"><a href="javascript: void(0);"
+                                                    class="text-dark">{{ $event->libelle }}</a></h5>
+                                            <p class="text-muted mb-0">{{ $event->lieu }}</p>
                                         </td>
                                         <td>
-                                            <h5 class="font-size-14 mb-1"><a href="javascript: void(0);" class="text-dark">David McHenry</a></h5>
-                                            <p class="text-muted mb-0">UI/UX Designer</p>
+                                            <h5 class="font-size-14 mb-1 text-dark">@dateFormat($event->date_evenement)
+                                            </h5>
+                                            <p class="text-muted mb-0">@timeFormat($event->heure_debut)</p>
                                         </td>
                                         <td>
-                                            5 000 XAF
+                                            @if (!empty($event->prix))
+                                            @numberFormat($event->prix) XAF
+                                            @else
+                                            Gratuit
+                                            @endif
                                         </td>
                                         <td>
-                                            50 places
+                                            @numberFormat($event->places) places
                                         </td>
                                         <td>
                                             20 places
                                         </td>
                                         <td>
-                                            20 places
-                                        </td>
-                                    </tr>
-                                    {{-- @foreach ($evenements as $evenement)
-                                    <tr>
-                                        <td>
-                                            <strong>{{$evenement->libelle}}</strong>
-                                        </td>
-                                        <td>{{$evenement->lieu}}</td>
-                                        <td>{{number_format($investissement->montant, 0, ',', ' ')}} XAF</td>
-                                        <td>{{$investissement->date_versement}}</td>
-                                        <td>{{$investissement->numero_versement}}</td>
-                                        <td>
-                                            <a href="{{route('investissement.edit', $investissement->id)}}"
-                                                class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
-                                            <a href="{{route('investissement.delete', $investissement->id)}}"
+                                            <a href="{{route('events.edit', $event->id)}}"
+                                                class="btn btn-sm btn-warning float-right"><i class="bx bx-edit"></i></a>
+                                            <a href="{{route('events.delete', $event->id)}}"
                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                class="btn btn-xs btn-danger pull-right"><i
+                                                class="btn btn-sm btn-danger float-right"><i
                                                     class="bx bx-trash"></i></i></a>
-
                                         </td>
                                     </tr>
-                                    @endforeach --}}
+                                    @endforeach
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div> <!-- end col -->
