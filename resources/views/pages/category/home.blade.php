@@ -102,14 +102,7 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                         <td>{{ $categorie->conseiller_data->nom_complet ?? 'Aucun' }}</td>
                                         <td><img src="{{asset($categorie->photo)}}" style="height:50px; width: 50px;"></td>
                                         <td class="text-center">
-                                            {{-- <button id="categorie-edit-button" type="button"
-                                                data-id="{{$categorie->id}}" class=" btn btn-secondary btn-sm"
-                                                data-bs-toggle="modal" data-bs-target="#categorieModalEdit">
-                                                <i class="bx bx-edit"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm">
-                                                <i class="bx bx-trash"></i>
-                                            </button> --}}
+                                            <a href="{{route('actualites.home', ['secteur', $categorie->id])}}" class="btn btn-xs btn-info pull-right"><i class="bx bx-info-circle"></i></a>
                                             <a href="{{route('category.edit', $categorie->id)}}" class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
                                             <a href="{{route('category.delete', $categorie->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-xs btn-danger pull-right"><i class="bx bx-trash"></i></i></a>
                                         </td>
