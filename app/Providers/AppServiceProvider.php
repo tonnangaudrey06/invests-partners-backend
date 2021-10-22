@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,8 +35,15 @@ class AppServiceProvider extends ServiceProvider
         \Carbon\Carbon::setLocale('fr');
 
         Blade::directive('numberFormat', function($value){
-
             return "<?php echo number_format($value, 0, ',', ' ');?> ";
+        });
+
+        Blade::directive('dateFormat', function($value){
+            return "<?php echo date('d/m/Y', strtotime($value));?> ";
+        });
+
+        Blade::directive('timeFormat', function($value){
+            return "<?php echo date('H:i', strtotime($value));?> ";
         });
         
     }

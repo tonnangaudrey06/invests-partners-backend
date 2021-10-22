@@ -2,11 +2,7 @@
 
 use Illuminate\Support\Str;
 
-$url = ["host" => '', "user" => '', "pass" => '', "path" => ''];
-
-if (config('app.env') === 'production') {
-    $url = parse_url(getenv("DATABASE_URL"));
-}
+$url = getenv("DATABASE_URL") ? parse_url(getenv("DATABASE_URL")) : ["host" => '', "user" => '', "pass" => '', "path" => ''];
 
 $host = $url["host"];
 $username = $url["user"];

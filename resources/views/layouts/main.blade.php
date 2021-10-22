@@ -12,7 +12,9 @@
 
     @yield('style')
 
-    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Bootstrap Css -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -23,7 +25,7 @@
 
 </head>
 
-<body data-sidebar="dark" data-topbar="dark" onload="init();">
+<body data-sidebar="dark" data-topbar="dark">
 
     <div id="layout-wrapper">
 
@@ -48,47 +50,57 @@
             window.location.reload();
         }
 
-        var observe;
-        if (window.attachEvent) {
-            observe = function (element, event, handler) {
-                element.attachEvent('on'+event, handler);
-            };
-        } else {
-            observe = function (element, event, handler) {
-                element.addEventListener(event, handler, false);
-            };
+        function resize () {
+            text.style.height = 'auto';
+            text.style.height = text.scrollHeight+'px';
         }
         
-        function init () {
-            var text = document.getElementById('autoresize');
-            function resize () {
-                text.style.height = 'auto';
-                text.style.height = text.scrollHeight+'px';
-            }
-            /* 0-timeout to get the already changed text */
-            function delayedResize () {
-                window.setTimeout(resize, 0);
-            }
-            observe(text, 'change',  resize);
-            observe(text, 'cut',     delayedResize);
-            observe(text, 'paste',   delayedResize);
-            observe(text, 'drop',    delayedResize);
-            observe(text, 'keydown', delayedResize);
+        function delayedResize () {
+            window.setTimeout(resize, 0);
+        }
 
-            text.focus();
-            text.select();
-            resize();
+        function init () {
+            var observe;
+            if (window.attachEvent) {
+                observe = function (element, event, handler) {
+                    if (element) {
+                        element.attachEvent('on'+event, handler);
+                    }
+                };
+            } else {
+                observe = function (element, event, handler) {
+                    if (element) {
+                        element.addEventListener(event, handler, false);
+                    }
+                };
+            }
+            
+            var text = document.getElementById('autoresize');
+
+            if (text) {
+                observe(text, 'change',  resize);
+                observe(text, 'cut',     delayedResize);
+                observe(text, 'paste',   delayedResize);
+                observe(text, 'drop',    delayedResize);
+                observe(text, 'keydown', delayedResize);
+
+                text.focus();
+                text.select();
+                resize();
+            }
         }
 
         $(document).ready(function() {
+            init();
             $("#flip").click(function() {
                 $("#panel").slideDown("slow");
             });
         });
     </script>
 
-
-    <script type="text/javascript" src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>

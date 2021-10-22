@@ -15,9 +15,11 @@ class CreateParticipantsTable extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user');
+            $table->string('nom_complet');
+            $table->string('telephone');
+            $table->string('email');
+            $table->integer('places');
             $table->unsignedBigInteger('evenement');
-            $table->foreign('user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('evenement')->references('id')->on('evenements')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
