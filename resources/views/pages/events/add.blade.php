@@ -42,18 +42,23 @@
                     <div class="card w-75 rounded shadow">
                         <div class="card-body">
                             <h4 class="card-title mb-4">Créer un nouvel événement</h4>
-                            <form class="row">
+                            <form class="row" action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
                                 <div class="col-md-12 mb-4">
-                                    <label for="projectname">Nom de l'événement</label>
-                                    <input id="projectname" name="projectname" type="text" class="form-control"
-                                        placeholder="Nom">
+                                    <label for="projectname">Titre de l'événement</label>
+                                    <input id="projectname" name="libelle" type="text" class="form-control"
+                                        placeholder="Titre">
                                 </div>
-
+                                <div class="col-md-12 mb-4">
+                                    <label for="projectname">Lieu de l'événement</label>
+                                    <input id="projectname" name="lieu" type="text" class="form-control"
+                                        placeholder="Lieu">
+                                </div>
                                 <div class="col-md-6 mb-4">
                                     <label git for="dateevent">Date de l'événement</label>
                                     <div class="input-group" id="dateevent">
-                                        <input type="text" class="form-control" placeholder="dd M, yyyy"
-                                            data-date-format="dd M, yyyy" data-date-container='#dateevent'
+                                        <input type="text" class="form-control" name="date_evenement" placeholder="dd M, yyyy"
+                                            data-date-format="yyyy-mm-dd" data-date-container='#dateevent'
                                             data-provide="datepicker" data-date-autoclose="true">
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                     </div>
@@ -61,14 +66,22 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="heureevent">Heure de l'événement</label>
                                     <div class="input-group" id="heureevent">
-                                        <input id="heureevent-input" type="text" class="form-control"
+                                        <input id="heureevent-input" type="text" name="heure_debut" class="form-control"
                                             data-provide="timepicker">
                                         <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
                                     </div>
                                 </div>
-
-
-                                <div class="col-lg-6 mb-4">
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label">Durée</label>
+                                    <input data-toggle="touchspin" name="duree" type="text" value="1" data-step="1" data-decimals="0"
+                                        data-bts-postfix="Heures">
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label">Nombre de places</label>
+                                    <input data-toggle="touchspin" name="places" type="text" value="1" data-step="1" data-decimals="0"
+                                        data-bts-postfix="Places">
+                                </div>
+                                <div class="col-md-6 mb-4">
                                     <h5 class="font-size-14 mb-3">Payant?</h5>
                                     <div>
                                         <input type="checkbox" id="paiement" switch="bool" checked />
@@ -88,15 +101,14 @@
                                         <label class="input-group-text" for="event-image">Télécharger</label>
                                     </div>
                                 </div>
-                                <div class="col-md-12 mb-4">
+                                <div class="col-md-12 mb-5">
                                     <label class="form-label">Description</label>
-                                    <textarea class="form-control" rows="3"></textarea>
+                                    <textarea name="description" class="form-control" rows="3"></textarea>
+                                </div>
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
                                 </div>
                             </form>
-                            <div class="col-md-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                            </div>
-
                         </div>
                     </div>
                 </div>

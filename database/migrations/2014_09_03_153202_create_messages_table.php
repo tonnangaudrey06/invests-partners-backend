@@ -17,7 +17,7 @@ class CreateMessagesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('envoyeur');
             $table->unsignedBigInteger('recepteur');
-            $table->unsignedBigInteger('projet');
+            $table->unsignedBigInteger('projet')->nullable();
             $table->text('message');
             $table->uuid('conversation');
             $table->boolean('vu')->default(false);
