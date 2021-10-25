@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\ProfilInvestisseurController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\EvenementController;
 use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\InvestissementController;
 use App\Http\Controllers\API\MembreController;
@@ -23,11 +24,6 @@ use Illuminate\Support\Str;
 |
 */
 
-Route::post('/auth/login', [AuthController::class, 'login']);
-Route::post('/auth/register', [AuthController::class, 'register']);
-Route::post('/auth/check/register', [AuthController::class, 'checkRegister']);
-Route::post('/send/mail', [UserController::class, 'sendMailInfo']);
-
 Route::get('/routes', function () {
     $routes = [];
     foreach (Route::getRoutes() as $route) {
@@ -42,16 +38,31 @@ Route::get('/routes', function () {
     return response()->json($routes);
 });
 
-Route::get('secteur', [SecteurController::class, 'index']);
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/forgot/password', [AuthController::class, 'forgotPassword']);
+    Route::post('/reset/password', [AuthController::class, 'resetUserPassword']);
+});
 
-Route::get('profilinvestisseur', [ProfilInvestisseurController::class, 'index']);
+Route::post('/auth/check/register', [AuthController::class, 'checkRegister']);
+Route::post('/send/mail', [UserController::class, 'sendMailInfo']);
+Route::get('/secteur', [SecteurController::class, 'index']);
+Route::get('/profilinvestisseur', [ProfilInvestisseurController::class, 'index']);
+
+Route::prefix('event')->group(function () {
+    Route::get('/', [EvenementController::class, 'index']);
+    Route::get('/latest', [EvenementController::class, 'new']);
+    Route::post('/{id}/participer', [EvenementController::class, 'participer']);
+    Route::post('/{id}/participer/check/seat', [EvenementController::class, 'checkSeat']);
+});
 
 Route::prefix('app')->group(function () {
     Route::get('/slider', [HomeController::class, 'slider']);
     Route::get('/partenaire', [HomeController::class, 'partenaire']);
     Route::get('/projet', [HomeController::class, 'projet']);
+    Route::get('/chiffre', [HomeController::class, 'chiffres']);
 });
-
 
 Route::middleware('auth:api')->group(function () {
     Route::prefix('secteur')->group(function () {

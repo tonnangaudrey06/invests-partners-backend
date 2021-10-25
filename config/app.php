@@ -168,7 +168,7 @@ return [
         Brian2694\Toastr\ToastrServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-
+        Dirape\Token\TokenServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -233,6 +233,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Token'=>\Dirape\Token\Facades\Facade::class
     ],
 
 ];

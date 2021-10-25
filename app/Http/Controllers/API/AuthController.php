@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\InscriptionMail;
+use App\Models\PasswordReset;
 use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
@@ -76,21 +77,9 @@ class AuthController extends Controller
         $data['password'] = Hash::make($request->password);
         $data['folder'] = hexdec(uniqid());
 
-        // $email = User::where('email', $request->email)->get();
-        // $telephone = User::where('telephone', $request->telephone)->get();
-
-        // if(!empty($email)) {
-
-        //     return $this->sendError("L'email '$request->email' à déjà été utilisé pour un compte. Veuillez fournir une autre adresse mail.", null, 500);
-        // }
-
-        // if(!empty($telephone)) {
-        //     return $this->sendError("Le numéro de téléphone '$request->telephone' à déjà été utilisé pour un compte. Veuillez fournir un autre numéro de téléphone.", null, 500);
-        // }
-
         try {
             Storage::disk('public')->makeDirectory('uploads/' . $data['folder']);
-        } catch (\Throwable $th) {
+        } catch (\Throwable $e) {
             return $this->sendError("La création de votre compte a échoué, veuillez réessayer. Si le problème persiste, veuillez contacter Invest & Partners pour obtenir de l'aide.", null, 500);
         }
 
@@ -98,8 +87,12 @@ class AuthController extends Controller
 
         $user = User::with(['role_data', 'documents_fiscaux', 'profil_invest'])->find($data->id);
 
-        Mail::to($user->email)
-            ->queue(new InscriptionMail($user->toArray()));
+        try {
+            Mail::to($user->email)
+                ->queue(new InscriptionMail($user->toArray()));
+        } catch (\Throwable $e) {
+            return $this->sendResponse($user, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
+        }
 
         return $this->sendResponse($user, 'User registered');
     }
@@ -118,5 +111,33 @@ class AuthController extends Controller
         }
 
         return $this->sendResponse(null, 'User registratioin form OK');
+    }
+
+    public function forgotPassword(Request $request)
+    {
+        if (!PasswordReset::userExist($request->email, $request->role)) {
+            return $this->sendError("Ce compte n'existe pas. Créez-en un avant de vous connecter.", null, 500);
+        }
+
+        PasswordReset::sendResetPasswordLink($request->email, $request->role);
+
+        // if (!$status) {
+        //     return $this->sendError("Impossible d'envoyer un mail car l'email n'existe pas.", null, 500);
+        // }
+
+        return $this->sendResponse(null, 'Mail send');
+    }
+
+    public function resetUserPassword(Request $request)
+    {
+        $password = Hash::make($request->password);
+        User::where('email', $request->email)->where('role', $request->role)->update(['password' => $password]);
+        PasswordReset::where([
+            'email' => $request->email,
+            'role' => $request->role,
+            'token' => $request->token
+        ])->update(['token_used' => true]);
+
+        return $this->sendResponse(null, 'Password update');
     }
 }
