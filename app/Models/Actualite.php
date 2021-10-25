@@ -26,6 +26,6 @@ class Actualite extends Model
 
     public function projet_invest()
     {
-        return $this->belongsTo(Projet::class, 'projet', 'id')->with('user_data');
+        return $this->belongsTo(Projet::class, 'projet', 'id')->with(['user_data', 'secteur_data']);
     }
 }

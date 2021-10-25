@@ -126,8 +126,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/add/{type}/{id}', [ActualiteController::class, 'add'])->name('add');
         // Route::get('/edit/{id}', [ActualiteController::class, 'edit'])->name('edit');
         // Route::post('/update/{id}', [ActualiteController::class, 'edit'])->name('edit');
+        Route::get('/details/show/{type}/{id}/{idPS}', [ActualiteController::class, 'showDetails'])->name('details');
         Route::post('/store/{type}/{id}', [ActualiteController::class, 'store'])->name('store');
-        // Route::get('/delete/{id}', [ActualiteController::class, 'delete'])->name('delete');
+        Route::get('/delete/{type}/{id}/{idPS}', [ActualiteController::class, 'delete'])->name('delete');
     });
 
 

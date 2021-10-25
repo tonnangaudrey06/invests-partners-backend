@@ -42,7 +42,9 @@
                             }
                         @endphp
 
-                        <form action="{{isset($choice) ? route('actualites.store', [$type, $secteur->id]) : route('actualites.store', [$type, $projet->id])}}" method="POST" enctype="multipart/form-data">
+                        {{-- @json($projet) --}}
+
+                        <form action="{{(isset($choice) && $choice == true) ? route('actualites.store', [$type, $secteur->id]) : route('actualites.store', [$type, $projet->id])}}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="row">
@@ -55,16 +57,7 @@
                                     @enderror
                                 </div>
 
-                                {{-- @if($type == 'secteur')
-                                <div class="form-group col-md-12 mb-3">
-                                    <label>Secteur d'activité</label>
-                                    <select class="form-control" name="secteur">
-                                        @foreach ($users as $user)
-                                        <option value="{{ $user->id }}">{{ $user->nom_complet }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @endif --}}
+                            
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label for="exampleFormControlTextarea1">Description</label>

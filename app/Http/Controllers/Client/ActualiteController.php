@@ -9,6 +9,7 @@ use App\Models\Secteur;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\File;
 
 class ActualiteController extends Controller
 {
@@ -16,27 +17,28 @@ class ActualiteController extends Controller
     {
 
         $type = $type;
-        if($type == 'secteur'){
-            $secteur = Secteur::find($id)->with('conseiller_data')->first();
+        if ($type == 'secteur') {
+            $secteur = Secteur::where('id', $id)->with('conseiller_data')->first();
             $actualites = Actualite::with('secteur_data')->where('secteur', $secteur->id)->get();
             return view('pages.actualites.index', compact('secteur', 'type', 'actualites'));
-        }else{
-            $projet = Projet::find($id)->first();
+        }
+
+        if ($type == 'projet') {
+            $projet = Projet::where('id', $id)->first();
             $actualites = Actualite::with('projet_invest')->where('projet', $projet->id)->get();
             return view('pages.actualites.index', compact('projet', 'type', 'actualites'));
         }
-        
     }
 
     public function add($type, $id)
     {
 
         $type = $type;
-        if($type == 'secteur'){
-            $secteur = Secteur::find($id)->with('conseiller_data')->first();
+        if ($type == 'secteur') {
+            $secteur = Secteur::where('id', $id)->with('conseiller_data')->first();
             return view('pages.actualites.add', compact('secteur', 'type'));
-        }else{
-            $projet = Projet::find($id)->first();
+        } else {
+            $projet = Projet::where('id', $id)->first();
             return view('pages.actualites.add', compact('projet', 'type'));
         }
     }
@@ -65,11 +67,11 @@ class ActualiteController extends Controller
         $data['description'] = $request->description;
         $data['image'] = url($up_location) . '/' . $img_name;
 
-        if($type == 'secteur'){
+        if ($type == 'secteur') {
             $data['secteur'] = $id;
         }
 
-        if($type == 'projet'){
+        if ($type == 'projet') {
             $data['projet'] = $id;
         }
 
@@ -78,5 +80,30 @@ class ActualiteController extends Controller
         Toastr::success('Actualité ajouté avec succès!', 'Succès');
 
         return redirect()->intended(route('actualites.home', [$type, $id]));
+    }
+
+    public function showDetails($type, $id, $idPS)
+    {
+        $actualite = Actualite::with(['projet_invest', 'secteur_data'])->find($id);
+        $type = $type;
+        
+        // return response()->json($actualite);
+
+        return view('pages.actualites.details', compact('actualite', 'type', 'idPS'));
+    }
+
+    public function delete($type, $id, $idPS)
+    {
+
+        $actualite = Actualite::find($id);
+        
+        $path = parse_url($actualite->image);
+
+        File::delete(public_path($path['path']));
+
+        Actualite::find($id)->delete();
+        Toastr::success('Actualité supprimée avec succès!', 'Success');
+
+        return redirect()->intended(route('actualites.home', [$type, $idPS]));
     }
 }

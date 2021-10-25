@@ -96,14 +96,14 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                             @endif
 
                             @if( $projet->etat == 'PUBLIE')
-                            <a href="{{route('actualites.home', ['projet', $projet->id])}}" class="btn btn-xs btn-info pull-right"><i class="bx bx-info-circle"></i></a>
+                            <a href="{{route('actualites.home', ['projet', $projet->id])}}"  class="btn btn-sm btn-info me-2">Actualités</a>
                             {{-- <a href="{{ route('projet.add') }}" class="btn btn-sm btn-info me-2">Actualités</a> --}}
                             @endif
 
                             @foreach ($privileges as $privilege)
 
                             @if( $privilege->module == 1 && $privilege->supprimer == 1)
-                            <a href="{{ route('projet.delete', $projet->id) }}" class="btn btn-sm btn-danger me-2">Supprimer</a>
+                            <a href="{{ route('projet.delete', $projet->id) }}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-sm btn-danger me-2">Supprimer</a>
                             @endif
                             @endforeach
 

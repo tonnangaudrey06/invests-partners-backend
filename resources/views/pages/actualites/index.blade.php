@@ -52,9 +52,11 @@
                                 </div>
                             </div>
 
+                            {{-- @json($projet->id) --}}
+
                             <div class="row">
                                 @foreach ($actualites as $item)
-                                <div class="col-sm-4 rounded">
+                                <div class="col-sm-3 rounded">
                                     <div class="card p-1 border shadow-none">
                                         <div class="p-3">
                                             <h5><a href="blog-details.html" class="text-dark">{{$item->libelle}}</a></h5>
@@ -87,7 +89,7 @@
                                             <p>{{Str::limit($item->description, 100)}}</p>
 
                                             <div>
-                                                <a href="javascript: void(0);" class="text-primary">En savoir plus <i class="mdi mdi-arrow-right"></i></a>
+                                                <a href="{{($item->secteur) ? route('actualites.details', [$type, $item->id, $item->secteur]) : route('actualites.details', [$type, $item->id, $item->projet])}}" class="text-primary">En savoir plus <i class="mdi mdi-arrow-right"></i></a>
                                             </div>
                                         </div>
                                     </div>

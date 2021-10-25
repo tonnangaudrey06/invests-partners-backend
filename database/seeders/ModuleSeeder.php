@@ -27,5 +27,6 @@ class ModuleSeeder extends Seeder
         Module::create(['module' => 'Secteur_d\'activité']);
         Module::create(['module' => 'Site']);
         Module::create(['module' => 'Archives']);
+        Module::create(['module' => 'Actualites']);
     }
 }
