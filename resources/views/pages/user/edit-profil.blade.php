@@ -43,11 +43,18 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4">Modifier vos informations personnelles</h4>
-                            <form action="{{ route('user.profile.update', $user->id) }}" method="POST">
+                            <form action="{{ route('user.profile.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="role" value="{{ $user->role }}">
 
                                 <div class="row">
+                                    <div class="form-group col-md-12 mb-3">
+                                        <label class="form-label">Photo de profil</label>
+                                        <div class="input-group">
+                                            <input type="file" accept="image/*" name="photo" class="form-control" id="user-image">
+                                            <label class="input-group-text" for="user-image">Importer</label>
+                                        </div>
+                                    </div>
                                     <div class="form-group col-md-12 mb-3">
                                         <label>Civilité</label>
                                         <select class="form-control" name="civilite">

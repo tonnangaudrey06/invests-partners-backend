@@ -45,9 +45,8 @@
         var observe;
         var text = document.getElementById('autoresize');
 
-        
-
         function redirectTo(url) {
+            console.log(url);
             window.location.assign(url);
         }
 

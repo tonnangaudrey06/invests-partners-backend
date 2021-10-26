@@ -1,29 +1,15 @@
 @extends('layouts.main')
 
-@section('title', 'Nos projets - ' . config('app.name'))
+@section('title', 'Projets - ' . config('app.name'))
 
 @section('style')
-{{--
-<link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
-
-<!-- Datatable -->
-<link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
-    type="text/css" />
-<link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
-    type="text/css" />
-
-<!-- Responsive datatable examples -->
-<link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
-    type="text/css" />
 @endsection
 
 
 @section('content')
 
 @php
-$privileges = DB::table('privileges')->where('role', Auth()->user()->role)->get();
-
-// $pro = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
+$privileges = DB::table('privileges')->where('role', auth()->user()->role)->get();
 @endphp
 
 <div class="main-content">
@@ -34,7 +20,8 @@ $privileges = DB::table('privileges')->where('role', Auth()->user()->role)->get(
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0 font-size-18">Projets {{ $type == 'IP' ? 'de Invest & Partners' : ($type == 'AUTRE' ? 'des porteurs de projet' : ' archivés') }}</h4>
+                        <h4 class="mb-sm-0 font-size-18">Projets {{ $type == 'IP' ? 'de Invest & Partners' : ($type ==
+                            'AUTRE' ? 'des porteurs de projet' : ' archivés') }}</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -55,12 +42,13 @@ $privileges = DB::table('privileges')->where('role', Auth()->user()->role)->get(
 
 
                         <div class="actions d-flex align-items-center">
+                            @if($type == 'IP')
                             @foreach ($privileges as $privilege)
-
                             @if( $privilege->module == 1 && $privilege->ajouter == 1)
                             <a href="{{ route('projet.add') }}" class="btn btn-sm btn-primary me-2">Nouveau projet</a>
                             @endif
                             @endforeach
+                            @endif
 
                             <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                         </div>
@@ -78,15 +66,18 @@ $privileges = DB::table('privileges')->where('role', Auth()->user()->role)->get(
             </div>
             <div class="row">
                 @foreach ($secteur->projets as $projet)
-                <div class="col-xl-4 col-sm-6">
-                    <div class="card" style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%)">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card"
+                        style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%); cursor: pointer;"
+                        onclick="redirectTo('{{ route('projet.details', ['id' => $projet->id]) }}')">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-4">
                                     <div class="avatar-md">
                                         <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
                                             <a href="{{ route('projet.details', ['id' => $projet->id]) }}">
-                                                <img class="rounded-circle avatar-sm" src="{{ asset($projet->logo) }}"
+                                                <img class="rounded-circle avatar-sm"
+                                                    src="{{ $projet->logo ? $projet->logo : asset('assets/images/projet.jpg') }}"
                                                     alt="" height="30">
                                             </a>
                                         </span>
@@ -135,7 +126,7 @@ $privileges = DB::table('privileges')->where('role', Auth()->user()->role)->get(
 
 
 
-                @if (Auth()->user()->role == 1)
+                @if (auth()->user()->role == 1)
 
                 @foreach ($projets as $projet)
                 <div class="col-xl-4 col-sm-6">
@@ -320,21 +311,4 @@ $privileges = DB::table('privileges')->where('role', Auth()->user()->role)->get(
 @endsection
 
 @section('script')
-{{-- <script type="text/javascript" src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script> --}}
-
-<!-- Required datatable js -->
-<script type="text/javascript" src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
-</script>
-
-<!-- Responsive examples -->
-<script type="text/javascript"
-    src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script type="text/javascript"
-    src="{{ asset('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
-
-<!-- Datatable init js -->
-<script type="text/javascript" src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
-
-{{-- <script type="text/javascript" src="{{ asset('assets/js/pages/form-advanced.init.js') }}"></script> --}}
 @endsection

@@ -146,8 +146,17 @@ class UserController extends Controller
     public function updateProfile($id, Request $request)
     {
         $data = $request->except(['_token']);
+        $photo = $request->file('photo');
 
-        User::where('id', $id)->update($data);
+        $user = User::find($id);
+
+        if (!empty($photo)) {
+            $filename = 'photo.' . strtolower($photo->getClientOriginalExtension());
+            $data['photo'] = url('storage/uploads/'. $user->folder) . '/' . $filename;
+            $photo->storeAs('uploads/'. $user->folder .'/', $filename, ['disk' => 'public']);
+        }
+
+        $user->update($data);
 
         Toastr::success('Utilisateur mis à jour avec succès!', 'Success');
 

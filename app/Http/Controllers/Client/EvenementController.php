@@ -47,18 +47,49 @@ class EvenementController extends Controller
 
     public function update($id, Request $request)
     {
+        $data = $request->input();
+        $image = $request->file('image');
+        $event = Evenement::where('id', $id)->first();
+
+        if (!empty($image)) {
+            $split = explode('/', $event->image);
+            $filename = end($split);
+            $path = storage_path("app/public/uploads/events/$filename");
+
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+
+            $split = explode('.', $filename);
+
+            $filename = $split[0];
+
+            $filename = $filename . '.' . $image->getClientOriginalExtension();
+            $data['image'] = url('storage/uploads/events') . '/' . $filename;
+            $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
+        }
+
+        $event->update($data);
+
+        Toastr::success('Évenement mise à jour avec succès!', 'Succès');
+
+        return redirect()->intended(route('events.home'));
     }
 
     public function delete($id)
     {
         $event = Evenement::where('id', $id)->first();
 
-        $filename = end(explode('-', $event->image));
+        $split = explode('/', $event->image);
+
+        $filename = end($split);
 
         $path = storage_path("app/public/uploads/events/$filename");
+
         if (File::exists($path)) {
             File::delete($path);
         }
+
         $event->delete();
 
         Toastr::success('Évenement supprimé avec succès!', 'Success');

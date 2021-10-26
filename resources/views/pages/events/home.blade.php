@@ -63,7 +63,7 @@
                                         <th rowspan="2">Date</th>
                                         <th rowspan="2">Prix</th>
                                         <th colspan="2">Places</th>
-                                        <th rowspan="2">Actions</th>
+                                        <th rowspan="2"></th>
                                     </tr>
                                     <tr>
                                         <th>Disponible</th>
@@ -95,9 +95,9 @@
                                             @numberFormat($event->places) places
                                         </td>
                                         <td>
-                                            20 places
+                                            @numberFormat($event->total_reserve) places
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <a href="{{route('events.edit', $event->id)}}"
                                                 class="btn btn-sm btn-warning float-right"><i class="bx bx-edit"></i></a>
                                             <a href="{{route('events.delete', $event->id)}}"

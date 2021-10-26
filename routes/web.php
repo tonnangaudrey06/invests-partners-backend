@@ -121,10 +121,10 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('events')->name('events.')->group(function () {
         Route::get('/', [EvenementController::class, 'index'])->name('home');
         Route::get('/add', [EvenementController::class, 'add'])->name('add');
-        Route::get('/edit/{id}', [EvenementController::class, 'edit'])->name('edit');
-        Route::post('/update/{id}', [EvenementController::class, 'update'])->name('update');
         Route::post('/store', [EvenementController::class, 'store'])->name('store');
         Route::get('/delete/{id}', [EvenementController::class, 'delete'])->name('delete');
+        Route::get('/edit/{id}', [EvenementController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [EvenementController::class, 'update'])->name('update');
     });
 
     Route::prefix('actualites')->name('actualites.')->group(function () {
@@ -140,6 +140,9 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('projet')->name('projet.')->group(function () {
         Route::get('/', [ProjetController::class, 'index'])->name('home');
         Route::get('/ip', [ProjetController::class, 'index_ip'])->name('home_ip');
+        Route::get('/secteur/{secteur}', [ProjetController::class, 'index_secteur'])->name('home_secteur');
+        Route::get('/place/{ville}', [ProjetController::class, 'index_ville'])->name('home_ville');
+        Route::get('/etat/{etat}', [ProjetController::class, 'index_etat'])->name('home_etat');
         Route::get('/add', [ProjetController::class, 'add'])->name('add');
         Route::get('/archives', [ProjetController::class, 'archives'])->name('archives');
         Route::get('/edit/{id}', [ProjetController::class, 'edit'])->name('edit');

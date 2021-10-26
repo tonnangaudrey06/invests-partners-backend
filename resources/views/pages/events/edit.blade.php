@@ -42,7 +42,7 @@
                     <div class="card w-75 rounded shadow">
                         <div class="card-body">
                             <h4 class="card-title mb-4">Modifier l'événement {{ $event->libelle }}</h4>
-                            <form class="row" action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
+                            <form class="row" action="{{ route('events.update', $event->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="col-md-12 mb-4">
                                     <label for="projectname">Titre de l'événement</label>
@@ -72,14 +72,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label class="form-label">Durée</label>
-                                    <input data-toggle="touchspin" name="duree" type="text" value="1" data-step="1" data-decimals="0"
-                                        data-bts-postfix="Heures" value="{{ $event->duree }}">
+                                    <label class="form-label">Durée (en heures)</label>
+                                    <input name="duree" type="number" class="form-control" value="{{ $event->duree }}" min="1">
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label">Nombre de places</label>
-                                    <input data-toggle="touchspin" name="places" type="text" value="1" data-step="1" data-decimals="0"
-                                        data-bts-postfix="Places" value="{{ $event->places }}">
+                                    <input name="places" type="number" class="form-control" value="{{ $event->places }}" min="1">
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <h5 class="font-size-14 mb-3">Payant?</h5>
@@ -91,8 +89,7 @@
 
                                 <div class="col-md-6 mb-4" id="event-prix-block">
                                     <label class="form-label">Prix</label>
-                                    <input data-toggle="touchspin" name="prix" type="text" data-step="1" data-decimals="0"
-                                        data-bts-postfix="XAF" value="{{ $event->prix }}">
+                                    <input name="prix" type="number" class="form-control" value="{{ $event->prix }}" min="0">
                                 </div>
                                 <div class="col-md-12 mb-4">
                                     <label class="form-label">Image</label>
@@ -138,10 +135,6 @@
             $('#event-prix-block').hide();
             $('input[name="prix"]').val('');
         }
-        $('[data-toggle="touchspin"]').each(function (e, t) {
-            var a = $.extend({}, $(t).data());
-            $(t).TouchSpin(a);
-        })
 
         $('#heureevent-input').timepicker({
             minuteStep: 1,

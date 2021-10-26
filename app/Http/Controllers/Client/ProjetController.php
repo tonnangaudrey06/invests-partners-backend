@@ -69,6 +69,68 @@ class ProjetController extends Controller
         return view('pages.projet.home', compact('projets', 'secteurs'))->with('type', 'IP');
     }
 
+    public function index_secteur($secteur)
+    {
+        if (auth()->user()->role == 1 || auth()->user()->role == 5) {
+            $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+                ->where('secteur', $secteur)
+                ->where('etat', '!=', 'CLOTURE')
+                ->where('etat', '!=', 'REJETE')->get();
+        } else {
+            $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+                ->where('secteur', $secteur)
+                ->where('etat', '!=', 'CLOTURE')
+                ->where('etat', '!=', 'REJETE')->get();
+
+
+            foreach ($projets as $key => $projet) {
+                if ($projet->secteur_data->user != auth()->user()->id) {
+                    unset($projets[$key]);
+                }
+            }
+        }
+
+        $secteur = Secteur::where('id', $secteur)->first()->libelle;
+
+        return view('pages.projet.home-secteur', compact('projets'))->with('secteur', $secteur);
+    }
+
+    public function index_ville($ville)
+    {
+        if (auth()->user()->role == 1 || auth()->user()->role == 5) {
+            $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
+        } else {
+            $secteurs = Secteur::with(['projets', 'conseiller_data'])->where('user', auth()->user()->role)->get();
+        }
+
+        foreach ($secteurs as $key => $secteur) {
+            $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+                ->where('secteur', $secteur->id)
+                ->where('ville_activite', $ville)
+                ->where('etat', '!=', 'CLOTURE')
+                ->where('etat', '!=', 'REJETE')->get();
+        }
+
+        return view('pages.projet.home-place', compact('secteurs'))->with('ville', $ville);
+    }
+
+    public function index_etat($etat)
+    {
+        if (auth()->user()->role == 1 || auth()->user()->role == 5) {
+            $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
+        } else {
+            $secteurs = Secteur::with(['projets', 'conseiller_data'])->where('user', auth()->user()->role)->get();
+        }
+
+        foreach ($secteurs as $key => $secteur) {
+            $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+                ->where('secteur', $secteur->id)
+                ->where('etat', $etat)->get();
+        }
+
+        return view('pages.projet.home-etat', compact('secteurs'))->with('etat', $etat);
+    }
+
     public function archives()
     {
         $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('etat', 'REJETE')->orwhere('etat', 'CLOTURE')->get();
@@ -84,7 +146,7 @@ class ProjetController extends Controller
                 ->where('etat', 'CLOTURE')
                 ->where('etat', 'REJETE')->get();
         }
-        
+
         return view('pages.projet.home', compact('projets', 'secteurs'))->with('type', 'ARCHIVE');
     }
 

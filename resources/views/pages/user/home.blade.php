@@ -69,7 +69,7 @@
                                         <th style="width: 10%">Profil</th>
                                         @endif
                                         @if ($role->value == 2)
-                                        <th style="width: 20%">Secteurs d'activités</th>
+                                        <th style="max-width: 20% !important">Secteurs d'activités</th>
                                         @endif
                                         <th class="text-center" style="width: 10%"></th>
                                     </tr>
@@ -78,7 +78,7 @@
                                 <tbody>
                                     @foreach ($users as $user)
                                     <tr>
-                                        <td>
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 0 }}">
                                             @if (!empty($user->photo))
                                             <div>
                                                 <img class="rounded-circle avatar-xs" src="{{ $user->photo }}" alt="">
@@ -91,15 +91,19 @@
                                             </div>
                                             @endif
                                         </td>
-                                        <td>
+                                        <th rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 0 }}">
                                             <a href="{{ route('user.profile', $user->id) }}">{{ $user->nom_complet
                                                 }}</a>
-                                        </td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->telephone }}</td>
+                                        </th>
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 0 }}">{{
+                                            $user->email }}</td>
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 0 }}">{{
+                                            $user->telephone }}</td>
+
                                         @if ($role->value == 3 || $role->value == 4)
                                         <td><strong>{{ $user->status }}</strong></td>
                                         @endif
+
                                         @if ($role->value == 4)
                                         <td>
                                             @if ($user->profil != null)
@@ -107,21 +111,25 @@
                                             @endif
                                         </td>
                                         @endif
-
                                         @if ($role->value == 2)
-                                        <td>
-                                            @foreach ($user->secteurs_data as $item)
-                                            <span class="badge bg-primary p-2 font-size-12">{{ $item->libelle }}</span>
-                                            @endforeach
+                                        {{-- @foreach ($user->secteurs_data as $item) --}}
+                                        <td style="max-width: 20% !important">
+                                            {{ $user->secteurs_data ? $user->secteurs_data[0]->libelle : '' }}
                                         </td>
+                                        {{-- @endforeach --}}
                                         @endif
-                                        <td class="text-center">
-                                            @if ($role->value == 2 && (auth()->user()->role == 1 || auth()->user()->role == 5))
+
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 0 }}"
+                                            class="text-center">
+                                            @if ($role->value == 2 && (auth()->user()->role == 1 || auth()->user()->role
+                                            == 5))
                                             <a href="{{route('chat.view', $user->id)}}" class="btn btn-sm btn-info"><i
                                                     class="bx bx-envelope"></i></a>
                                             @endif
                                             @if ($role->value == 3 || $role->value == 4 )
-                                            <button id="openMessageModal" data-url="{{ route('chat.new', ['sender' => auth()->user()->id, 'receiver' => $user->id]) }}" class="btn btn-sm btn-info" onclick="openMessageModal()"><i
+                                            <button id="openMessageModal"
+                                                data-url="{{ route('chat.new', ['sender' => auth()->user()->id, 'receiver' => $user->id]) }}"
+                                                class="btn btn-sm btn-info" onclick="openMessageModal()"><i
                                                     class="mdi mdi-email-plus"></i></button>
                                             @endif
                                             <a href="{{route('user.edit', $user->id)}}"
@@ -131,6 +139,18 @@
                                                 class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></i></a>
                                         </td>
                                     </tr>
+                                    @if ($role->value == 2)
+                                    @foreach ($user->secteurs_data as $item)
+                                    @if(!$loop->first)
+                                    <tr>
+                                        <td style="max-width: 20% !important">
+                                            {{ $item->libelle }}
+                                        </td>
+                                    </tr>
+                                    
+                                    @endif
+                                    @endforeach
+                                    @endif
                                     @endforeach
                                 </tbody>
                             </table>

@@ -159,7 +159,7 @@
                     </div>
                     @endif --}}
                     <img class="rounded-circle header-profile-user"
-                        src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
+                        src="{{ auth()->user()->photo ? auth()->user()->photo : asset('assets/images/profil.jpg') }}" alt="Header Avatar">
                     <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ auth()->user()->nom }}
                         {{ auth()->user()->prenom }}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
@@ -172,9 +172,9 @@
                     <a class="dropdown-item" href="{{ route('chat.home') }}"><i
                             class="bx bx-user font-size-16 align-middle me-1"></i> <span
                             key="t-profile">Messagerie</span></a>
-                    <a class="dropdown-item d-block" href="#"><i
+                    {{-- <a class="dropdown-item d-block" href="#"><i
                             class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
-                            key="t-settings">Paramètres</span></a>
+                            key="t-settings">Paramètres</span></a> --}}
                     <div class="dropdown-divider"></div>
                     @if (Auth::user()->role == 1)
                     <a class="dropdown-item d-block" href="{{route('add.writer')}}"><i

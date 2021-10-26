@@ -42,26 +42,26 @@
             </div>
 
             <div class="col-lg-12">
-                <div class="card">
+                <div class="card w-75">
                     <div class="card-body">
                         <h4 class="card-title mb-4">Ajouter une slide</h4>
                         <form action="{{route('slider.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group col-md-12 mb-3">
-                                <label for="exampleFormControlInput1">Titre</label>
-                                <input type="text" class="form-control" name="title" id="exampleFormControlInput1"
+                                <label>Titre</label>
+                                <input type="text" class="form-control" name="title"
                                     placeholder="Slider Title">
                             </div>
                             <div class="form-group col-md-12 mb-3">
-                                <label for="exampleFormControlTextarea1">Description</label>
-                                <textarea class="form-control" name="description" id="exampleFormControlTextarea1"
+                                <label>Description</label>
+                                <textarea class="form-control" name="description"
                                     rows="3"></textarea>
                             </div>
                             <div class="form-group col-md-12 mb-3">
-                                <label for="exampleFormControlFile1">Image</label>
-                                <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1">
+                                <label>Image</label>
+                                <input type="file" class="form-control" name="image">
                             </div>
-                            <div class="form-footer pt-4 pt-5 mt-4 border-top">
+                            <div class="form-footer pt-4 pt-5 mt-4 border-top text-center">
                                 <button type="submit" class="btn btn-primary btn-default">Ajouter une slide</button>
                             </div>
                         </form>

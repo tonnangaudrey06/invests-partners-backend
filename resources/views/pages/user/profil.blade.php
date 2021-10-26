@@ -47,7 +47,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="avatar-md profile-user-wid mb-4">
-                                        <img src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt=""
+                                        <img src="{{ $user->photo ? $user->photo : asset('assets/images/profil.jpg') }}" alt=""
                                             class="img-thumbnail rounded-circle">
                                     </div>
                                     <h5 class="font-size-15 text-truncate">{{ $user->role_data->libelle }}</h5>

@@ -132,7 +132,7 @@
                                 <div class="card-body">
                                     <div class="d-flex mb-5">
                                         <div class="flex-shrink-0 me-4">
-                                            <img src="{{ $projet->logo }}" alt="" class="avatar-md">
+                                            <img src="{{ $projet->logo ? $projet->logo : asset('assets/images/projet.jpg') }}" alt="" class="avatar-md">
                                         </div>
 
                                         <div class="d-flex">

@@ -32,7 +32,6 @@ class ActualiteController extends Controller
 
     public function add($type, $id)
     {
-
         $type = $type;
         if ($type == 'secteur') {
             $secteur = Secteur::where('id', $id)->with('conseiller_data')->first();
@@ -46,7 +45,7 @@ class ActualiteController extends Controller
     public function store(Request $request, $type, $id)
     {
 
-        $validated = $request->validate(
+        $request->validate(
             [
                 'image' => 'required|mimes:jpg,jpeg,png',
             ],
@@ -58,8 +57,7 @@ class ActualiteController extends Controller
         $name_gen = hexdec(uniqid());
         $img_ext = strtolower($actu_image->getClientOriginalExtension());
         $img_name = $name_gen . '.' . $img_ext;
-        $up_location = 'images/secteurs/';
-        $last_img = $up_location . $img_name;
+        $up_location = 'images/actualites/';
         $actu_image->move($up_location, $img_name);
 
         $data = array();
@@ -86,9 +84,6 @@ class ActualiteController extends Controller
     {
         $actualite = Actualite::with(['projet_invest', 'secteur_data'])->find($id);
         $type = $type;
-        
-        // return response()->json($actualite);
-
         return view('pages.actualites.details', compact('actualite', 'type', 'idPS'));
     }
 

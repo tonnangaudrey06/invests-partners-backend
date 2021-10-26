@@ -47,22 +47,8 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="card-title">Actions</h4>
-
-
+                    <div class="d-flex justify-content-end align-items-center">
                         <div class="actions d-flex align-items-center">
-                            {{-- @foreach ($privileges as $privilege)
-
-                            @if( $privilege->module == 14 && $privilege->modifier == 1)
-
-                            <a href="{{($type == 'secteur') ? route('actualites.edit', [$type, $secteur->id]) : route('actualites.edit', [$type, $projet->id])}}"
-                                class="btn btn-sm btn-danger me-2">Modifier</a>
-
-                            @endif
-                            @endforeach --}}
-
-
                             @foreach ($privileges as $privilege)
 
                             @if( $privilege->module == 14 && $privilege->supprimer == 1)
@@ -93,39 +79,51 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                         <div>
                                             <div class="text-center">
                                                 <div class="mb-4">
-                                                    <a href="javascript: void(0);" class="badge bg-light font-size-12">
-                                                        <i
-                                                            class="bx bx-purchase-tag-alt align-middle text-muted me-1"></i>
-                                                        @if($actualite->secteur) Secteur d'activités
-                                                        @else Projet @endif
-                                                    </a>
+                                                    <span class="badge bg-light font-size-12 text-muted">
+                                                        @if($actualite->secteur)
+                                                        {{$actualite->secteur_data->libelle}}
+                                                        @else
+                                                        <a href="{{ route('projet.details', $actualite->projet_invest->id) }}"
+                                                            class="text-decoration-none text-muted">{{$actualite->projet_invest->intitule}}</a>
+                                                        @endif
+                                                    </span>
                                                 </div>
-                                                <h4>@if($actualite->secteur) {{$actualite->secteur_data->libelle}}
-                                                    @else {{$actualite->projet_invest->intitule}} @endif</h4>
-                                                <p class="text-muted mb-4"><i class="mdi mdi-calendar me-1"></i> {{$actualite->created_at}}</p>
+                                                <h4>{{$actualite->libelle}}</h4>
+                                                <p class="text-muted mb-4"><i
+                                                        class="bx bx-purchase-tag-alt align-middle text-muted me-1"></i>
+                                                    @if($actualite->secteur)
+                                                    Secteur d'activité
+                                                    @else
+                                                    Projet
+                                                    @endif
+                                                </p>
                                             </div>
 
                                             <hr>
-                                            <div class="text-center">
-                                                <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <div>
-                                                            <p class="text-muted mb-2">Secteur d'activité</p>
-                                                            <h5 class="font-size-15">@if($actualite->secteur) {{$actualite->secteur_data->libelle}}
-                                                                @else {{$actualite->projet_invest->secteur_data->libelle}} @endif</h5>
-                                                        </div>
+                                            <div class="d-flex justify-content-center text-center row">
+                                                <div class="col-sm-4">
+                                                    <div>
+                                                        <p class="text-muted mb-2">Secteur d'activité</p>
+                                                        <h5 class="font-size-15">@if($actualite->secteur)
+                                                            {{$actualite->secteur_data->libelle}}
+                                                            @else
+                                                            {{$actualite->projet_invest->secteur_data->libelle}}
+                                                            @endif</h5>
                                                     </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="mt-4 mt-sm-0">
-                                                            <p class="text-muted mb-2">Date</p>
-                                                            <h5 class="font-size-15">{{Carbon\Carbon::parse($actualite->created_at)->diffForHumans()}}</h5>
-                                                        </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="mt-4 mt-sm-0">
+                                                        <p class="text-muted mb-2">Date publication</p>
+                                                        <h5 class="font-size-15">
+                                                            {{Carbon\Carbon::parse($actualite->created_at)->diffForHumans()}}
+                                                        </h5>
                                                     </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="mt-4 mt-sm-0">
-                                                            <p class="text-muted mb-2">Posté par </p>
-                                                            <h5 class="font-size-15">{{Auth::user()->nom}} {{Auth::user()->prenom}}</h5>
-                                                        </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="mt-4 mt-sm-0">
+                                                        <p class="text-muted mb-2">Posté par </p>
+                                                        <h5 class="font-size-15">{{Auth::user()->nom}}
+                                                            {{Auth::user()->prenom}}</h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -140,7 +138,7 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
                                             <div class="mt-4">
                                                 <div class="text-muted font-size-14">
-                                                    <p>{{$actualite->description}}</p>                                                 
+                                                    <p>{{$actualite->description}}</p>
 
                                                 </div>
 

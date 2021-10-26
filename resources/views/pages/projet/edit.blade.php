@@ -33,89 +33,75 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="card">
+                    <div class="card w-75">
                         <div class="card-body">
                             <h4 class="card-title mb-4">Modifier le projet {{$projet->intitule}}</h4>
-                            <form action="{{ route('projet.update', $projet->id) }}" method="POST"
+                            <form class="row" action="{{ route('projet.update', $projet->id) }}" method="POST"
                                 enctype="multipart/form-data">
 
                                 @csrf
 
-                                <div class="row mb-4">
-                                    <label for="projectdesc" class="col-form-label col-lg-2">Description</label>
-                                    <div class="col-lg-10">
-                                        <textarea class="form-control" name="description" rows="3"
-                                            >{{$projet->description}}</textarea>
-                                    </div>
-
+                                <div class="form-group col-md-12 mb-3">
+                                    <label for="projectdesc">Description</label>
+                                    <textarea class="form-control" name="description"
+                                        rows="3">{{$projet->description}}</textarea>
                                     @error('description')
-                                        <span class="text-danger"> {{ $message }}</span>
-                                        @enderror
+                                    <span class="text-danger"> {{ $message }}</span>
+                                    @enderror
                                 </div>
 
-                                <div class="row mb-4">
-                                    <label for="taux_rentabilite" class="col-form-label col-lg-2">Taux de
+                                <div class="form-group col-md-12 mb-3">
+                                    <label for="taux_rentabilite">Taux de
                                         rentabilité *</label>
-                                    <div class="col-lg-10">
-                                        <input id="taux_rentabilite" name="taux_rentabilite" type="text"
-                                            class="form-control" value="{{$projet->taux_rentabilite}}">
+                                    <input id="taux_rentabilite" name="taux_rentabilite" type="text"
+                                        class="form-control" value="{{$projet->taux_rentabilite}}">
 
-                                            @error('taux_rentabilite')
-                                                <span class="text-danger"> {{ $message }}</span>
-                                            @enderror
-                                    </div>
+                                    @error('taux_rentabilite')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                    @enderror
                                 </div>
 
-                                <div class="row mb-4">
-                                    <label for="duree" class="col-form-label col-lg-2">Durée du projet (en mois) *</label>
-                                    <div class="col-lg-10">
-                                        <input id="duree" name="duree" type="text" class="form-control" value="{{$projet->duree}}">
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="duree">Durée du projet (en mois)
+                                        *</label>
+                                    <input id="duree" name="duree" type="text" class="form-control"
+                                        value="{{$projet->duree}}">
 
-                                            @error('duree')
-                                                <span class="text-danger"> {{ $message }}</span>
-                                            @enderror
-                                    </div>
+                                    @error('duree')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                    @enderror
                                 </div>
 
-                                <div class="row mb-4">
-                                    <label for="delai_recup" class="col-form-label col-lg-2">Délai de recupération (en
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="delai_recup">Délai de recupération (en
                                         mois) *</label>
-                                    <div class="col-lg-10">
-                                        <input id="delai_recup" name="delai_recup" type="text" class="form-control" value="{{$projet->rsi}}">
+                                    <input id="delai_recup" name="delai_recup" type="text" class="form-control"
+                                        value="{{$projet->rsi}}">
 
-                                            @error('delai_recup')
-                                                <span class="text-danger"> {{ $message }}</span>
-                                            @enderror
-                                    </div>
+                                    @error('delai_recup')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                    @enderror
                                 </div>
 
-                                <div class="row mb-4">
-                                    <label for="ca_previsionnel" class="col-form-label col-lg-2">Chiffre d'affaires
+                                <div class="form-group col-md-12 mb-3">
+                                    <label for="ca_previsionnel">Chiffre d'affaires
                                         prévisionnel *</label>
-                                    <div class="col-lg-10">
-                                        <input id="ca_previsionnel" name="ca_previsionnel" type="text"
-                                            class="form-control" value="{{$projet->ca_previsionnel}}">
+                                    <input id="ca_previsionnel" name="ca_previsionnel" type="text" class="form-control"
+                                        value="{{$projet->ca_previsionnel}}">
 
-                                            @error('ca_previsionnel')
-                                                <span class="text-danger"> {{ $message }}</span>
-                                            @enderror
-                                    </div>
+                                    @error('ca_previsionnel')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                    @enderror
                                 </div>
 
-                                <div class="row mb-4">
-                                    <label class="col-form-label col-lg-2">Fichiers joints</label>
-                                    <div class="col-lg-10">
-
-                                        <input type="file" name="fichier[]" class="form-control" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" multiple="">
-
-                                    </div>
+                                <div class="form-group col-md-12 mb-3">
+                                    <label>Fichiers joints</label>
+                                    <input type="file" name="fichier[]" class="form-control" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" multiple>
                                 </div>
 
-                                <div class="row justify-content-end">
-                                    <div class="col-lg-10">
-                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
-                                    </div>
+                                <div class="d-flex mt-3 justify-content-center">
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
                                 </div>
                             </form>
 
