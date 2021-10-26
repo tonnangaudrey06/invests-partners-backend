@@ -307,7 +307,7 @@
                         <div class="card-body">
                             <h4 class="card-title mb-4">Projets</h4>
                             <div class="table-responsive">
-                                <table id="datatable" class="table align-middle w-100">
+                                <table class="table align-middle w-100">
                                     <thead>
                                         <tr>
                                             <th scope="col" style="width: 50%">Projet</th>
@@ -337,7 +337,7 @@
                         <div class="card-body">
                             <h4 class="card-title mb-4">Projets</h4>
                             <div class="table-responsive">
-                                <table id="datatable" class="table align-middle w-100">
+                                <table class="table align-middle w-100">
                                     <thead>
                                         <tr>
                                             <th scope="col" style="width: 30% !important">Projet</th>
