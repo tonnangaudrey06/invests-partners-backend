@@ -2,6 +2,18 @@
 
 @section('title', $user->nom . ' ' . $user->prenom . ' - ' . config('app.name'))
 
+@section('style')
+<!-- Datatable -->
+<link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" id="bootstrap-style"
+    rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" id="bootstrap-style"
+    rel="stylesheet" type="text/css" />
+
+<!-- Responsive datatable examples -->
+<link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
+    id="bootstrap-style" rel="stylesheet" type="text/css" />
+@endsection
+
 @section('content')
 <div class="main-content">
 
@@ -47,8 +59,8 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="avatar-md profile-user-wid mb-4">
-                                        <img src="{{ $user->photo ? $user->photo : asset('assets/images/profil.jpg') }}" alt=""
-                                            class="img-thumbnail rounded-circle">
+                                        <img src="{{ $user->photo ? $user->photo : asset('assets/images/profil.jpg') }}"
+                                            alt="" class="img-thumbnail avatar-md rounded-circle">
                                     </div>
                                     <h5 class="font-size-15 text-truncate">{{ $user->role_data->libelle }}</h5>
                                     {{-- <p class="text-muted mb-0 text-truncate">UI/UX Designer</p> --}}
@@ -109,7 +121,7 @@
                             <div class="table-responsive">
                                 <table class="table table-nowrap mb-0">
                                     <tbody>
-                                        @forelse ($user->secteurs as $secteur)
+                                        @forelse ($user->secteurs_data as $secteur)
                                         <tr>
                                             <th scope="row">{{ $secteur->libelle }}</th>
                                             <td>{{ count($secteur->projets) }} projets</td>
@@ -135,32 +147,12 @@
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
-                                            <p class="text-muted fw-medium mb-2">Secteurs</p>
-                                            <h4 class="mb-0">125</h4>
+                                            <p class="text-muted fw-medium mb-2">Projets en attente</p>
+                                            <h4 class="mb-0">{{ $projet_wait }}</h4>
                                         </div>
 
                                         <div class="flex-shrink-0 align-self-center">
                                             <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
-                                                <span class="avatar-title">
-                                                    <i class="bx bx-check-circle font-size-24"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card mini-stats-wid">
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <div class="flex-grow-1">
-                                            <p class="text-muted fw-medium mb-2">Projets</p>
-                                            <h4 class="mb-0">12</h4>
-                                        </div>
-
-                                        <div class="flex-shrink-0 align-self-center">
-                                            <div class="avatar-sm mini-stat-icon rounded-circle bg-primary">
                                                 <span class="avatar-title">
                                                     <i class="bx bx-hourglass font-size-24"></i>
                                                 </span>
@@ -175,14 +167,34 @@
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
-                                            <p class="text-muted fw-medium mb-2">Total Revenue</p>
-                                            <h4 class="mb-0">$36,524</h4>
+                                            <p class="text-muted fw-medium mb-2">Projets publiés</p>
+                                            <h4 class="mb-0">{{ $projet_publish }}</h4>
                                         </div>
 
                                         <div class="flex-shrink-0 align-self-center">
                                             <div class="avatar-sm mini-stat-icon rounded-circle bg-primary">
                                                 <span class="avatar-title">
-                                                    <i class="bx bx-package font-size-24"></i>
+                                                    <i class="bx bx-check-circle font-size-24"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mini-stats-wid">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <p class="text-muted fw-medium mb-2">Projets cloturés</p>
+                                            <h4 class="mb-0">{{ $projet_close }}</h4>
+                                        </div>
+
+                                        <div class="flex-shrink-0 align-self-center">
+                                            <div class="avatar-sm mini-stat-icon rounded-circle bg-primary">
+                                                <span class="avatar-title">
+                                                    <i class="bx bx-check-shield font-size-24"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -200,8 +212,8 @@
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
-                                            <p class="text-muted fw-medium mb-2">Projets</p>
-                                            <h4 class="mb-0">12</h4>
+                                            <p class="text-muted fw-medium mb-2">Projets soumis</p>
+                                            <h4 class="mb-0">{{ count($projets) }}</h4>
                                         </div>
 
                                         <div class="flex-shrink-0 align-self-center">
@@ -221,13 +233,13 @@
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
                                             <p class="text-muted fw-medium mb-2">Financements demandés</p>
-                                            <h4 class="mb-0">$36,524</h4>
+                                            <h4 class="mb-0">@numberFormat($total) XAF</h4>
                                         </div>
 
                                         <div class="flex-shrink-0 align-self-center">
                                             <div class="avatar-sm mini-stat-icon rounded-circle bg-primary">
                                                 <span class="avatar-title">
-                                                    <i class="bx bx-package font-size-24"></i>
+                                                    <i class="bx bx-wallet font-size-24"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -240,19 +252,19 @@
 
                     @if($user->role == 4)
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="card mini-stats-wid">
                                 <div class="card-body">
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
                                             <p class="text-muted fw-medium mb-2">Projets investis</p>
-                                            <h4 class="mb-0">12</h4>
+                                            <h4 class="mb-0">{{ count($projets) }}</h4>
                                         </div>
 
                                         <div class="flex-shrink-0 align-self-center">
                                             <div class="avatar-sm mini-stat-icon rounded-circle bg-primary">
                                                 <span class="avatar-title">
-                                                    <i class="bx bx-hourglass font-size-24"></i>
+                                                    <i class="bx bx-wallet font-size-24"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -266,13 +278,13 @@
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
                                             <p class="text-muted fw-medium mb-2">Investissements effectués</p>
-                                            <h4 class="mb-0">$36,524</h4>
+                                            <h4 class="mb-0">@numberFormat($total) XAF</h4>
                                         </div>
 
                                         <div class="flex-shrink-0 align-self-center">
                                             <div class="avatar-sm mini-stat-icon rounded-circle bg-primary">
                                                 <span class="avatar-title">
-                                                    <i class="bx bx-package font-size-24"></i>
+                                                    <i class="bx bx-wallet font-size-24"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -290,197 +302,61 @@
                         </div>
                     </div> --}}
 
-                    @if($user->role == 2)
-                    <div class="card">
-                        <div class="card-body">
-
-                            <h4 class="card-title mb-4">Projets</h4>
-                            <div class="table-responsive">
-                                <table class="table table-nowrap table-hover mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Projets</th>
-                                            <th scope="col">Financement</th>
-                                            <th scope="col">Etat</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Skote admin UI</td>
-                                            <td>2 Sep, 2019</td>
-                                            <td>20 Oct, 2019</td>
-                                            <td>$506</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Skote admin Logo</td>
-                                            <td>1 Sep, 2019</td>
-                                            <td>2 Sep, 2019</td>
-                                            <td>$94</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Redesign - Landing page</td>
-                                            <td>21 Sep, 2019</td>
-                                            <td>29 Sep, 2019</td>
-                                            <td>$156</td>
-                                        </tr>
-                                        <tr>
-                                            <td>App Landing UI</td>
-                                            <td>29 Sep, 2019</td>
-                                            <td>04 Oct, 2019</td>
-                                            <td>$122</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Blog Template</td>
-                                            <td>05 Oct, 2019</td>
-                                            <td>16 Oct, 2019</td>
-                                            <td>$164</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Redesign - Multipurpose Landing</td>
-                                            <td>17 Oct, 2019</td>
-                                            <td>05 Nov, 2019</td>
-                                            <td>$192</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Logo Branding</td>
-                                            <td>04 Nov, 2019</td>
-                                            <td>05 Nov, 2019</td>
-                                            <td>$94</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-
-                    @if($user->role == 3)
-                    <div class="card">
-                        <div class="card-body">
-
-                            <h4 class="card-title mb-4">Projets</h4>
-                            <div class="table-responsive">
-                                <table class="table table-nowrap table-hover mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Projets</th>
-                                            <th scope="col">Financement</th>
-                                            <th scope="col">Etat</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Skote admin UI</td>
-                                            <td>2 Sep, 2019</td>
-                                            <td>20 Oct, 2019</td>
-                                            <td>$506</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Skote admin Logo</td>
-                                            <td>1 Sep, 2019</td>
-                                            <td>2 Sep, 2019</td>
-                                            <td>$94</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Redesign - Landing page</td>
-                                            <td>21 Sep, 2019</td>
-                                            <td>29 Sep, 2019</td>
-                                            <td>$156</td>
-                                        </tr>
-                                        <tr>
-                                            <td>App Landing UI</td>
-                                            <td>29 Sep, 2019</td>
-                                            <td>04 Oct, 2019</td>
-                                            <td>$122</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Blog Template</td>
-                                            <td>05 Oct, 2019</td>
-                                            <td>16 Oct, 2019</td>
-                                            <td>$164</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Redesign - Multipurpose Landing</td>
-                                            <td>17 Oct, 2019</td>
-                                            <td>05 Nov, 2019</td>
-                                            <td>$192</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Logo Branding</td>
-                                            <td>04 Nov, 2019</td>
-                                            <td>05 Nov, 2019</td>
-                                            <td>$94</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-
                     @if($user->role == 4)
                     <div class="card">
                         <div class="card-body">
-
                             <h4 class="card-title mb-4">Projets</h4>
                             <div class="table-responsive">
-                                <table class="table table-nowrap table-hover mb-0">
+                                <table id="datatable" class="table dt-responsive align-middle nowrap w-100">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Projet</th>
+                                            <th scope="col">Secteur</th>
+                                            <th scope="col">Investissement</th>
+                                            <th scope="col">Etat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($projets as $projet)
+                                        <tr>
+                                            <th class="text-truncate"><a
+                                                    href="{{ route('projet.details', $projet->projet_data->id) }}"
+                                                    class="text-decoration-none">{{ $projet->projet_data->intitule }}</a></th>
+                                            <td>{{ $projet->projet_data->secteur_data->libelle }}</td>
+                                            <td>@numberFormat($projet->total_investi) XAF</td>
+                                            <td>{{ $projet->projet_data->etat }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    @else
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Projets</h4>
+                            <div class="table-responsive">
+                                <table id="datatable" class="table dt-responsive align-middle nowrap w-100">
                                     <thead>
                                         <tr>
                                             <th scope="col">Projet</th>
                                             <th scope="col">Secteur</th>
                                             <th scope="col">Financement</th>
-                                            <th scope="col"></th>
+                                            <th scope="col">Etat</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach($projets as $projet)
                                         <tr>
-                                            <td>Skote admin UI</td>
-                                            <td>2 Sep, 2019</td>
-                                            <td>20 Oct, 2019</td>
-                                            <td>$506</td>
+                                            <th class="text-truncate"><a
+                                                    href="{{ route('projet.details', $projet->id) }}"
+                                                    class="text-decoration-none">{{ $projet->intitule }}</a></th>
+                                            <td>{{ $projet->secteur_data->libelle }}</td>
+                                            <td>@numberFormat($projet->financement) XAF</td>
+                                            <td>{{ $projet->etat }}</td>
                                         </tr>
-
-                                        <tr>
-                                            <td>Skote admin Logo</td>
-                                            <td>1 Sep, 2019</td>
-                                            <td>2 Sep, 2019</td>
-                                            <td>$94</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Redesign - Landing page</td>
-                                            <td>21 Sep, 2019</td>
-                                            <td>29 Sep, 2019</td>
-                                            <td>$156</td>
-                                        </tr>
-                                        <tr>
-                                            <td>App Landing UI</td>
-                                            <td>29 Sep, 2019</td>
-                                            <td>04 Oct, 2019</td>
-                                            <td>$122</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Blog Template</td>
-                                            <td>05 Oct, 2019</td>
-                                            <td>16 Oct, 2019</td>
-                                            <td>$164</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Redesign - Multipurpose Landing</td>
-                                            <td>17 Oct, 2019</td>
-                                            <td>05 Nov, 2019</td>
-                                            <td>$192</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Logo Branding</td>
-                                            <td>04 Nov, 2019</td>
-                                            <td>05 Nov, 2019</td>
-                                            <td>$94</td>
-                                        </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -499,8 +375,19 @@
 @endsection
 
 @section('script')
-<!-- apexcharts -->
-<script type="text/javascript" src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+<!-- Required datatable js -->
+<script type="text/javascript" src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
+</script>
+
+<!-- Responsive examples -->
+<script type="text/javascript"
+    src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script type="text/javascript"
+    src="{{ asset('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+
+<!-- Datatable init js -->
+<script type="text/javascript" src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
 
 <!-- crypto dash init js -->
 <script type="text/javascript" src="{{ asset('assets/js/pages/profile.init.js') }}"></script>

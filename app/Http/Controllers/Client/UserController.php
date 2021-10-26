@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Investissement;
 use App\Models\ProfilInvestisseur;
+use App\Models\Projet;
 use App\Models\Role;
 use App\Models\Secteur;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
@@ -66,10 +69,64 @@ class UserController extends Controller
 
     public function show($id = null)
     {
-        $user = auth()->user();
+        $user = User::with(['secteurs_data'])->find(auth()->user()->id);
 
         if (!empty($id)) {
-            $user = User::find($id);
+            $user = User::with(['secteurs_data'])->find($id);
+        }
+
+        if ($user->role == 2) {
+            $secteurs = [];
+            foreach ($user->secteurs_data as $key => $value) {
+                array_push($secteurs, $value->id);
+            }
+
+            $projet_wait = Projet::where('etat', 'ATTENTE')->whereIn('secteur', $secteurs)->count();
+            $projet_publish = Projet::where('etat', 'PUBLIE')->whereIn('secteur', $secteurs)->count();
+            $projet_close = Projet::where('etat', 'CLOTURE')->whereIn('secteur', $secteurs)->count();
+
+
+            $projets = Projet::with(['secteur_data'])->whereIn('secteur', $secteurs)->get();
+
+            return view('pages.user.profil', compact('user', 'projet_wait', 'projet_publish', 'projet_close', 'projets'));
+        }
+
+        if ($user->role == 3) {
+            $projets = Projet::with(['secteur_data'])->where('user', $user->id)->get();
+
+            $total = Projet::select(DB::raw('sum(financement) as total_finan'))->where('user', $user->id)->first();
+
+            if (empty($total)) {
+                $total = 0;
+            } else {
+                $total = $total->total_finan;
+            }
+
+            return view('pages.user.profil', compact('user', 'total', 'projets'));
+        }
+
+        if ($user->role == 4) {
+            $projets = Investissement::select(DB::raw('sum(montant) as total_investi, user, projet'))
+                ->groupBy('projet')
+                ->groupBy('user')
+                ->where('user', $user->id)
+                ->with(['projet_data'])
+                ->get();
+
+            $total = Investissement::select(DB::raw('sum(montant) as total_investi'))
+                ->groupBy('projet')
+                ->groupBy('user')
+                ->where('user', $user->id)
+                ->with(['projet_data'])
+                ->first();
+
+            if (empty($total)) {
+                $total = 0;
+            } else {
+                $total = $total->total_investi;
+            }
+
+            return view('pages.user.profil', compact('user', 'total', 'projets'));
         }
 
         return view('pages.user.profil')->with('user', $user);
@@ -113,11 +170,11 @@ class UserController extends Controller
 
 
 
-       $user =  User::create($data);
+        $user =  User::create($data);
 
-       Secteur::where('id', $request->secteur)->update([
-        'user' => $user->id,
-       ]);
+        Secteur::where('id', $request->secteur)->update([
+            'user' => $user->id,
+        ]);
 
         Toastr::success('Utilisateur ajouté avec succès!', 'Succès');
 
@@ -152,8 +209,8 @@ class UserController extends Controller
 
         if (!empty($photo)) {
             $filename = 'photo.' . strtolower($photo->getClientOriginalExtension());
-            $data['photo'] = url('storage/uploads/'. $user->folder) . '/' . $filename;
-            $photo->storeAs('uploads/'. $user->folder .'/', $filename, ['disk' => 'public']);
+            $data['photo'] = url('storage/uploads/' . $user->folder) . '/' . $filename;
+            $photo->storeAs('uploads/' . $user->folder . '/', $filename, ['disk' => 'public']);
         }
 
         $user->update($data);
