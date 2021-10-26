@@ -78,7 +78,7 @@
                                 <tbody>
                                     @foreach ($users as $user)
                                     <tr>
-                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 0 }}">
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">
                                             @if (!empty($user->photo))
                                             <div>
                                                 <img class="rounded-circle avatar-xs" src="{{ $user->photo }}" alt="">
@@ -91,13 +91,13 @@
                                             </div>
                                             @endif
                                         </td>
-                                        <th rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 0 }}">
+                                        <th rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">
                                             <a href="{{ route('user.profile', $user->id) }}">{{ $user->nom_complet
                                                 }}</a>
                                         </th>
-                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 0 }}">{{
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">{{
                                             $user->email }}</td>
-                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 0 }}">{{
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">{{
                                             $user->telephone }}</td>
 
                                         @if ($role->value == 3 || $role->value == 4)
@@ -112,14 +112,12 @@
                                         </td>
                                         @endif
                                         @if ($role->value == 2)
-                                        {{-- @foreach ($user->secteurs_data as $item) --}}
                                         <td style="max-width: 20% !important">
                                             {{ $user->secteurs_data ? $user->secteurs_data[0]->libelle : '' }}
                                         </td>
-                                        {{-- @endforeach --}}
                                         @endif
 
-                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 0 }}"
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}"
                                             class="text-center">
                                             @if ($role->value == 2 && (auth()->user()->role == 1 || auth()->user()->role
                                             == 5))
