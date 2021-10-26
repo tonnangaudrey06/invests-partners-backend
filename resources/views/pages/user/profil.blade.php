@@ -332,7 +332,7 @@
                         </div>
                     </div>
                     @endif
-                    @if($user->role != 4 && ($user->role != 4 || $user->role != 5))
+                    @if($user->role != 4 && ($user->role != 1 || $user->role != 5))
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4">Projets</h4>
