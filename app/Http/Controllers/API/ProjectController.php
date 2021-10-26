@@ -91,12 +91,12 @@ class ProjectController extends Controller
 
         // Retrieve projects informations
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
-        
+
         try {
             if (!empty($projet->secteur_data->conseiller_data)) {
                 Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
             }
-    
+
             if (!empty($admin)) {
                 Mail::to($admin->email)->queue(new CreationProjetMail($projet->toArray()));
             }
@@ -168,7 +168,7 @@ class ProjectController extends Controller
             if (!empty($projet->secteur_data->conseiller_data)) {
                 Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
             }
-    
+
             if (!empty($admin)) {
                 Mail::to($admin->email)->queue(new CreationProjetMail($projet->toArray()));
             }
@@ -181,20 +181,14 @@ class ProjectController extends Controller
 
     public function store3($id, Request $request)
     {
-        $membres = $request->has('membres') ? json_decode($request->input('membres')) : [];
+        $membre = $request->input();
 
-        return $this->sendResponse($membres, 'Project');
+        Equipe::create([
+            'projet' => $id,
+            'membre' => $membre['membre']->id,
+            'statut' => $membre['statut']
+        ]);
 
-        // Add all members to project
-        foreach ($membres as $membre) {
-            Equipe::create([
-                'projet' => $id,
-                'membre' => $membre->membre->id,
-                'statut' => $membre->statut
-            ]);
-        }
-
-        // Retrieve projects informations
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $id)->first();
 
         return $this->sendResponse($projet, 'Project');
@@ -202,9 +196,8 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements', 'actualites'])->find($id);
-        $actualites = Actualite::where('secteur', $projet->secteur)->get();
-        array_merge($projet->actualites, $actualites);
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->find($id);
+        $projet->actualites = Actualite::where('secteur', $projet->secteur)->orWhere('projet', $projet->id)->get();
         return $this->sendResponse($projet, 'Project');
     }
 
