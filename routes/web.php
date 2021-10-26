@@ -46,8 +46,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('chat')->name('chat.')->group(function () {
         Route::get('/', [MessageController::class, 'index'])->name('home');
+        Route::get('/{id}', [MessageController::class, 'index2'])->name('view');
+        Route::get('/{id}/{receiver}/{conversation}', [MessageController::class, 'index2'])->name('view.conversation');
         Route::get('/{id}/{conversation}', [MessageController::class, 'index'])->name('conversation');
         Route::post('/{sender}/{conversation}/send/{receiver}', [MessageController::class, 'send'])->name('send');
+        Route::post('/{sender}/send/{receiver}', [MessageController::class, 'newConversation'])->name('new');
     });
 
     Route::prefix('user')->name('user.')->group(function () {
@@ -65,6 +68,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/porteur-projet', [UserController::class, 'porteurProjet'])->name('porteur.projet');
         Route::get('/investisseur', [UserController::class, 'investisseur'])->name('investisseur');
         Route::get('/profile/{id?}', [UserController::class, 'show'])->name('profile');
+        Route::get('/profile/{id}/edit', [UserController::class, 'editProfil'])->name('profile.edit');
+        Route::post('/profile/{id?}/update', [UserController::class, 'updateProfile'])->name('profile.update');
+        Route::post('/profile/{id}/update/password', [UserController::class, 'updatePassword'])->name('profile.update.password');
         // Route::post('/', [UserController::class, 'store'])->name('add');
         // Route::post('/{id?}', [UserController::class, 'store'])->name('update');
     });
@@ -120,29 +126,25 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/delete/{id}', [EvenementController::class, 'delete'])->name('delete');
     });
 
-
     Route::prefix('projet')->name('projet.')->group(function () {
         Route::get('/', [ProjetController::class, 'index'])->name('home');
         Route::get('/ip', [ProjetController::class, 'index_ip'])->name('home_ip');
         Route::get('/add', [ProjetController::class, 'add'])->name('add');
+        Route::get('/archives', [ProjetController::class, 'archives'])->name('archives');
         Route::get('/edit/{id}', [ProjetController::class, 'edit'])->name('edit');
         Route::post('/store', [ProjetController::class, 'store'])->name('store');
         Route::get('/delete/{id}', [ProjetController::class, 'delete'])->name('delete');
         Route::post('/update/{id}', [ProjetController::class, 'update'])->name('update');
         Route::get('/publish/{id}', [ProjetController::class, 'publish'])->name('publish');
         Route::get('/cloture/{id}', [ProjetController::class, 'cloture'])->name('cloture');
-
-        Route::get('/{id}', [ProjetController::class, 'showp'])->name('details');
-
         Route::get('/ask/infosupp/{id}', [ProjetController::class, 'typemessage'])->name('askinfosupp');
         Route::get('/admin/validate/{id}', [ProjetController::class, 'AdminValidate'])->name('admin.validate');
         Route::post('/admin/infosupp/{id}', [ProjetController::class, 'AdminInfoSupp'])->name('admin.infosupp');
         Route::post('/infosupp/{id}', [ProjetController::class, 'CIInfoSupp'])->name('ci.infosupp');
         Route::get('/validate/{id}', [ProjetController::class, 'CIValidate'])->name('civalidate');
         Route::get('/rejet/{id}', [ProjetController::class, 'Rejeter'])->name('rejet');
-        Route::get('/archives/pp', [ProjetController::class, 'archives'])->name('archives');
+        Route::get('/{id}', [ProjetController::class, 'showp'])->name('details');
     });
-    
 });
 
 // Privilèges Routes

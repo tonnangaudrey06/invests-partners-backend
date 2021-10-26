@@ -3,49 +3,54 @@
 @section('title', 'Tableaux de bord - ' . config('app.name'))
 
 @section('content')
-    <div class="main-content">
+<div class="main-content">
 
-        <div class="page-content">
-            <div class="container-fluid">
-                
-                <div class="row">
-                    <div class="col-12">
-                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0 font-size-18">Tableaux de bord</h4>
+    <div class="page-content">
+        <div class="container-fluid">
 
-                            <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">{{ config('app.name') }}</a></li>
-                                    <li class="breadcrumb-item active">Tableaux de bord</li>
-                                </ol>
-                            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0 font-size-18">Tableaux de bord</h4>
 
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">{{ config('app.name') }}</a>
+                                </li>
+                                <li class="breadcrumb-item active">Tableaux de bord</li>
+                            </ol>
                         </div>
+
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-xl-4">
-                        <div class="card">
-                            <div class="card-body">
-                                
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="mb-4 pt-0 mt-0 col-2">
-                                        <i class="mdi mdi-account-circle text-primary h1"></i>
-                                    </div>
-                                    <div class="mb-4 mt-2 col-10">
-                                        <h4 class="card-title"><span>INVESTISSEURS</span></h4> 
-                                    </div>
-
-                                    <div class="row">
-                                        <h5 class="font-size-15">Total: <span class="badge  bg-primary font-size-14">@numberFormat($investisseurs->count() )</span></h5>
-                                        <h5 class="font-size-15">Montant investi : <span class="badge bg-primary font-size-14">@numberFormat($investissement) FCFA </span></h5>
-
-                                    </div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-4 d-flex align-items-center">
+                                <i class="mdi mdi-account-circle text-primary h1 me-3"></i>
+                                <div class="flex-grow-1 d-flex align-items-center">
+                                    <h4 class="h3"> <a href="{{ route('user.investisseur') }}"
+                                            class="text-muted">Investisseurs</a></h4>
                                 </div>
                             </div>
 
-                            <!--<div class="card-body border-top">
+                            <div class="text-muted font-size-15 fw-bolder">
+                                <p>
+                                    <i class="mdi mdi-chevron-right text-primary me-1"></i> <span
+                                        class="text-primary">@moneyFormat($investisseurs->count())</span> investisseurs
+                                    inscrits
+                                </p>
+                                <p>
+                                    <i class="mdi mdi-chevron-right text-primary me-1"></i> <span
+                                        class="text-primary">@moneyFormat($investissement) XAF</span> déjà investis
+                                </p>
+                            </div>
+                        </div>
+
+                        <!--<div class="card-body border-top">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div>
@@ -94,253 +99,279 @@
                                     <a href="javascript: void(0);" class="btn btn-primary me-2 w-md">Buy / Sell</a>
                                 </div>
                             </div>-->
+                    </div>
+                </div>
+
+                <div class="col-xl-4">
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="mb-4 d-flex align-items-center">
+                                <i class="mdi mdi-account-circle text-success h1 me-3"></i>
+                                <div class="flex-grow-1 d-flex align-items-center">
+                                    <h4 class="h3"> <a href="{{ route('user.porteur.projet') }}"
+                                            class="text-muted">Porteurs de projets</a></h4>
+                                </div>
+                            </div>
+
+                            <div class="text-muted font-size-15 fw-bolder">
+                                <p>
+                                    <i class="mdi mdi-chevron-right text-success me-1"></i> <span
+                                        class="text-success">@moneyFormat($porteurs->count())</span> porteurs de projets
+                                    inscrits
+                                </p>
+                                <p>
+                                    <i class="mdi mdi-chevron-right text-success me-1"></i> Besoin d'un financement de
+                                    <span class="text-success"> @moneyFormat($besoinFinancement) XAF</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-xl-4">
-
-                        <div class="card">
-                            <div class="card-body">
-                                
-                                <div class="row align-items-center justify-content-between">
-                                    <div class="mb-4 pt-0 mt-0 col-2">
-                                        <i class="mdi mdi-account-circle text-success h1"></i>
-                                    </div>
-                                    <div class="mb-4 mt-2 col-10">
-                                        <h4 class="card-title"><span>PORTEURS DE PROJETS</span></h4> 
-                                    </div>
-
-                                    <div class="row">
-                                        <h5 class="font-size-15">Total: <span class="badge  bg-success font-size-14">@numberFormat($porteurs->count() )</span></h5>
-                                        <h5 class="font-size-15">Besoin en financement : <span class="badge bg-success font-size-14">@numberFormat($besoinFinancement ) FCFA</span></h5>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-
-                        <div class="col-xl-4">
-
-                            <div class="card">
-                                <div class="card-body">
-                                    
-                                    <div class="row align-items-center justify-content-between">
-                                        <div class="mb-4 pt-0 mt-0 col-2">
-                                            <i class="mdi mdi-account-circle text-warning h1"></i>
-                                        </div>
-                                        <div class="mb-4 mt-2 col-10">
-                                            <h4 class="card-title"><span>CONSEILLERS</span></h4> 
-                                        </div>
-    
-                                        <div class="row">
-                                            <h5 class="font-size-15">Total: <span class="badge  bg-warning font-size-14">@numberFormat( $conseiller->count() )</span></h5>
-                                            <h5 class="font-size-15">Secteurs couverts : <span class="badge bg-warning font-size-14">@numberFormat($secteurCouv->count())</span></h5>
-    
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--<div class="card">
-                            <div>
-                                <div class="row">
-                                    <div class="col-lg-9 col-sm-8">
-                                        <div class="p-4">
-                                            <h5 class="text-primary">Welcome Back !</h5>
-                                            <p>Skote Crypto Dashboard</p>
-
-                                            <div class="text-muted">
-                                                <p class="mb-1"><i
-                                                        class="mdi mdi-circle-medium align-middle text-primary me-1"></i> If
-                                                    several languages coalesce</p>
-                                                <p class="mb-1"><i
-                                                        class="mdi mdi-circle-medium align-middle text-primary me-1"></i>
-                                                    Sed ut perspiciatis unde</p>
-                                                <p class="mb-0"><i
-                                                        class="mdi mdi-circle-medium align-middle text-primary me-1"></i> It
-                                                    would be necessary</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-sm-4 align-self-center">
-                                        <div>
-                                            <img src="assets/images/crypto/features-img/img-1.png" alt=""
-                                                class="img-fluid d-block">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
-                        
                 </div>
-                <div class="row">
-                    <div class="col-xl-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-4">Projets</h4>
 
-                                <div class="text-center">
-                                    <div class="mb-4">
-                                        <i class="bx bx-map-pin text-info display-4"></i>
-                                    </div>
-                                    <h3>@numberFormat($nbProjets->count() )</h3>
-                                    <p>Projets enregistrés</p>
+                <div class="col-xl-4">
+
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="mb-4 d-flex align-items-center">
+                                <i class="mdi mdi-account-circle text-warning h1 me-3"></i>
+                                <div class="flex-grow-1 d-flex align-items-center">
+                                    <h4 class="h3"> <a href="{{ route('user.conseiller') }}"
+                                            class="text-muted">Conseillers</a></h4>
                                 </div>
-                                <hr>
+                            </div>
 
-                                    <div class="row text-center">
-                                        @php
-                                            $ip = DB::table('projets')->where('type', 'IP')->count();
-                                            $autres = DB::table('projets')->where('type', 'AUTRE')->count();
-                                        @endphp
-                                        
-                                        <div class="col-6">
-                                            <div>
-                                                <strong><p class="text-muted text-truncate mb-2 font-weight-bold"> I&P </p></strong>
-                                                <h5 class="mb-0 text-primary">@numberFormat($ip )</h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div>
-                                                <strong> <p class="text-muted text-truncate mb-2 font-weight-bold">PLATEFORME</p> </strong>
-                                                <h5 class="mb-0 text-primary">@numberFormat( $autres )</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr><br>
+                            <div class="text-muted font-size-15 fw-bolder">
+                                <p>
+                                    <i class="mdi mdi-chevron-right text-warning me-1"></i> <span
+                                        class="text-warning">@numberFormat($conseiller->count())</span> conseillers
+                                </p>
+                                <p>
+                                    <i class="mdi mdi-chevron-right text-primary me-1"></i> <span
+                                        class="text-warning">@numberFormat($secteurCouv->count())</span> secteurs
+                                    couverts
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
 
-                                <div class="row align-items-center text-center">
-                                    @foreach ($etat as $item)
-                                    <div class="mb-4 pt-0 mt-0 col-sm">
-                                        <h5 class="card-title"><span>{{$item->etat}}</span></h5> 
-                                      
-                                            <p>
-                                                
-                                                @if ($item->etat =="COMPLET")
-                                                    <span class="align-items-center justify-content-center badge badge-pill badge-soft-success font-size-15" >{{$item->total_etat}}</span>
-                                                @else
-                                                    <span class="align-items-center justify-content-center badge badge-pill badge-soft-warning font-size-15" >{{$item->total_etat}}</span>
-                                                @endif
+                            <div class="text-center">
+                                <div class="mb-4">
+                                    <i class="bx bx-briefcase-alt-2 text-primary display-4"></i>
+                                </div>
+                                {{-- <h3>@numberFormat($nbProjets->count())</h3> --}}
+
+                                <h4 class="card-title mb-4">@numberFormat($nbProjets->count()) projets enregistrés</h4>
+                                {{-- <p>Projets enregistrés</p> --}}
+                            </div>
+                            <hr>
+
+                            <div class="row text-center">
+                                @php
+                                $ip = DB::table('projets')->where('type', 'IP')->count();
+                                $autres = DB::table('projets')->where('type', 'AUTRE')->count();
+                                @endphp
+
+                                <div class="col-6">
+                                    <div>
+                                        <strong>
+                                            <p class="text-muted text-truncate mb-2 font-weight-bold text-uppercase">
+                                                <a href="{{ route('projet.home_ip') }}" class="text-muted">Invest &
+                                                    Partners</a>
                                             </p>
-                                       
+                                        </strong>
+                                        <h5 class="mb-0 text-primary">@numberFormat($ip )</h5>
                                     </div>
-                                        
-                                    @endforeach
-                                    
-                                    
-                                   
                                 </div>
+                                <div class="col-6">
+                                    <div>
+                                        <strong>
+                                            <p class="text-muted text-truncate mb-2 font-weight-bold text-uppercase">
+                                                <a href="{{ route('projet.home') }}"
+                                                    class="text-muted">PLATEFORME</a>
+                                            </p>
+                                        </strong>
+                                        <h5 class="mb-0 text-primary">@numberFormat( $autres )</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr><br>
 
-                                <div class="h5 text-center text-info">Secteurs</div>
+                            <div class="row d-flex justify-content-center text-center">
+                                @foreach ($etat as $item)
+                                <div class="mb-4 pt-0 mt-0 col-md-4">
+                                    <h5 class="card-title"><span>{{$item->etat}}</span></h5>
 
-                                <div class="row table-responsive mt-4">
-                                    <table class="table align-middle table-nowrap">
-                                        <tbody>
-                                            @foreach ($secteur as $secteurItem)
-                                            <tr>
-                                                <td style="width: 30%">
-                                                    <p class="mb-0">{{ $secteurItem->libelle }}</p>
-                                                </td>
+                                    <p>
+                                        @if ($item->etat == "COMPLET")
+                                        <span
+                                            class="align-items-center justify-content-center badge badge-pill badge-soft-success font-size-15">{{$item->total_etat}}</span>
+                                        @else
+                                        <span
+                                            class="align-items-center justify-content-center badge badge-pill badge-soft-warning font-size-15">{{$item->total_etat}}</span>
+                                        @endif
+                                    </p>
+
+                                </div>
+                                @endforeach
+                            </div>
+                            {{--
+                            <div class="h5 text-center text-info">Secteurs</div>
+
+                            <div class="row table-responsive mt-4">
+                                <table class="table align-middle table-nowrap">
+                                    <tbody>
+                                        @foreach ($secteur as $secteurItem)
+                                        <tr>
+                                            <td style="width: 30%">
+                                                <p class="mb-0">{{ $secteurItem->libelle }}</p>
+                                            </td>
+                                            @php
+                                            $nbProjet1=DB::table('projets')->where('secteur',$secteurItem->id)->get()->count();
+                                            @endphp
+                                            <td style="width: 25%">
+                                                <h5 class="mb-0">{{$nbProjet1}} </h5>
+                                            </td>
+                                            <td>
+
+                                                @if((int)($nbProjets->count()) > 0 )
                                                 @php
-                                                    $nbProjet1=DB::table('projets')->where('secteur',$secteurItem->id)->get()->count();
+                                                $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a',
+                                                'b', 'c', 'd', 'e', 'f');
+                                                $color =
+                                                '#'.$rand[rand(0,15)].$rand[rand(0,15)].'1'.$rand[rand(0,15)].'f'.'f';
+                                                $percentage= round(($nbProjet1/$nbProjets->count())*100);
                                                 @endphp
-                                                <td style="width: 25%">
-                                                    <h5 class="mb-0">{{$nbProjet1}} </h5></td>
-                                                <td>
-                                                    
-                                                    @if((int)($nbProjets->count()) > 0 )
-                                                    @php
-                                                        $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
-                                                        $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].'1'.$rand[rand(0,15)].'f'.'f';
-                                                        $percentage= round(($nbProjet1/$nbProjets->count())*100);
-                                                    @endphp
-                                                    <div class="progress bg-transparent progress-xl">
-                                                        <div class="progress-bar rounded" role="progressbar" style="width: {{ $percentage }}%; background:{{$color}}" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{ $percentage }}%</div>
-                                                    </div>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                
+                                                <div class="progress bg-transparent progress-xl">
+                                                    <div class="progress-bar rounded" role="progressbar"
+                                                        style="width: {{ $percentage }}%; background:{{$color}}"
+                                                        aria-valuenow="{{$percentage}}" aria-valuemin="0"
+                                                        aria-valuemax="100">{{ $percentage }}%</div>
+                                                </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div> --}}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Statistique des projets par secteur</h4>
 
-                               
+                            <div class="row table-responsive">
+                                <table class="table align-middle table-nowrap">
+                                    <tbody>
+                                        @foreach ($secteur as $secteurItem)
+                                        <tr>
+                                            <th style="width: 30%">
+                                                {{ $secteurItem->libelle }}
+                                            </th>
+                                            @php
+                                            $nbProjet1=DB::table('projets')->where('secteur',$secteurItem->id)->get()->count();
+                                            @endphp
+                                            <td class="text-center" style="width: 15%">
+                                                {{$nbProjet1}}
+                                            </td>
+                                            <td>
+
+                                                @if((int)($nbProjets->count()) > 0 )
+                                                @php
+                                                $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a',
+                                                'b', 'c', 'd', 'e', 'f');
+                                                $color =
+                                                '#'.$rand[rand(0,15)].$rand[rand(0,15)].'1'.$rand[rand(0,15)].'f'.'f';
+                                                $percentage= round(($nbProjet1/$nbProjets->count())*100);
+                                                @endphp
+                                                <div class="progress bg-transparent progress-xl">
+                                                    <div class="progress-bar rounded" role="progressbar"
+                                                        style="width: {{ $percentage }}%; background:{{$color}}"
+                                                        aria-valuenow="{{$percentage}}" aria-valuemin="0"
+                                                        aria-valuemax="100">{{$nbProjet1}} / {{$nbProjets->count()}}
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-lg-6">
-                        <div class="card">
-                           
-                            <div class="card-body">
-                                <div class="accordion" id="accordionExample">
-                                    <h4 class="card-title mb-4">Pays</h4>
-                                    @php
-                                        $i=0;
-                                    @endphp
-                                    @foreach ($pays as $item)
-                                        @php
-                                            $projetparVille=DB::table('projets')->select('ville_activite',DB::raw('COUNT(id) as total_ville_projet'))->where('pays_activite',$item->pays_activite)->groupBy('ville_activite')->get();
+                <div class="col-lg-6">
+                    <div class="card">
 
-                                        @endphp
+                        <div class="card-body">
+                            <div class="accordion" id="accordionExample">
+                                <h4 class="card-title mb-4">Pays</h4>
+                                @php
+                                $i=0;
+                                @endphp
+                                @foreach ($pays as $item)
+                                @php
+                                $projetparVille=DB::table('projets')->select('ville_activite',DB::raw('COUNT(id) as
+                                total_ville_projet'))->where('pays_activite',$item->pays_activite)->groupBy('ville_activite')->get();
+                                @endphp
 
-                                    <div class=" accordion-item">
-                                        
-                                        <h2 class="accordion-header" id="heading{{$i}}">
-                                            <button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $i }}" aria-expanded="true" aria-controls="collapse{{ $i }}">
-                                                
-                                                <h5 class="font-size-14">{{ $item->pays_activite }}</h5>
-                                                <div style="width:1%"></div>
-                                                <h5 class="font-size-16"><span class="badge badge-pill badge-soft-success font-size-15">{{ $item->total_projets }}</span></h5>
-                                            </button>
-                                            
-                                        </h2>
-                                            
-                                        
-                                        <div id="collapse{{ $i }}" class="accordion-collapse collapse show" aria-labelledby="heading{{$i}}" data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                <div class="table-responsive">
-                                                    <table class="table table-nowrap">
-                                                        <thead>
-                                                            <tr>
-                                                                
-                                                                <th>Ville</th>
-                                                                <th class="text-end">Projets</th>
-                                                            </tr>
-                                                        </thead>
-                                                        
-                                                        <tbody>
-                                                            @foreach ($projetparVille as $item2)
-                                                                
-                                                                <tr>
-                                                                    
-                                                                    <td>{{ $item2->ville_activite }}</td>
-                                                                    <td class="text-end "><span class="badge badge-pill badge-soft-warning font-size-14">{{ $item2->total_ville_projet }}</span></td>
-                                                                </tr>
-                                                            
-                                                            @endforeach
-                                                    
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                <div class=" accordion-item">
+
+                                    <h2 class="accordion-header" id="heading{{$i}}">
+                                        <button class="accordion-button fw-medium" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapse{{ $i }}"
+                                            aria-expanded="true" aria-controls="collapse{{ $i }}">
+                                            <h5 class="font-size-14 fw-bolder">
+                                                <span class="badge rounded badge-soft-primary p-2 fw-bolder me-2">{{
+                                                    $item->total_projets }}</span>
+                                                {{ $item->pays_activite }}
+                                            </h5>
+                                        </button>
+                                    </h2>
+
+
+                                    <div id="collapse{{ $i }}" class="accordion-collapse collapse show"
+                                        aria-labelledby="heading{{$i}}" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-nowrap">
+                                                    <tbody>
+                                                        @foreach ($projetparVille as $item2)
+                                                        <tr>
+                                                            <th>{{ $item2->ville_activite }}</th>
+                                                            <td class="text-end">{{$item2->total_ville_projet }} projets
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
-                                    @php
-                                        $i++;
-                                    @endphp
+                                </div>
+                                @php
+                                $i++;
+                                @endphp
                                 @endforeach
-                                
+
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                
+
 
                 <!--<div class="row">
                     <div class="row">
@@ -422,8 +453,8 @@
                 </div>-->
 
 
-                </div>
-                <!--
+            </div>
+            <!--
                 <div class="row">
                     <div class="col-xl-8">
                         <div class="card">
@@ -532,7 +563,7 @@
                     </div>
                 </div>-->
 
-               <!-- <div class="row">
+            <!-- <div class="row">
                     <div class="col-xl-4">
                         <div class="card">
                             <div class="card-body">
@@ -1368,17 +1399,17 @@
                     </div>
                 </div>-->
 
-            </div>
         </div>
-
-        @include('partials.footer')
     </div>
+
+    @include('partials.footer')
+</div>
 @endsection
 
 @section('script')
-    <!-- apexcharts -->
-    <script type="text/javascript" src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+<!-- apexcharts -->
+<script type="text/javascript" src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
 
-    <!-- crypto dash init js -->
-    <script type="text/javascript" src="{{ asset('assets/js/pages/crypto-dashboard.init.js') }}"></script>
+<!-- crypto dash init js -->
+<script type="text/javascript" src="{{ asset('assets/js/pages/crypto-dashboard.init.js') }}"></script>
 @endsection

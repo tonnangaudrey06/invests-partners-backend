@@ -73,6 +73,12 @@ class UserController extends Controller
         return view('pages.user.profil')->with('user', $user);
     }
 
+    public function editProfil($id)
+    {
+        $user = User::find($id);
+        return view('pages.user.edit-profil')->with('user', $user);
+    }
+
     // public function store(Request $request)
     // {
     //     $data = $request->input();
@@ -104,7 +110,7 @@ class UserController extends Controller
 
         Toastr::success('Utilisateur ajouté avec succès!', 'Succès');
 
-        return redirect()->back();
+        return back();
     }
 
     public function edit($id)
@@ -116,20 +122,41 @@ class UserController extends Controller
     public function update($id, Request $request)
     {
 
-        // dd('tyrt');
-        $data = $request->input();
+        $data = $request->except(['_token', 'password']);
 
-        if ($request->has('password')) {
-            unset($data['password']);
-        }
+        User::where('id', $id)->update($data);
 
+        Toastr::success('Utilisateur mis à jour avec succès!', 'Success');
+
+        return redirect()->back();
+    }
+
+    public function updateProfile($id, Request $request)
+    {
         $data = $request->except(['_token']);
 
         User::where('id', $id)->update($data);
 
-        Toastr::success('Utilisateur mis à jour avec succès!)', 'Success');
+        Toastr::success('Utilisateur mis à jour avec succès!', 'Success');
 
-        return redirect()->back();
+        return redirect(route('user.profile'));
+    }
+
+    public function updatePassword($id, Request $request)
+    {
+        $user = User::where('id', $id)->first();
+
+        if (!Hash::check($request->old, $user->password)) {
+            Toastr::error('Mot de passe incorrect!', 'Erreur');
+            return back();
+        }
+
+        $user->password = Hash::make($request->new);
+        $user->save();
+
+        Toastr::success('Utilisateur mis à jour avec succès!', 'Success');
+
+        return redirect(route('user.profile'));
     }
 
     public function delete($id)

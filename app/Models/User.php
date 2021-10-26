@@ -79,7 +79,7 @@ class User extends Authenticatable
 
     public function secteurs()
     {
-        return $this->hasMany(Secteur::class, 'user', 'id');
+        return $this->hasMany(Secteur::class, 'user', 'id')->with(['projets']);
     }
 
     public function profil_invest()
