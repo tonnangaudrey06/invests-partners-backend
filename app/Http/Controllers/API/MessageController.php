@@ -19,7 +19,7 @@ class MessageController extends Controller
     {
         Message::makeVu($sender, $receiver);
         $messages = Message::fetchMessage($sender, $receiver);
-        return response()->json($messages, 200);
+        return $this->sendResponse($messages, 'Conversation messages');
     }
 
     public function inbox($sender, $conversation)
@@ -208,17 +208,13 @@ class MessageController extends Controller
 
     public function deleteChat($conversation)
     {
-        $delete = Message::deleteConversation($conversation);
-        return $this->sendResponse([
-            'deleted' => $delete ? 1 : 0,
-        ], 'Delete conversation');
+        Message::deleteConversation($conversation);
+        return $this->sendResponse(null, 'Delete conversation');
     }
 
     public function deleteMessage($id)
     {
-        $delete = Message::deleteMessage($id);
-        return $this->sendResponse([
-            'deleted' => $delete ? 1 : 0,
-        ], 'Delete message');
+        Message::deleteMessage($id);
+        return $this->sendResponse(null, 'Delete message');
     }
 }

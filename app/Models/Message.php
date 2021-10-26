@@ -38,10 +38,14 @@ class Message extends Model
 
     public static function makeSeen($sender, $conversation)
     {
-        Message::where('recepteur', $sender)
+        $messages = Message::where('recepteur', $sender)
             ->where('conversation', $conversation)
-            ->where('vu', 0)
-            ->update(['vu' => 1]);
+            ->where('vu', 0)->get();
+
+        foreach ($messages as $value) {
+            $value->vu = 1;
+            $value->save();
+        }
     }
 
     public function getLastMessageQuery($sender, $receiver)
@@ -53,7 +57,7 @@ class Message extends Model
     {
         return Message::where('conversation', $conversation)
             ->latest()
-            ->with(['attachements', 'sender', 'receiver'] )
+            ->with(['attachements', 'sender', 'receiver'])
             ->get();
     }
 
@@ -95,32 +99,26 @@ class Message extends Model
 
     public static function deleteConversation($conversation)
     {
-        try {
-            Message::where('conversation', $conversation)->delete();
-            $path = storage_path('app/public/messages/' . $conversation);
-            if (File::exists($path)) {
-                File::deleteDirectory($path);
-            }
-            return 1;
-        } catch (Exception $e) {
-            return 0;
+        Message::where('conversation', $conversation)->get();
+        $path = storage_path('app/public/messages/' . $conversation);
+        if (File::exists($path)) {
+            File::deleteDirectory($path);
         }
     }
 
     public static function deleteMessage($message)
     {
-        $files = Archive::where('messega', $message);
-        $toDelete = Message::find($message);
+        $files = Archive::where('message', $message)->get();
+        $toDelete = Message::where('id', $message)->where('vu', 0)->first();
 
-        foreach ($files->get() as $file) {
+        foreach ($files as $file) {
             $path = storage_path("app/public/messages/$toDelete->conversation/$file->nom");
             if (File::exists($path)) {
                 File::delete($path);
             }
+            $file->delete();
         }
-        $files->delete();
         $toDelete->delete();
-        return 1;
     }
 
     public function attachements()
