@@ -31,37 +31,24 @@
             <div class="col-md-8 offset-md-2">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title mb-4">Ajouter une actualité</h4>
+                        <h4 class="card-title mb-4">Modifier une actualité</h4>
 
-                        @php
-                            if($type == 'secteur'){
-                                $choice = true;
-                            }
-                            else{
-                                $choice = false;
-                            }
-                        @endphp
 
-                        {{-- @json($projet) --}}
-
-                        <form action="{{(isset($choice) && $choice == true) ? route('actualites.store', [$type, $secteur->id]) : route('actualites.store', [$type, $projet->id])}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('actualites.update', [$type, $actualite->id, $idPS]) }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="row">
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Libelle</label>
-                                    <input type="text" class="form-control" name="libelle" required>
+                                    <input type="text" class="form-control" name="libelle" value="{{$actualite->libelle}}" required>
 
-                                    @error('libelle')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                    @enderror
                                 </div>
 
                             
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label for="exampleFormControlTextarea1">Description</label>
-                                    <textarea class="form-control" name="description" ></textarea>
+                                    <textarea class="form-control" name="description" >{{$actualite->description}}</textarea>
                                 </div>
 
                                 <div class="form-group col-md-12 mb-3">
@@ -73,6 +60,13 @@
                                     <span class="text-danger"> {{ $message }}</span>
                                     @enderror
                                 </div>
+
+                                <div class="form-group col-md-12 mb-3">
+                                    <label>Ancienne image :</label>
+                                    <img src="{{ URL::to($actualite->image) }}" style="width: 50px; height:50px;" alt="">
+                                    <input type="hidden" name="oldimage" value={{ $actualite->image }}>
+                                </div>
+
                             </div>
 
 

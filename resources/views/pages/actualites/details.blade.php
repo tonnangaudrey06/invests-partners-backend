@@ -52,15 +52,15 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
 
                         <div class="actions d-flex align-items-center">
-                            {{-- @foreach ($privileges as $privilege)
+                            @foreach ($privileges as $privilege)
 
                             @if( $privilege->module == 14 && $privilege->modifier == 1)
 
-                            <a href="{{($type == 'secteur') ? route('actualites.edit', [$type, $secteur->id]) : route('actualites.edit', [$type, $projet->id])}}"
-                                class="btn btn-sm btn-danger me-2">Modifier</a>
+                            <a href="{{ route('actualites.edit', [$type, $actualite->id, $idPS]) }}"
+                                class="btn btn-sm btn-warning me-2">Modifier</a>
 
                             @endif
-                            @endforeach --}}
+                            @endforeach
 
 
                             @foreach ($privileges as $privilege)
@@ -160,8 +160,6 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                 </div>
                 <!-- end col -->
             </div>
-
-
 
             <!-- end row -->
         </div>
