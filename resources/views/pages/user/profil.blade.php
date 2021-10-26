@@ -301,7 +301,7 @@
                             <div id="revenue-chart" class="apex-charts" dir="ltr"></div>
                         </div>
                     </div> --}}
-
+                    @if($user->role != 4 || $user->role != 5)
                     @if($user->role == 4)
                     <div class="card">
                         <div class="card-body">
@@ -362,6 +362,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     @endif
                 </div>
             </div>
