@@ -310,7 +310,7 @@
                                 <table id="datatable" class="table align-middle w-100">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Projet</th>
+                                            <th scope="col" style="width: 50%">Projet</th>
                                             <th scope="col">Secteur</th>
                                             <th scope="col">Investissement</th>
                                             <th scope="col">Etat</th>
@@ -319,12 +319,12 @@
                                     <tbody>
                                         @foreach($projets as $projet)
                                         <tr>
-                                            <th class="text-truncate"><a
+                                            <th style="width: 30%" class="text-truncate"><a
                                                     href="{{ route('projet.details', $projet->projet_data->id) }}"
                                                     class="text-decoration-none">{{ $projet->projet_data->intitule }}</a></th>
-                                            <td>{{ $projet->projet_data->secteur_data->libelle }}</td>
-                                            <td>@numberFormat($projet->total_investi) XAF</td>
-                                            <td>{{ $projet->projet_data->etat }}</td>
+                                            <td style="width: 30%">{{ $projet->projet_data->secteur_data->libelle }}</td>
+                                            <td style="width: 25%">@numberFormat($projet->total_investi) XAF</td>
+                                            <td style="width: 15%">{{ $projet->projet_data->etat }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -340,21 +340,21 @@
                                 <table id="datatable" class="table align-middle w-100">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Projet</th>
-                                            <th scope="col">Secteur</th>
-                                            <th scope="col">Financement</th>
-                                            <th scope="col">Etat</th>
+                                            <th scope="col" style="width: 50%">Projet</th>
+                                            <th scope="col" style="width: 30%">Secteur</th>
+                                            <th scope="col" style="width: 25%">Financement</th>
+                                            <th scope="col" style="width: 15%">Etat</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($projets as $projet)
                                         <tr>
-                                            <th class="text-truncate"><a
+                                            <th style="width: 50%" class="text-truncate"><a
                                                     href="{{ route('projet.details', $projet->id) }}"
                                                     class="text-decoration-none">{{ $projet->intitule }}</a></th>
-                                            <td>{{ $projet->secteur_data->libelle }}</td>
-                                            <td>@numberFormat($projet->financement) XAF</td>
-                                            <td>{{ $projet->etat }}</td>
+                                            <td style="width: 30%">{{ $projet->secteur_data->libelle }}</td>
+                                            <td style="width: 25%">@numberFormat($projet->financement) XAF</td>
+                                            <td style="width: 15%">{{ $projet->etat }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
