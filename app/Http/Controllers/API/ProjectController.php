@@ -215,9 +215,14 @@ class ProjectController extends Controller
 
         $admin = User::where('role', 1)->first();
 
-        Mail::to($projet->secteur_data->conseiller_data->email)->queue(new PaiementProjetConseilleMail($projet->toArray()));
-        Mail::to($projet->user_data->email)->queue(new PaiementProjetPorteurMail($projet->toArray()));
-        Mail::to($admin->email)->queue(new PaiementProjetConseilleMail($projet->toArray()));
+        try {
+            Mail::to($projet->secteur_data->conseiller_data->email)->queue(new PaiementProjetConseilleMail($projet->toArray()));
+            Mail::to($projet->user_data->email)->queue(new PaiementProjetPorteurMail($projet->toArray()));
+            Mail::to($admin->email)->queue(new PaiementProjetConseilleMail($projet->toArray()));
+        } catch (\Throwable $e) {
+            return $this->sendResponse($projet, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
+        }
+
         return $this->sendResponse($projet, 'Project valide');
     }
 

@@ -129,8 +129,12 @@ class UserController extends Controller
     public function sendMailInfo(Request $request)
     {
         $data = $request->input();
-        
-        Mail::to('info@invest--partners.com')->queue(new ContactMail($data));
+
+        try {
+            Mail::to('info@invest--partners.com')->queue(new ContactMail($data));
+        } catch (\Throwable $e) {
+            return $this->sendError('Impossible d\'envoyer un mail car l\'email n\'existe pas.', null, 500);
+        }
 
         return $this->sendResponse(null, 'Mail send');
     }

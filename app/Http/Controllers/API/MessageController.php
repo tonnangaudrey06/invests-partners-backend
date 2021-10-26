@@ -174,8 +174,12 @@ class MessageController extends Controller
         $admin = User::where('role', 1)->first();
         $invest = User::find($sender);
 
-        Mail::to($projet->secteur_data->conseiller_data->email)->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));
-        Mail::to($admin->email)->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));
+        try {
+            Mail::to($projet->secteur_data->conseiller_data->email)->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));
+            Mail::to($admin->email)->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));
+        } catch (\Throwable $e) {
+            return $this->sendResponse($message, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
+        }
 
         return $this->sendResponse($message, 'New message');
     }
