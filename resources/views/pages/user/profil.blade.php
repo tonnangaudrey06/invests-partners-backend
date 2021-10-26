@@ -307,24 +307,24 @@
                         <div class="card-body">
                             <h4 class="card-title mb-4">Projets</h4>
                             <div class="table-responsive">
-                                <table class="table align-middle w-100">
+                                <table id="datatable" class="table dt-responsive align-middle nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th scope="col" style="width: 50%">Projet</th>
-                                            <th scope="col">Secteur</th>
-                                            <th scope="col">Investissement</th>
+                                            <th scope="col" style="max-width: 20rem !important">Projet</th>
+                                            <th scope="col" style="max-width: 20rem !important">Secteur</th>
+                                            <th scope="col" style="max-width: 20rem !important">Investissement</th>
                                             <th scope="col">Etat</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($projets as $projet)
                                         <tr>
-                                            <th style="width: 30% !important" class="text-truncate"><a
+                                            <th style="max-width: 20rem !important" class="text-truncate"><a
                                                     href="{{ route('projet.details', $projet->projet_data->id) }}"
                                                     class="text-decoration-none">{{ $projet->projet_data->intitule }}</a></th>
-                                            <td style="width: 30% !important">{{ $projet->projet_data->secteur_data->libelle }}</td>
-                                            <td style="width: 25% !important">@numberFormat($projet->total_investi) XAF</td>
-                                            <td style="width: 15% !important">{{ $projet->projet_data->etat }}</td>
+                                            <td style="max-width: 20rem !important">{{ $projet->projet_data->secteur_data->libelle }}</td>
+                                            <td style="max-width: 20rem !important">@numberFormat($projet->total_investi) XAF</td>
+                                            <td style="max-width: 20rem !important">{{ $projet->projet_data->etat }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -337,24 +337,24 @@
                         <div class="card-body">
                             <h4 class="card-title mb-4">Projets</h4>
                             <div class="table-responsive">
-                                <table class="table align-middle w-100">
+                                <table id="datatable" class="table dt-responsive align-middle nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th scope="col" style="width: 30% !important">Projet</th>
-                                            <th scope="col" style="width: 30% !important">Secteur</th>
-                                            <th scope="col" style="width: 25% !important">Financement</th>
-                                            <th scope="col" style="width: 15% !important">Etat</th>
+                                            <th style="max-width: 20rem !important" scope="col">Projet</th>
+                                            <th style="max-width: 20rem !important" scope="col">Secteur</th>
+                                            <th style="max-width: 20rem !important" scope="col">Financement</th>
+                                            <th scope="col">Etat</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($projets as $projet)
                                         <tr>
-                                            <th style="width: 30% !important" class="text-truncate"><a
+                                            <th style="max-width: 20rem !important" class="text-truncate"><a
                                                     href="{{ route('projet.details', $projet->id) }}"
                                                     class="text-decoration-none">{{ $projet->intitule }}</a></th>
-                                            <td style="width: 30% !important">{{ $projet->secteur_data->libelle }}</td>
-                                            <td style="width: 25% !important">@numberFormat($projet->financement) XAF</td>
-                                            <td style="width: 15% !important">{{ $projet->etat }}</td>
+                                            <td style="max-width: 20rem !important">{{ $projet->secteur_data->libelle }}</td>
+                                            <td style="max-width: 20rem !important">@numberFormat($projet->financement) XAF</td>
+                                            <td>{{ $projet->etat }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
