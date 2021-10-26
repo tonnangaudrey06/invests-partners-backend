@@ -332,7 +332,38 @@
                         </div>
                     </div>
                     @endif
-                    @if($user->role != 4 && ($user->role != 1 || $user->role != 5))
+                    @if($user->role == 2)
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Projets</h4>
+                            <div class="table-responsive">
+                                <table id="datatable" class="table align-middle w-100">
+                                    <thead>
+                                        <tr>
+                                            <th style="max-width: 20rem !important" scope="col">Projet</th>
+                                            <th style="max-width: 20rem !important" scope="col">Secteur</th>
+                                            <th style="max-width: 20rem !important" scope="col">Financement</th>
+                                            <th scope="col">Etat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($projets as $projet)
+                                        <tr>
+                                            <th style="max-width: 20rem !important" class="text-truncate"><a
+                                                    href="{{ route('projet.details', $projet->id) }}"
+                                                    class="text-decoration-none">{{ $projet->intitule }}</a></th>
+                                            <td style="max-width: 20rem !important">{{ $projet->secteur_data->libelle }}</td>
+                                            <td style="max-width: 20rem !important">@numberFormat($projet->financement) XAF</td>
+                                            <td>{{ $projet->etat }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    @if($user->role == 3)
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4">Projets</h4>
