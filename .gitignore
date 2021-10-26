@@ -2,7 +2,9 @@
 /public/hot
 /public/storage
 /public/images
-/storage/app
+/storage/app/*.php
+/storage/app/public/uploads
+/storage/framework/*/*.php
 /storage/*.key
 /vendor
 .env
