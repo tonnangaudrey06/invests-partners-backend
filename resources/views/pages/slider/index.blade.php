@@ -49,14 +49,14 @@
                     @endif
 
 
-                    <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                    <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                         <thead>
                             <tr>
-                                <th scope="col" width="5%">SL </th>
+                                <th scope="col" width="5%">SL</th>
                                 <th scope="col" width="15%">Titre</th>
                                 <th scope="col" width="25%">Description</th>
                                 <th scope="col" width="15%">Image</th>
-                                <th scope="col" width="15%">Action</th>
+                                <th scope="col" width="15%"></th>
                             </tr>
                         </thead>
 
@@ -72,10 +72,10 @@
                                 <td>
 
                                     <a href="{{ url('slider/edit/'.$slider->id)}}"
-                                        class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
+                                        class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
                                     <a href="{{ url('slider/delete/'.$slider->id)}}"
                                         onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                        class="btn btn-xs btn-danger pull-right"><i
+                                        class="btn btn-sm btn-danger"><i
                                             class="bx bx-trash"></i></i></a>
                                 </td>
                             </tr>

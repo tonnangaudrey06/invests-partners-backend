@@ -25,6 +25,14 @@
             <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
                 <i class="fa fa-fw fa-bars"></i>
             </button>
+
+            <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" onclick="goBack()">
+                <i class="fa fa-fw fa-arrow-alt-circle-left"></i> Retour en arrière
+            </button>
+
+            <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" onclick="reload()">
+                <i class="mdi mdi-refresh"></i> Actualiser la page
+            </button>
         </div>
 
         <div class="d-flex">
@@ -37,7 +45,7 @@
 
             <div class="dropdown d-inline-block ms-1">
                 <button type="button" class="btn header-item noti-icon waves-effect" onclick="redirectTo('{{ route('chat.home') }}')">
-                    <span class="badge bg-danger rounded-pill">3</span>
+                    {{-- <span class="badge bg-danger rounded-pill">3</span> --}}
                     <i class="bx bx-envelope"></i>
                 </button>
             </div>
@@ -74,8 +82,8 @@
                                     <div class="font-size-12 text-muted">
                                         <p class="mb-1" key="t-grammer">If several languages coalesce the
                                             grammar</p>
-                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span
-                                                key="t-min-ago">3 min ago</span></p>
+                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span key="t-min-ago">3
+                                                min ago</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -89,8 +97,8 @@
                                     <div class="font-size-12 text-muted">
                                         <p class="mb-1" key="t-simplified">It will seem like simplified
                                             English.</p>
-                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span
-                                                key="t-hours-ago">1 hours ago</span></p>
+                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span key="t-hours-ago">1
+                                                hours ago</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -107,8 +115,8 @@
                                     <div class="font-size-12 text-muted">
                                         <p class="mb-1" key="t-grammer">If several languages coalesce the
                                             grammar</p>
-                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span
-                                                key="t-min-ago">3 min ago</span></p>
+                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span key="t-min-ago">3
+                                                min ago</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -123,8 +131,8 @@
                                     <div class="font-size-12 text-muted">
                                         <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend of
                                             mine occidental.</p>
-                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span
-                                                key="t-hours-ago">1 hours ago</span></p>
+                                        <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span key="t-hours-ago">1
+                                                hours ago</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -141,8 +149,17 @@
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{-- @if (!empty(auth()->user()->photo))
+                    <img class="rounded-circle header-profile-user" src="{{ auth()->user()->photo }}" alt="">
+                    @else
+                    <div class="avatar-xs header-profile-user">
+                        <span class="avatar-title rounded-circle">
+                            {{ strtoupper(substr(auth()->user()->nom, 0, 1)) }}
+                        </span>
+                    </div>
+                    @endif --}}
                     <img class="rounded-circle header-profile-user"
-                        src="{{ asset('assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
+                        src="{{ auth()->user()->photo ? auth()->user()->photo : asset('assets/images/profil.jpg') }}" alt="Header Avatar">
                     <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ auth()->user()->nom }}
                         {{ auth()->user()->prenom }}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
@@ -155,15 +172,15 @@
                     <a class="dropdown-item" href="{{ route('chat.home') }}"><i
                             class="bx bx-user font-size-16 align-middle me-1"></i> <span
                             key="t-profile">Messagerie</span></a>
-                    <a class="dropdown-item d-block" href="#"><i
+                    {{-- <a class="dropdown-item d-block" href="#"><i
                             class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
-                            key="t-settings">Paramètres</span></a>
+                            key="t-settings">Paramètres</span></a> --}}
                     <div class="dropdown-divider"></div>
                     @if (Auth::user()->role == 1)
                     <a class="dropdown-item d-block" href="{{route('add.writer')}}"><i
-                        class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
-                        key="t-settings">Ajouter privilèges</span></a>
-                <div class="dropdown-divider"></div>
+                            class="bx bx-wrench font-size-16 align-middle me-1"></i> <span key="t-settings">Ajouter
+                            privilèges</span></a>
+                    <div class="dropdown-divider"></div>
                     @endif
 
                     <a class="dropdown-item text-danger" href="{{ route('auth.logout') }}"><i

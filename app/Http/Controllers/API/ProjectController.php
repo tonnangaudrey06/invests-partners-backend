@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\CreationProjetMail;
 use App\Mail\PaiementProjetConseilleMail;
 use App\Mail\PaiementProjetPorteurMail;
+use App\Models\Actualite;
 use App\Models\Archive;
 use App\Models\Equipe;
 use App\Models\Membre;
@@ -201,7 +202,9 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->find($id);
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements', 'actualites'])->find($id);
+        $actualites = Actualite::where('secteur', $projet->secteur)->get();
+        array_merge($projet->actualites, $actualites);
         return $this->sendResponse($projet, 'Project');
     }
 

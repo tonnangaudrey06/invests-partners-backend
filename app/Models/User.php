@@ -64,7 +64,7 @@ class User extends Authenticatable
 
     public function role_data()
     {
-        return $this->belongsTo(Role::class, 'role', 'id');
+        return $this->belongsTo(Role::class, 'role', 'id')->with('modules');
     }
 
     public function projets()
@@ -77,9 +77,9 @@ class User extends Authenticatable
         return $this->hasMany(DocumentFiscaux::class, 'user', 'id');
     }
 
-    public function secteurs()
+    public function secteurs_data()
     {
-        return $this->hasMany(Secteur::class, 'user', 'id');
+        return $this->hasMany(Secteur::class, 'user', 'id')->with(['projets']);
     }
 
     public function profil_invest()

@@ -55,7 +55,7 @@
                                 </div>
                             </div>
 
-                            <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                            <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th>Nom de l'investisseur</th>
@@ -63,7 +63,7 @@
                                         <th>Montant investi</th>
                                         <th>Date versement</th>
                                         <th>Numéro versement</th>
-                                        <th>Actions</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
 
@@ -79,10 +79,10 @@
                                         <td>{{$investissement->numero_versement}}</td>
                                         <td>
                                             <a href="{{route('investissement.edit', $investissement->id)}}"
-                                                class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
+                                                class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
                                             <a href="{{route('investissement.delete', $investissement->id)}}"
                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                class="btn btn-xs btn-danger pull-right"><i
+                                                class="btn btn-sm btn-danger"><i
                                                     class="bx bx-trash"></i></i></a>
 
                                         </td>

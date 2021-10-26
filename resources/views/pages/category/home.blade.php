@@ -21,8 +21,8 @@
 @section('content')
 
 @php
-$privileges = DB::table('privileges')->where('role', Auth()->user()->role)->get();
-$sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
+$privileges = DB::table('privileges')->where('role', auth()->user()->role)->get();
+$sub = DB::table('secteurs')->where('user', auth()->user()->id)->get();
 @endphp
 
 <div class="main-content">
@@ -59,7 +59,7 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                     @if( $privilege->module == 11 && $privilege->ajouter == 1)
                                     {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
                                         data-bs-target="#categorieModal">Ajouter</button> --}}
-                                        <a href="{{route('category.add')}}" class="btn btn-sm btn-primary me-2" >Ajouter</a>
+                                        <a href="{{route('category.add')}}" class="btn btn-sm btn-primary me-2" >Nouveau secteur d'activité</a>
                                     @endif
                                     @endforeach
 
@@ -67,15 +67,15 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                 </div>
                             </div>
 
-                            @if(Auth()->user()->role == 1)
-                            <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                            @if(auth()->user()->role == 1)
+                            <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th style="width: 5%"></th>
                                         <th>Secteur d'activité</th>
-                                        <th style="width: 30%">Expert</th>
-                                        <th style="width: 30%">Image</th>
-                                        <th>Actions</th>
+                                        <th style="width: 30%">Conseiller</th>
+                                        {{-- <th style="width: 30%">Image</th> --}}
+                                        <th></th>
                                     </tr>
                                 </thead>
 
@@ -83,10 +83,10 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                     @foreach ($secteurs as $categorie)
                                     <tr>
                                         <td>
-                                            @if (!empty($categorie->image))
+                                            @if (empty($categorie->photo))
                                             <div>
                                                 <img class="rounded-circle avatar-xs"
-                                                    src="assets/images/users/avatar-2.jpg" alt="">
+                                                    src="{{$categorie->photo}}" alt="">
                                             </div>
                                             @else
                                             <div class="avatar-xs">
@@ -100,18 +100,11 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                             <strong>{{ $categorie->libelle }}</strong>
                                         </td>
                                         <td>{{ $categorie->conseiller_data->nom_complet ?? 'Aucun' }}</td>
-                                        <td><img src="{{asset($categorie->photo)}}" style="height:50px; width: 50px;"></td>
+                                        {{-- <td><img src="{{asset($categorie->photo)}}" style="height:50px; width: 50px;"></td> --}}
                                         <td class="text-center">
-                                            {{-- <button id="categorie-edit-button" type="button"
-                                                data-id="{{$categorie->id}}" class=" btn btn-secondary btn-sm"
-                                                data-bs-toggle="modal" data-bs-target="#categorieModalEdit">
-                                                <i class="bx bx-edit"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm">
-                                                <i class="bx bx-trash"></i>
-                                            </button> --}}
-                                            <a href="{{route('category.edit', $categorie->id)}}" class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
-                                            <a href="{{route('category.delete', $categorie->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-xs btn-danger pull-right"><i class="bx bx-trash"></i></i></a>
+                                            <a href="{{route('actualites.home', ['secteur', $categorie->id])}}" class="btn btn-sm btn-info"><i class="mdi mdi-newspaper-variant-multiple-outline"></i></a>
+                                            <a href="{{route('category.edit', $categorie->id)}}" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
+                                            <a href="{{route('category.delete', $categorie->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></i></a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -121,7 +114,7 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
 
 
                             @else
-                            <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                            <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th style="width: 5%"></th>

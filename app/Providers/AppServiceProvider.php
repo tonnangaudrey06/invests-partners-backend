@@ -25,26 +25,35 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()  
+    public function boot()
     {
         View::share('currentUser', Auth::user());
-        if(config('app.env') === 'production') {
+        if (config('app.env') === 'production') {
             URL::forceScheme('https');
         }
 
         \Carbon\Carbon::setLocale('fr');
 
-        Blade::directive('numberFormat', function($value){
-            return "<?php echo number_format($value, 0, ',', ' ');?> ";
+        Blade::directive('numberFormat', function ($value) {
+            return "<?php echo number_format($value, 0, ',', ' ');?>";
         });
 
-        Blade::directive('dateFormat', function($value){
+        Blade::directive('moneyFormat', function ($value) {
+            return "<?php
+                if ($value > 999999) {
+                    echo number_format($value/1000000, 0, ',', ' ') . 'M';
+                } else {
+                    echo number_format($value, 0, ',', ' ');
+                }
+            ?>";
+        });
+
+        Blade::directive('dateFormat', function ($value) {
             return "<?php echo date('d/m/Y', strtotime($value));?> ";
         });
 
-        Blade::directive('timeFormat', function($value){
+        Blade::directive('timeFormat', function ($value) {
             return "<?php echo date('H:i', strtotime($value));?> ";
         });
-        
     }
 }

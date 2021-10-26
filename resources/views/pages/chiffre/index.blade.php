@@ -52,7 +52,7 @@
                                 <th scope="col" width="15%">Title</th>
                                 <th scope="col" width="25%">Description</th>
                                 <th scope="col" width="15%">Image</th>
-                                <th scope="col" width="15%">Action</th>
+                                <th scope="col" width="15%"></th>
                             </tr>
                         </thead>
 

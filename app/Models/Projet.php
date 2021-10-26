@@ -113,6 +113,11 @@ class Projet extends Model
         return $this->belongsTo(User::class, 'user', 'id');
     }
 
+    public function actualites()
+    {
+        return $this->hasMany(Actualite::class, 'projet', 'id');
+    }
+
     public function getIvTotalAttribute()
     {
         $total = Investissement::select(DB::raw('sum(montant) as total_investi'))->where('projet', $this->id)->first();

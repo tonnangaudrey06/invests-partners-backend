@@ -4,10 +4,9 @@
 
 @section('style')
 
-    <link href="{{ asset('assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
-        type="text/css" />
-    <link href="{{ asset('assets/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet"
-        type="text/css" />
+<link href="{{ asset('assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+    type="text/css" />
+<link href="{{ asset('assets/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
 
 @endsection
 
@@ -42,46 +41,46 @@
                     <div class="card-body">
                         <h4 class="card-title mb-4">Ajouter un investissement</h4>
 
-                        <form id="profilInvestisseurForm" action="{{route('investissement.store')}}"
-                            method="POST">
+                        <form id="profilInvestisseurForm" action="{{route('investissement.store')}}" method="POST">
                             @csrf
-
 
                             <div class="row">
 
-                                <div class="row mb-4">
-                                    <label class="col-form-label col-lg-2">Date de versement</label>
-                                    <div class="col-lg-10">
-                                        <div class="input-daterange input-group" id="project-date-inputgroup" data-provide="datepicker" data-date-format="dd M, yyyy" data-date-container="#project-date-inputgroup" data-date-autoclose="true">
-                                            <input type="text" class="form-control" placeholder="Date de versement" name="date_versement">
+                                <div class="form-group col-md-12 mb-3">
+                                    <label>Date de versement</label>
+                                    <div class="input-daterange input-group" id="project-date-inputgroup"
+                                        data-provide="datepicker" data-date-format="dd M, yyyy"
+                                        data-date-container="#project-date-inputgroup" data-date-autoclose="true">
+                                        <input type="text" class="form-control" placeholder="Date de versement"
+                                            name="date_versement">
 
-                                            @error('date_versement')
-                                            <span class="text-danger"> {{ $message }}</span>
-                                            @enderror
-                                        </div>
+                                        @error('date_versement')
+                                        <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Numéro du versement</label>
-                                    <input type="text" class="form-control" name="numero_versement" 
+                                    <input type="text" class="form-control" name="numero_versement"
                                         placeholder="NSFD12000846">
 
-                                        @error('numéro_versement')
+                                    @error('numéro_versement')
                                     <span class="text-danger"> {{ $message }}</span>
                                     @enderror
                                 </div>
 
-                                
+
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Investisseur</label>
                                     <select class="form-control" name="investisseur">
                                         <option>---Selectionner un investisseur---</option>
                                         @foreach ($investisseurs as $investisseur)
-                                            <option value="{{ $investisseur->id }}">{{$investisseur->nom}} {{$investisseur->prenom}}</option>
+                                        <option value="{{ $investisseur->id }}">{{$investisseur->nom}}
+                                            {{$investisseur->prenom}}</option>
                                         @endforeach
-                                        
+
                                     </select>
 
                                     @error('investisseur')
@@ -94,9 +93,9 @@
                                     <select class="form-control" name="projet">
                                         <option>---Selectionner un projet---</option>
                                         @foreach ($projets as $projet)
-                                            <option value="{{$projet->id}}">{{$projet->intitule}}</option>
+                                        <option value="{{$projet->id}}">{{$projet->intitule}}</option>
                                         @endforeach
-                                        
+
                                     </select>
 
                                     @error('projet')
@@ -108,18 +107,13 @@
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Montant Investi</label>
-                                    <input type="number" class="form-control" name="montant_investi" 
+                                    <input type="number" class="form-control" name="montant_investi"
                                         placeholder="0 XAF">
 
-                                        @error('montant_investi')
+                                    @error('montant_investi')
                                     <span class="text-danger"> {{ $message }}</span>
                                     @enderror
                                 </div>
-
-                                
-
-                                
-                                
                             </div>
 
                             <div class="text-center">
@@ -143,6 +137,6 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript" src="{{ asset('assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}">
+<script type="text/javascript" src="{{ asset('assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}">
     <script type="text/javascript" src="{{ asset('assets/libs/dropzone/min/dropzone.min.js') }}">
 @endsection
