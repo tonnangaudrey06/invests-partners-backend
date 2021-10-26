@@ -85,14 +85,18 @@
                             @endif
 
                             @if( $projet->etat == 'PUBLIE')
-                            <a href="{{route('actualites.home', ['projet', $projet->id])}}"  class="btn btn-sm btn-info me-2">Actualités</a>
-                            {{-- <a href="{{ route('projet.add') }}" class="btn btn-sm btn-info me-2">Actualités</a> --}}
+                            <a href="{{route('actualites.home', ['projet', $projet->id])}}"
+                                class="btn btn-sm btn-info me-2">Actualités</a>
+                            {{-- <a href="{{ route('projet.add') }}" class="btn btn-sm btn-info me-2">Actualités</a>
+                            --}}
                             @endif
 
                             @foreach ($privileges as $privilege)
 
                             @if( $privilege->module == 1 && $privilege->supprimer == 1)
-                            <a href="{{ route('projet.delete', $projet->id) }}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-sm btn-danger me-2">Supprimer</a>
+                            <a href="{{ route('projet.delete', $projet->id) }}"
+                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                class="btn btn-sm btn-danger me-2">Supprimer</a>
                             @endif
                             @endforeach
 
@@ -132,7 +136,8 @@
                                 <div class="card-body">
                                     <div class="d-flex mb-5">
                                         <div class="flex-shrink-0 me-4">
-                                            <img src="{{ $projet->logo ? $projet->logo : asset('assets/images/projet.jpg') }}" alt="" class="avatar-md">
+                                            <img src="{{ $projet->logo ? $projet->logo : asset('assets/images/projet.jpg') }}"
+                                                alt="" class="avatar-md">
                                         </div>
 
                                         <div class="d-flex">
@@ -155,9 +160,12 @@
                                                             class="bx bxs-right-arrow-circle font-size-18 text-primary"></i>
                                                     </div>
                                                     <h5 class="font-size-15 text-primary">
-                                                        {{ $projet->secteur_data->libelle }} <br/>
-                                                        <span class="font-size-12 text-muted"><a class="text-muted" href="{{route('user.profile', $projet->secteur_data->conseiller_data->id)}}">Conseiller: {{$projet->secteur_data->conseiller_data->nom_complet }}</a></span>
-                                                    <h5>
+                                                        {{ $projet->secteur_data->libelle }} <br />
+                                                        <span class="font-size-12 text-muted"><a class="text-muted"
+                                                                href="{{route('user.profile', $projet->secteur_data->conseiller_data->id)}}">Conseiller:
+                                                                {{$projet->secteur_data->conseiller_data->nom_complet
+                                                                }}</a></span>
+                                                        <h5>
                                                 </div>
                                                 <span class="badge bg-info p-2">{{ $projet->etat }}</span>
                                             </div>
@@ -205,8 +213,8 @@
                                             </p>
                                             <p>
                                                 <i class="mdi mdi-chevron-right text-primary me-1"></i>
-                                                NOMBRE D'INVESTISSEUR : <span
-                                                    class="text-primary text-primary">{{ $nber_invest }}</span>
+                                                NOMBRE D'INVESTISSEUR : <span class="text-primary text-primary">{{
+                                                    $nber_invest }}</span>
                                                 investisseurs
                                             </p>
                                         </strong>
@@ -259,8 +267,8 @@
                                                 @foreach ($projet->membres as $item)
                                                 <tr>
                                                     <td>
-                                                        <img src="{{ $item->photo }}"
-                                                            class="rounded-circle avatar-xs" alt="">
+                                                        <img src="{{ $item->photo }}" class="rounded-circle avatar-xs"
+                                                            alt="">
                                                     </td>
                                                     <td>
                                                         <h5 class="font-size-14 m-0">
@@ -294,6 +302,40 @@
                 </div>
 
                 <div class="col-lg-5 h-100">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Document presentation</h4>
+                            <div class="table-responsive">
+                                <table class="table table-nowrap align-middle table-hover mb-0">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 10%;">
+                                                <div class="avatar-xs">
+                                                    <span
+                                                        class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
+                                                        <i class="mdi mdi-file"></i>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td style="width: 80%;">
+                                                <h5 class="font-size-14 mb-1"><a download target="_blank"
+                                                        href="{{ $projet->doc_presentation }}" class="text-dark">Presentation</a></h5>
+                                            </td>
+                                            <td style="width: 10%;">
+                                                <div class="text-center">
+                                                    <a download target="_blank" href="{{ $projet->doc_presentation }}"
+                                                        class="text-dark"><i class="bx bx-download h3 m-0"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title mb-4">Fichiers joints</h4>
@@ -317,7 +359,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td style="width: 10%;">
-                                                                <div class="avatar-sm">
+                                                                <div class="avatar-xs">
                                                                     <span
                                                                         class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
                                                                         <i class="bx bxs-file-doc"></i>
@@ -325,14 +367,15 @@
                                                                 </div>
                                                             </td>
                                                             <td style="width: 80%;">
-                                                                <h5 class="font-size-14 mb-1"><a download target="_blank"
-                                                                        href="{{ asset($row->url) }}"
+                                                                <h5 class="font-size-14 mb-1"><a download
+                                                                        target="_blank" href="{{ $row->url }}"
                                                                         class="text-dark">{{ $row->nom }}</a></h5>
                                                                 {{-- <small>{{ $row->type }}</small> --}}
                                                             </td>
                                                             <td style="width: 10%;">
                                                                 <div class="text-center">
-                                                                    <a download target="_blank" href="{{ asset($row->url) }}"
+                                                                    <a download target="_blank"
+                                                                        href="{{ $row->url }}"
                                                                         class="text-dark"><i
                                                                             class="bx bx-download h3 m-0"></i></a>
                                                                 </div>
@@ -363,7 +406,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td style="width: 10%;">
-                                                                <div class="avatar-sm">
+                                                                <div class="avatar-xs">
                                                                     <span
                                                                         class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
                                                                         <i class="mdi mdi-image"></i>
@@ -371,14 +414,15 @@
                                                                 </div>
                                                             </td>
                                                             <td style="width: 80%;">
-                                                                <h5 class="font-size-14 mb-1"><a download target="_blank"
-                                                                        href="{{ asset($row->url) }}"
+                                                                <h5 class="font-size-14 mb-1"><a download
+                                                                        target="_blank" href="{{ $row->url }}"
                                                                         class="text-dark">{{ $row->nom }}</a></h5>
                                                                 {{-- <small>{{ $row->type }}</small> --}}
                                                             </td>
                                                             <td style="width: 10%;">
                                                                 <div class="text-center">
-                                                                    <a download target="_blank" href="{{ asset($row->url) }}"
+                                                                    <a download target="_blank"
+                                                                        href="{{ $row->url }}"
                                                                         class="text-dark"><i
                                                                             class="bx bx-download h3 m-0"></i></a>
                                                                 </div>
@@ -409,7 +453,7 @@
                                                     <tbody>
                                                         <tr>
                                                             <td style="width: 10%;">
-                                                                <div class="avatar-sm">
+                                                                <div class="avatar-xs">
                                                                     <span
                                                                         class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
                                                                         <i class="mdi mdi-play-circle-outline"></i>
@@ -417,13 +461,14 @@
                                                                 </div>
                                                             </td>
                                                             <td style="width: 80%;">
-                                                                <h5 class="font-size-14 mb-1"><a download target="_blank"
-                                                                        href="{{ asset($row->url) }}"
+                                                                <h5 class="font-size-14 mb-1"><a download
+                                                                        target="_blank" href="{{ $row->url }}"
                                                                         class="text-dark">{{ $row->nom }}</a></h5>
                                                             </td>
                                                             <td style="width: 10%;">
                                                                 <div class="text-center">
-                                                                    <a download target="_blank" href="{{ asset($row->url) }}"
+                                                                    <a download target="_blank"
+                                                                        href="{{ $row->url }}"
                                                                         class="text-dark"><i
                                                                             class="bx bx-download h3 m-0"></i></a>
                                                                 </div>
@@ -453,7 +498,7 @@
                                             @foreach ($docs as $row)
                                             <tr>
                                                 <td style="width: 10%;">
-                                                    <div class="avatar-sm">
+                                                    <div class="avatar-xs">
                                                         <span
                                                             class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
                                                             <i class="bx bxs-file-doc"></i>
@@ -467,8 +512,8 @@
                                                 </td>
                                                 <td style="width: 10%;">
                                                     <div class="text-center">
-                                                        <a download target="_blank" href="{{ $row->document }}" class="text-dark"><i
-                                                                class="bx bx-download h3 m-0"></i></a>
+                                                        <a download target="_blank" href="{{ $row->document }}"
+                                                            class="text-dark"><i class="bx bx-download h3 m-0"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -476,7 +521,7 @@
                                             @if(!empty($projet->user_data->cni))
                                             <tr>
                                                 <td style="width: 10%;">
-                                                    <div class="avatar-sm">
+                                                    <div class="avatar-xs">
                                                         <span
                                                             class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
                                                             <i class="bx bxs-file-doc"></i>
@@ -485,13 +530,13 @@
                                                 </td>
                                                 <td style="width: 80%;">
                                                     <h5 class="font-size-14 mb-1"><a target="_blank" download
-                                                            href="{{ $projet->user_data->cni }}"
-                                                            class="text-dark">CNI / Passport</a></h5>
+                                                            href="{{ $projet->user_data->cni }}" class="text-dark">CNI /
+                                                            Passport</a></h5>
                                                 </td>
                                                 <td style="width: 10%;">
                                                     <div class="text-center">
-                                                        <a download target="_blank" href="{{ $projet->user_data->cni }}" class="text-dark"><i
-                                                                class="bx bx-download h3 m-0"></i></a>
+                                                        <a download target="_blank" href="{{ $projet->user_data->cni }}"
+                                                            class="text-dark"><i class="bx bx-download h3 m-0"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
