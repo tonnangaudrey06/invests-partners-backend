@@ -30,9 +30,9 @@ class HomeController extends Controller
 
     public function chiffres()
     {
-        $pp = User::where('role', 3)->count();
-        $iv = User::where('role', 4)->count();
+        $users = User::count();
+        $projets = Projet::count();
         $total = Investissement::select(DB::raw('sum(montant) as total'))->first()->total;
-        return $this->sendResponse(['pp' => $pp, 'iv' => $iv, 'total' => $total], 'App chiffre');
+        return $this->sendResponse(['users' => $users, 'projets' => $projets, 'total' => $total], 'App chiffre');
     }
 }

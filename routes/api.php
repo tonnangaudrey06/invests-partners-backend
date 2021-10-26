@@ -105,6 +105,9 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{id}', [MembreController::class, 'delete']);
     });
 
+    
+    Route::delete('chats/delete/message/{id}', [MessageController::class, 'deleteMessage']);
+
     Route::prefix('chats/{sender}')->group(function () {
         Route::post('/interesse/{receiver}', [MessageController::class, 'interesse']);
         Route::post('/{conversation}/send/{receiver}', [MessageController::class, 'send']);
