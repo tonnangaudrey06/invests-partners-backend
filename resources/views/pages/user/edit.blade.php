@@ -70,25 +70,34 @@
                                         <input type="text" class="form-control" name="telephone"
                                             value="{{$user->telephone}}">
                                     </div>
-                                    {{-- <div class="form-group col-md-12 mb-3">
-                                                    <label>Mot de passe</label>
-                                                    <input type="password" class="form-control" name="password" placeholder="Mot de passe"
-                                                        required>
-                                                </div> --}}
-                                    @if ($user->role == 3)
+                                    @if ($user->role == 4)
+                                    <div class="form-group col-md-12 mb-3">
+                                        <label>Profil</label>
+                                        <select class="form-control" name="profil">
+                                            @foreach ($profil as $item)
+                                            <option value="{{$item->id}}" {{ ($user->profil) == $item->id ? 'selected' : '' }}>{{$item->type}}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @endif
+
+                                    @if ($user->role == 3 || $user->role == 4)
                                     <div class="form-group col-md-12 mb-3">
                                         <label>Statut</label>
                                         <select class="form-control" name="status" required>
-                                            <option {{ ($user->status) =='PARTICULIER' ? 'selected' : '' }}>Particulier</option>
-                                            <option {{ ($user->status) =='ENTREPRISE' ? 'selected' : '' }}>Entreprise</option>
+                                            <option {{ ($user->status) =='PARTICULIER' ? 'selected' : '' }}>Particulier
+                                            </option>
+                                            <option {{ ($user->status) =='ENTREPRISE' ? 'selected' : '' }}>Entreprise
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="form-group col-md-12 mb-3">
                                         <label>Ancienente</label>
                                         <select class="form-control" name="anciennete">
-                                            <option value = "1" {{ ($user->anciennete) == 1 ? 'selected' : '' }}>
+                                            <option value="1" {{ ($user->anciennete) == 1 ? 'selected' : '' }}>
                                                 Plus d'un an</option>
-                                            <option  value = "-1" {{ ($user->anciennete) == -1 ? 'selected' : '' }}>
+                                            <option value="-1" {{ ($user->anciennete) == -1 ? 'selected' : '' }}>
                                                 Moins d'un an
                                             </option>
                                         </select>

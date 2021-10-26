@@ -113,12 +113,13 @@
 
                                                         </td>
                                                         <td class="text-center">
-                                                            <button type="button" class="btn btn-secondary btn-sm">
-                                                                <i class="bx bx-edit"></i>
-                                                            </button>
-                                                            <button type="button" class="btn btn-danger btn-sm">
-                                                                <i class="bx bx-trash"></i>
-                                                            </button>
+                                                            <a href="{{route('edit.writer', [$writer->id, $item->id])}}"
+                                                                class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
+                                                            <a href="{{route('delete.writer', [$writer->id, $item->id])}}"
+                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                class="btn btn-xs btn-danger pull-right"><i
+                                                                    class="bx bx-trash"></i></i></a>
+                
                                                         </td>
 
                                                     </tr>

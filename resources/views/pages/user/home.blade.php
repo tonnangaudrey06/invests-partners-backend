@@ -61,9 +61,15 @@
                                         <th style="width: 5%"></th>
                                         <th style="width: 20%">Utilisateur</th>
                                         <th style="width: 10%">Email</th>
-                                        <th style="width: 10%">Téléphone</th>
+                                        <th style="width: 20%">Téléphone</th>
                                         @if ($role->value == 3 || $role->value == 4)
                                         <th style="width: 10%">Statut</th>
+                                        @endif
+                                        @if ($role->value == 4)
+                                        <th style="width: 10%">Profil</th>
+                                        @endif
+                                        @if ($role->value == 2)
+                                        <th style="width: 20%">Secteurs d'activités</th>
                                         @endif
                                         <th class="text-center" style="width: 10%"></th>
                                     </tr>
@@ -93,6 +99,21 @@
                                         <td>{{ $user->telephone }}</td>
                                         @if ($role->value == 3 || $role->value == 4)
                                         <td><strong>{{ $user->status }}</strong></td>
+                                        @endif
+                                        @if ($role->value == 4)
+                                        <td>
+                                            @if ($user->profil != null)
+                                            <strong>{{ $user->profil_invest->type }}</strong>
+                                            @endif
+                                        </td>
+                                        @endif
+
+                                        @if ($role->value == 2)
+                                        <td>
+                                            @foreach ($user->secteurs_data as $item)
+                                            <span class="badge bg-primary p-2 font-size-12">{{ $item->libelle }}</span>
+                                            @endforeach
+                                        </td>
                                         @endif
                                         <td class="text-center">
                                             @if ($role->value == 2 && (auth()->user()->role == 1 || auth()->user()->role == 5))

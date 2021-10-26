@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Client\ActualiteController;
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\AuthController;
 use App\Http\Controllers\Client\DashboardController;
@@ -126,6 +127,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/delete/{id}', [EvenementController::class, 'delete'])->name('delete');
     });
 
+    Route::prefix('actualites')->name('actualites.')->group(function () {
+        Route::get('/{type}/{id}', [ActualiteController::class, 'index'])->name('home');
+        Route::get('/add/{type}/{id}', [ActualiteController::class, 'add'])->name('add');
+        // Route::get('/edit/{id}', [ActualiteController::class, 'edit'])->name('edit');
+        // Route::post('/update/{id}', [ActualiteController::class, 'edit'])->name('edit');
+        Route::get('/details/show/{type}/{id}/{idPS}', [ActualiteController::class, 'showDetails'])->name('details');
+        Route::post('/store/{type}/{id}', [ActualiteController::class, 'store'])->name('store');
+        Route::get('/delete/{type}/{id}/{idPS}', [ActualiteController::class, 'delete'])->name('delete');
+    });
+
     Route::prefix('projet')->name('projet.')->group(function () {
         Route::get('/', [ProjetController::class, 'index'])->name('home');
         Route::get('/ip', [ProjetController::class, 'index_ip'])->name('home_ip');
@@ -151,7 +162,10 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/add/writer', [PrivilegeController::class, 'InsertWriter'])->name('add.writer');
 Route::get('/all/writer', [PrivilegeController::class, 'AllWriter'])->name('all.writer');
+Route::get('/edit/writer/{idrole}/{idmodule}', [PrivilegeController::class, 'EditWriter'])->name('edit.writer');
+Route::post('/update/{idrole}/{idmodule}', [PrivilegeController::class, 'UpdateWriter'])->name('update.writer');
 Route::post('/store/writer', [PrivilegeController::class, 'StoreWriter'])->name('store.writer');
+Route::get('/delete/writer/{idrole}/{idmodule}', [PrivilegeController::class, 'DeleteWriter'])->name('delete.writer');
 
 Route::get('/get/user/{user_id}', [SecteurController::class, 'GetUserEdit']);
 
