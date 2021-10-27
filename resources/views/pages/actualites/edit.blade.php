@@ -71,7 +71,7 @@
 
 
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary w-md">Enregistrer</button>
+                                <button type="submit" class="btn btn-primary w-md">Mettre à jour</button>
                             </div>
 
                         </form>
