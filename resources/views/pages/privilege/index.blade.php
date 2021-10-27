@@ -53,13 +53,12 @@
                                 </div>
                             </div>
 
-                            <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                            <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th style="width: 5%"></th>
                                         <th style="width: 20%">Role</th>
-                                        <th>#</th>
-
+                                        <th></th>
                                     </tr>
                                 </thead>
 
@@ -71,12 +70,12 @@
                                         <td>{{$writer->libelle}}</td>
                                         <td>
 
-                                            <table class="table table-bordered dt-responsive  nowrap w-100">
+                                            <table class="table table-bordered dt-responsive align-middle nowrap w-100">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 15%"> Module</th>
                                                         <th style="width: 50%">Privilèges</th>
-                                                        <th class="text-center" style="width: 10%">Actions</th>
+                                                        <th class="text-center" style="width: 10%"></th>
                                                     </tr>
                                                 </thead>
 
@@ -85,9 +84,9 @@
 
 
                                                     <tr>
-                                                        <td>
+                                                        <th>
                                                             {{$item->module}}
-                                                        </td>
+                                                        </th>
                                                         <td>
                                                             {{-- @json($item->pivot->consulter) --}}
                                                             @if($item->pivot->consulter == 1)
@@ -113,12 +112,13 @@
 
                                                         </td>
                                                         <td class="text-center">
-                                                            <button type="button" class="btn btn-secondary btn-sm">
-                                                                <i class="bx bx-edit"></i>
-                                                            </button>
-                                                            <button type="button" class="btn btn-danger btn-sm">
-                                                                <i class="bx bx-trash"></i>
-                                                            </button>
+                                                            <a href="{{route('edit.writer', [$writer->id, $item->id])}}"
+                                                                class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
+                                                            <a href="{{route('delete.writer', [$writer->id, $item->id])}}"
+                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                class="btn btn-sm btn-danger"><i
+                                                                    class="bx bx-trash"></i></i></a>
+                
                                                         </td>
 
                                                     </tr>
@@ -152,7 +152,7 @@
     @include('partials.footer')
 </div>
 
-<div id="userModal" class="modal fade" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+{{-- <div id="userModal" class="modal fade" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
     <form id="userForm" action="{{ route('user.add') }}" method="POST">
         @csrf
         <input type="hidden" name="role" value="">
@@ -207,7 +207,7 @@
             </div>
         </div>
     </form>
-</div>
+</div> --}}
 @endsection
 
 @section('script')

@@ -4,6 +4,7 @@
 
 @section('style')
 {{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
+<meta name="_token" content="{{csrf_token()}}" />
 
 <!-- Datatable -->
 <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
@@ -20,8 +21,8 @@
 @section('content')
 
 @php
-$privileges = DB::table('privileges')->where('role', Auth()->user()->role)->get();
-$sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
+$privileges = DB::table('privileges')->where('role', auth()->user()->role)->get();
+$sub = DB::table('secteurs')->where('user', auth()->user()->id)->get();
 @endphp
 
 <div class="main-content">
@@ -56,8 +57,9 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                     @foreach ($privileges as $privilege)
 
                                     @if( $privilege->module == 11 && $privilege->ajouter == 1)
-                                    <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
-                                        data-bs-target="#categorieModal">Ajouter</button>
+                                    {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
+                                        data-bs-target="#categorieModal">Ajouter</button> --}}
+                                        <a href="{{route('category.add')}}" class="btn btn-sm btn-primary me-2" >Nouveau secteur d'activité</a>
                                     @endif
                                     @endforeach
 
@@ -65,14 +67,15 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                 </div>
                             </div>
 
-                            @if(Auth()->user()->role == 1)
-                            <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                            @if(auth()->user()->role == 1)
+                            <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th style="width: 5%"></th>
                                         <th>Secteur d'activité</th>
-                                        <th style="width: 30%">Expert</th>
-                                        <th>Actions</th>
+                                        <th style="width: 30%">Conseiller</th>
+                                        {{-- <th style="width: 30%">Image</th> --}}
+                                        <th></th>
                                     </tr>
                                 </thead>
 
@@ -80,10 +83,10 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                     @foreach ($secteurs as $categorie)
                                     <tr>
                                         <td>
-                                            @if (!empty($categorie->image))
+                                            @if (empty($categorie->photo))
                                             <div>
                                                 <img class="rounded-circle avatar-xs"
-                                                    src="assets/images/users/avatar-2.jpg" alt="">
+                                                    src="{{$categorie->photo}}" alt="">
                                             </div>
                                             @else
                                             <div class="avatar-xs">
@@ -96,16 +99,12 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                         <td>
                                             <strong>{{ $categorie->libelle }}</strong>
                                         </td>
-                                        <td>{{ $categorie->user_data->nom_complet ?? 'Aucun' }}</td>
+                                        <td>{{ $categorie->conseiller_data->nom_complet ?? 'Aucun' }}</td>
+                                        {{-- <td><img src="{{asset($categorie->photo)}}" style="height:50px; width: 50px;"></td> --}}
                                         <td class="text-center">
-                                            <button id="categorie-edit-button" type="button"
-                                                data-id="{{$categorie->id}}" class=" btn btn-secondary btn-sm"
-                                                data-bs-toggle="modal" data-bs-target="#categorieModalEdit">
-                                                <i class="bx bx-edit"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm">
-                                                <i class="bx bx-trash"></i>
-                                            </button>
+                                            <a href="{{route('actualites.home', ['secteur', $categorie->id])}}" class="btn btn-sm btn-info"><i class="mdi mdi-newspaper-variant-multiple-outline"></i></a>
+                                            <a href="{{route('category.edit', $categorie->id)}}" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
+                                            <a href="{{route('category.delete', $categorie->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></i></a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -115,7 +114,7 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
 
 
                             @else
-                            <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                            <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th style="width: 5%"></th>
@@ -191,6 +190,10 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group col-md-12 mb-3">
+                            <label>Image</label>
+                            <input type="file" name="photo" class="form-control">
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -225,6 +228,12 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
                                 <option value="{{ $user->id }}">{{ $user->nom_complet }} </option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="form-group col-md-12 mb-3">
+                            <label>Image</label>
+
+                            <input type="file" name="photo" class="form-control">
+
                         </div>
                     </div>
                 </div>
@@ -268,19 +277,25 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
   		}).on("show.bs.modal", function(event){
   		  var button = $(event.relatedTarget); // button the triggered modal
   			var personId = button.data("id"); 
+
+
   			if(personId) {
                   $.ajax({
                       url: "{{  url('/get/user/') }}/"+personId,
                       type:"GET",
                       dataType:"json",
                       success:function(data) {
-                          console.log($("#secteur-intitule"));
-                          console.log(data);
+                        //   console.log($("#secteur-intitule"));
+                        //   console.log(data);
                          $("#secteur-intitule").val(data.libelle)
                          $("#secteur-specialiste").val(data.user).change()
                       },
                      
                   });
+
+             
+
+                  
               } else {
                   alert('danger');
               }
@@ -290,30 +305,6 @@ $sub = DB::table('secteurs')->where('user', Auth()->user()->id)->get();
   	});
 </script>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-          $('categorieFormEdit').on("show.bs.modal", function(event){
-  		  var button = $(event.relatedTarget); // button the triggered modal
-  			var personId = button.data("id"); 
-              if(form_edit) {
-                  $.ajax({
-                      url: "{{  url('/category/') }}/"+personId,
-                      type:"GET",
-                      dataType:"json",
-                      success:function(data) {
-                        //  $("#subcategory_id").empty();
-                        //        $.each(data,function(key,value){
-                        //            $("#subcategory_id").append('<option value="'+value.id+'">'+value.subcategory_en+'</option>');
-                        //        });
-                        console.log(data);
-                      },
-                     
-                  });
-              } else {
-                  alert('danger');
-              }
-          });
-      });
-</script>
+
 
 @endsection

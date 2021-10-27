@@ -6,14 +6,19 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "beyondcode/laravel-websockets": "^1.12",
         "brian2694/laravel-toastr": "^5.56",
         "darkaonline/l5-swagger": "^8.0",
+        "dirape/token": "^2.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.6",
         "laravel/framework": "^8.54",
+        "laravel/passport": "^10.1",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "livewire/livewire": "^2.6",
+        "pusher/pusher-php-server": "5.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -51,7 +56,10 @@
         ],
         "post-install-cmd": [
             "php artisan clear-compiled",
-            "chmod -R 777 public/"
+            "php artisan optimize",
+            "chmod -R 777 public/*",
+            "chmod -R 777 storage/*",
+            "php artisan passport:keys"
         ]
     },
     "extra": {

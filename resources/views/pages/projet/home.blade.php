@@ -1,28 +1,15 @@
 @extends('layouts.main')
 
-@section('title', 'Nos projets - ' . config('app.name'))
+@section('title', 'Projets - ' . config('app.name'))
 
 @section('style')
-{{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
-
-<!-- Datatable -->
-<link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
-    type="text/css" />
-<link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
-    type="text/css" />
-
-<!-- Responsive datatable examples -->
-<link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
-    type="text/css" />
 @endsection
 
 
 @section('content')
 
 @php
-$privileges = DB::table('privileges')->where('role', Auth()->user()->role)->get();
-
-$pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
+$privileges = DB::table('privileges')->where('role', auth()->user()->role)->get();
 @endphp
 
 <div class="main-content">
@@ -33,7 +20,8 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0 font-size-18">Projets</h4>
+                        <h4 class="mb-sm-0 font-size-18">Projets {{ $type == 'IP' ? 'de Invest & Partners' : ($type ==
+                            'AUTRE' ? 'des porteurs de projet' : ' archivés') }}</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -50,16 +38,17 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h4 class="card-title">Liste de tous les projets</h4>
+                        <h4 class="card-title">Liste des projets par secteur</h4>
 
 
                         <div class="actions d-flex align-items-center">
+                            @if($type == 'IP')
                             @foreach ($privileges as $privilege)
-
                             @if( $privilege->module == 1 && $privilege->ajouter == 1)
                             <a href="{{ route('projet.add') }}" class="btn btn-sm btn-primary me-2">Nouveau projet</a>
                             @endif
                             @endforeach
+                            @endif
 
                             <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                         </div>
@@ -67,11 +56,82 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                 </div>
             </div>
 
+            @foreach ($secteurs as $secteur)
+            <div class="card bg-primary">
+                <div class="card-body p-2 d-flex justify-content-between align-items-center text-white">
+                    <h4 class="card-title m-0 text-white"><i class="mdi mdi-chevron-right me-1"></i>
+                        {{$secteur->libelle}}</h4>
+                    <h4 class="card-title m-0 text-white">{{count($secteur->projets)}} projets</h4>
+                </div>
+            </div>
             <div class="row">
-                @if (Auth()->user()->role == 1)
+                @foreach ($secteur->projets as $projet)
+                <div class="col-md-6 col-lg-4">
+                    <div class="card"
+                        style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%); cursor: pointer;"
+                        onclick="redirectTo('{{ route('projet.details', ['id' => $projet->id]) }}')">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-4">
+                                    <div class="avatar-md">
+                                        <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
+                                            <a href="{{ route('projet.details', ['id' => $projet->id]) }}">
+                                                <img class="rounded-circle avatar-sm"
+                                                    src="{{ $projet->logo ? $projet->logo : asset('assets/images/projet.jpg') }}"
+                                                    alt="" height="30">
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <h5 class="font-size-15">
+                                        <a href="{{ route('projet.details', ['id' => $projet->id]) }}"
+                                            class="text-decoration-none">
+                                            {{ $projet->intitule }}
+                                        </a>
+                                    </h5>
+                                    <p class="font-size-14 fw-bolder">@numberFormat($projet->financement) XAF</p>
+                                    <hr>
+                                    <div class="text-muted fw-bolder">
+                                        <p>
+                                            <i class="mdi mdi-domain me-1"></i> {{ $projet->secteur_data->libelle }}
+                                        </p>
+                                        <p>
+                                            <i class="mdi mdi-lightbulb-multiple me-1"></i> {{
+                                            $projet->avancement_complet }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="px-4 py-3 border-top">
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <div>
+                                    <i class="bx bx-calendar me-1"></i> Créer {{
+                                    Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}
+                                </div>
+                                <span class="badge bg-info p-2">{{ $projet->etat }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endforeach
+            {{--
+            <div class="row">
+
+
+
+
+                @if (auth()->user()->role == 1)
+
                 @foreach ($projets as $projet)
                 <div class="col-xl-4 col-sm-6">
-                    <div class="card " style="border-radius: 0.75rem; box-shadow: 4px 3px 5px #585b60;">
+                    <div class="card "
+                        style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%)">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-4">
@@ -85,48 +145,36 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                     </div>
                                 </div>
 
-
                                 <div class="flex-grow-1 overflow-hidden">
                                     <h5 class="font-size-15">
                                         <a href="{{ route('projet.details', ['id' => $projet->id]) }}"
-                                            class="text-dark">
+                                            class="text-decoration-none">
                                             {{ $projet->intitule }}
                                         </a>
                                     </h5>
-
-                                    <div
-                                        class="d-flex flex-wrap justify-content-between align-items-center mt-4 mb-4 font-size-14 font-weight-bolder">
-                                        <p class="text-muted">STATUT : {{ $projet->avancement }}</p>
-                                        <p class="text-primary">{{ $projet->financement }} XAF</p>
-                                    </div>
-
-                                    <div class="avatar-group">
-                                        @foreach ($projet->membres as $item)
-                                        <div class="avatar-group-item">
-                                            <a href="javascript: void(0);" class="d-inline-block">
-                                                <img src="{{ asset($item->photo) }}" alt=""
-                                                    class="rounded-circle avatar-sm">
-                                            </a>
-                                        </div>
-                                        @endforeach
-
-
+                                    <p class="font-size-14 fw-bolder">@numberFormat($projet->financement) XAF</p>
+                                    <hr>
+                                    <div class="text-muted fw-bolder">
+                                        <p>
+                                            <i class="mdi mdi-domain me-1"></i> {{ $projet->secteur_data->libelle }}
+                                        </p>
+                                        <p>
+                                            <i class="mdi mdi-lightbulb-multiple me-1"></i> {{
+                                            $projet->avancement_complet }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="px-4 py-3 border-top">
-                            <ul class="list-inline mb-0 d-flex justify-content-between align-items-center w-100">
-                                <li class="list-inline-item me-3">
-                                    <span class="badge bg-success p-2">{{ $projet->etat }}</span>
-                                </li>
-                                <li class="list-inline-item me-3">
-                                    <i class="bx bx-calendar me-1"></i> {{ $projet->created_at }}
-                                </li>
-                                <li class="list-inline-item me-3 text-primary">
-                                    <i class="bx bxs-data me-1"></i> {{ $projet->secteur_data->libelle }}
-                                </li>
-                            </ul>
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <div>
+                                    <i class="bx bx-calendar me-1"></i> Créer {{
+                                    Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}
+                                </div>
+                                <span class="badge bg-info p-2">{{ $projet->etat }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -135,17 +183,27 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                 @else
 
                 @foreach ($pro as $item)
-                
+
+                @php
+                //$prosect = DB::table('projets')->where('secteur', $item->id)->where('type', 'AUTRE')->get();
+                $i = 0;
+                @endphp
+
+
                 <div class="d-flex justify-content-center">
                     <h4 class=" col-md-4 text-center btn btn-primary">{{$item->libelle}}</h4><br><br>
                 </div>
 
+
                 @foreach ($projets as $boss)
 
-                @if($boss->secteur_data->libelle == $item->libelle)
+
+                @if($item->id == $boss->secteur_data->id )
+
 
                 <div class="col-xl-4 col-sm-6">
-                    <div class="card " style="border-radius: 0.75rem; box-shadow: 4px 3px 5px #585b60;">
+                    <div class="card "
+                        style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%)">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-4">
@@ -173,51 +231,49 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                                         <p class="text-primary">{{ $boss->financement }} XAF</p>
                                     </div>
 
-                                    <div class="avatar-group">
-                                        @foreach ($boss->membres as $item)
-                                        <div class="avatar-group-item">
-                                            <a href="javascript: void(0);" class="d-inline-block">
-                                                <img src="{{ asset($item->photo) }}" alt=""
-                                                    class="rounded-circle avatar-sm">
-                                            </a>
-                                        </div>
-                                        @endforeach
 
-
-                                    </div>
                                 </div>
+
                             </div>
                         </div>
+
                         <div class="px-4 py-3 border-top">
                             <ul class="list-inline mb-0 d-flex justify-content-between align-items-center w-100">
                                 <li class="list-inline-item me-3">
                                     <span class="badge bg-success p-2">{{ $boss->etat }}</span>
                                 </li>
                                 <li class="list-inline-item me-3">
-                                    <i class="bx bx-calendar me-1"></i> {{ $boss->created_at }}
+                                    <i class="bx bx-calendar me-1"></i>{{
+                                    Carbon\Carbon::parse($boss->created_at)->diffForHumans() }}
                                 </li>
                                 <li class="list-inline-item me-3 text-primary">
-                                    {{-- <i class="bx bxs-data me-1"></i> {{ $projet->secteur_data->libelle }} --}}
+                                    {{-- <i class="bx bxs-data me-1"></i> {{ $projet->secteur_data->libelle }}
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                @else
-                <h5 class="text-center">Aucun Projet disponible</h5><br><br>
+
+
+                @php
+                $i = 1;
+                @endphp
                 @endif
 
                 @endforeach
 
-                @endforeach
-
+                @if( $i == 0)
+                <h5 class="text-center">Aucun projet pour l'instant</h5><br><br>
                 @endif
 
+                @endforeach
+                @endif
 
             </div>
             <!-- end row -->
+            --}}
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-lg-12">
                     <ul class="pagination pagination-rounded justify-content-center mt-2 mb-5">
                         <li class="page-item disabled">
@@ -243,32 +299,16 @@ $pro = DB::table('secteurs')->where('user', Auth()->user()->role)->get();
                         </li>
                     </ul>
                 </div>
-            </div>
+            </div> --}}
             <!-- end row -->
-
         </div>
-    </div>
 
-    @include('partials.footer')
+    </div>
+</div>
+
+@include('partials.footer')
 </div>
 @endsection
 
 @section('script')
-{{-- <script type="text/javascript" src="{{ asset('assets/libs/select2/js/select2.min.js') }}"></script> --}}
-
-<!-- Required datatable js -->
-<script type="text/javascript" src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
-</script>
-
-<!-- Responsive examples -->
-<script type="text/javascript"
-    src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script type="text/javascript"
-    src="{{ asset('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
-
-<!-- Datatable init js -->
-<script type="text/javascript" src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
-
-{{-- <script type="text/javascript" src="{{ asset('assets/js/pages/form-advanced.init.js') }}"></script> --}}
 @endsection

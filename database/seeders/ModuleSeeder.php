@@ -24,8 +24,9 @@ class ModuleSeeder extends Seeder
         Module::create(['module' => 'Evenement']);
         Module::create(['module' => 'Message']);
         Module::create(['module' => 'Privilege']);
-        Module::create(['module' => 'Categorie']);
+        Module::create(['module' => 'Secteur_d\'activité']);
         Module::create(['module' => 'Site']);
         Module::create(['module' => 'Archives']);
+        Module::create(['module' => 'Actualites']);
     }
 }

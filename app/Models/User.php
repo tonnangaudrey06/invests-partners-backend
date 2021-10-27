@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -16,6 +16,7 @@ class User extends Authenticatable
         'civilite',
         'prenom',
         'nom',
+        'folder',
         'email',
         'telephone',
         'password',
@@ -33,7 +34,8 @@ class User extends Authenticatable
     ];
     
     protected $appends =  [
-        'nom_complet'
+        'nom_complet',
+        'anciennete_complet'
     ];
 
     protected $casts = [
@@ -49,7 +51,7 @@ class User extends Authenticatable
         }
     }
 
-    public function getAnciennetetAttribute($value)
+    public function getAncienneteCompletAttribute($value)
     {
         if ($value == 1) {
             return 'Plus d\'un ans d\'anciennete';
@@ -62,7 +64,7 @@ class User extends Authenticatable
 
     public function role_data()
     {
-        return $this->belongsTo(Role::class, 'role', 'id');
+        return $this->belongsTo(Role::class, 'role', 'id')->with('modules');
     }
 
     public function projets()
@@ -70,8 +72,18 @@ class User extends Authenticatable
         return $this->hasMany(Projet::class, 'user', 'id');
     }
 
-    public function secteur()
+    public function documents_fiscaux()
     {
-        return $this->hasOne(Secteur::class, 'user', 'id');
+        return $this->hasMany(DocumentFiscaux::class, 'user', 'id');
+    }
+
+    public function secteurs_data()
+    {
+        return $this->hasMany(Secteur::class, 'user', 'id')->with(['projets']);
+    }
+
+    public function profil_invest()
+    {
+        return $this->belongsTo(ProfilInvestisseur::class, 'profil', 'id');
     }
 }

@@ -17,12 +17,14 @@ class CreateArchivesTable extends Migration
             $table->id();
             $table->string('nom');
             $table->enum('type', ['FICHIER', 'IMAGE', 'VIDEO'])->default('FICHIER');
-            $table->enum('source', ['PP', 'ADMIN'])->default('PP');
+            $table->enum('source', ['PP', 'CONSEILLER', 'ADMIN', 'MESSAGE'])->default('PP');
             $table->string('url');
             $table->unsignedBigInteger('projet')->nullable();
             $table->unsignedBigInteger('actualite')->nullable();
+            $table->unsignedBigInteger('message')->nullable();
             $table->foreign('projet')->references('id')->on('projets')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('actualite')->references('id')->on('actualites')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('message')->references('id')->on('messages')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

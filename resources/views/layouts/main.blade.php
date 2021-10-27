@@ -12,7 +12,9 @@
 
     @yield('style')
 
-    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+        integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Bootstrap Css -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
@@ -40,23 +42,71 @@
     <script type="text/javascript" src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
 
     <script type="text/javascript">
+        var observe;
+        var text = document.getElementById('autoresize');
+
         function redirectTo(url) {
+            console.log(url);
             window.location.assign(url);
+        }
+
+        function goBack() {
+            window.history.back();
         }
 
         function reload() {
             window.location.reload();
         }
 
+        function resize () {
+            text.style.height = 'auto';
+            text.style.height = text.scrollHeight+'px';
+        }
+        
+        function delayedResize () {
+            window.setTimeout(resize, 0);
+        }
+        
+        function init () {
+            if (window.attachEvent) {
+                observe = function (element, event, handler) {
+                    if (element) {
+                        element.attachEvent('on'+event, handler);
+                    }
+                };
+            } else {
+                observe = function (element, event, handler) {
+                    if (element) {
+                        element.addEventListener(event, handler, false);
+                    }
+                };
+            }
+            
+            if (text) {
+                observe(text, 'change',  resize);
+                observe(text, 'cut',     delayedResize);
+                observe(text, 'paste',   delayedResize);
+                observe(text, 'drop',    delayedResize);
+                observe(text, 'keydown', delayedResize);
+
+                text.focus();
+                text.select();
+                resize();
+            }
+        }
+
         $(document).ready(function() {
             $("#flip").click(function() {
                 $("#panel").slideDown("slow");
             });
+    
+            init();
         });
     </script>
 
-    
-    <script type="text/javascript" src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>

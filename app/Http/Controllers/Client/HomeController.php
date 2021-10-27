@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -12,12 +13,12 @@ class HomeController extends Controller
     public function HomeSlider()
     {
         $sliders = DB::table('sliders')->get();
-        return view('admin.slider.index', compact('sliders'));
+        return view('pages.slider.index', compact('sliders'));
     }
 
     public function AddSlide()
     {
-        return view('admin.slider.create');
+        return view('pages.slider.create');
     }
 
     public function StoreSlide(Request $request)
@@ -45,17 +46,17 @@ class HomeController extends Controller
         $data = array();
         $data['title'] = $request->title;
         $data['description'] = $request->description;
-        $data['image'] = $last_img;
+        $data['image'] = url($up_location) . '/' . $img_name;
         $data['created_at'] = Carbon::now();
         DB::table('sliders')->insert($data);
 
-        return Redirect()->route('home.slider')->with('success', 'Slide inserted succesfully');
+        return Redirect()->route('slider.home')->with('success', 'Slide inserted succesfully');
     }
 
     public function EditSlide($id)
     {
         $slider = DB::table('sliders')->where('id', $id)->first();
-        return view('admin.slider.edit', compact('slider'));
+        return view('pages.slider.edit', compact('slider'));
     }
 
     public function UpdateSlide(Request $request, $id)
@@ -75,18 +76,18 @@ class HomeController extends Controller
             $last_img = $up_location.$img_name;
             $image->move($up_location, $img_name);
 
-            $data['image'] = $last_img;
+            $data['image'] = url($up_location) . '/' . $img_name;
     
             unlink($oldimage);
             DB::table('sliders')->where('id', $id)->update($data);
             
 
-            return Redirect()->route('home.slider')->with('success', 'Slide updated succesfully');
+            return Redirect()->route('slider.home')->with('success', 'Slide updated succesfully');
         } else {
 
             $data['image'] = $oldimage;
             DB::table('sliders')->where('id', $id)->update($data);
-            return Redirect()->route('home.slider')->with('success', 'Slide updated succesfully');
+            return Redirect()->route('slider.home')->with('success', 'Slide updated succesfully');
         }
     }
 
@@ -98,14 +99,14 @@ class HomeController extends Controller
 
         DB::table('sliders')->where('id', $id)->delete();
 
-        return Redirect()->route('home.slider')->with('success', 'Slide deleted succesfully');;
+        return Redirect()->route('slider.home')->with('success', 'Slide deleted succesfully');;
     }
 
 
     public function HomePartenaires()
     {
         $partenaires = DB::table('partenaires')->get();
-        return view('admin.partenaire.index', compact('partenaires'));
+        return view('pages.partenaire.index', compact('partenaires'));
     }
 
     public function StorePartenaires(Request $request)
@@ -122,7 +123,7 @@ class HomeController extends Controller
             $last_img = 'images/partenaires/' . $name_gen;
 
             $data = array();
-            $data['image'] = $last_img;
+            $data['image'] = url('images/partenaires/') . '/' . $name_gen;
             $data['created_at'] = Carbon::now();
             DB::table('partenaires')->insert($data);
         }  //end of the foreach
@@ -138,7 +139,7 @@ class HomeController extends Controller
 
         DB::table('partenaires')->where('id', $id)->delete();
 
-        return Redirect()->route('home.partenaire')->with('success', 'Partenaire deleted succesfully');
+        return Redirect()->route('partenaires.home')->with('success', 'Partenaire deleted succesfully');
     }
 
 
@@ -147,7 +148,7 @@ class HomeController extends Controller
     {
 
         $chiffres = DB::table('chiffres')->first();
-        return view('admin.chiffre.index', compact('chiffres'));
+        return view('pages.chiffre.index', compact('chiffres'));
     }
 
     public function EditChiffre($id)
@@ -168,7 +169,7 @@ class HomeController extends Controller
         if ($image) {
             $image_one = uniqid() . '.' . $image->getClientOriginalExtension();
             Image::make($image)->resize(500, 300)->save('images/chiffres/' . $image_one);
-            $data['image'] = 'images/chiffres/' . $image_one;
+            $data['image'] = url('images/chiffres/') . '/' . $image_one; 
             DB::table('chiffres')->where('id', $id)->update($data);
             unlink($oldimage);
 

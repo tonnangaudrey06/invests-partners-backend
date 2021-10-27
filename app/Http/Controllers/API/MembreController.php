@@ -4,31 +4,29 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Membre;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class MembreController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
-            'photo' => 'mimes:jpg,jpeg,png',
-            'cni' => 'mimes:jpg,jpeg,png',
-        ]);
-
         $photo = $request->file('photo');
         $cni = $request->file('cni');
         $data = $request->input();
 
+        $user = User::find($data['user']);
+
         if (!empty($photo)) {
             $filename = hexdec(uniqid()) . '.' . strtolower($photo->getClientOriginalExtension());
-            $data['photo'] = url('storage/uploads/membres/') . '/' . $filename;
-            $photo->storeAs('uploads/membres/', $filename, ['disk' => 'public']);
+            $data['photo'] = url('storage/uploads/'.$user->folder.'/membres/') . '/' . $filename;
+            $photo->storeAs('uploads/'.$user->folder.'/membres/', $filename, ['disk' => 'public']);
         }
 
         if (!empty($cni)) {
             $filename = hexdec(uniqid()) . '.' . strtolower($cni->getClientOriginalExtension());
-            $data['cni'] = url('storage/uploads/cnis/') . '/' . $filename;
-            $cni->storeAs('uploads/membres/', $filename, ['disk' => 'public']);
+            $data['cni'] = url('storage/uploads/'.$user->folder.'/membres/') . '/' . $filename;
+            $cni->storeAs('uploads/'.$user->folder.'/membres/', $filename, ['disk' => 'public']);
         }
         
         $membre = Membre::create($data);

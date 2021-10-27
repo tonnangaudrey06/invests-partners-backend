@@ -15,12 +15,12 @@ class CreateActualitesTable extends Migration
     {
         Schema::create('actualites', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user');
-            $table->unsignedBigInteger('projet');
+            $table->unsignedBigInteger('secteur')->nullable();
+            $table->unsignedBigInteger('projet')->nullable();
             $table->string('libelle');
+            $table->string('image')->nullable();
             $table->text('description');
-            $table->boolean('publier')->default(false);
-            $table->foreign('user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('secteur')->references('id')->on('secteurs')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('projet')->references('id')->on('projets')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

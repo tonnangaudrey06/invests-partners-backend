@@ -14,19 +14,31 @@ class ProfilInvestisseur extends Model
     protected $fillable = [
         'type',
         'montant_min',
-        'montant_max'
+        'montant_max',
+        'frais_abonnement'
     ];
 
-    public function getMontantMaxAttribute($value)
+    protected $appends =  [
+        'max',
+        'min',
+        'frais'
+    ];
+
+    public function getMaxAttribute()
     {
-        if (empty($value)) {
+        if (empty($this->montant_max)) {
             return 'Plus';
         }
-        return $value . ' XAF';
+        return $this->montant_max . ' XAF';
     }
 
-    public function getMontantMinAttribute($value)
+    public function getMinAttribute()
     {
-        return $value . ' XAF';
+        return $this->montant_min . ' XAF';
+    }
+
+    public function getFraisAttribute()
+    {
+        return $this->frais_abonnement . ' XAF';
     }
 }
