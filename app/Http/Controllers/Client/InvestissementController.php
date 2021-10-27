@@ -18,22 +18,20 @@ class InvestissementController extends Controller
     public function index()
     {
         $investissements = Investissement::with(['projet_data', 'user_data'])->get();
-        $projets = Projet::all();
-        // return response()->json($investissements);
-        return view('pages.investissement.home', compact('investissements', 'projets'));
+        return view('pages.investissement.home', compact('investissements'));
     }
 
     public function add()
     {
         $investisseurs = User::where('role', 4)->get();
-        $projets = Projet::all();
+        $projets = Projet::where('etat', 'PUBLIE')->get();
         return view('pages.investissement.add', compact('investisseurs', 'projets'));
     }
 
     public function store(Request $request)
     {
 
-        $validated = $request->validate(
+        $request->validate(
             [
                 'date_versement' => 'required|:investissements',
                 'investisseur' => 'required|:investissements',
@@ -58,8 +56,6 @@ class InvestissementController extends Controller
         $data['montant'] = $request->montant_investi;
         $data['numero_versement'] = $request->numero_versement;
 
-
-
         Investissement::create($data);
 
         $investissement = Investissement::with(['projet_data', 'user_data'])->where('user', $data['user'])->where('montant', $data['montant'])->first();
@@ -81,13 +77,13 @@ class InvestissementController extends Controller
     {
         $investissement = Investissement::with(['projet_data', 'user_data'])->find($id);
         $investisseurs = User::where('role', 4)->get();
-        $projets = Projet::all();
+        $projets = Projet::where('etat', 'PUBLIE')->get();
         return view('pages.investissement.edit', compact('investissement', 'investisseurs', 'projets'));
     }
 
     public function update($id, Request $request)
     {
-        $validated = $request->validate(
+        $request->validate(
             [
                 'date_versement' => 'required|:investissements',
                 'investisseur' => 'required|:investissements',
@@ -120,10 +116,8 @@ class InvestissementController extends Controller
 
     public function delete($id)
     {
-
         Investissement::find($id)->delete();
         Toastr::success('Investissement supprimé avec succès!', 'Success');
-
         return redirect()->intended(route('investissement.home'));
     }
 }

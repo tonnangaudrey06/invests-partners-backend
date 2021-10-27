@@ -51,8 +51,16 @@
     <script type="text/javascript" src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
 
     <script type="text/javascript">
+        var observe;
+        var text = document.getElementById('autoresize');
+
         function redirectTo(url) {
+            console.log(url);
             window.location.assign(url);
+        }
+
+        function goBack() {
+            window.history.back();
         }
 
         function reload() {
@@ -67,9 +75,8 @@
         function delayedResize () {
             window.setTimeout(resize, 0);
         }
-
+        
         function init () {
-            var observe;
             if (window.attachEvent) {
                 observe = function (element, event, handler) {
                     if (element) {
@@ -84,8 +91,6 @@
                 };
             }
             
-            var text = document.getElementById('autoresize');
-
             if (text) {
                 observe(text, 'change',  resize);
                 observe(text, 'cut',     delayedResize);
@@ -100,10 +105,11 @@
         }
 
         $(document).ready(function() {
-            init();
             $("#flip").click(function() {
                 $("#panel").slideDown("slow");
             });
+    
+            init();
         });
     </script>
 

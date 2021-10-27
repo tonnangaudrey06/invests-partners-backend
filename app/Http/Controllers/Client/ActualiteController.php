@@ -32,7 +32,6 @@ class ActualiteController extends Controller
 
     public function add($type, $id)
     {
-
         $type = $type;
         if ($type == 'secteur') {
             $secteur = Secteur::where('id', $id)->with('conseiller_data')->first();
@@ -46,7 +45,7 @@ class ActualiteController extends Controller
     public function store(Request $request, $type, $id)
     {
 
-        $validated = $request->validate(
+        $request->validate(
             [
                 'image' => 'required|mimes:jpg,jpeg,png',
             ],
@@ -58,8 +57,7 @@ class ActualiteController extends Controller
         $name_gen = hexdec(uniqid());
         $img_ext = strtolower($actu_image->getClientOriginalExtension());
         $img_name = $name_gen . '.' . $img_ext;
-        $up_location = 'images/secteurs/';
-        $last_img = $up_location . $img_name;
+        $up_location = 'images/actualites/';
         $actu_image->move($up_location, $img_name);
 
         $data = array();
@@ -86,76 +84,14 @@ class ActualiteController extends Controller
     {
         $actualite = Actualite::with(['projet_invest', 'secteur_data'])->find($id);
         $type = $type;
-
-        // return response()->json($actualite);
-
         return view('pages.actualites.details', compact('actualite', 'type', 'idPS'));
-    }
-
-    public function edit($type, $id, $idPS)
-    {
-        $type = $type;
-        $idPS = $idPS;
-
-        $actualite = Actualite::find($id);
-        return view('pages.actualites.edit', compact('type', 'actualite', 'idPS'));
-    }
-
-    public function update(Request $request, $type, $id, $idPS)
-    {
-        $validated = $request->validate(
-            [
-                'image' => 'required|mimes:jpg,jpeg,png',
-            ],
-
-        );
-
-        $actu_image = $request->file('image');
-
-        if ($actu_image) {
-            $name_gen = hexdec(uniqid());
-            $img_ext = strtolower($actu_image->getClientOriginalExtension());
-            $img_name = $name_gen . '.' . $img_ext;
-            $up_location = 'images/secteurs/';
-            $last_img = $up_location . $img_name;
-            $actu_image->move($up_location, $img_name);
-
-            $path = parse_url($request->oldimage);
-            File::delete(public_path($path['path']));
-
-            $data = Actualite::find($id);
-                   
-                $data->libelle = $request->libelle;
-                $data->description = $request->description;
-                $data->image = url($up_location) . '/' . $img_name;               
-
-                $data->save();
-
-                Toastr::success('Actualité mise à jour avec succès!', 'Success');
-            
-        } else {
-            $data = Actualite::find($id);
-            
-            $data->libelle = $request->libelle;
-            $data->description = $request->description;
-
-            $data->save();
-
-            Toastr::success('Actualité mise à jour avec succès!', 'Success');
-
-        }
-
-        
-
-        return redirect()->intended(route('actualites.home', [$type, $idPS]));
-       
     }
 
     public function delete($type, $id, $idPS)
     {
 
         $actualite = Actualite::find($id);
-
+        
         $path = parse_url($actualite->image);
 
         File::delete(public_path($path['path']));

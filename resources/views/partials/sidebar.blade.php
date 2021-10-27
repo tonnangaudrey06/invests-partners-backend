@@ -13,8 +13,6 @@
 
             @if (Auth::user()->role == 1)
 
-            <!-- Left Menu Start -->
-
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" key="t-menu">Menu</li>
 
@@ -25,42 +23,42 @@
                     </a>
                 </li>
 
-                <li class="mm-active">
+                <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect" aria-expanded="true">
                         <i class="bx bx-briefcase-alt-2"></i>
                         <span key="t-projects">Projets</span>
                     </a>
-                    <ul class="sub-menu mm-collapse mm-show" aria-expanded="false" style="">
+                    <ul class="sub-menu" aria-expanded="false" style="">
                         <li><a href="{{ route('projet.home') }}" key="t-p-grid">Plateforme</a></li>
-                        <li><a href="{{ route('projet.home_ip') }}" key="t-p-list">I&P</a></li>
+                        <li><a href="{{ route('projet.home_ip') }}" key="t-p-list">Invest & Partners</a></li>
                     </ul>
                 </li>
 
                 
                 <li>
                     <a href="{{route('investissement.home')}}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-cash-multiple"></i>
                         <span key="t-investment">Investissements</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{route('events.home')}}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-calendar-multiple-check"></i>
                         <span key="t-evenement">Événements</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{route('projet.archives')}}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-content-save-all"></i>
                         <span key="t-archive">Archives</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-store"></i>
+                        <i class="mdi mdi-account-group"></i>
                         <span key="t-user">Utilisateurs</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -78,21 +76,21 @@
 
                 <li>
                     <a href="{{ route('profil.investisseur.home') }}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-account-cog"></i>
                         <span key="t-profil-investisseur">Profils investisseurs</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ route('category.home') }}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-domain"></i>
                         <span key="t-categorie">Secteurs d'activités</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-store"></i>
+                        <i class="mdi mdi-shield-account"></i>
                         <span key="t-user">Privilèges</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -105,14 +103,14 @@
 
                 <li>
                     <a href="{{route('slider.home')}}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-cog-box"></i>
                         <span key="t-slide">Slides</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{route('partenaires.home')}}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-account-switch"></i>
                         <span key="t-partenaire">Partenaires</span>
                     </a>
                 </li>
@@ -142,16 +140,9 @@
                     </a>
                     <ul class="sub-menu mm-collapse mm-show" aria-expanded="false" style="">
                         <li><a href="{{ route('projet.home') }}" key="t-p-grid">Plateforme</a></li>
-                        <li><a href="{{ route('projet.home_ip') }}" key="t-p-list">I&P</a></li>
+                        <li><a href="{{ route('projet.home_ip') }}" key="t-p-list">Invest & Partners</a></li>
                     </ul>
                 </li>
-
-                {{-- <li>
-                    <a href="{{ route('projet.home') }}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
-                        <span key="t-projet">Projets</span>
-                    </a>
-                </li> --}}
 
                 @endif
                 
@@ -159,7 +150,7 @@
                 @if( $privilege->module == 6 && $privilege->consulter == 1)
                 <li>
                     <a href="{{route('investissement.home')}}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-cash-multiple"></i>
                         <span key="t-investment">Investissements</span>
                     </a>
                 </li>
@@ -169,7 +160,7 @@
                 @if( $privilege->module == 8 && $privilege->consulter == 1)
                 <li>
                     <a href="calendar.html" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-calendar-multiple-check"></i>
                         <span key="t-evenement">Événements</span>
                     </a>
                 </li>
@@ -178,7 +169,7 @@
                 @if( $privilege->module == 13 && $privilege->consulter == 1)
                 <li>
                     <a href="{{route('projet.archives')}}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-content-save-all"></i>
                         <span key="t-archive">Archives</span>
                     </a>
                 </li>
@@ -187,7 +178,7 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-store"></i>
+                        <i class="mdi mdi-account-group"></i>
                         <span key="t-user">Utilisateurs</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -222,7 +213,7 @@
                 @if( $privilege->module == 7 && $privilege->consulter == 1)
                 <li>
                     <a href="{{ route('profil.investisseur.home') }}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-account-cog"></i>
                         <span key="t-profil-investisseur">Profils investisseurs</span>
                     </a>
                 </li>
@@ -234,7 +225,7 @@
 
                 <li>
                     <a href="{{ route('category.home') }}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-domain"></i>
                         <span key="t-categorie">Secteurs d'activités</span>
                     </a>
                 </li>
@@ -246,7 +237,7 @@
 
                 <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-store"></i>
+                        <i class="mdi mdi-shield-account"></i>
                         <span key="t-user">Privilèges</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
@@ -261,22 +252,20 @@
 
                 <li>
                     <a href="{{route('slider.home')}}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-cog-box"></i>
                         <span key="t-slide">Slides</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="{{route('partenaires.home')}}" class="waves-effect">
-                        <i class="bx bx-calendar"></i>
+                        <i class="mdi mdi-account-switch"></i>
                         <span key="t-partenaire">Partenaires</span>
                     </a>
                 </li>
                 @endif
 
                 @endforeach
-
-
             </ul>
                 
             @endif

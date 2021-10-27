@@ -21,5 +21,8 @@ class Secteur extends Model
         return $this->belongsTo(User::class, 'user', 'id');
     }
 
-    
+    public function projets()
+    {
+        return $this->hasMany(Projet::class, 'secteur', 'id');
+    }
 }

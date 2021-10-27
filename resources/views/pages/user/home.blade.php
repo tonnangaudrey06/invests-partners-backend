@@ -48,14 +48,14 @@
                                 <h4 class="card-title">Liste des {{ lcfirst($title) }}</h4>
                                 <div class="actions d-flex align-items-center">
                                     {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
-                                            data-bs-target="#userModal">Nouveau {{ $role->name }}</button> --}}
+                                        data-bs-target="#userMessage">Nouveau {{ $role->name }}</button> --}}
                                     <a href="{{ route('user.add', $role->value) }}"
                                         class="btn btn-sm btn-primary me-2">Nouveau {{ $role->name }}</a>
                                     <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                 </div>
                             </div>
 
-                            <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                            <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th style="width: 5%"></th>
@@ -69,20 +69,19 @@
                                         <th style="width: 10%">Profil</th>
                                         @endif
                                         @if ($role->value == 2)
-                                        <th style="width: 20%">Secteurs d'activités</th>
+                                        <th style="max-width: 20% !important">Secteurs d'activités</th>
                                         @endif
-                                        <th class="text-center" style="width: 10%">Actions</th>
+                                        <th class="text-center" style="width: 10%"></th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     @foreach ($users as $user)
                                     <tr>
-                                        <td>
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">
                                             @if (!empty($user->photo))
                                             <div>
-                                                <img class="rounded-circle avatar-xs"
-                                                    src="assets/images/users/avatar-2.jpg" alt="">
+                                                <img class="rounded-circle avatar-xs" src="{{ $user->photo }}" alt="">
                                             </div>
                                             @else
                                             <div class="avatar-xs">
@@ -92,12 +91,19 @@
                                             </div>
                                             @endif
                                         </td>
-                                        <td>{{ $user->nom_complet }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->telephone }}</td>
+                                        <th rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">
+                                            <a href="{{ route('user.profile', $user->id) }}">{{ $user->nom_complet
+                                                }}</a>
+                                        </th>
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">{{
+                                            $user->email }}</td>
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">{{
+                                            $user->telephone }}</td>
+
                                         @if ($role->value == 3 || $role->value == 4)
                                         <td><strong>{{ $user->status }}</strong></td>
                                         @endif
+
                                         @if ($role->value == 4)
                                         <td>
                                             @if ($user->profil != null)
@@ -105,26 +111,44 @@
                                             @endif
                                         </td>
                                         @endif
-
                                         @if ($role->value == 2)
-                                        <td>
-                                            @foreach ($user->secteurs_data as $item)
-                                            <span class="badge bg-primary p-2 font-size-12">{{ $item->libelle }}</span>
-                                            @endforeach
-                                            
-                                            
+                                        <td style="max-width: 20% !important">
+                                            {{ $user->secteurs_data ? $user->secteurs_data[0]->libelle : '' }}
                                         </td>
                                         @endif
 
-                                        <td class="text-center">
+                                        <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}"
+                                            class="text-center">
+                                            @if ($role->value == 2 && (auth()->user()->role == 1 || auth()->user()->role
+                                            == 5))
+                                            <a href="{{route('chat.view', $user->id)}}" class="btn btn-sm btn-info"><i
+                                                    class="bx bx-envelope"></i></a>
+                                            @endif
+                                            @if ($role->value == 3 || $role->value == 4 )
+                                            <button id="openMessageModal"
+                                                data-url="{{ route('chat.new', ['sender' => auth()->user()->id, 'receiver' => $user->id]) }}"
+                                                class="btn btn-sm btn-info" onclick="openMessageModal()"><i
+                                                    class="mdi mdi-email-plus"></i></button>
+                                            @endif
                                             <a href="{{route('user.edit', $user->id)}}"
-                                                class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
+                                                class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
                                             <a href="{{route('user.delete', $user->id)}}"
                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                class="btn btn-xs btn-danger pull-right"><i
-                                                    class="bx bx-trash"></i></i></a>
+                                                class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></i></a>
                                         </td>
                                     </tr>
+                                    @if ($role->value == 2)
+                                    @foreach ($user->secteurs_data as $item)
+                                    @if(!$loop->first)
+                                    <tr>
+                                        <td style="max-width: 20% !important">
+                                            {{ $item->libelle }}
+                                        </td>
+                                    </tr>
+                                    
+                                    @endif
+                                    @endforeach
+                                    @endif
                                     @endforeach
                                 </tbody>
                             </table>
@@ -140,76 +164,36 @@
     @include('partials.footer')
 </div>
 
-{{-- <div id="userModal" class="modal fade" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-        <form id="userForm" action="{{ route('user.add') }}" method="POST">
-@csrf
-<input type="hidden" name="role" value="{{ $role->value }}">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="userModalLabel">Nouveau {{ $role->name }}
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="form-group col-md-12 mb-3">
-                    <label>Civilité</label>
-                    <select class="form-control" name="civilite">
-                        <option selected>Aucun</option>
-                        <option value="Mr.">Mr.</option>
-                        <option value="Mme.">Mme.</option>
-                        <option value="Mlle.">Mlle.</option>
-                    </select>
+<div id="userMessage" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="userMessageLabel" aria-hidden="true">
+    <input type="hidden" name="role" value="{{ $role->value }}">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <form id="userMessageForm" action="" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userMessageLabel">Nouveau message {{ $role->name }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="form-group col-md-6 mb-3">
-                    <label>Nom</label>
-                    <input type="text" class="form-control" name="nom" placeholder="Nom" required>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="autoresize">Votre message</label>
+                            <textarea id="autoresize" class="form-control overflow-hidden" name="body"
+                                rows="3"></textarea>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group col-md-6 mb-3">
-                    <label>Prenom</label>
-                    <input type="text" class="form-control" name="prenom" placeholder="Prenom">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary waves-effect"
+                        data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-sm btn-primary waves-effect waves-light">Envoyer</button>
                 </div>
-                <div class="form-group col-md-6 mb-3">
-                    <label>Email</label>
-                    <input type="email" class="form-control" name="email" placeholder="Email" required>
-                </div>
-                <div class="form-group col-md-6 mb-3">
-                    <label>Téléphone</label>
-                    <input type="text" class="form-control" name="telephone" placeholder="Téléphone">
-                </div>
-                <div class="form-group col-md-12 mb-3">
-                    <label>Mot de passe</label>
-                    <input type="password" class="form-control" name="password" placeholder="Mot de passe" required>
-                </div>
-                @if ($role->value == 3)
-                <div class="form-group col-md-12 mb-3">
-                    <label>Statut</label>
-                    <select class="form-control" name="status" required>
-                        <option selected value="">Aucun</option>
-                        <option value="PARTICULIER">Particulier</option>
-                        <option value="ENTREPRISE">Entreprise</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-12 mb-3">
-                    <label>Ancienente</label>
-                    <select class="form-control" name="anciennete">
-                        <option selected value="">Aucun</option>
-                        <option value="1">Plus d'un ans</option>
-                        <option value="-1">Moins d'un ans</option>
-                    </select>
-                </div>
-                @endif
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-secondary waves-effect" data-bs-dismiss="modal">Fermer</button>
-            <button type="submit" class="btn btn-sm btn-primary waves-effect waves-light">Enregistrement</button>
+            </form>
         </div>
     </div>
 </div>
-</form>
-</div> --}}
 @endsection
 
 @section('script')
@@ -226,4 +210,12 @@
 
 <!-- Datatable init js -->
 <script type="text/javascript" src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
+
+<script type="text/javascript">
+    function openMessageModal() {
+        const url = $('#openMessageModal').data('url');
+        $('#userMessageForm').attr('action', url);
+        new bootstrap.Modal(document.getElementById('userMessage')).show()
+    }
+</script>
 @endsection

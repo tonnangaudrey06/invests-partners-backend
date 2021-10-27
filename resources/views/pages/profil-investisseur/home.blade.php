@@ -54,14 +54,14 @@
                                     </div>
                                 </div>
 
-                                <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                                <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                                     <thead>
                                         <tr>
                                             <th>Type</th>
                                             <th>Montant minimal</th>
                                             <th>Montant maximal</th>
                                             <th>Montant abonnement</th>
-                                            <th>Actions</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
 
@@ -75,8 +75,8 @@
                                                 <td>{{ number_format($profil->montant_max, 0, ',', ' ') }}</td>
                                                 <td>{{ number_format($profil->frais_abonnement, 0, ',', ' ') }}</td>
                                                 <td>
-                                                    <a href="{{route('profil.investisseur.edit', $profil->id)}}" class="btn btn-xs btn-warning pull-right"><i class="bx bx-edit"></i></a>
-                                                    <a href="{{route('profil.investisseur.delete', $profil->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-xs btn-danger pull-right"><i class="bx bx-trash"></i></i></a>
+                                                    <a href="{{route('profil.investisseur.edit', $profil->id)}}" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
+                                                    <a href="{{route('profil.investisseur.delete', $profil->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></i></a>
         
                                                 </td>
                                             </tr>

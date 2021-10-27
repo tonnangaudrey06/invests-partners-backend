@@ -42,41 +42,36 @@
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Civilité</label>
                                     <select class="form-control" name="civilite">
-                                        <option> ---- Selectionnez votre civilité ---</option>
+                                        <option> Civilité</option>
                                         <option value="Mr.">Mr.</option>
                                         <option value="Mme.">Mme.</option>
                                         <option value="Mlle.">Mlle.</option>
                                     </select>
                                 </div>
+
                                 <div class="form-group col-md-6 mb-3">
                                     <label>Nom</label>
                                     <input type="text" class="form-control" name="nom" required>
-
-
                                 </div>
+
                                 <div class="form-group col-md-6 mb-3">
                                     <label>Prenom</label>
                                     <input type="text" class="form-control" name="prenom" required>
-
-
                                 </div>
+
                                 <div class="form-group col-md-6 mb-3">
                                     <label>Email</label>
                                     <input type="email" class="form-control" name="email" required>
-
-
                                 </div>
+
                                 <div class="form-group col-md-6 mb-3">
                                     <label>Téléphone</label>
                                     <input type="text" class="form-control" name="telephone" required>
-
-
                                 </div>
+
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Mot de passe</label>
                                     <input type="password" class="form-control" name="password" required>
-
-
                                 </div>
 
                                 @if ($role->id == 4)
@@ -93,7 +88,7 @@
 
                                 @if ($role->id == 2)
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Profil</label>
+                                    <label>Secteur d'activité</label>
                                     <select class="form-control" name="secteur">
                                         @foreach ($secteur as $item)
                                         <option value="{{$item->id}}">{{$item->libelle}}</option>
@@ -109,15 +104,16 @@
                                         <option value="PARTICULIER">Particulier</option>
                                         <option value="ENTREPRISE">Entreprise</option>
                                     </select>
-
-
                                 </div>
+                                @endif
+
+                                @if ($role->id == 4)
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Ancienente</label>
                                     <select class="form-control" name="anciennete">
                                         <option selected value="">Aucun</option>
-                                        <option value="1">Plus d'un an</option>
-                                        <option value="-1">Moins d'un an</option>
+                                        <option value="1">Plus d'un an 6 mois</option>
+                                        <option value="-1">Moins d'un an 6 mois</option>
                                     </select>
                                 </div>
                                 @endif

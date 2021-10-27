@@ -72,14 +72,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label class="form-label">Durée</label>
-                                    <input data-toggle="touchspin" name="duree" type="text" value="1" data-step="1" data-decimals="0"
-                                        data-bts-postfix="Heures">
+                                    <label class="form-label">Durée (en heures)</label>
+                                    <input name="duree" type="number" class="form-control" value="1" min="1">
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label">Nombre de places</label>
-                                    <input data-toggle="touchspin" name="places" type="text" value="1" data-step="1" data-decimals="0"
-                                        data-bts-postfix="Places">
+                                    <input name="places" type="number" class="form-control" value="1" min="1">
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <h5 class="font-size-14 mb-3">Payant?</h5>
@@ -91,8 +89,7 @@
 
                                 <div class="col-md-6 mb-4" id="event-prix-block">
                                     <label class="form-label">Prix</label>
-                                    <input data-toggle="touchspin" name="prix" type="text" data-step="1" data-decimals="0"
-                                        data-bts-postfix="XAF">
+                                    <input name="prix" type="number" class="form-control" min="0">
                                 </div>
                                 <div class="col-md-12 mb-4">
                                     <label class="form-label">Image</label>
