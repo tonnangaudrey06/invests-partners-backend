@@ -28,38 +28,29 @@
                     <div class="col-xl-4">
                         <div class="card">
                             <div class="card-body">
-                                <div class="float-end dropdown ms-2">
-                                    <a class="text-muted" href="#" role="button" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="mdi mdi-dots-horizontal font-size-18"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="mb-4 me-3">
+                                
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="mb-4 pt-0 mt-0 col-2">
                                         <i class="mdi mdi-account-circle text-primary h1"></i>
                                     </div>
+                                    <div class="mb-4 mt-2 col-10">
+                                        <h4 class="card-title"><span>INVESTISSEURS</span></h4> 
+                                    </div>
 
-                                    <div>
-                                        <h5>Henry Wells</h5>
-                                        <p class="text-muted mb-1">henrywells@abc.com</p>
-                                        <p class="text-muted mb-0">Id no: #SK0234</p>
+                                    <div class="row">
+                                        <h5 class="font-size-15">Total: <span class="badge  bg-primary font-size-14">{{ $investisseurs->count() }}</span></h5>
+                                        <h5 class="font-size-15">Montant investi : <span class="badge bg-primary font-size-14">{{ $investissement }} FCFA </span></h5>
 
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="card-body border-top">
+                            <!--<div class="card-body border-top">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div>
                                             <p class="fw-medium mb-2">Balance :</p>
-                                            <h4>$ 6134.39</h4>
+                                            <h4>{{ $porteurs->count() }}</h4>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -102,12 +93,56 @@
                                     <a href="javascript: void(0);" class="btn btn-outline-light me-2 w-md">Deposit</a>
                                     <a href="javascript: void(0);" class="btn btn-primary me-2 w-md">Buy / Sell</a>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
 
-                    <div class="col-xl-8">
+                    <div class="col-xl-4">
+
                         <div class="card">
+                            <div class="card-body">
+                                
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="mb-4 pt-0 mt-0 col-2">
+                                        <i class="mdi mdi-account-circle text-success h1"></i>
+                                    </div>
+                                    <div class="mb-4 mt-2 col-10">
+                                        <h4 class="card-title"><span>PORTEURS DE PROJETS</span></h4> 
+                                    </div>
+
+                                    <div class="row">
+                                        <h5 class="font-size-15">Total: <span class="badge  bg-success font-size-14">{{ $porteurs->count() }}</span></h5>
+                                        <h5 class="font-size-15">Besoin en financement : <span class="badge bg-success font-size-14">{{ $besoinFinancement }} FCFA</span></h5>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="col-xl-4">
+
+                            <div class="card">
+                                <div class="card-body">
+                                    
+                                    <div class="row align-items-center justify-content-between">
+                                        <div class="mb-4 pt-0 mt-0 col-2">
+                                            <i class="mdi mdi-account-circle text-warning h1"></i>
+                                        </div>
+                                        <div class="mb-4 mt-2 col-10">
+                                            <h4 class="card-title"><span>CONSEILLERS</span></h4> 
+                                        </div>
+    
+                                        <div class="row">
+                                            <h5 class="font-size-15">Total: <span class="badge  bg-warning font-size-14">{{ $conseiller->count() }}</span></h5>
+                                            <h5 class="font-size-15">Secteurs couverts : <span class="badge bg-warning font-size-14">{{$secteurCouv->count()}}</span></h5>
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="card">
                             <div>
                                 <div class="row">
                                     <div class="col-lg-9 col-sm-8">
@@ -136,86 +171,316 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>-->
+                        
+                </div>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Projets</h4>
+
+                                <div class="text-center">
+                                    <div class="mb-4">
+                                        <i class="bx bx-map-pin text-info display-4"></i>
+                                    </div>
+                                    <h3>{{ $nbProjets->count() }}</h3>
+                                    <p>Projets enregistrés</p>
+                                </div>
+
+                                <div class="row align-items-center justify-content-between">
+                                    @foreach ($etat as $item)
+                                    <div class="mb-4 pt-0 mt-0 col-sm">
+                                        <h5 class="card-title"><span>{{$item->etat}}</span></h5> 
+                                      
+                                            <p>
+                                                
+                                                @if ($item->etat =="COMPLET")
+                                                    <span class="align-items-center justify-content-center badge badge-pill badge-soft-success font-size-15" >{{$item->total_etat}}</span>
+                                                @else
+                                                    <span class="align-items-center justify-content-center badge badge-pill badge-soft-warning font-size-15" >{{$item->total_etat}}</span>
+                                                @endif
+                                            </p>
+                                       
+                                    </div>
+                                        
+                                    @endforeach
+                                    
+                                    
+                                   
+                                </div>
+
+                                <div class="h5 text-center text-info">Secteurs</div>
+
+                                <div class="row table-responsive mt-4">
+                                    <table class="table align-middle table-nowrap">
+                                        <tbody>
+                                            @foreach ($secteur as $secteurItem)
+                                            <tr>
+                                                <td style="width: 30%">
+                                                    <p class="mb-0">{{ $secteurItem->libelle }}</p>
+                                                </td>
+                                                @php
+                                                    $nbProjet1=DB::table('projets')->where('secteur',$secteurItem->id)->get()->count();
+                                                @endphp
+                                                <td style="width: 25%">
+                                                    <h5 class="mb-0">{{$nbProjet1}} </h5></td>
+                                                <td>
+                                                    
+                                                    @if((int)($nbProjets->count()) > 0 )
+                                                    @php
+                                                        $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+                                                        $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].'1'.$rand[rand(0,15)].'f'.'f';
+                                                        $percentage= round(($nbProjet1/$nbProjets->count())*100);
+                                                    @endphp
+                                                    <div class="progress bg-transparent progress-xl">
+                                                        <div class="progress-bar rounded" role="progressbar" style="width: {{ $percentage }}%; background:{{$color}}" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{ $percentage }}%</div>
+                                                    </div>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+
+                               
+                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="text-muted mb-4"><i
-                                                class="mdi mdi-bitcoin h2 text-warning align-middle mb-0 me-3"></i> Bitcoin
-                                        </p>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div>
-                                                    <h5>$ 9134.39</h5>
-                                                    <p class="text-muted text-truncate mb-0">+ 0.0012 ( 0.2 % ) <i
-                                                            class="mdi mdi-arrow-up ms-1 text-success"></i></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div>
-                                                    <div id="area-sparkline-chart-1" class="apex-charts"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="text-muted mb-4"><i
-                                                class="mdi mdi-ethereum h2 text-primary align-middle mb-0 me-3"></i>
-                                            Ethereum </p>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div>
-                                                    <h5>$ 245.44</h5>
-                                                    <p class="text-muted text-truncate mb-0">- 4.102 ( 0.1 % ) <i
-                                                            class="mdi mdi-arrow-down ms-1 text-danger"></i></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div>
-                                                    <div id="area-sparkline-chart-2" class="apex-charts"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <p class="text-muted mb-4"><i
-                                                class="mdi mdi-litecoin h2 text-info align-middle mb-0 me-3"></i> litecoin
-                                        </p>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div>
-                                                    <h5>$ 63.61</h5>
-                                                    <p class="text-muted text-truncate mb-0">+ 1.792 ( 0.1 % ) <i
-                                                            class="mdi mdi-arrow-up ms-1 text-success"></i></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div>
-                                                    <div id="area-sparkline-chart-3" class="apex-charts"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                           
+                            <div class="card-body">
+                                <div class="accordion" id="accordionExample">
+                                    <h4 class="card-title mb-4">Pays</h4>
+                                    @php
+                                        $i=0;
+                                    @endphp
+                                    @foreach ($pays as $item)
+                                        @php
+                                            $projetparVille=DB::table('projets')->select('ville_activite',DB::raw('COUNT(id) as total_ville_projet'))->where('pays_activite',$item->pays_activite)->groupBy('ville_activite')->get();
+
+                                        @endphp
+
+                                    <div class=" accordion-item">
+                                        
+                                        <h2 class="accordion-header" id="heading{{$i}}">
+                                            <button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $i }}" aria-expanded="true" aria-controls="collapse{{ $i }}">
+                                                
+                                                <h5 class="font-size-14">{{ $item->pays_activite }}</h5>
+                                                <div style="width:1%"></div>
+                                                <h5 class="font-size-16"><span class="badge badge-pill badge-soft-success font-size-15">{{ $item->total_projets }}</span></h5>
+                                            </button>
+                                            
+                                        </h2>
+                                            
+                                        
+                                        <div id="collapse{{ $i }}" class="accordion-collapse collapse show" aria-labelledby="heading{{$i}}" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                                
+                                                                <th>Ville</th>
+                                                                <th class="text-end">Projets</th>
+                                                            </tr>
+                                                        </thead>
+                                                        
+                                                        <tbody>
+                                                            @foreach ($projetparVille as $item2)
+                                                                
+                                                                <tr>
+                                                                    
+                                                                    <td>{{ $item2->ville_activite }}</td>
+                                                                    <td class="text-end "><span class="badge badge-pill badge-soft-warning font-size-14">{{ $item2->total_ville_projet }}</span></td>
+                                                                </tr>
+                                                            
+                                                            @endforeach
+                                                    
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php
+                                        $i++;
+                                    @endphp
+                                @endforeach
+                                
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
+                <!-- espace conseiller -->
+
+                <div class="row">
+                    <div class="col-xl-4">
+                        <div class="card">
+                            <div class="card-body">
+                                
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="mb-4 pt-0 mt-0 col-2">
+                                        <i class="mdi mdi-account-circle text-primary h1"></i>
+                                    </div>
+                                    <div class="mb-4 mt-2 col-10">
+                                        <h4 class="card-title"><span>INVESTISSEURS</span></h4> 
+                                    </div>
+
+                                    <div class="row">
+                                        <h5 class="font-size-15">Total: <span class="badge  bg-primary font-size-14">{{ $investisseurs->count() }}</span></h5>
+                                        <h5 class="font-size-15">Montant investi : <span class="badge bg-primary font-size-14">{{ $investissement }} FCFA </span></h5>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                           
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4">
+
+                        <div class="card">
+                            <div class="card-body">
+                                
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="mb-4 pt-0 mt-0 col-2">
+                                        <i class="mdi mdi-account-circle text-success h1"></i>
+                                    </div>
+                                    <div class="mb-4 mt-2 col-10">
+                                        <h4 class="card-title"><span>PORTEURS DE PROJETS</span></h4> 
+                                    </div>
+
+                                    <div class="row">
+                                        <h5 class="font-size-15">Total: <span class="badge  bg-success font-size-14">{{ $porteurs->count() }}</span></h5>
+                                        <h5 class="font-size-15">Besoin en financement : <span class="badge bg-success font-size-14">{{ $besoinFinancement }} FCFA</span></h5>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="col-xl-4">
+
+                            <div class="card">
+                                <div class="card-body">
+                                    
+                                    <div class="row align-items-center justify-content-between">
+                                        <div class="mb-4 pt-0 mt-0 col-2">
+                                            <i class="mdi mdi-account-circle text-warning h1"></i>
+                                        </div>
+                                        <div class="mb-4 mt-2 col-10">
+                                            <h4 class="card-title"><span>CONSEILLERS</span></h4> 
+                                        </div>
+    
+                                        <div class="row">
+                                            <h5 class="font-size-15">Total: <span class="badge  bg-warning font-size-14">{{ $conseiller->count() }}</span></h5>
+                                            <h5 class="font-size-15">Secteurs couverts : <span class="badge bg-warning font-size-14">{{$secteurCouv->count()}}</span></h5>
+    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        
+                </div>
+
+
+                <!-- Fin espace conseiller -->
+
+
+
+                <!--<div class="row">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="text-muted mb-4">
+                                        <i class="mdi mdi-medal h2 text-warning align-middle mb-0 me-3"></i> 
+                                    </p>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div>
+                                                <h5>{{ $nbProjets->count() }}</h5>
+                                                <p class="text-muted text-truncate mb-0">+ 0.0012 ( 0.2 % ) <i
+                                                        class="mdi mdi-arrow-up ms-1 text-success"></i></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div>
+                                                <div id="area-sparkline-chart-1" class="apex-charts"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="text-muted mb-4"><i
+                                            class="mdi mdi-ethereum h2 text-primary align-middle mb-0 me-3"></i>
+                                        Ethereum </p>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div>
+                                                <h5>$ 245.44</h5>
+                                                <p class="text-muted text-truncate mb-0">- 4.102 ( 0.1 % ) <i
+                                                        class="mdi mdi-arrow-down ms-1 text-danger"></i></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div>
+                                                <div id="area-sparkline-chart-2" class="apex-charts"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="text-muted mb-4"><i
+                                            class="mdi mdi-litecoin h2 text-info align-middle mb-0 me-3"></i> litecoin
+                                    </p>
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div>
+                                                <h5>$ 63.61</h5>
+                                                <p class="text-muted text-truncate mb-0">+ 1.792 ( 0.1 % ) <i
+                                                        class="mdi mdi-arrow-up ms-1 text-success"></i></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div>
+                                                <div id="area-sparkline-chart-3" class="apex-charts"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>-->
+
+
+                </div>
+                <!--
                 <div class="row">
                     <div class="col-xl-8">
                         <div class="card">
@@ -322,9 +587,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
-                <div class="row">
+               <!-- <div class="row">
                     <div class="col-xl-4">
                         <div class="card">
                             <div class="card-body">
@@ -1158,7 +1423,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
             </div>
         </div>

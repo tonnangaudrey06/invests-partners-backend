@@ -53,11 +53,9 @@ class UserController extends Controller
     public function show($id = null)
     {
         $user = auth()->user();
-
         if (!empty($id)) {
             $user = User::find($id);
         }
-
         return view('pages.user.profil')->with('user', $user);
     }
 
@@ -66,12 +64,14 @@ class UserController extends Controller
         $data = $request->input();
         $data['password'] = Hash::make($request->password);
 
-        User::create($data);
+        User::create($data);    
 
         Toastr::success('Utilisateur ajouté avec succès!', 'Succès');
 
         return back();
     }
+
+    
 
     public function update($id, Request $request)
     {

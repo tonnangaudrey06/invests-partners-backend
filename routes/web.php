@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Client\Dashboard;
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\AuthController;
 use App\Http\Controllers\Client\SecteurController;
@@ -35,8 +36,8 @@ Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login')
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
-    Route::view('/dashboard', 'pages.dashboard.home')->name('dashboard');
-
+    //Route::view('/dashboard', 'pages.dashboard.home')->name('dashboard');
+    Route::get('/dashboard', [Dashboard::class, 'countproject'])->name('dashboard');
     Route::get('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::prefix('chat')->name('chat.')->group(function () {
