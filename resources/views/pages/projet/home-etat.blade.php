@@ -47,6 +47,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
             </div>
 
             @foreach ($secteurs as $secteur)
+            @if(count($secteur->projets) > 0)
             <div class="card bg-primary">
                 <div class="card-body p-2 d-flex justify-content-between align-items-center text-white">
                     <h4 class="card-title m-0 text-white"><i class="mdi mdi-chevron-right me-1"></i>
@@ -109,6 +110,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
                 </div>
                 @endforeach
             </div>
+            @endif
             @endforeach
 
             {{-- <div class="row">
@@ -138,7 +140,6 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
                     </ul>
                 </div>
             </div> --}}
-            <!-- end row -->
         </div>
 
     </div>

@@ -181,12 +181,13 @@ class ProjectController extends Controller
 
     public function store3($id, Request $request)
     {
-        $membre = $request->input();
+        $membre = $request->input('membre');
+        $statut = $request->input('membre');
 
         Equipe::create([
             'projet' => $id,
-            'membre' => $membre['membre']->id,
-            'statut' => $membre['statut']
+            'membre' => $membre,
+            'statut' => $statut
         ]);
 
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $id)->first();
