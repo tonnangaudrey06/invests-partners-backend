@@ -182,7 +182,7 @@ class ProjectController extends Controller
     public function store3($id, Request $request)
     {
         $membre = $request->input('membre');
-        $statut = $request->input('membre');
+        $statut = $request->input('statut');
 
         Equipe::create([
             'projet' => $id,
