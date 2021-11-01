@@ -15,22 +15,23 @@ class MessageController extends Controller
 {
     public function index($id = null, $conversation = null)
     {
-        $contacts = Message::getContacts(auth()->user()->id);
-        $receiver = null;
-        $projet = null;
         $messages = [];
-
-        if (!empty($id)) {
-            $receiver = User::find($id);
-        }
+        $projet = null;
 
         if (!empty($conversation)) {
             Message::makeSeen(auth()->user()->id, $conversation);
             $messages = Message::getLastestMessageQuery($conversation);
 
-            if (!empty($messages)) {
+            if (count($messages) > 0) {
                 $projet = Projet::find($messages[0]->projet);
             }
+        }
+
+        $contacts = Message::getContacts(auth()->user()->id);
+        $receiver = null;
+
+        if (!empty($id)) {
+            $receiver = User::find($id);
         }
 
         return view('pages.chat.home')
@@ -94,24 +95,24 @@ class MessageController extends Controller
                     if (in_array($file->getClientOriginalExtension(), $allowed)) {
                         $attachment_title = $file->getClientOriginalName();
                         $attachment = Str::uuid() . "." . $file->getClientOriginalExtension();
-                        $file->storeAs('uploads/message/', $attachment_title, ['disk' => 'public']);
+                        $file->storeAs('uploads/message/' . $conversation, $attachment_title, ['disk' => 'public']);
                         $data = [];
                         $data['message'] = $message->id;
                         $data['nom'] = $attachment_title;
                         $data['source'] = 'MESSAGE';
                         $data['type'] = in_array($file->getClientOriginalExtension(), $allowed_images) ? 'IMAGE' : 'FICHIER';
-                        $data['url'] = url('storage/uploads/message') . '/' . $attachment_title;
+                        $data['url'] = url('storage/uploads/message/' . $conversation) . '/' . $attachment_title;
                         Archive::create($data);
                     } else {
-                        return back();
+                        return $this->sendError("Certaines extensions de fichiers ne sont pas autorisées !", [], 500);
                     }
                 } else {
-                    return back();
+                    return $this->sendError("La taille de certains fichiers dépasse 150Mo !", [], 500);
                 }
             }
         }
 
-        return back();
+        return $this->sendResponse($message, 'New message');
     }
 
     public function newConversation($sender, $receiver, Request $request)
@@ -140,6 +141,8 @@ class MessageController extends Controller
             'projet' => $request->has('projet') ? $request->projet : null,
             'message' => html_entity_decode(htmlentities(trim($request->input('body'))))
         ];
+
+        // dd($request->input());
 
         $message = Message::create($data);
 
@@ -174,6 +177,12 @@ class MessageController extends Controller
 
         Toastr::success('Votre message a été envoyé', 'Succès');
 
-        return redirect(route('chat.conversation', ['id' => $sender, 'conversation' => $conversation]));
+        return redirect(route('chat.conversation', ['id' => $receiver, 'conversation' => $conversation]));
+    }
+
+    public function deleteMessage($id)
+    {
+        Message::deleteMessage($id);
+        return back();
     }
 }

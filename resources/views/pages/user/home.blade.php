@@ -113,7 +113,9 @@
                                         @endif
                                         @if ($role->value == 2)
                                         <td style="max-width: 20% !important">
+                                            @if(count($user->secteurs_data) > 0)
                                             {{ $user->secteurs_data ? $user->secteurs_data[0]->libelle : '' }}
+                                            @endif
                                         </td>
                                         @endif
 
@@ -123,6 +125,8 @@
                                             == 5))
                                             <a href="{{route('chat.view', $user->id)}}" class="btn btn-sm btn-info"><i
                                                     class="bx bx-envelope"></i></a>
+                                            <a href="{{route('user.report', $user->id)}}"
+                                                class="btn btn-sm btn-secondary"><i class="bx bx-notepad"></i></a>
                                             @endif
                                             @if ($role->value == 3 || $role->value == 4 )
                                             <button id="openMessageModal"
@@ -130,8 +134,10 @@
                                                 class="btn btn-sm btn-info" onclick="openMessageModal()"><i
                                                     class="mdi mdi-email-plus"></i></button>
                                             @endif
+                                            @if ($role->value == 1 || $role->value == 2  || $role->value == 5)
                                             <a href="{{route('user.edit', $user->id)}}"
                                                 class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
+                                            @endif
                                             <a href="{{route('user.delete', $user->id)}}"
                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
                                                 class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></i></a>
@@ -145,7 +151,7 @@
                                             {{ $item->libelle }}
                                         </td>
                                     </tr>
-                                    
+
                                     @endif
                                     @endforeach
                                     @endif

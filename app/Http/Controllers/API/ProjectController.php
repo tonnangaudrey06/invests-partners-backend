@@ -3,19 +3,17 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Mail\CreationProjetMail;
 use App\Mail\PaiementProjetConseilleMail;
 use App\Mail\PaiementProjetPorteurMail;
+use App\Mail\CreationProjetMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use App\Models\Actualite;
 use App\Models\Archive;
 use App\Models\Equipe;
-use App\Models\Membre;
-use App\Models\ProfilInvestisseur;
 use App\Models\Projet;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class ProjectController extends Controller
 {
@@ -181,12 +179,13 @@ class ProjectController extends Controller
 
     public function store3($id, Request $request)
     {
-        $membre = $request->input();
+        $membre = $request->input('membre');
+        $statut = $request->input('statut');
 
         Equipe::create([
             'projet' => $id,
-            'membre' => $membre['membre']->id,
-            'statut' => $membre['statut']
+            'membre' => $membre,
+            'statut' => $statut
         ]);
 
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $id)->first();

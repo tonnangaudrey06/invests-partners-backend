@@ -8,11 +8,8 @@
 
 <body>
     <p>{{ $data['message'] }}</p>
-
-    <br>
-
     <p>
-        Cordialement,<br/><br/>
+        Cordialement,<br /><br />
         <strong>{{ $data['nom_complet'] }}</strong>
     </p>
 

@@ -87,6 +87,62 @@ class ActualiteController extends Controller
         return view('pages.actualites.details', compact('actualite', 'type', 'idPS'));
     }
 
+    public function edit($type, $id, $idPS){
+        $actualite = Actualite::with(['projet_invest', 'secteur_data'])->find($id);
+        $type = $type;
+        $idPS = $idPS;
+        return view('pages.actualites.edit', compact('actualite', 'type', 'id', 'idPS'));
+    }
+
+    public function update(Request $request, $type, $id, $idPS)
+    {
+        $request->validate(
+            [
+                'image' => 'required|mimes:jpg,jpeg,png',
+            ],
+
+        );
+
+        $old_image = $request->oldimage;
+
+        $actu_image = $request->file('image');
+
+        if ($actu_image) {
+            $name_gen = hexdec(uniqid());
+            $img_ext = strtolower($actu_image->getClientOriginalExtension());
+            $img_name = $name_gen . '.' . $img_ext;
+            $up_location = 'images/actualites/';
+            $last_img = $up_location . $img_name;
+            $actu_image->move($up_location, $img_name);
+
+            $path = parse_url($old_image);
+            File::delete(public_path($path['path']));
+
+            $data = Actualite::find($id);
+            
+                $data->libelle = $request->libelle;
+                $data->description = $request->description;
+                $data->image = url($up_location) . '/' . $img_name;
+
+                $data->save();
+
+                Toastr::success('Actualité mise à jour avec succès!', 'Success');
+            
+        } else {
+            $data = Actualite::find($id);
+
+            $data->libelle = $request->libelle;
+            $data->description = $request->description;
+
+            $data->save();
+
+            Toastr::success('Actualité mise à jour avec succès!', 'Success');
+
+        }
+
+        return redirect()->intended(route('actualites.home', [$type, $idPS]));
+    }
+
     public function delete($type, $id, $idPS)
     {
 

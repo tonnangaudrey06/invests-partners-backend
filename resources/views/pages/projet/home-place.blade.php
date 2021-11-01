@@ -47,6 +47,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
             </div>
 
             @foreach ($secteurs as $secteur)
+            @if(count($secteur->projets) > 0)
             <div class="card bg-primary">
                 <div class="card-body p-2 d-flex justify-content-between align-items-center text-white">
                     <h4 class="card-title m-0 text-white"><i class="mdi mdi-chevron-right me-1"></i>
@@ -56,7 +57,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
             </div>
             <div class="row">
                 @foreach ($secteur->projets as $projet)
-                <div class="col-md-6 col-lg-4">
+                <div class="col-lg-6 col-xl-4">
                     <div class="card"
                         style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%); cursor: pointer;"
                         onclick="redirectTo('{{ route('projet.details', ['id' => $projet->id]) }}')">
@@ -109,6 +110,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
                 </div>
                 @endforeach
             </div>
+            @endif
             @endforeach
 
             {{-- <div class="row">

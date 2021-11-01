@@ -140,7 +140,9 @@
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     @if(!empty($projet))
-                                                    <a class="dropdown-item" href="{{ route('projet.details', $projet->id) }}">Voir le projet</a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('projet.details', $projet->id) }}">Voir le
+                                                        projet</a>
                                                     @endif
                                                     <a class="dropdown-item"
                                                         href="{{ route('user.profile', $receiver->id) }}">Voir de {{
@@ -161,16 +163,43 @@
                                     @if($message->envoyeur == auth()->user()->id)
                                     <li class="w-50 float-start">
                                         <div class="conversation-list">
-                                            <div class="ctext-wrap">
-                                                <div class="conversation-name">Vous</div>
-                                                <p>
+                                            @if($message->vu == 0)
+                                            <div class="dropdown">
+                                                <a class="dropdown-toggle" href="javascript:void(0)" role="button"
+                                                    data-bs-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                        href="{{route('chat.delete', $message->id)}}">Supprimer le
+                                                        message</a>
+                                                </div>
+                                            </div>
+                                            @endif
+                                            <div class="ctext-wrap bg-primary">
+                                                <div class="conversation-name text-white">Vous</div>
+                                                <p class="text-white">
                                                     {{ $message->message }}
                                                 </p>
-                                                <p class="chat-time mb-0"><i
+                                                @if(count($message->attachements) > 0)
+                                                <div
+                                                    class="d-flex justify-content-start align-items-center flex-wrap mb-3">
+                                                    @foreach($message->attachements as $key => $file)
+                                                    <a target="_blank" href="{{$file->url}}"
+                                                        style='max-width: 15rem; cursor: pointer'
+                                                        title="Télécharger le fichier"
+                                                        class='badge bg-white text-primary badge-pill me-2 mb-2 p-2 overflow-hidden text-truncate font-size-12'>
+                                                        <i class='mdi mdi-file-document-outline me-1'></i>
+                                                        {{$file->nom}}
+                                                    </a>
+                                                    @endforeach
+                                                </div>
+                                                @endif
+                                                <p class="chat-time mb-0 text-white"><i
                                                         class="bx bx-time-five align-middle me-1"></i> {{
                                                     \Carbon\Carbon::parse($message->created_at)->diffForHumans() }}</p>
                                             </div>
-
                                         </div>
                                     </li>
                                     @else
@@ -178,11 +207,25 @@
                                         <div class="conversation-list">
                                             <div class="ctext-wrap">
                                                 <div class="conversation-name"><a class="text-decoration-none"
-                                                    href="{{ route('user.profile', $message->sender->id) }}">{{ $message->sender->nom_complet }}</a></div>
+                                                        href="{{ route('user.profile', $message->sender->id) }}">{{
+                                                        $message->sender->nom_complet }}</a></div>
                                                 <p>
                                                     {{ $message->message }}
                                                 </p>
-
+                                                @if(count($message->attachements) > 0)
+                                                <div
+                                                    class="d-flex justify-content-start align-items-center flex-wrap mb-3">
+                                                    @foreach($message->attachements as $key => $file)
+                                                    <a target="_blank" href="{{$file->url}}"
+                                                        style='max-width: 15rem; cursor: pointer'
+                                                        title="Télécharger le fichier"
+                                                        class='badge bg-primary text-white badge-pill me-2 mb-2 p-2 overflow-hidden text-truncate font-size-12'>
+                                                        <i class='mdi mdi-file-document-outline me-1'></i>
+                                                        {{$file->nom}}
+                                                    </a>
+                                                    @endforeach
+                                                </div>
+                                                @endif
                                                 <p class="chat-time mb-0"><i
                                                         class="bx bx-time-five align-middle me-1"></i> {{
                                                     \Carbon\Carbon::parse($message->created_at)->diffForHumans() }}</p>
@@ -195,26 +238,32 @@
                                 </ul>
                             </div>
                             <div class="p-3 chat-input-section">
-                                <form
+                                <div class="d-flex justify-content-start align-items-center flex-wrap mb-3"
+                                    id="chat-file-view"></div>
+                                <form onsubmit="submitChat(event)"
                                     action="{{ route('chat.send', ['sender' => auth()->user()->id, 'conversation' => $conversation, 'receiver' => $receiver->id]) }}"
                                     method="POST">
                                     @csrf
                                     <div class="row">
                                         <div class="col">
                                             <div class="position-relative">
-                                                <input type="hidden" name="projet" value="{{$message->projet}}">
+                                                <input type="hidden" name="projet"
+                                                    value="{{!empty($projet) ? $projet->id : '' }}">
                                                 <textarea id="autoresize" name="body"
                                                     class="form-control overflow-hidden" placeholder="Votre message..."
                                                     rows="4"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-auto d-flex align-items-center flex-column">
+                                            <label for="chat-file-input"
+                                                class="btn btn-primary btn-rounded chat-send w-md waves-effect waves-light btn-sm">
+                                                <input type="file" id="chat-file-input" class="d-none" multiple
+                                                    onchange="changeMedia(event)">
+                                                <span class="d-none d-sm-inline-block me-2"> Fichier</span>
+                                                <i class="mdi mdi-file-document-outline"></i>
+                                            </label>
                                             <button type="submit"
-                                                class="btn btn-primary btn-rounded chat-send w-md waves-effect waves-light"><span
-                                                    class="d-none d-sm-inline-block me-2">Fichier</span><i
-                                                    class="mdi mdi-file-document-outline"></i></button>
-                                            <button type="submit"
-                                                class="btn btn-primary btn-rounded chat-send w-md mt-2 waves-effect waves-light"><span
+                                                class="btn btn-primary btn-rounded chat-send w-md mt-2 waves-effect waves-light btn-sm"><span
                                                     class="d-none d-sm-inline-block me-2">Envoyer</span> <i
                                                     class="mdi mdi-send"></i></button>
                                         </div>
@@ -246,43 +295,91 @@
 
 @section('script')
 <script type="text/javascript">
-    $(document).ready(function() {
-        var selects = $('#chat-message');
-        selects.last().scrollTop(selects.last().get(0).scrollHeight);
-
-        var lastScroll = {
-            whichEle: null,
-            position: 0
-        };
-            
-        function scrollOther() {
-            var currPosition = $(this).scrollTop();
-
-            if ($(this).is(lastScroll.whichEle)) {
-                var positionDiff = currPosition - lastScroll.position;
-            
-                if(positionDiff === 0) { return; }
-
-                var $other = $selects.not(this);
-            
-                $other.off('scroll');
-            
-                window.requestAnimationFrame(function() {
-                    $other.scrollTop($other.scrollTop() - positionDiff);
-                    window.requestAnimationFrame(function() {
-                        $other.on('scroll', scrollOther);
-                    });
-                });
-            } else {
-                lastScroll.whichEle = $(this);
-            }
-
-            lastScroll.position = currPosition;
-        }
-        
-        window.requestAnimationFrame(function() {
-            selects.on('scroll', scrollOther);
+    var medias = [];
+    function removeFileInArray(file) {
+        medias = medias.filter((ele) => {
+            return ele.name !== file;
         });
+        loadViewMedias(medias);
+    }
+
+    function fileExist(media) {
+        let exist = false;
+        medias.forEach(file => {
+            if (file.name === media.name) {
+                exist = true;
+            }
+        });
+
+        return exist;
+    }
+
+    function changeMedia(e) {
+        let files = [...e.target.files];
+        files = files.filter((ele) => {
+            return !fileExist(ele);
+        });
+        medias = [...medias, ...files];
+        loadViewMedias(medias);
+    };
+
+    function loadViewMedias(files) {
+        $('#chat-file-view').empty();
+        files.forEach(file => {
+            $('#chat-file-view').append(`
+                <span style='max-width: 20rem; cursor: not-allowed' onclick="removeFileInArray('${file?.name}')" title="Retirer le fichier"
+                    class='badge bg-primary text-white badge-pill me-2 mb-2 p-2 overflow-hidden text-truncate font-size-12'>
+                    <i class='mdi mdi-file-document-outline me-1'></i>
+                        ${file?.name}
+                </span>
+            `)
+        });
+    };
+
+    function objectifyForm(formArray) {
+        var returnArray = {};
+        for (var i = 0; i < formArray.length; i++){
+            returnArray[formArray[i]['name']] = formArray[i]['value'];
+        }
+        return returnArray;
+    };
+
+    function submitChat(e) {
+        let data = objectifyForm($(e.target).serializeArray());
+        let formData = new FormData();
+
+        if (data?.projet) {
+            formData.append('projet', data?.projet);
+        }
+
+        for (const media of medias) {
+            formData.append('attachement[]', media);
+        }
+
+        formData.append('body', data?.body);
+
+        $.ajax({
+            url: $(e.target).attr('action'),
+            type: $(e.target).attr('method'),
+            dataType: 'json',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            encode: true,
+            success: function( data ) {
+                reload();
+            },
+            error: function( xhr, err ) {
+                alert('Error');     
+            }
+        }); 
+        
+        e.preventDefault();
+    };
+
+    $(document).ready(function() {
+        loadViewMedias([]);
     });
 </script>
 @endsection

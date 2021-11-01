@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -32,7 +34,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    
+
     protected $appends =  [
         'nom_complet',
         'anciennete_complet'
@@ -85,5 +87,24 @@ class User extends Authenticatable
     public function profil_invest()
     {
         return $this->belongsTo(ProfilInvestisseur::class, 'profil', 'id');
+    }
+
+    public static function writeReport($folder, $data)
+    {
+        try {
+            $json = [];
+            $path = storage_path("app/uploads/$folder/report.json");
+            if (File::exists($path)) {
+                $json = json_decode(file_get_contents($path), true);
+                if (empty($json)) {
+                    $json = [];
+                }
+            }
+            array_push($json, $data);
+            $json = json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            Storage::disk('local')->put("uploads/$folder/report.json", $json);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
