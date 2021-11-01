@@ -142,7 +142,7 @@ class UserController extends Controller
     {
         $role = Role::find($id);
         $profil = ProfilInvestisseur::all();
-        $secteur  = Secteur::all();
+        $secteur  = Secteur::where('user', NULL)->get();
         return view('pages.user.add')->with('role', $role)->with('profil', $profil)->with('secteur', $secteur);
     }
 

@@ -51,6 +51,11 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                         <div class="actions d-flex align-items-center">
                             @foreach ($privileges as $privilege)
 
+                            @if( $privilege->module == 14 && $privilege->modifier == 1)
+                            <a href="{{ route('actualites.edit', [$type, $actualite->id, $idPS]) }}"
+                                class="btn btn-sm btn-warning me-2">Modifier</a>
+                            @endif
+
                             @if( $privilege->module == 14 && $privilege->supprimer == 1)
                             <a href="{{ route('actualites.delete', [$type, $actualite->id, $idPS]) }}"
                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
