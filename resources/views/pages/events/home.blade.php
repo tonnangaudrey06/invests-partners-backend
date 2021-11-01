@@ -75,8 +75,9 @@
                                     @foreach ($events as $event)
                                     <tr>
                                         <td>
-                                            <h5 class="font-size-14 mb-1"><a href="javascript: void(0);"
-                                                    class="text-dark">{{ $event->libelle }}</a></h5>
+                                            <h5 class="font-size-14 mb-1"><a
+                                                    href="{{ route('events.show', $event->id) }}"
+                                                    class="text-decoration-none">{{ $event->libelle }}</a></h5>
                                             <p class="text-muted mb-0">{{ $event->lieu }}</p>
                                         </td>
                                         <td>
@@ -99,7 +100,11 @@
                                         </td>
                                         <td class="text-center">
                                             <a href="{{route('events.edit', $event->id)}}"
-                                                class="btn btn-sm btn-warning float-right"><i class="bx bx-edit"></i></a>
+                                                class="btn btn-sm btn-warning float-right"><i
+                                                    class="bx bx-edit"></i></a>
+                                            <a href="{{route('events.show', $event->id)}}"
+                                                class="btn btn-sm btn-warning float-right"><i
+                                                    class="bx bx-detail"></i></a>
                                             <a href="{{route('events.delete', $event->id)}}"
                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
                                                 class="btn btn-sm btn-danger float-right"><i

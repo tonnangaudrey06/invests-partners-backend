@@ -61,7 +61,7 @@
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label for="exampleFormControlTextarea1">Description</label>
-                                    <textarea class="form-control" name="description" rows="3"></textarea>
+                                    <textarea class="form-control" name="description" ></textarea>
                                 </div>
 
                                 <div class="form-group col-md-12 mb-3">
