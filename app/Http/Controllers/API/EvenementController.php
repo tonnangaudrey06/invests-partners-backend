@@ -12,7 +12,7 @@ class EvenementController extends Controller
 {
     public function index()
     {
-        $events = Evenement::all();
+        $events = Evenement::whereDate('date_evenement', '>', Carbon::now())->get();
         $month = Evenement::whereMonth('date_evenement', '=', Carbon::now()->month)->get();
         return $this->sendResponse(['all' => $events, 'month' => $month], 'All events');
     }

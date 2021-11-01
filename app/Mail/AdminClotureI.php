@@ -17,10 +17,12 @@ class AdminClotureI extends Mailable
      * @return void
      */
     public $projet;
+    public $investisseur;
 
-    public function __construct(Array $projet)
+    public function __construct(Array $projet, Array $investisseur)
     {
         $this->projet = $projet;
+        $this->investisseur = $investisseur;
     }
 
     /**
@@ -30,6 +32,6 @@ class AdminClotureI extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com')->view('emails.adminclotureI')->subject("Cloture Projet {$this->projet['intitule']}");;
+        return $this->from('info@invest--partners.com')->view('emails.adminclotureI')->subject("Cloture du projet {$this->projet['intitule']}");;
     }
 }

@@ -3,19 +3,17 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Mail\CreationProjetMail;
 use App\Mail\PaiementProjetConseilleMail;
 use App\Mail\PaiementProjetPorteurMail;
+use App\Mail\CreationProjetMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use App\Models\Actualite;
 use App\Models\Archive;
 use App\Models\Equipe;
-use App\Models\Membre;
-use App\Models\ProfilInvestisseur;
 use App\Models\Projet;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class ProjectController extends Controller
 {

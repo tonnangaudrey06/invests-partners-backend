@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8">
-  </head>
-  <body>
-    <p>Bonjour {{$projet['secteur_data']['conseiller_data']['nom_complet']}},</p>
-    
-    <p>Le paiement des frais d'etude pour le projet <strong>{{$projet['intitule']}}</strong> vient d'être éffectué. Jetez-y un coup d'œil <a href="{{ route('projet.details', $projet['id']) }}">{{ route('projet.details', $projet['id']) }}</a></p><br><br>
-    
-    <br><br>
-    
-    <p>Cordialement,</p>
-    
-    <br><br>
 
-    <p><strong>Invest & Partners</strong></p>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <title>Paiement des frais d'etude du projet {{$projet['intitule']}}</title>
+</head>
+
+<body>
+  {{-- <p>Cher conseiller,</p> --}}
+  <p>Paiement de la somme de (montant) effectué pour le projet <a
+    href="{{ route('projet.details', $projet['id']) }}"><strong>{{$projet['intitule']}}</strong></a><br />
+  Le délai pour le traitement et la publication sur le site est de 15 jours.</p>
+  <p><strong>Bonne chance!</strong></p>
+</body>
+
 </html>

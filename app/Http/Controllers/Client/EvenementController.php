@@ -45,6 +45,12 @@ class EvenementController extends Controller
         return view('pages.events.edit')->with('event', $event);
     }
 
+    public function show($id)
+    {
+        $event = Evenement::with(['participants'])->find($id);
+        return view('pages.events.participant')->with('event', $event);
+    }
+
     public function update($id, Request $request)
     {
         $data = $request->input();

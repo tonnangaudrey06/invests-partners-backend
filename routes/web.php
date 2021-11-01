@@ -25,8 +25,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
 // Route::get('/dashboard', function () {
 //     return view('pages.dashboard.home');
 // })->name('dashboard');
@@ -48,17 +46,19 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('chat')->name('chat.')->group(function () {
         Route::get('/', [MessageController::class, 'index'])->name('home');
         Route::get('/{id}', [MessageController::class, 'index2'])->name('view');
+        Route::get('/delete/message/{id}', [MessageController::class, 'deleteMessage'])->name('delete');
+        Route::post('/{sender}/send/{receiver}', [MessageController::class, 'newConversation'])->name('new');
         Route::get('/{id}/{receiver}/{conversation}', [MessageController::class, 'index2'])->name('view.conversation');
         Route::get('/{id}/{conversation}', [MessageController::class, 'index'])->name('conversation');
         Route::post('/{sender}/{conversation}/send/{receiver}', [MessageController::class, 'send'])->name('send');
-        Route::post('/{sender}/send/{receiver}', [MessageController::class, 'newConversation'])->name('new');
     });
 
     Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', function () {
             return redirect()->route('user.administrateur');
         })->name('home');
-        Route::get('/add/{id}', [UserController::class, 'add'])->name('add');        
+        Route::get('/add/{id}', [UserController::class, 'add'])->name('add');  
+        Route::get('/{id}/report', [UserController::class, 'getReport'])->name('report');        
         Route::post('/store', [UserController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [UserController::class, 'update'])->name('update');
@@ -125,6 +125,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/delete/{id}', [EvenementController::class, 'delete'])->name('delete');
         Route::get('/edit/{id}', [EvenementController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [EvenementController::class, 'update'])->name('update');
+        Route::get('/{id}', [EvenementController::class, 'show'])->name('show');
     });
 
     Route::prefix('actualites')->name('actualites.')->group(function () {

@@ -99,6 +99,12 @@
             $("#flip").click(function() {
                 $("#panel").slideDown("slow");
             });
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
     
             init();
         });

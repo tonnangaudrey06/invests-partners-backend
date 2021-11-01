@@ -67,7 +67,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
             </div>
             <div class="row">
                 @foreach ($secteur->projets as $projet)
-                <div class="col-md-6 col-lg-4">
+                <div class="col-lg-6 col-xl-4">
                     <div class="card"
                         style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%); cursor: pointer;"
                         onclick="redirectTo('{{ route('projet.details', ['id' => $projet->id]) }}')">

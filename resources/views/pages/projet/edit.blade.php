@@ -50,9 +50,19 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group col-md-12 mb-3">
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="taux_rentabilite">Besoin de financement (XAF) *</label>
+                                    <input id="taux_rentabilite" name="financement" type="text"
+                                        class="form-control" value="{{$projet->financement}}">
+
+                                    @error('financement')
+                                    <span class="text-danger"> {{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6 mb-3">
                                     <label for="taux_rentabilite">Taux de
-                                        rentabilité *</label>
+                                        rentabilité (%) *</label>
                                     <input id="taux_rentabilite" name="taux_rentabilite" type="text"
                                         class="form-control" value="{{$projet->taux_rentabilite}}">
 
@@ -85,7 +95,7 @@
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label for="ca_previsionnel">Chiffre d'affaires
-                                        prévisionnel *</label>
+                                        prévisionnel (XAF) *</label>
                                     <input id="ca_previsionnel" name="ca_previsionnel" type="text" class="form-control"
                                         value="{{$projet->ca_previsionnel}}">
 
