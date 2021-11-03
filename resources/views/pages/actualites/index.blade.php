@@ -56,7 +56,7 @@
 
             <div class="row">
                 @foreach ($actualites as $item)
-                <div class="col-md-6 col-lg-3">
+                <div class="col-md-6 col-lg-4">
                     <div class="card rounded shadow-lg">
                         <div class="p-3">
                             <h5><a href="{{($item->secteur) ? route('actualites.details', [$type, $item->id, $item->secteur]) : route('actualites.details', [$type, $item->id, $item->projet])}}"
@@ -66,8 +66,8 @@
                         </div>
 
                         @if($item->image)
-                        <div class="position-relative">
-                            <img src="{{$item->image}}" alt="" class="img-thumbnail">
+                        <div class="position-relative" style="h"eight: 10rem>
+                            <img src="{{$item->image}}" alt="" class="img-thumbnail w-100 h-100" style="object-fit: cover">
                         </div>
                         @endif
 
@@ -86,7 +86,7 @@
                                 </li>
                             </ul> --}}
 
-                            <p>{{Str::limit($item->description, 100)}}</p>
+                            <p>{!!Str::limit($item->description, 100)!!}</p>
 
                             <a href="{{($item->secteur) ? route('actualites.details', [$type, $item->id, $item->secteur]) : route('actualites.details', [$type, $item->id, $item->projet])}}"
                                 class="btn w-100 btn-sm btn-primary">En savoir plus <i

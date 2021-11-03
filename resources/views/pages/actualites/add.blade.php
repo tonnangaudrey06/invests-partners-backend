@@ -61,12 +61,12 @@
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label for="exampleFormControlTextarea1">Description</label>
-                                    <textarea class="form-control" name="description" ></textarea>
+                                    <textarea class="form-control" name="description" id="summernote"></textarea>
                                 </div>
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Image</label>
-                                    <input type="file" name="image" class="form-control" aria-describedby="emailHelp" required>
+                                    <input type="file" name="image" class="form-control" aria-describedby="emailHelp">
 
 
                                     @error('image')

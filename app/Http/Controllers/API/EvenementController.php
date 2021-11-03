@@ -49,6 +49,6 @@ class EvenementController extends Controller
     public function show($id)
     {
         $event = Evenement::where('id', $id)->first();
-        return $this->sendResponse($event, 'All events');
+        return $this->sendResponse($event, 'One event');
     }
 }

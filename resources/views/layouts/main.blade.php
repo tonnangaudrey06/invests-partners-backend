@@ -9,6 +9,8 @@
     <title>@yield('title', config('app.name'))</title>
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+    
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
     @yield('style')
 
@@ -25,13 +27,6 @@
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
-
- 
-   
-    {{-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> --}}
-
-   
-
 </head>
 
 <body data-sidebar="dark" data-topbar="dark">
@@ -49,13 +44,22 @@
 
     <!-- JAVASCRIPT -->
     <script type="text/javascript" src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
+
+    @yield('script')
 
     <script type="text/javascript">
         var observe;
         var text = document.getElementById('autoresize');
 
         function redirectTo(url) {
-            console.log(url);
             window.location.assign(url);
         }
 
@@ -116,41 +120,23 @@
             });
     
             init();
+
+            $('#summernote').summernote({
+                minHeight: 150
+            });
+
+            $('#summernote1').summernote({
+                minHeight: 150
+            });
         });
     </script>
-
-    <!-- summernote css/js -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-    <script type="text/javascript">
-        $('#summernote').summernote({
-        height: 150
-    });
-
-    $('#summernote1').summernote({
-        height: 150
-    });
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
-        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type="text/javascript" src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    
-
-    <script type="text/javascript" src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
-
-    @yield('script')
 
     <!-- App js -->
     <script type="text/javascript" src="{{ asset('assets/js/app.js') }}"></script>
 
     {!! Toastr::message() !!}
 
-    
+
 
 </body>
 

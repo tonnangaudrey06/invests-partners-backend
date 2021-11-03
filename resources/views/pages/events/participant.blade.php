@@ -110,7 +110,7 @@
                                             <td>@numberFormat($event->places) places</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">Places reserver :</th>
+                                            <th scope="row">Places reservées :</th>
                                             <td>@numberFormat($event->total_reserve) places</td>
                                         </tr>
                                     </tbody>
@@ -131,11 +131,11 @@
                                             <th scope="col" style="max-width: 20rem !important">Nom complet</th>
                                             <th scope="col" style="max-width: 20rem !important">Email</th>
                                             <th scope="col" style="max-width: 20rem !important">Téléphone</th>
-                                            <th scope="col">Places reserver</th>
+                                            <th scope="col">Places reservées</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($participants as $participant)
+                                        @foreach($event->participants as $participant)
                                         <tr>
                                             <th style="max-width: 20rem !important" class="text-truncate">
                                                 {{ $participant->nom_complet }}
