@@ -185,7 +185,7 @@
                                     <div class="row text-center mb-4">
                                         <div class="col-md-6 col-lg-3">
                                             <div>
-                                                <p class="text-muted fw-bolder mb-2">Créer</p>
+                                                <p class="text-muted fw-bolder mb-2">Crée</p>
                                                 <h6 class="mb-0 text-primary">{{
                                                     Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}</h6>
                                             </div>

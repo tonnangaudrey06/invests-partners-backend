@@ -91,7 +91,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
                         <div class="px-4 py-3 border-top">
                             <div class="d-flex justify-content-between align-items-center w-100">
                                 <div>
-                                    <i class="bx bx-calendar me-1"></i> Créer {{
+                                    <i class="bx bx-calendar me-1"></i> Crée {{
                                     Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}
                                 </div>
                                 <span class="badge bg-info p-2">{{ $projet->etat }}</span>

@@ -44,7 +44,7 @@ class ProjetController extends Controller
             $secteurs = Secteur::with(['conseiller_data'])->get();
         } else {
             $secteurs = Secteur::with(['conseiller_data'])
-                ->where('user', auth()->user()->role)
+                ->where('user', auth()->user()->id)
                 ->get();
         }
 
@@ -56,7 +56,7 @@ class ProjetController extends Controller
                     function ($query) {
                         return $query
                             ->where('etat', '!=', 'CLOTURE')
-                            ->orWhere('etat', '!=', 'REJETE');
+                            ->where('etat', '!=', 'REJETE');
                     }
                 )
                 ->get();
@@ -197,6 +197,8 @@ class ProjetController extends Controller
                 ->get();
         }
 
+        // DB::enableQueryLog();
+
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
                 ->where('secteur', $secteur->id)
@@ -208,7 +210,11 @@ class ProjetController extends Controller
                     }
                 )
                 ->get();
+
+                // dd(DB::getQueryLog());
         }
+
+        // DB::disableQueryLog();
 
         return view('pages.projet.home', compact('projets', 'secteurs'))->with('type', 'ARCHIVE');
     }
