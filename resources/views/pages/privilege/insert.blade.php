@@ -18,13 +18,6 @@
 
 
 @section('content')
-
-@php
-$modules = DB::table('modules')->get();
-$roles = DB::table('roles')->get();
-@endphp
-
-
 <div class="main-content">
 
     <div class="page-content">
@@ -47,7 +40,7 @@ $roles = DB::table('roles')->get();
                 </div>
             </div>
 
-            <div class="col-md-8 offset-md-2">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title mb-4">Ajouter un privilège</h4>
@@ -56,11 +49,11 @@ $roles = DB::table('roles')->get();
                             @csrf
 
                             <div class="form-group mb-3">
-                                <label>Roles :</label>
-                                <select class="form-select" name="role">
-                                    <option disabled="" selected="">--Selectionner un role--</option>
-                                    @foreach ($roles as $item)
-                                    <option value="{{$item->id}}">{{$item->libelle}}</option>
+                                <label>Utilisateur</label>
+                                <select class="form-select" name="user">
+                                    <option disabled hidden selected></option>
+                                    @foreach ($users as $user)
+                                    <option value="{{$user->id}}">{{$user->nom_complet}} - {{$user->role_data->libelle}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -69,7 +62,7 @@ $roles = DB::table('roles')->get();
                                 <label>Modules :</label>
 
                                 <select class="form-select" name="module">
-                                    <option disabled="" selected="">--Selectionner un module--</option>
+                                    <option disabled hidden selected></option>
                                     @foreach ($modules as $item)
                                     <option value="{{$item->id}}">{{$item->module}}</option>
                                     @endforeach

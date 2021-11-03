@@ -66,7 +66,7 @@ class User extends Authenticatable
 
     public function role_data()
     {
-        return $this->belongsTo(Role::class, 'role', 'id')->with('modules');
+        return $this->belongsTo(Role::class, 'role', 'id');
     }
 
     public function projets()
@@ -87,6 +87,11 @@ class User extends Authenticatable
     public function profil_invest()
     {
         return $this->belongsTo(ProfilInvestisseur::class, 'profil', 'id');
+    }
+
+    public function modules()
+    {
+        return $this->belongsToMany(Module::class, 'privileges', 'user', 'module')->withPivot('consulter', 'modifier', 'ajouter', 'supprimer');
     }
 
     public static function writeReport($folder, $data)

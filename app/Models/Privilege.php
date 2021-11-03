@@ -10,7 +10,7 @@ class Privilege extends Model
     use HasFactory;
 
     protected $fillable = [
-        'role',
+        'user',
         'module',
         'consulter',
         'modifier',
@@ -25,6 +25,8 @@ class Privilege extends Model
         'supprimer' => 'boolean'
     ];
 
-    
-    
+    public function privileges()
+    {
+        return $this->hasOne(Privilege::class, 'user', 'id')->withPivot('consulter', 'modifier', 'ajouter', 'supprimer');
+    }
 }

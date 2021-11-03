@@ -47,7 +47,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-5">
                                 <h4 class="card-title">Liste des Privilèges</h4>
                                 <div class="actions d-flex align-items-center">
-                                    <button class="btn btn-sm btn-primary me-2" 
+                                    <button class="btn btn-sm btn-primary me-2"
                                         Onclick()="{{route('add.writer')}}">Nouveau Privilège</button>
                                     <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                 </div>
@@ -56,91 +56,77 @@
                             <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                                 <thead>
                                     <tr>
-                                        <th style="width: 5%"></th>
-                                        <th style="width: 20%">Role</th>
+                                        <th style="width: 20%">Utilisateur</th>
                                         <th></th>
                                     </tr>
                                 </thead>
 
-                                <tbody>@php($i = 1)
-                                    @foreach ($writers as $writer)
+                                <tbody>
+                                    @foreach ($users as $key => $user)
                                     <tr>
-
-                                        <td> {{$i++}}</td>
-                                        <td>{{$writer->libelle}}</td>
+                                        <td>{{$user->nom_complet}}</td>
                                         <td>
-
                                             <table class="table table-bordered dt-responsive align-middle nowrap w-100">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 15%"> Module</th>
+                                                        <th style="width: 15%">Module</th>
                                                         <th style="width: 50%">Privilèges</th>
                                                         <th class="text-center" style="width: 10%"></th>
                                                     </tr>
                                                 </thead>
 
                                                 <tbody>
-                                                    @foreach ($writer->modules as $item)
-
-
+                                                    @foreach ($user->modules as $module)
                                                     <tr>
                                                         <th>
-                                                            {{$item->module}}
+                                                            {{$module->module}}
                                                         </th>
                                                         <td>
-                                                            {{-- @json($item->pivot->consulter) --}}
-                                                            @if($item->pivot->consulter == 1)
-                                                            <button class="btn btn-sm btn-info me-2"
-                                                                data-bs-toggle="modal">Consulter</button>
-                                                            
+                                                            @json($module->pivot)
+                                                            @if($module->pivot->consulter == 1)
+                                                            <span class="badge bg-info me-2">
+                                                                Consulter
+                                                            </span>
                                                             @endif
 
-                                                            @if($item->pivot->modifier == 1)
-                                                            <button class="btn btn-sm btn-warning me-2"
-                                                                data-bs-toggle="modal">Modifier</button>
+                                                            @if($module->pivot->modifier == 1)
+                                                            <span class="badge badge-warning me-2">
+                                                                Modifier
+                                                            </span>
                                                             @endif
 
-                                                            @if($item->pivot->ajouter == 1)
-                                                            <button class="btn btn-sm btn-success me-2"
-                                                                data-bs-toggle="modal">Ajouter</button>
+                                                            @if($module->pivot->ajouter == 1)
+                                                            <span class="badge badge-success me-2">
+                                                                Ajouter
+                                                            </span>
                                                             @endif
 
-                                                            @if($item->pivot->supprimer == 1)
-                                                            <button class="btn btn-sm btn-danger me-2"
-                                                                data-bs-toggle="modal">Supprimer</button>
+                                                            @if($module->pivot->supprimer == 1)
+                                                            <span class="badge badge-danger">
+                                                                Supprimer
+                                                            </span>
                                                             @endif
-
                                                         </td>
                                                         <td class="text-center">
-                                                            <a href="{{route('edit.writer', [$writer->id, $item->id])}}"
-                                                                class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
-                                                            <a href="{{route('delete.writer', [$writer->id, $item->id])}}"
+                                                            <a href="{{route('edit.writer', [$user->id, $module->id])}}"
+                                                                class="btn btn-sm btn-warning">
+                                                                <i class="bx bx-edit"></i>
+                                                            </a>
+                                                            <a href="{{route('delete.writer', [$user->id, $module->id])}}"
                                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                                class="btn btn-sm btn-danger"><i
-                                                                    class="bx bx-trash"></i></i></a>
-                
+                                                                class="btn btn-sm btn-danger">
+                                                                <i class="bx bx-trash"></i>
+                                                            </a>
                                                         </td>
-
                                                     </tr>
-
-
                                                     @endforeach
                                                 </tbody>
-
                                             </table>
-
-
-
-
                                         </td>
-
-
-
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -151,63 +137,6 @@
 
     @include('partials.footer')
 </div>
-
-{{-- <div id="userModal" class="modal fade" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-    <form id="userForm" action="{{ route('user.add') }}" method="POST">
-        @csrf
-        <input type="hidden" name="role" value="">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="userModalLabel">Nouveau
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="form-group col-md-12 mb-3">
-                            <label>Civilité</label>
-                            <select class="form-control" name="civilite">
-                                <option selected>Aucun</option>
-                                <option value="Mr.">Mr.</option>
-                                <option value="Mme.">Mme.</option>
-                                <option value="Mlle.">Mlle.</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                            <label>Nom</label>
-                            <input type="text" class="form-control" name="nom" placeholder="Nom" required>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                            <label>Prenom</label>
-                            <input type="text" class="form-control" name="prenom" placeholder="Prenom">
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                            <label>Email</label>
-                            <input type="email" class="form-control" name="email" placeholder="Email" required>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                            <label>Téléphone</label>
-                            <input type="text" class="form-control" name="telephone" placeholder="Téléphone">
-                        </div>
-                        <div class="form-group col-md-12 mb-3">
-                            <label>Mot de passe</label>
-                            <input type="password" class="form-control" name="password" placeholder="Mot de passe"
-                                required>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary waves-effect"
-                        data-bs-dismiss="modal">Fermer</button>
-                    <button type="submit"
-                        class="btn btn-sm btn-primary waves-effect waves-light">Enregistrement</button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div> --}}
 @endsection
 
 @section('script')

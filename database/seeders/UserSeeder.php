@@ -23,17 +23,19 @@ class UserSeeder extends Seeder
             'email' => 'admin@test.com',
             'telephone' => $faker->phoneNumber(),
             'role' => 1,
+            'folder' => hexdec(uniqid()),
             'email_verified_at' => now(),
             'password' => Hash::make('admin')
         ]);
         User::create([
             'nom' => $faker->firstName(),
             'prenom' => $faker->lastName(),
-            'email' => 'conseille@test.com',
+            'email' => 'conseiller@test.com',
             'telephone' => $faker->phoneNumber(),
             'role' => 2,
+            'folder' => hexdec(uniqid()),
             'email_verified_at' => now(),
-            'password' => Hash::make('conseille')
+            'password' => Hash::make('conseiller')
         ]);
         User::create([
             'nom' => $faker->firstName(),
@@ -41,6 +43,7 @@ class UserSeeder extends Seeder
             'email' => 'porteur@test.com',
             'telephone' => $faker->phoneNumber(),
             'role' => 3,
+            'folder' => hexdec(uniqid()),
             'status' => 'PARTICULIER',
             'email_verified_at' => now(),
             'password' => Hash::make('porteur')
@@ -51,6 +54,8 @@ class UserSeeder extends Seeder
             'email' => 'investisseur@test.com',
             'telephone' => $faker->phoneNumber(),
             'role' => 4,
+            'folder' => hexdec(uniqid()),
+            'profil' => 1,
             'status' => 'PARTICULIER',
             'email_verified_at' => now(),
             'password' => Hash::make('investisseur')

@@ -17,9 +17,4 @@ class Role extends Model
     {
         return $this->hasMany(User::class, 'role', 'id');
     }
-
-    public function modules()
-    {
-        return $this->belongsToMany(Module::class, 'privileges', 'role', 'module')->withPivot('consulter', 'modifier', 'ajouter', 'supprimer');
-    }
 }
