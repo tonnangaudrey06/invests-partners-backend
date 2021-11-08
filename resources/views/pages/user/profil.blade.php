@@ -83,6 +83,14 @@
                                                 <i class="mdi mdi-message-text ms-1"></i></a>
                                         </div>
                                         @endif
+                                        @if ($user->role == 2)
+                                        <div>
+                                            <a href="{{route('user.report', $user->id)}}"
+                                                class="btn btn-primary waves-effect waves-light btn-sm">Voir son
+                                                reporting
+                                                <i class="bx bx-notepad ms-1"></i></a>
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

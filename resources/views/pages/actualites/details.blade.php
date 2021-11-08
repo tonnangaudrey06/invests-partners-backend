@@ -134,22 +134,17 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
                                             </div>
                                             <hr>
 
-                                            <div class="my-5">
-                                                <img src="{{$actualite->image}}" alt=""
-                                                    class="img-thumbnail mx-auto d-block">
+                                            <div class="my-5" style="height: 20rem">
+                                                <img src="{{$actualite->image}}" alt=""  class="img-thumbnail w-100 h-100 mx-auto d-block" style="object-fit: cover"/>
                                             </div>
 
                                             <hr>
 
                                             <div class="mt-4">
                                                 <div class="text-muted font-size-14">
-                                                    <p>{{$actualite->description}}</p>
-
+                                                    <p>{!!$actualite->description!!}</p>
                                                 </div>
-
                                                 <hr>
-
-
                                             </div>
 
                                         </div>
@@ -172,12 +167,4 @@ $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
 
     @include('partials.footer')
 </div>
-@endsection
-
-@section('script')
-<!-- apexcharts -->
-<script type="text/javascript" src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
-
-<!-- crypto dash init js -->
-<script type="text/javascript" src="{{ asset('assets/js/pages/project-overview.init.js') }}"></script>
 @endsection
