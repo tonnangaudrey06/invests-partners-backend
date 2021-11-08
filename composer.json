@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
-        "beyondcode/laravel-websockets": "^1.12",
         "brian2694/laravel-toastr": "^5.56",
         "darkaonline/l5-swagger": "^8.0",
         "dirape/token": "^2.3",
@@ -18,7 +17,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.6",
-        "pusher/pusher-php-server": "5.0"
+        "pusher/pusher-php-server": "^7.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

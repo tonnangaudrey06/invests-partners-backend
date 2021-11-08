@@ -44,8 +44,10 @@
             </div>
 
             <div class="dropdown d-inline-block ms-1">
-                <button type="button" class="btn header-item noti-icon waves-effect" onclick="redirectTo('{{ route('chat.home') }}')">
-                    {{-- <span class="badge bg-danger rounded-pill">3</span> --}}
+                <button type="button" class="btn header-item noti-icon waves-effect"
+                    onclick="redirectTo('{{ route('chat.home') }}')">
+                    <span class="badge bg-danger rounded-pill"
+                        id="noti">{{ auth()->user()->unreadNotifications->count() }}</span>
                     <i class="bx bx-envelope"></i>
                 </button>
             </div>
@@ -72,7 +74,7 @@
                     <div data-simplebar style="max-height: 230px;">
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="d-flex">
-                                <div class="avatar-xs me-3">
+                                <div class="avatar-xs me-3"> 
                                     <span class="avatar-title bg-primary rounded-circle font-size-16">
                                         <i class="bx bx-cart"></i>
                                     </span>
@@ -149,23 +151,14 @@
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{-- @if (!empty(auth()->user()->photo))
-                    <img class="rounded-circle header-profile-user" src="{{ auth()->user()->photo }}" alt="">
-                    @else
-                    <div class="avatar-xs header-profile-user">
-                        <span class="avatar-title rounded-circle">
-                            {{ strtoupper(substr(auth()->user()->nom, 0, 1)) }}
-                        </span>
-                    </div>
-                    @endif --}}
                     <img class="rounded-circle header-profile-user"
-                        src="{{ auth()->user()->photo ? auth()->user()->photo : asset('assets/images/profil.jpg') }}" alt="Header Avatar">
+                        src="{{ auth()->user()->photo ? auth()->user()->photo : asset('assets/images/profil.jpg') }}"
+                        alt="Header Avatar">
                     <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ auth()->user()->nom }}
                         {{ auth()->user()->prenom }}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <!-- item-->
                     <a class="dropdown-item" href="{{ route('user.profile', ['id' => null]) }}"><i
                             class="bx bx-user font-size-16 align-middle me-1"></i> <span
                             key="t-profile">Profil</span></a>
@@ -177,10 +170,12 @@
                             key="t-settings">Paramètres</span></a> --}}
                     <div class="dropdown-divider"></div>
                     @if (Auth::user()->role == 1)
-                    <a class="dropdown-item d-block" href="{{route('add.writer')}}"><i
-                            class="bx bx-wrench font-size-16 align-middle me-1"></i> <span key="t-settings">Ajouter
-                            privilèges</span></a>
-                    <div class="dropdown-divider"></div>
+                        <a class="dropdown-item d-block" href="{{ route('add.writer') }}">
+                            <i class="bx bx-wrench font-size-16 align-middle me-1"></i>
+                            <span key="t-settings">
+                                Ajouter
+                                privilèges</span></a>
+                        <div class="dropdown-divider"></div>
                     @endif
 
                     <a class="dropdown-item text-danger" href="{{ route('auth.logout') }}"><i

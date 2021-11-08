@@ -112,4 +112,9 @@ class User extends Authenticatable
             throw $th;
         }
     }
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.User.' . $this->id;
+    }
 }

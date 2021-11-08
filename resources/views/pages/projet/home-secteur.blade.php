@@ -9,7 +9,7 @@
 @section('content')
 
 @php
-$privileges = DB::table('privileges')->where('role', auth()->user()->role)->get();
+$privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
 @endphp
 
 <div class="main-content">
