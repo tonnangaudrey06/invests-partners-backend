@@ -18,6 +18,8 @@ class MessageController extends Controller
         $messages = [];
         $projet = null;
 
+        auth()->user()->unreadNotifications->markAsRead();
+
         if (!empty($conversation)) {
             Message::makeSeen(auth()->user()->id, $conversation);
             $messages = Message::getLastestMessageQuery($conversation);

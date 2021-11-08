@@ -66,7 +66,7 @@ class User extends Authenticatable
 
     public function role_data()
     {
-        return $this->belongsTo(Role::class, 'role', 'id')->with('modules');
+        return $this->belongsTo(Role::class, 'role', 'id');
     }
 
     public function projets()
@@ -89,6 +89,11 @@ class User extends Authenticatable
         return $this->belongsTo(ProfilInvestisseur::class, 'profil', 'id');
     }
 
+    public function modules()
+    {
+        return $this->belongsToMany(Module::class, 'privileges', 'user', 'module')->withPivot('consulter', 'modifier', 'ajouter', 'supprimer');
+    }
+
     public static function writeReport($folder, $data)
     {
         try {
@@ -106,5 +111,10 @@ class User extends Authenticatable
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.User.' . $this->id;
     }
 }

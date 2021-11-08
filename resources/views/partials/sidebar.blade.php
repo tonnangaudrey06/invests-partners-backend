@@ -1,14 +1,11 @@
 <div class="vertical-menu">
 
     <div data-simplebar class="h-100">
-
-
-
         <!--- Sidemenu -->
         <div id="sidebar-menu">
 
             @php
-            $privileges = DB::table('privileges')->where('role', Auth::user()->role)->get();
+            $privileges = DB::table('privileges')->where('user', Auth::user()->id)->get();
             @endphp
 
             @if (Auth::user()->role == 1)

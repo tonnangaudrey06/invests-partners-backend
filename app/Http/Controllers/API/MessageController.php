@@ -8,8 +8,8 @@ use App\Models\Archive;
 use App\Models\Message;
 use App\Models\Projet;
 use App\Models\User;
+use App\Notifications\MessageNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -93,6 +93,10 @@ class MessageController extends Controller
             }
         }
 
+        $user = User::find($receiver);
+
+        $user->notify(new MessageNotification($message));
+
         return $this->sendResponse($message, 'New message');
     }
 
@@ -137,6 +141,10 @@ class MessageController extends Controller
             }
         }
 
+        $user = User::find($receiver);
+
+        $user->notify(new MessageNotification($message));
+
         return $this->sendResponse($message, 'New message');
     }
 
@@ -173,6 +181,8 @@ class MessageController extends Controller
         $projet = Projet::with(['secteur_data'])->where('id', $request->projet)->first();
         $admin = User::where('role', 1)->first();
         $invest = User::find($sender);
+
+        $projet->secteur_data->conseiller_data->notify(new MessageNotification($message));
 
         try {
             Mail::to($projet->secteur_data->conseiller_data->email)->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));

@@ -9,7 +9,7 @@
     <title>@yield('title', config('app.name'))</title>
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
     @yield('style')
@@ -27,6 +27,7 @@
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
 <body data-sidebar="dark" data-topbar="dark">
@@ -56,6 +57,10 @@
     @yield('script')
 
     <script type="text/javascript">
+        window.user = {
+            id: {{ optional(auth()->user())->id }}
+        }
+
         var observe;
         var text = document.getElementById('autoresize');
 
@@ -71,35 +76,35 @@
             window.location.reload();
         }
 
-        function resize () {
+        function resize() {
             text.style.height = 'auto';
-            text.style.height = text.scrollHeight+'px';
+            text.style.height = text.scrollHeight + 'px';
         }
-        
-        function delayedResize () {
+
+        function delayedResize() {
             window.setTimeout(resize, 0);
         }
-        
-        function init () {
+
+        function init() {
             if (window.attachEvent) {
-                observe = function (element, event, handler) {
+                observe = function(element, event, handler) {
                     if (element) {
-                        element.attachEvent('on'+event, handler);
+                        element.attachEvent('on' + event, handler);
                     }
                 };
             } else {
-                observe = function (element, event, handler) {
+                observe = function(element, event, handler) {
                     if (element) {
                         element.addEventListener(event, handler, false);
                     }
                 };
             }
-            
+
             if (text) {
-                observe(text, 'change',  resize);
-                observe(text, 'cut',     delayedResize);
-                observe(text, 'paste',   delayedResize);
-                observe(text, 'drop',    delayedResize);
+                observe(text, 'change', resize);
+                observe(text, 'cut', delayedResize);
+                observe(text, 'paste', delayedResize);
+                observe(text, 'drop', delayedResize);
                 observe(text, 'keydown', delayedResize);
 
                 text.focus();
@@ -118,7 +123,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-    
+
             init();
 
             $('#summernote').summernote({
@@ -133,11 +138,9 @@
 
     <!-- App js -->
     <script type="text/javascript" src="{{ asset('assets/js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 
     {!! Toastr::message() !!}
-
-
-
 </body>
 
 </html>
