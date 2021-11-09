@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class CreationProjetPorteur extends Mailable
+class CreationProjetPorteurMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -31,6 +31,6 @@ class CreationProjetPorteur extends Mailable
     public function build()
     {
         return $this->from('info@invest--partners.com')->view('emails.creation-projet-porteur')
-            ->subject("Accusé de réception du projet '{ $this->projet['intutule'] }'");
+            ->subject("Accusé de réception du projet '{$this->projet['intitule']}'");
     }
 }
