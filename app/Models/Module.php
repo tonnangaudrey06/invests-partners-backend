@@ -13,4 +13,9 @@ class Module extends Model
         'module',
         'description'
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(Module::class, 'privileges', 'module', 'user')->withPivot('consulter', 'modifier', 'ajouter', 'supprimer');
+    }
 }

@@ -36,6 +36,6 @@ class AddInvestissement extends Mailable
     {
         return $this->from('info@invest--partners.com')->view('emails.investissementI')
                     ->cc(Auth()->user()->role == 1 ? $this->investissement['user_data']['email'] : $this->admin['email'])
-                    ->subject("Investissement ajouté sur notre plateforme");
+                    ->subject("Approbation de votre investissement sur le projet ". $this->projet['intitule']);
     }
 }

@@ -10,29 +10,32 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessageEvent implements ShouldBroadcast
+class TestEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+    
+    public $username;
 
     public $message;
 
-    public function __construct($message)
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
+    public function __construct($username)
     {
-        $this->message = $message;
+        $this->username = $username;
+        $this->message  = "{$username} liked your status";
     }
 
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return Channel|array
+     */
     public function broadcastOn()
     {
-        return new PrivateChannel('message.'.$this->message->id);
-    }
-
-    public function broadcastAs()
-    {
-        return 'new';
-    }
-
-    public function broadcastWith()
-    {
-        return ['message_id' => $this->message->id];
+        return ['status-liked'];
     }
 }

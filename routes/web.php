@@ -33,6 +33,11 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
+// Route::get('test', function () {
+//     event(new App\Events\TestEvent('Someone'));
+//     return "Event has been sent!";
+// });
+
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 
@@ -166,10 +171,10 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/add/writer', [PrivilegeController::class, 'InsertWriter'])->name('add.writer');
 Route::get('/all/writer', [PrivilegeController::class, 'AllWriter'])->name('all.writer');
-Route::get('/edit/writer/{idrole}/{idmodule}', [PrivilegeController::class, 'EditWriter'])->name('edit.writer');
-Route::post('/update/{idrole}/{idmodule}', [PrivilegeController::class, 'UpdateWriter'])->name('update.writer');
 Route::post('/store/writer', [PrivilegeController::class, 'StoreWriter'])->name('store.writer');
-Route::get('/delete/writer/{idrole}/{idmodule}', [PrivilegeController::class, 'DeleteWriter'])->name('delete.writer');
+Route::get('/edit/writer/{privilege}', [PrivilegeController::class, 'EditWriter'])->name('edit.writer');
+Route::post('/update/{privilege}', [PrivilegeController::class, 'UpdateWriter'])->name('update.writer');
+Route::get('/delete/writer/{privilege}', [PrivilegeController::class, 'DeleteWriter'])->name('delete.writer');
 
 Route::get('/get/user/{user_id}', [SecteurController::class, 'GetUserEdit']);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\MessageEvent;
 use App\Http\Controllers\Controller;
 use App\Mail\InteresseProjetMail;
 use App\Models\Archive;
@@ -142,6 +143,8 @@ class MessageController extends Controller
         }
 
         $user = User::find($receiver);
+
+        // event(new MessageEvent($message));
 
         $user->notify(new MessageNotification($message));
 

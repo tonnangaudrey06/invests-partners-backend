@@ -18,7 +18,7 @@ class InscriptionMail extends Mailable
      *
      * @return void
      */
-    public function __construct(Array $user)
+    public function __construct(array $user)
     {
         $this->user = $user;
     }
@@ -30,6 +30,15 @@ class InscriptionMail extends Mailable
      */
     public function build()
     {
+        if ($this->user['role'] == 4) {
+            return $this->from('info@invest--partners.com')
+                ->view('emails.inscription')
+                ->subject('Bienvenue chez Invest & Partners');
+                // ->attach('/path/to/file', [
+                //     'as' => 'name.pdf',
+                //     'mime' => 'application/pdf',
+                // ]);
+        }
         return $this->from('info@invest--partners.com')->view('emails.inscription')->subject('Bienvenue chez Invest & Partners');
     }
 }

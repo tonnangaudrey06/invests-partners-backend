@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', ' PRIVILEGES - ' . config('app.name'))
+@section('title', ' Privilèges - ' . config('app.name'))
 
 @section('style')
 <!-- Datatable -->
@@ -47,8 +47,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-5">
                                 <h4 class="card-title">Liste des Privilèges</h4>
                                 <div class="actions d-flex align-items-center">
-                                    <button class="btn btn-sm btn-primary me-2"
-                                        Onclick()="{{route('add.writer')}}">Nouveau Privilège</button>
+                                    <a class="btn btn-sm btn-primary me-2" href="{{route('add.writer')}}">Nouveau Privilège</a>
                                     <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                 </div>
                             </div>
@@ -82,37 +81,36 @@
                                                             {{$module->module}}
                                                         </th>
                                                         <td>
-                                                            @json($module->pivot)
                                                             @if($module->pivot->consulter == 1)
-                                                            <span class="badge bg-info me-2">
+                                                            <span class="badge bg-info me-2 p-2">
                                                                 Consulter
                                                             </span>
                                                             @endif
 
                                                             @if($module->pivot->modifier == 1)
-                                                            <span class="badge badge-warning me-2">
+                                                            <span class="badge bg-warning me-2 p-2">
                                                                 Modifier
                                                             </span>
                                                             @endif
 
                                                             @if($module->pivot->ajouter == 1)
-                                                            <span class="badge badge-success me-2">
+                                                            <span class="badge bg-success me-2 p-2">
                                                                 Ajouter
                                                             </span>
                                                             @endif
 
                                                             @if($module->pivot->supprimer == 1)
-                                                            <span class="badge badge-danger">
+                                                            <span class="badge bg-danger p-2">
                                                                 Supprimer
                                                             </span>
                                                             @endif
                                                         </td>
                                                         <td class="text-center">
-                                                            <a href="{{route('edit.writer', [$user->id, $module->id])}}"
+                                                            <a href="{{route('edit.writer', $module->pivot->id)}}"
                                                                 class="btn btn-sm btn-warning">
                                                                 <i class="bx bx-edit"></i>
                                                             </a>
-                                                            <a href="{{route('delete.writer', [$user->id, $module->id])}}"
+                                                            <a href="{{route('delete.writer', $module->pivot->id)}}"
                                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
                                                                 class="btn btn-sm btn-danger">
                                                                 <i class="bx bx-trash"></i>

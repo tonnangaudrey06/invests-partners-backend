@@ -91,7 +91,7 @@ class User extends Authenticatable
 
     public function modules()
     {
-        return $this->belongsToMany(Module::class, 'privileges', 'user', 'module')->withPivot('consulter', 'modifier', 'ajouter', 'supprimer');
+        return $this->belongsToMany(Module::class, 'privileges', 'user', 'module')->withPivot('id', 'consulter', 'modifier', 'ajouter', 'supprimer');
     }
 
     public static function writeReport($folder, $data)

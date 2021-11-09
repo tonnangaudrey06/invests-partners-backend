@@ -31,6 +31,6 @@ class PaiementProjetPorteurMail extends Mailable
     public function build()
     {
         return $this->from('info@invest--partners.com')->view('emails.paiement-porteur')
-                    ->subject("Accusé de reception de votre paiement sur le projet '{$this->projet['intitule']}'");
+                    ->subject("Accusé de réception du paiement des frais de votre '{$this->projet['intitule']}'");
     }
 }

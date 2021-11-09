@@ -25,8 +25,13 @@ class Privilege extends Model
         'supprimer' => 'boolean'
     ];
 
-    public function privileges()
+    public function module_data()
     {
-        return $this->hasOne(Privilege::class, 'user', 'id')->withPivot('consulter', 'modifier', 'ajouter', 'supprimer');
+        return $this->belongsTo(Module::class, 'module', 'id');
+    }
+
+    public function user_data()
+    {
+        return $this->belongsTo(User::class, 'user', 'id');
     }
 }
