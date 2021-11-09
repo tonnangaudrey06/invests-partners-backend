@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\PaiementProjetConseilleMail;
 use App\Mail\PaiementProjetPorteurMail;
 use App\Mail\CreationProjetMail;
+use App\Mail\CreationProjetPorteur;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -91,6 +92,10 @@ class ProjectController extends Controller
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
 
         try {
+            if (!empty($projet->user_data->email)) {
+                Mail::to($projet->user_data->email)->queue(new CreationProjetPorteur($projet->toArray()));
+            }
+
             if (!empty($projet->secteur_data->conseiller_data)) {
                 Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
             }
@@ -163,6 +168,10 @@ class ProjectController extends Controller
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
 
         try {
+            if (!empty($projet->user_data->email)) {
+                Mail::to($projet->user_data->email)->queue(new CreationProjetPorteur($projet->toArray()));
+            }
+
             if (!empty($projet->secteur_data->conseiller_data)) {
                 Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
             }
