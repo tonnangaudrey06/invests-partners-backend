@@ -20,7 +20,7 @@ class CIModification extends Mailable
 
     public $projet;
 
-    public function __construct(Array $projet)
+    public function __construct(array $projet)
     {
         $this->projet = $projet;
     }
@@ -33,6 +33,6 @@ class CIModification extends Mailable
     public function build()
     {
         return $this->from(Auth()->user()->email)->view('emails.cimodification')
-                    ->subject("Modification Projet {$this->projet['intitule']}");
+            ->subject("Modification du projet {$this->projet['intitule']} par le conseiller");
     }
 }

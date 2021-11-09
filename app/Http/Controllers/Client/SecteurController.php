@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image as Image;
 
@@ -109,35 +110,17 @@ class SecteurController extends Controller
             unlink($old_image);
 
             $data = Secteur::find($id);
-            // $data->update([
-            //     'libelle' => $request->libelle,
-            //     'user' => $request->user,
-            //     'photo' => $last_img,
-            //     'slug' => Str::slug($request->libelle),
-            // ]);
-
-            
-                $data->libelle = $request->libelle;
-                $data->user = $request->user;
-                $data->photo = url($up_location) . '/' . $img_name;
-                $data->slug = Str::slug($request->libelle);
-
-                $data->save();
-            
+            $data->libelle = $request->libelle;
+            $data->user = $request->user;
+            $data->photo = url($up_location) . '/' . $img_name;
+            $data->slug = Str::slug($request->libelle);
+            $data->save();
         } else {
             $data = Secteur::find($id);
-            // $data->update([
-            //     'libelle' => $request->libelle,
-            //     'user' => $request->user,
-            //     'slug' => Str::slug($request->libelle),
-            // ]);
-
             $data->libelle = $request->libelle;
             $data->user = $request->user;
             $data->slug = Str::slug($request->libelle);
-
             $data->save();
-
         }
 
         Toastr::success('Secteur mis à jour avec succès!', 'Success');
@@ -146,23 +129,28 @@ class SecteurController extends Controller
         // return response()->json($data);
     }
 
-    public function delete($id){
-        
+    public function delete($id)
+    {
         $secteur = Secteur::find($id);
-        $old_image = $secteur->photo;
-        unlink($old_image);
+
+        if (!empty($secteur->photo)) {
+            $split = explode('/', $secteur->photo);
+            $filename = end($split);
+            $path = public_path("images/secteurs/$filename");
+
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+        }
 
         Secteur::find($id)->delete();
         Toastr::success('Secteur supprimé avec succès!', 'Success');
 
         return redirect()->intended(route('category.home'));
-        
     }
 
     public function GetUserEdit($user_id)
     {
-
-        // $sub = DB::table('users')->where('id', $user_id)->first();
         $sub = Secteur::where('id', $user_id)->first();
         return response()->json($sub);
     }

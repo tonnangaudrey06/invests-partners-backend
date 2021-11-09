@@ -53,6 +53,7 @@
     <script type="text/javascript" src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
+    {{-- <script type="text/javascript" src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
 
     @yield('script')
 
@@ -135,6 +136,7 @@
             });
         });
     </script>
+
 
     <!-- App js -->
     <script type="text/javascript" src="{{ asset('assets/js/app.js') }}"></script>

@@ -59,6 +59,7 @@ class ProjetController extends Controller
                             ->where('etat', '!=', 'REJETE');
                     }
                 )
+                ->latest()
                 ->get();
         }
 
@@ -97,6 +98,7 @@ class ProjetController extends Controller
                             ->orWhere('etat', '!=', 'REJETE');
                     }
                 )
+                ->latest()
                 ->get();
         }
 
@@ -126,6 +128,7 @@ class ProjetController extends Controller
                             ->orWhere('etat', '!=', 'REJETE');
                     }
                 )
+                ->latest()
                 ->get();
 
             foreach ($projets as $key => $projet) {
@@ -159,6 +162,7 @@ class ProjetController extends Controller
                             ->orWhere('etat', '!=', 'REJETE');
                     }
                 )
+                ->latest()
                 ->get();
         }
 
@@ -176,7 +180,9 @@ class ProjetController extends Controller
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
                 ->where('secteur', $secteur->id)
-                ->where('etat', $etat)->get();
+                ->where('etat', $etat)
+                ->latest()
+                ->get();
         }
 
         return view('pages.projet.home-etat', compact('secteurs'))->with('etat', $etat);
@@ -209,9 +215,10 @@ class ProjetController extends Controller
                             ->orWhere('etat', 'REJETE');
                     }
                 )
+                ->latest()
                 ->get();
 
-                // dd(DB::getQueryLog());
+            // dd(DB::getQueryLog());
         }
 
         // DB::disableQueryLog();
@@ -378,7 +385,7 @@ class ProjetController extends Controller
                 'type' => 'PROJET',
                 'date' => Carbon::now()
             ];
-    
+
             $this->Report($data_report);
         }
 
@@ -607,7 +614,7 @@ class ProjetController extends Controller
                 'type' => 'PROJET',
                 'date' => Carbon::now()
             ];
-    
+
             $this->Report($data_report);
         }
 

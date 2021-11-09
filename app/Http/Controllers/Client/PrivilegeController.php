@@ -42,45 +42,33 @@ class PrivilegeController extends Controller
 
     public function AllWriter()
     {
-        // $writers = Role::with(['modules'])->get();
-        // $privileges = Privilege::all();
-        $users = User::whereIn('role', [1, 2, 5])->with(['role_data', 'modules'])->get();
-        // return $this->sendResponse($users, '');
+        $users = User::whereIn('role', [1, 2, 5])->latest()->with(['role_data', 'modules'])->get();
         return view('pages.privilege.index', compact('users'));
     }
 
-    public function EditWriter($idrole, $idmodule)
+    public function EditWriter($id)
     {
-        $writer = Privilege::where('user', $idrole)->where('module', $idmodule)->first();
-        $roles = Role::all();
-        $modules = Module::all();
-        return view('pages.privilege.edit', compact('writer', 'roles','modules'));
+        $privilege = Privilege::with(['user_data', 'module_data'])->find($id);
+        return view('pages.privilege.edit')->with('privilege', $privilege);
     }
 
-    public function UpdateWriter(Request $request)
+    public function UpdateWriter($privilege, Request $request)
     {
-        $privilege = Privilege::where('user', $request->role)->where('module', $request->module)->first();
+        $data = Privilege::find($privilege);
+        $data->consulter = $request->consulter;
+        $data->modifier = $request->modifier;
+        $data->ajouter = $request->ajouter;
+        $data->supprimer = $request->supprimer;
 
-        if (empty($privilege)) {
-            $privilege = new Privilege();
-            $privilege->role = $request->role;
-            $privilege->module = $request->module;
-        }
-
-        $privilege->consulter = $request->consulter;
-        $privilege->modifier = $request->modifier;
-        $privilege->ajouter = $request->ajouter;
-        $privilege->supprimer = $request->supprimer;
-
-        $privilege->save();
+        $data->save();
 
         Toastr::success('Privilège modifié avec succès!', 'Succès');
         return redirect()->route('all.writer');
     }
 
-    public function DeleteWriter($idrole, $idmodule)
+    public function DeleteWriter($privilege)
     {
-        Privilege::where('role', $idrole)->where('module', $idmodule)->delete();
+        Privilege::find($privilege)->delete();
         Toastr::success('Privilège supprimé avec succès!', 'Succès');
         return redirect()->back();
     }

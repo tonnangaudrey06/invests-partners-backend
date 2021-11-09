@@ -18,7 +18,7 @@ class AdminPublication extends Mailable
      */
     public $projet;
 
-    public function __construct(Array $projet)
+    public function __construct(array $projet)
     {
         $this->projet = $projet;
     }
@@ -30,6 +30,8 @@ class AdminPublication extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com')->view('emails.adminpublication')->subject("Publication Projet {$this->projet['intitule']}");;
+        return $this->from('info@invest--partners.com')
+            ->view('emails.adminpublication')
+            ->subject("Publication de votre projet " . $this->projet['intitule']);
     }
 }
