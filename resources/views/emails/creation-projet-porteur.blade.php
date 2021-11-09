@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Accusé de réception du projet "{{ $projet['intutule'] }}"</title>
+    <title>Accusé de réception du projet "{{ $projet['intitule'] }}"</title>
 </head>
 
 <body>
