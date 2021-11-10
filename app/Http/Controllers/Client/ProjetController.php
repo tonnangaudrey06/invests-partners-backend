@@ -83,7 +83,7 @@ class ProjetController extends Controller
             $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
         } else {
             $secteurs = Secteur::with(['projets', 'conseiller_data'])
-                ->where('user', auth()->user()->role)
+                ->where('user', auth()->user()->id)
                 ->get();
         }
 
@@ -121,6 +121,11 @@ class ProjetController extends Controller
         } else {
             $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
                 ->where('secteur', $secteur)
+                ->whereIn('secteur', function ($query) {
+                    $query->select('id')
+                        ->from(with(new Secteur())->getTable())
+                        ->where('user', auth()->user()->id);
+                })
                 ->where(
                     function ($query) {
                         return $query
@@ -130,12 +135,6 @@ class ProjetController extends Controller
                 )
                 ->latest()
                 ->get();
-
-            foreach ($projets as $key => $projet) {
-                if ($projet->secteur_data->user != auth()->user()->id) {
-                    unset($projets[$key]);
-                }
-            }
         }
 
         $secteur = Secteur::where('id', $secteur)->first()->libelle;
@@ -148,7 +147,7 @@ class ProjetController extends Controller
         if (auth()->user()->role == 1 || auth()->user()->role == 5) {
             $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
         } else {
-            $secteurs = Secteur::with(['projets', 'conseiller_data'])->where('user', auth()->user()->role)->get();
+            $secteurs = Secteur::with(['projets', 'conseiller_data'])->where('user', auth()->user()->id)->get();
         }
 
         foreach ($secteurs as $key => $secteur) {
@@ -174,7 +173,7 @@ class ProjetController extends Controller
         if (auth()->user()->role == 1 || auth()->user()->role == 5) {
             $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
         } else {
-            $secteurs = Secteur::with(['projets', 'conseiller_data'])->where('user', auth()->user()->role)->get();
+            $secteurs = Secteur::with(['projets', 'conseiller_data'])->where('user', auth()->user()->id)->get();
         }
 
         foreach ($secteurs as $key => $secteur) {
@@ -199,11 +198,9 @@ class ProjetController extends Controller
             $secteurs = Secteur::with(['conseiller_data'])->get();
         } else {
             $secteurs = Secteur::with(['conseiller_data'])
-                ->where('user', auth()->user()->role)
+                ->where('user', auth()->user()->id)
                 ->get();
         }
-
-        // DB::enableQueryLog();
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
