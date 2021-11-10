@@ -3,13 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Mail\RelancerConseillerProjetMail;
-use App\Mail\TestMail;
 use App\Models\Projet;
 use App\Models\Secteur;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class NotifyCounselor extends Command
