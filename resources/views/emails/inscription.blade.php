@@ -8,20 +8,18 @@
 
 <body>
     <p>
-        Félicitations ! Vous vous êtes inscrit à notre plateforme <strong>{{ $user['nom'] }}
-            {{ $user['prenom'] }}</strong> en qualité
+        Félicitations ! Vous vous êtes inscrit à notre plateforme <strong>Invest & Partners</strong> en qualité
         <strong>{{ $user['role'] == 3 ? 'Porteur de projet' : 'Investisseur' }}</strong>!
     </p>
+    {{-- <p>
+        Afin de compléter votre profil et de valider votre abonnement, signez le document en pièce jointe et
+        téléchargez le dans votre <strong><a href="https://invest--partners.com/{{ $user['role'] == 4 ? 'investor' : 'dashboard' }}/profil">tableau de
+                bord</a>.</strong>
+    </p> --}}
     @if ($user['role'] == 4)
         <p>
-            Afin de compléter votre profil et de valider votre abonnement, signez le document en pièce jointe et
-            téléchargez le dans votre <strong><a href="https://invest--partners.com/dashboard/profil">tableau de
-                    bord</a>.</strong>
-        </p>
-        <p>
             Investissez maintenant !
-            (<strong><a
-                    href="https://invest--partners.com/projets">https://invest--partners.com/projets</a>.</strong>).
+            (<strong><a href="https://invest--partners.com/projets">https://invest--partners.com/projets</a>.</strong>).
         </p>
     @else
         <p>
