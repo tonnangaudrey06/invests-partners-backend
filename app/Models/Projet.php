@@ -65,7 +65,7 @@ class Projet extends Model
                 return 'Rejeté';
                 break;
             case 'CLOTURE':
-                return 'Financement colecté';
+                return 'Financement collecté';
                 break;
             default:
                 return 'Publié';
