@@ -134,7 +134,7 @@
 
                         @if ($privilege->module == 1 && $privilege->consulter == 1)
 
-                            <li class="mm-active">
+                            <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect" aria-expanded="true">
                                     <i class="bx bx-briefcase-alt-2"></i>
                                     <span key="t-projects">Projets</span>
@@ -161,7 +161,7 @@
 
                         @if ($privilege->module == 8 && $privilege->consulter == 1)
                             <li>
-                                <a href="calendar.html" class="waves-effect">
+                                <a href="{{ route('events.home') }}" class="waves-effect">
                                     <i class="mdi mdi-calendar-multiple-check"></i>
                                     <span key="t-evenement">Événements</span>
                                 </a>
