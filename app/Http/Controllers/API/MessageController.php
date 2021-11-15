@@ -148,6 +148,8 @@ class MessageController extends Controller
 
         $user->notify(new MessageNotification($message));
 
+        // $user->notify(new MessageNotification($message));
+
         return $this->sendResponse($message, 'New message');
     }
 

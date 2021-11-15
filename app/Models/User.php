@@ -117,4 +117,54 @@ class User extends Authenticatable
     {
         return 'App.User.' . $this->id;
     }
+
+    public function routeNotificationForFcm()
+    {
+        return $this->fcm_token;
+    }
+
+    function send_notification_FCM($notification_id, $title, $message, $id, $type)
+    {
+        $url = 'https://fcm.googleapis.com/fcm/send';
+
+        $header = [
+            'Content-type: application/json',
+            'Authorization: ' . env('FCM_KEY')
+        ];
+
+        $post_data = "{
+                'to' : '$notification_id ',
+                'data' : {
+                  'body' : '',
+                  'title' : '$title',
+                  'type' : '$type',
+                  'id' : '$id',
+                  'message' : '$message',
+                },
+                'notification' : {
+                     'body' : '$message',
+                     'title' : '$title',
+                      'type' : '$type',
+                     'id' : '$id . ',
+                     'message' : '$message',
+                    'icon' : 'new',
+                    'sound' : 'default'
+                    },
+              }";
+        // print_r($post_data);die;
+
+        $crl = curl_init();
+        curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($crl, CURLOPT_URL, $url);
+        curl_setopt($crl, CURLOPT_HTTPHEADER, $header);
+
+        curl_setopt($crl, CURLOPT_POST, true);
+        curl_setopt($crl, CURLOPT_POSTFIELDS, $post_data);
+        curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
+
+        $rest = curl_exec($crl);
+
+        return $rest;
+    }
 }
