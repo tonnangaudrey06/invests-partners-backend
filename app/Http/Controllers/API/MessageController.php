@@ -98,6 +98,8 @@ class MessageController extends Controller
 
         $user->notify(new MessageNotification($message));
 
+        $user->send_notification_FCM('Nouveau message');
+
         return $this->sendResponse($message, 'New message');
     }
 
@@ -148,7 +150,7 @@ class MessageController extends Controller
 
         $user->notify(new MessageNotification($message));
 
-        // $user->notify(new MessageNotification($message));
+        $user->send_notification_FCM('Nouveau message');
 
         return $this->sendResponse($message, 'New message');
     }
