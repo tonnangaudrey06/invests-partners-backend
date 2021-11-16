@@ -61,6 +61,14 @@ Route::prefix('app')->group(function () {
     Route::get('/slider', [HomeController::class, 'slider']);
     Route::get('/partenaire', [HomeController::class, 'partenaire']);
     Route::get('/projet', [HomeController::class, 'projet']);
+    Route::get('/villes/villes', [HomeController::class, 'ville']);
+    Route::get('/secteurparville', [HomeController::class, 'secteurparville']);
+    Route::get('/{ville}/{secteur}', [HomeController::class, 'showbycityandsector']);
+    Route::get('/financements/financements/{id}', [HomeController::class, 'financements']);
+    Route::get('/actualites/actualites/{id}', [HomeController::class, 'getactualites']);
+    Route::get('/projetparsecter', [HomeController::class, 'getprojetparsecteur']);
+
+
     Route::get('/chiffre', [HomeController::class, 'chiffres']);
 });
 
@@ -96,6 +104,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/mobile', [ProjectController::class, 'store2']);
         Route::post('/mobile/{id}/membre', [ProjectController::class, 'store3']);
         Route::get('/{id}', [ProjectController::class, 'show']);
+        
         Route::post('/{id}/valide', [ProjectController::class, 'valide']);
     });
 

@@ -200,7 +200,7 @@ class ProjectController extends Controller
         $projet->actualites = Actualite::where('secteur', $projet->secteur)->orWhere('projet', $projet->id)->get();
         return $this->sendResponse($projet, 'Project');
     }
-
+    
     public function projets($id)
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('user', $id)->get();
