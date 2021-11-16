@@ -18,7 +18,7 @@ class AdminValidation extends Mailable
      */
     public $projet;
 
-    public function __construct(Array $projet)
+    public function __construct(array $projet)
     {
         $this->projet = $projet;
     }
@@ -30,6 +30,8 @@ class AdminValidation extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com')->view('emails.adminvalidation')->subject("Validation Projet {$this->projet['intitule']}");;
+        return $this->from('info@invest--partners.com')
+            ->view('emails.adminvalidation')
+            ->subject("Validation de votre projet " . $this->projet['intitule']);
     }
 }

@@ -15,14 +15,16 @@ class CreatePrivilegesTable extends Migration
     {
         Schema::create('privileges', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('role');
+            // $table->unsignedBigInteger('role');
             $table->unsignedBigInteger('module');
+            $table->unsignedBigInteger('user');
             $table->boolean('consulter')->default(true)->nullable();
             $table->boolean('modifier')->default(true)->nullable();
             $table->boolean('ajouter')->default(true)->nullable();
             $table->boolean('supprimer')->default(true)->nullable();
-            $table->foreign('role')->references('id')->on('roles')->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreign('role')->references('id')->on('roles')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('module')->references('id')->on('modules')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

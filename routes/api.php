@@ -53,6 +53,7 @@ Route::get('/profilinvestisseur', [ProfilInvestisseurController::class, 'index']
 Route::prefix('event')->group(function () {
     Route::get('/', [EvenementController::class, 'index']);
     Route::get('/latest', [EvenementController::class, 'new']);
+    Route::get('/{id}', [EvenementController::class, 'show']);
     Route::post('/{id}/participer', [EvenementController::class, 'participer']);
     Route::post('/{id}/participer/check/seat', [EvenementController::class, 'checkSeat']);
 });
@@ -114,7 +115,6 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{id}', [MembreController::class, 'delete']);
     });
 
-    
     Route::delete('chats/delete/message/{id}', [MessageController::class, 'deleteMessage']);
 
     Route::prefix('chats/{sender}')->group(function () {

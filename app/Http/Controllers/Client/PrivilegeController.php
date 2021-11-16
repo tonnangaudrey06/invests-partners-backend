@@ -6,24 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Models\Module;
 use App\Models\Privilege;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Brian2694\Toastr\Facades\Toastr;
 
 class PrivilegeController extends Controller
 {
     public function InsertWriter()
     {
-        return view('pages.privilege.insert');
+        $users = User::whereIn('role', [1, 2, 5])->with(['role_data'])->get();
+        $modules = Module::all();
+        return view('pages.privilege.insert', compact('users', 'modules'));
     }
 
     public function StoreWriter(Request $request)
     {
-        $privilege = Privilege::where('role', $request->role)->where('module', $request->module)->first();
+        $privilege = Privilege::where('user', $request->user)->where('module', $request->module)->first();
 
         if (empty($privilege)) {
             $privilege = new Privilege();
-            $privilege->role = $request->role;
+            $privilege->user = $request->user;
             $privilege->module = $request->module;
         }
 
@@ -34,53 +36,39 @@ class PrivilegeController extends Controller
 
         $privilege->save();
 
-        // return response()->json($privilege);
         Toastr::success('Privilège ajouté avec succès!', 'Succès');
         return back();
     }
 
     public function AllWriter()
     {
-
-        $writers = Role::with(['modules'])->get();
-        $privileges = Privilege::all();
-        // return response()->json($writers);
-        return view('pages.privilege.index', compact('writers'));
+        $users = User::whereIn('role', [1, 2, 5])->latest()->with(['role_data', 'modules'])->get();
+        return view('pages.privilege.index', compact('users'));
     }
 
-    public function EditWriter($idrole, $idmodule)
+    public function EditWriter($id)
     {
-        $writer = Privilege::where('role', $idrole)->where('module', $idmodule)->first();
-        $roles = Role::all();
-        $modules = Module::all();
-        return view('pages.privilege.edit', compact('writer', 'roles','modules'));
+        $privilege = Privilege::with(['user_data', 'module_data'])->find($id);
+        return view('pages.privilege.edit')->with('privilege', $privilege);
     }
 
-    public function UpdateWriter(Request $request, $idrole, $idmodule)
+    public function UpdateWriter($privilege, Request $request)
     {
-        $privilege = Privilege::where('role', $request->role)->where('module', $request->module)->first();
+        $data = Privilege::find($privilege);
+        $data->consulter = $request->consulter;
+        $data->modifier = $request->modifier;
+        $data->ajouter = $request->ajouter;
+        $data->supprimer = $request->supprimer;
 
-        if (empty($privilege)) {
-            $privilege = new Privilege();
-            $privilege->role = $request->role;
-            $privilege->module = $request->module;
-        }
+        $data->save();
 
-        $privilege->consulter = $request->consulter;
-        $privilege->modifier = $request->modifier;
-        $privilege->ajouter = $request->ajouter;
-        $privilege->supprimer = $request->supprimer;
-
-        $privilege->save();
-
-        // return response()->json($privilege);
         Toastr::success('Privilège modifié avec succès!', 'Succès');
         return redirect()->route('all.writer');
     }
 
-    public function DeleteWriter($idrole, $idmodule)
+    public function DeleteWriter($privilege)
     {
-        Privilege::where('role', $idrole)->where('module', $idmodule)->delete();
+        Privilege::find($privilege)->delete();
         Toastr::success('Privilège supprimé avec succès!', 'Succès');
         return redirect()->back();
     }

@@ -15,7 +15,6 @@ class ActualiteController extends Controller
 {
     public function index($type, $id)
     {
-
         $type = $type;
         if ($type == 'secteur') {
             $secteur = Secteur::where('id', $id)->with('conseiller_data')->first();
@@ -44,26 +43,20 @@ class ActualiteController extends Controller
 
     public function store(Request $request, $type, $id)
     {
-
-        $request->validate(
-            [
-                'image' => 'required|mimes:jpg,jpeg,png',
-            ],
-
-        );
-
-        $actu_image = $request->file('image');
-
-        $name_gen = hexdec(uniqid());
-        $img_ext = strtolower($actu_image->getClientOriginalExtension());
-        $img_name = $name_gen . '.' . $img_ext;
-        $up_location = 'images/actualites/';
-        $actu_image->move($up_location, $img_name);
-
         $data = array();
+
+        if ($request->has('image')) {
+            $actu_image = $request->file('image');
+            $name_gen = hexdec(uniqid());
+            $img_ext = strtolower($actu_image->getClientOriginalExtension());
+            $img_name = $name_gen . '.' . $img_ext;
+            $up_location = 'images/actualites/';
+            $actu_image->move($up_location, $img_name);
+            $data['image'] = url($up_location) . '/' . $img_name;
+        }
+
         $data['libelle'] = $request->libelle;
         $data['description'] = $request->description;
-        $data['image'] = url($up_location) . '/' . $img_name;
 
         if ($type == 'secteur') {
             $data['secteur'] = $id;
@@ -87,11 +80,49 @@ class ActualiteController extends Controller
         return view('pages.actualites.details', compact('actualite', 'type', 'idPS'));
     }
 
+    public function edit($type, $id, $idPS)
+    {
+        $actualite = Actualite::with(['projet_invest', 'secteur_data'])->find($id);
+        $type = $type;
+        $idPS = $idPS;
+        return view('pages.actualites.edit', compact('actualite', 'type', 'id', 'idPS'));
+    }
+
+    public function update(Request $request, $type, $id, $idPS)
+    {
+
+        $data = Actualite::find($id);
+
+        if ($request->has('image')) {
+            $old_image = $request->oldimage;
+            $actu_image = $request->file('image');
+            $name_gen = hexdec(uniqid());
+            $img_ext = strtolower($actu_image->getClientOriginalExtension());
+            $img_name = $name_gen . '.' . $img_ext;
+            $up_location = 'images/actualites/';
+            $actu_image->move($up_location, $img_name);
+
+            $path = parse_url($old_image);
+            File::delete(public_path($path['path']));
+
+            $data->image = url($up_location) . '/' . $img_name;
+
+            Toastr::success('Actualité mise à jour avec succès!', 'Success');
+        }
+
+        $data->libelle = $request->libelle;
+        $data->description = $request->description;
+
+        $data->save();
+
+        return redirect()->intended(route('actualites.home', [$type, $idPS]));
+    }
+
     public function delete($type, $id, $idPS)
     {
 
         $actualite = Actualite::find($id);
-        
+
         $path = parse_url($actualite->image);
 
         File::delete(public_path($path['path']));

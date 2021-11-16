@@ -137,37 +137,19 @@ class UserController extends Controller
         return view('pages.user.edit-profil')->with('user', $user);
     }
 
-    // public function store(Request $request)
-    // {
-    //     $data = $request->input();
-    //     $data['password'] = Hash::make($request->password);
-
-    //     User::create($data);
-
-    //     Toastr::success('Utilisateur ajouté avec succès!', 'Succès');
-
-    //     return back();
-    // }
-
-
-
     public function add($id)
     {
         $role = Role::find($id);
-
         $profil = ProfilInvestisseur::all();
-        $secteur  = Secteur::all();
+        $secteur  = Secteur::where('user', NULL)->get();
         return view('pages.user.add')->with('role', $role)->with('profil', $profil)->with('secteur', $secteur);
     }
 
     public function store(Request $request)
     {
-
         $data = $request->input();
         $data['folder'] = hexdec(uniqid());
         $data['password'] = Hash::make($request->password);
-
-
 
         $user =  User::create($data);
 
@@ -189,7 +171,6 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
-
         $data = $request->except(['_token', 'password']);
 
         User::where('id', $id)->update($data);
@@ -238,18 +219,31 @@ class UserController extends Controller
 
     public function delete($id)
     {
-
         $user = User::find($id);
 
         if ($user->folder != null) {
-
             File::deleteDirectory(storage_path('app/public/uploads/') . $user->folder);
         }
-
 
         User::find($id)->delete();
         Toastr::success('Utilisateur supprimé avec succès!', 'Success');
 
         return redirect()->back();
+    }
+
+    public function getReport($id)
+    {
+        $user = User::find($id);
+        $json = [];
+        $path = storage_path("app/uploads/$user->folder/report.json");
+
+        if (File::exists($path)) {
+            $json = json_decode(file_get_contents($path));
+            if (empty($json)) {
+                $json = [];
+            }
+        }
+
+        return view('pages.user.report')->with('user', $user)->with('reports', $json);
     }
 }

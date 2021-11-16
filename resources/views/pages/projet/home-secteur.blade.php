@@ -9,7 +9,7 @@
 @section('content')
 
 @php
-$privileges = DB::table('privileges')->where('role', auth()->user()->role)->get();
+$privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
 @endphp
 
 <div class="main-content">
@@ -48,7 +48,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
 
             <div class="row">
                 @foreach ($projets as $projet)
-                <div class="col-md-6 col-lg-4">
+                <div class="col-lg-6 col-xl-4">
                     <div class="card"
                         style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%); cursor: pointer;"
                         onclick="redirectTo('{{ route('projet.details', ['id' => $projet->id]) }}')">
@@ -91,7 +91,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
                         <div class="px-4 py-3 border-top">
                             <div class="d-flex justify-content-between align-items-center w-100">
                                 <div>
-                                    <i class="bx bx-calendar me-1"></i> Créer {{
+                                    <i class="bx bx-calendar me-1"></i> Crée {{
                                     Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}
                                 </div>
                                 <span class="badge bg-info p-2">{{ $projet->etat }}</span>

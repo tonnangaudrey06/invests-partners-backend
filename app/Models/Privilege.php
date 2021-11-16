@@ -10,7 +10,7 @@ class Privilege extends Model
     use HasFactory;
 
     protected $fillable = [
-        'role',
+        'user',
         'module',
         'consulter',
         'modifier',
@@ -25,6 +25,13 @@ class Privilege extends Model
         'supprimer' => 'boolean'
     ];
 
-    
-    
+    public function module_data()
+    {
+        return $this->belongsTo(Module::class, 'module', 'id');
+    }
+
+    public function user_data()
+    {
+        return $this->belongsTo(User::class, 'user', 'id');
+    }
 }

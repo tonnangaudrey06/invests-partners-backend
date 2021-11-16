@@ -65,7 +65,7 @@ class Projet extends Model
                 return 'Rejeté';
                 break;
             case 'CLOTURE':
-                return 'Financement colecté';
+                return 'Financement collecté';
                 break;
             default:
                 return 'Publié';
@@ -130,6 +130,9 @@ class Projet extends Model
 
     public function getIvPourcentAttribute()
     {
+        if ($this->iv_total == 0) {
+            return 0;
+        }
         return ((int) $this->iv_total / (int) $this->financement) * 100;
     }
 

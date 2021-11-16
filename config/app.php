@@ -169,12 +169,13 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Dirape\Token\TokenServiceProvider::class,
+        Kreait\Laravel\Firebase\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
@@ -192,7 +193,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,

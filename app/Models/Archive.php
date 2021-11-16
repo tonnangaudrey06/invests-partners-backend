@@ -15,6 +15,7 @@ class Archive extends Model
         'url',
         'source',
         'projet',
+        'message',
         'actualite'
     ];
 

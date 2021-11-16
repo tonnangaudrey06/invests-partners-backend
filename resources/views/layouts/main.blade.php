@@ -10,6 +10,8 @@
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+
     @yield('style')
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
@@ -18,11 +20,14 @@
 
     <!-- Bootstrap Css -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+
     <!-- Icons Css -->
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="{{ asset('assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
-
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
 <body data-sidebar="dark" data-topbar="dark">
@@ -40,13 +45,27 @@
 
     <!-- JAVASCRIPT -->
     <script type="text/javascript" src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
+    {{-- <script type="text/javascript" src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
+
+    @yield('script')
 
     <script type="text/javascript">
+        window.user = {
+            id: {{ optional(auth()->user())->id }}
+        }
+
         var observe;
         var text = document.getElementById('autoresize');
 
         function redirectTo(url) {
-            console.log(url);
             window.location.assign(url);
         }
 
@@ -58,35 +77,35 @@
             window.location.reload();
         }
 
-        function resize () {
+        function resize() {
             text.style.height = 'auto';
-            text.style.height = text.scrollHeight+'px';
+            text.style.height = text.scrollHeight + 'px';
         }
-        
-        function delayedResize () {
+
+        function delayedResize() {
             window.setTimeout(resize, 0);
         }
-        
-        function init () {
+
+        function init() {
             if (window.attachEvent) {
-                observe = function (element, event, handler) {
+                observe = function(element, event, handler) {
                     if (element) {
-                        element.attachEvent('on'+event, handler);
+                        element.attachEvent('on' + event, handler);
                     }
                 };
             } else {
-                observe = function (element, event, handler) {
+                observe = function(element, event, handler) {
                     if (element) {
                         element.addEventListener(event, handler, false);
                     }
                 };
             }
-            
+
             if (text) {
-                observe(text, 'change',  resize);
-                observe(text, 'cut',     delayedResize);
-                observe(text, 'paste',   delayedResize);
-                observe(text, 'drop',    delayedResize);
+                observe(text, 'change', resize);
+                observe(text, 'cut', delayedResize);
+                observe(text, 'paste', delayedResize);
+                observe(text, 'drop', delayedResize);
                 observe(text, 'keydown', delayedResize);
 
                 text.focus();
@@ -99,26 +118,31 @@
             $("#flip").click(function() {
                 $("#panel").slideDown("slow");
             });
-    
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             init();
+
+            $('#summernote').summernote({
+                minHeight: 150
+            });
+
+            $('#summernote1').summernote({
+                minHeight: 150
+            });
         });
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
-        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type="text/javascript" src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
-
-    @yield('script')
 
     <!-- App js -->
     <script type="text/javascript" src="{{ asset('assets/js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 
     {!! Toastr::message() !!}
-
 </body>
 
 </html>

@@ -20,6 +20,7 @@ class InvestissementController extends Controller
         ->groupBy('user')
         ->where('user', $id)
         ->with(['projet_data'])
+        ->latest()
         ->get();
         return $this->sendResponse($projets, 'Get project invest');
     }

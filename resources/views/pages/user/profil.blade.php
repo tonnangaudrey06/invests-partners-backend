@@ -67,20 +67,28 @@
                                 </div>
 
                                 <div class="col-sm-12">
-                                    <div class="pt-4 d-flex justify-content-between">
+                                    <div class="pt-4 d-flex justify-content-between flex-wrap">
                                         @if (auth()->user()->id == $user->id)
                                         <div>
                                             <a href="{{ route('user.profile.edit', $user->id) }}"
-                                                class="btn btn-primary waves-effect waves-light btn-sm">Modifier profil
+                                                class="btn btn-primary waves-effect waves-light btn-sm mb-2">Modifier profil
                                                 <i class="mdi mdi-arrow-right ms-1"></i></a>
                                         </div>
                                         @endif
                                         @if ($user->role == 2)
                                         <div>
                                             <a href="{{ route('chat.view', $user->id) }}"
-                                                class="btn btn-primary waves-effect waves-light btn-sm">Voir les
+                                                class="btn btn-primary waves-effect waves-light btn-sm mb-2">Voir les
                                                 conversations
                                                 <i class="mdi mdi-message-text ms-1"></i></a>
+                                        </div>
+                                        @endif
+                                        @if ($user->role == 2)
+                                        <div>
+                                            <a href="{{route('user.report', $user->id)}}"
+                                                class="btn btn-primary waves-effect waves-light btn-sm mb-2">Voir son
+                                                reporting
+                                                <i class="bx bx-notepad ms-1"></i></a>
                                         </div>
                                         @endif
                                     </div>

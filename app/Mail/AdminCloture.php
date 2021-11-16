@@ -18,7 +18,7 @@ class AdminCloture extends Mailable
      */
     public $projet;
 
-    public function __construct(Array $projet)
+    public function __construct(array $projet)
     {
         $this->projet = $projet;
     }
@@ -30,6 +30,8 @@ class AdminCloture extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com')->view('emails.admincloture')->subject("Cloture Projet {$this->projet['intitule']}");;
+        return $this->from('info@invest--partners.com')
+            ->view('emails.admincloture')
+            ->subject("Clôture du projet ".$this->projet['intitule']);
     }
 }

@@ -35,6 +35,6 @@ class RejetMail extends Mailable
     {
         return $this->from(Auth()->user()->email)->view('emails.rejet')
                     ->cc(Auth()->user()->role == 1 ? $this->projet['secteur_data']['conseiller_data']['email'] : $this->admin['email'])
-                    ->subject("Refus Projet {$this->projet['intitule']}");
+                    ->subject("Refus de votre projet {$this->projet['intitule']}");
     }
 }

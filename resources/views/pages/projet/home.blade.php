@@ -9,7 +9,7 @@
 @section('content')
 
 @php
-$privileges = DB::table('privileges')->where('role', auth()->user()->role)->get();
+$privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
 @endphp
 
 <div class="main-content">
@@ -57,16 +57,17 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
             </div>
 
             @foreach ($secteurs as $secteur)
+            @if(count($secteur->projets) > 0)
             <div class="card bg-primary">
                 <div class="card-body p-2 d-flex justify-content-between align-items-center text-white">
                     <h4 class="card-title m-0 text-white"><i class="mdi mdi-chevron-right me-1"></i>
                         {{$secteur->libelle}}</h4>
-                    <h4 class="card-title m-0 text-white">{{count($secteur->projets)}} projets</h4>
+                    <h4 class="card-title m-0 text-white">{{count($secteur->projets)}} projet(s)</h4>
                 </div>
             </div>
             <div class="row">
                 @foreach ($secteur->projets as $projet)
-                <div class="col-md-6 col-lg-4">
+                <div class="col-lg-6 col-xl-4">
                     <div class="card"
                         style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%); cursor: pointer;"
                         onclick="redirectTo('{{ route('projet.details', ['id' => $projet->id]) }}')">
@@ -109,7 +110,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
                         <div class="px-4 py-3 border-top">
                             <div class="d-flex justify-content-between align-items-center w-100">
                                 <div>
-                                    <i class="bx bx-calendar me-1"></i> Créer {{
+                                    <i class="bx bx-calendar me-1"></i> Crée {{
                                     Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}
                                 </div>
                                 <span class="badge bg-info p-2">{{ $projet->etat }}</span>
@@ -119,6 +120,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
                 </div>
                 @endforeach
             </div>
+            @endif
             @endforeach
             {{--
             <div class="row">
@@ -170,7 +172,7 @@ $privileges = DB::table('privileges')->where('role', auth()->user()->role)->get(
                         <div class="px-4 py-3 border-top">
                             <div class="d-flex justify-content-between align-items-center w-100">
                                 <div>
-                                    <i class="bx bx-calendar me-1"></i> Créer {{
+                                    <i class="bx bx-calendar me-1"></i> Crée {{
                                     Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}
                                 </div>
                                 <span class="badge bg-info p-2">{{ $projet->etat }}</span>

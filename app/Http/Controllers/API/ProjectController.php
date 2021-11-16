@@ -3,25 +3,25 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Mail\CreationProjetMail;
 use App\Mail\PaiementProjetConseilleMail;
 use App\Mail\PaiementProjetPorteurMail;
+use App\Mail\CreationProjetMail;
+use App\Mail\CreationProjetPorteur;
+use App\Mail\CreationProjetPorteurMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use App\Models\Actualite;
 use App\Models\Archive;
 use App\Models\Equipe;
-use App\Models\Membre;
-use App\Models\ProfilInvestisseur;
 use App\Models\Projet;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 
 class ProjectController extends Controller
 {
     public function index()
     {
-        $projets = Projet::with(['membres', 'user_data'])->get();
+        $projets = Projet::latest()->with(['membres', 'user_data'])->get();
         $this->sendResponse($projets, 'All projects');
     }
 
@@ -92,7 +92,9 @@ class ProjectController extends Controller
         // Retrieve projects informations
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
 
-        try {
+        // try {
+            Mail::to($user->email)->queue(new CreationProjetPorteurMail($projet->toArray()));
+
             if (!empty($projet->secteur_data->conseiller_data)) {
                 Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
             }
@@ -100,9 +102,9 @@ class ProjectController extends Controller
             if (!empty($admin)) {
                 Mail::to($admin->email)->queue(new CreationProjetMail($projet->toArray()));
             }
-        } catch (\Throwable $e) {
-            return $this->sendResponse($projet, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
-        }
+        // } catch (\Throwable $e) {
+        //     return $this->sendError('Impossible d\'envoyer un mail car l\'email n\'existe pas.', $projet);
+        // }
 
         return $this->sendResponse($projet, 'Project');
     }
@@ -165,6 +167,8 @@ class ProjectController extends Controller
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
 
         try {
+            Mail::to($user->email)->queue(new CreationProjetPorteurMail($projet->toArray()));
+
             if (!empty($projet->secteur_data->conseiller_data)) {
                 Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
             }
@@ -181,12 +185,13 @@ class ProjectController extends Controller
 
     public function store3($id, Request $request)
     {
-        $membre = $request->input();
+        $membre = $request->input('membre');
+        $statut = $request->input('statut');
 
         Equipe::create([
             'projet' => $id,
-            'membre' => $membre['membre']->id,
-            'statut' => $membre['statut']
+            'membre' => $membre,
+            'statut' => $statut
         ]);
 
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $id)->first();
@@ -203,7 +208,7 @@ class ProjectController extends Controller
     
     public function projets($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('user', $id)->get();
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('user', $id)->latest()->get();
         return $this->sendResponse($projet, 'Projects');
     }
 
@@ -234,6 +239,7 @@ class ProjectController extends Controller
             ->where('secteur', $id)
             ->where('ville_activite', 'like', $town)
             ->where('etat', 'PUBLIE')
+            ->latest()
             ->get();
         return $this->sendResponse($projet, 'Projects');
     }

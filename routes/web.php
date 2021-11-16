@@ -25,8 +25,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
 // Route::get('/dashboard', function () {
 //     return view('pages.dashboard.home');
 // })->name('dashboard');
@@ -34,6 +32,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
+
+// Route::get('test', function () {
+//     event(new App\Events\TestEvent('Someone'));
+//     return "Event has been sent!";
+// });
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
@@ -48,17 +51,19 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('chat')->name('chat.')->group(function () {
         Route::get('/', [MessageController::class, 'index'])->name('home');
         Route::get('/{id}', [MessageController::class, 'index2'])->name('view');
+        Route::get('/delete/message/{id}', [MessageController::class, 'deleteMessage'])->name('delete');
+        Route::post('/{sender}/send/{receiver}', [MessageController::class, 'newConversation'])->name('new');
         Route::get('/{id}/{receiver}/{conversation}', [MessageController::class, 'index2'])->name('view.conversation');
         Route::get('/{id}/{conversation}', [MessageController::class, 'index'])->name('conversation');
         Route::post('/{sender}/{conversation}/send/{receiver}', [MessageController::class, 'send'])->name('send');
-        Route::post('/{sender}/send/{receiver}', [MessageController::class, 'newConversation'])->name('new');
     });
 
     Route::prefix('user')->name('user.')->group(function () {
         Route::get('/', function () {
             return redirect()->route('user.administrateur');
         })->name('home');
-        Route::get('/add/{id}', [UserController::class, 'add'])->name('add');        
+        Route::get('/add/{id}', [UserController::class, 'add'])->name('add');  
+        Route::get('/{id}/report', [UserController::class, 'getReport'])->name('report');        
         Route::post('/store', [UserController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [UserController::class, 'update'])->name('update');
@@ -125,13 +130,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/delete/{id}', [EvenementController::class, 'delete'])->name('delete');
         Route::get('/edit/{id}', [EvenementController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [EvenementController::class, 'update'])->name('update');
+        Route::get('/{id}', [EvenementController::class, 'show'])->name('show');
     });
 
     Route::prefix('actualites')->name('actualites.')->group(function () {
         Route::get('/{type}/{id}', [ActualiteController::class, 'index'])->name('home');
         Route::get('/add/{type}/{id}', [ActualiteController::class, 'add'])->name('add');
-        // Route::get('/edit/{id}', [ActualiteController::class, 'edit'])->name('edit');
-        // Route::post('/update/{id}', [ActualiteController::class, 'edit'])->name('edit');
+        Route::get('/edit/{type}/{id}/{idPS}', [ActualiteController::class, 'edit'])->name('edit');
+        Route::post('/update/{type}/{id}/{idPS}', [ActualiteController::class, 'update'])->name('update');
         Route::get('/details/show/{type}/{id}/{idPS}', [ActualiteController::class, 'showDetails'])->name('details');
         Route::post('/store/{type}/{id}', [ActualiteController::class, 'store'])->name('store');
         Route::get('/delete/{type}/{id}/{idPS}', [ActualiteController::class, 'delete'])->name('delete');
@@ -165,10 +171,10 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/add/writer', [PrivilegeController::class, 'InsertWriter'])->name('add.writer');
 Route::get('/all/writer', [PrivilegeController::class, 'AllWriter'])->name('all.writer');
-Route::get('/edit/writer/{idrole}/{idmodule}', [PrivilegeController::class, 'EditWriter'])->name('edit.writer');
-Route::post('/update/{idrole}/{idmodule}', [PrivilegeController::class, 'UpdateWriter'])->name('update.writer');
 Route::post('/store/writer', [PrivilegeController::class, 'StoreWriter'])->name('store.writer');
-Route::get('/delete/writer/{idrole}/{idmodule}', [PrivilegeController::class, 'DeleteWriter'])->name('delete.writer');
+Route::get('/edit/writer/{privilege}', [PrivilegeController::class, 'EditWriter'])->name('edit.writer');
+Route::post('/update/{privilege}', [PrivilegeController::class, 'UpdateWriter'])->name('update.writer');
+Route::get('/delete/writer/{privilege}', [PrivilegeController::class, 'DeleteWriter'])->name('delete.writer');
 
 Route::get('/get/user/{user_id}', [SecteurController::class, 'GetUserEdit']);
 

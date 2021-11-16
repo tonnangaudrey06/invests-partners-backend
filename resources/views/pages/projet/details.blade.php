@@ -43,16 +43,24 @@
 
             <div class="card">
                 <div class="card-body">
-                    <div class="d-flex justify-content-end align-items-center">
-                        {{-- <h4 class="card-title">Actions</h4> --}}
-
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="actions-start d-flex align-items-center">
+                            @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 5)
+                            <button id="openMessageModal"
+                                data-url="{{ route('chat.new', ['sender' => auth()->user()->id, 'receiver' => $projet->user]) }}"
+                                class="btn btn-sm btn-primary" onclick="openMessageModal()">
+                                Message au porteur du projet
+                                <i class="mdi mdi-email-plus ms-1"></i>
+                            </button>
+                            @endif
+                        </div>
 
                         <div class="actions d-flex align-items-center">
                             @foreach ($privileges as $privilege)
 
                             @if( $privilege->module == 1 && $privilege->modifier == 1)
 
-                            @if (Auth()->user()->role == 1)
+                            @if (auth()->user()->role == 1)
 
                             @if ($projet->etat == 'ATTENTE_VALIDATION_ADMIN' || $projet->etat == 'ATTENTE_INFO_SUPPL')
                             <a href="{{ route('projet.admin.validate', $projet->id) }}"
@@ -100,7 +108,7 @@
                             @endif
                             @endforeach
 
-                            @if (Auth()->user()->role == 1 )
+                            @if (auth()->user()->role == 1 )
                             @if($projet->etat == 'COMPLET')
                             <a href="{{ route('projet.publish', $projet->id) }}"
                                 class="btn btn-sm btn-primary me-2">Publier</a>
@@ -177,7 +185,7 @@
                                     <div class="row text-center mb-4">
                                         <div class="col-md-6 col-lg-3">
                                             <div>
-                                                <p class="text-muted fw-bolder mb-2">Créer</p>
+                                                <p class="text-muted fw-bolder mb-2">Crée</p>
                                                 <h6 class="mb-0 text-primary">{{
                                                     Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}</h6>
                                             </div>
@@ -323,7 +331,7 @@
                         </div>
                     </div>
 
-                    
+
 
                     <div class="card">
                         <div class="card-body">
@@ -574,9 +582,48 @@
 
     @include('partials.footer')
 </div>
+
+<div id="userMessage" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="userMessageLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <form id="userMessageForm" action="" method="POST">
+                @csrf
+                <input type="hidden" name="projet" value="{{ $projet->id }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userMessageLabel">Nouveau message
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="autoresize">Votre message</label>
+                            <textarea id="autoresize" class="form-control overflow-hidden" name="body"
+                                rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary waves-effect"
+                        data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-sm btn-primary waves-effect waves-light">Envoyer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('script')
 <!-- crypto dash init js -->
 <script type="text/javascript" src="{{ asset('assets/js/pages/project-overview.init.js') }}"></script>
+
+<script type="text/javascript">
+    function openMessageModal() {
+        const url = $('#openMessageModal').data('url');
+        $('#userMessageForm').attr('action', url);
+        new bootstrap.Modal(document.getElementById('userMessage')).show()
+    }
+</script>
 @endsection
