@@ -27,6 +27,7 @@ class User extends Authenticatable
         'status',
         'profil',
         'role',
+        'device_token',
         'email_verified_at'
     ];
 
@@ -118,78 +119,29 @@ class User extends Authenticatable
         return 'App.User.' . $this->id;
     }
 
-    public function routeNotificationForFcm()
-    {
-        return $this->fcm_token;
-    }
-
-    public function send_notification_FCM($body)
+    public function sendFcmNotification($body)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
 
-        $dataArr = [
-            'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
-            'id' => $this->id,
-            'status' => 'done'
-        ];
-
-        $notification = [
-            'title' => 'Invest & Partners',
-            'text' => $body,
-            'image' => url('assets/images/logo-light.png'),
-            'sound' => 'default',
-            'badge' => '1'
-        ];
-
-        $arrayToSend = [
-            'to' => '/topics/all',
-            'notification' => $notification,
-            'data' => $dataArr,
-            'priority' => 'high'
-        ];
-
-        $fields = json_encode($arrayToSend);
-
-        $headers = [
-            'Content-type: application/json',
-            'Authorization: ' . env('FCM_KEY')
-        ];
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-
-        $result = curl_exec($ch);
-
-        curl_close($ch);
-
-        return $result;
-    }
-
-    public function sendWebNotification($body)
-    {
-        $url = 'https://fcm.googleapis.com/fcm/send';
-
-        // $FcmToken = User::whereNotNull('device_key')->pluck('device_key')->all();
+        $FcmToken = $this->device_token;
 
         $serverKey = 'AAAAp7I2kBQ:APA91bGVBlX27Lfh9C9VdmWRkELtCeHAAFjwxwamlnjmSxiu5mzctSEIFSsxYqvzeL6dRfLJptUbM6TcySabiOXBqG6q1dySJJw3UPAklRZ3wcDbF6AhkTiVPo5lAgWehYC9ZJ-qo0d3';
 
         $data = [
-            "to" => "dCv-IcOVLN4:APA91bFlf861BuQKtpNpFW5dLBJEknZZUEVdbI7afD_UMygzxM2X2pitNXQjTQN5bJby-Ee4RTjhORaZuq9VkMvPwzngijD0h4NeyuiHW4R6Lj7f3CzXs2N2hWo4I9KXzGx6vgxitQY_",
+            "to" => $FcmToken,
             "direct_boot_ok" => true,
             "notification" => [
-                "title" => 'Invest & Partners',
+                "title" => 'Nouveau message',
                 "body" => $body,
+                'notification_priority' => 'PRIORITY_MAX',
+                "default_vibrate_timings" => true,
+                "visibility" => 'SECRET',
                 'sound' => 'default',
                 'badge' => '1'
             ],
-            'topic' => 'Nouveau message test',
-            'priority' => 'high'
+            'priority' => 'HIGH'
         ];
-        
+
         $encodedData = json_encode($data);
 
         $headers = [
@@ -197,31 +149,22 @@ class User extends Authenticatable
             'Content-Type:application/json',
         ];
 
-        // dd($encodedData);
+        try {
+            $ch = curl_init();
 
-        $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
 
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        // Disabling SSL Certificate support temporarly
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
-
-        // Execute post
-        $result = curl_exec($ch);
-
-        if ($result === FALSE) {
-            die('Curl failed: ' . curl_error($ch));
+            curl_exec($ch);
+            curl_close($ch);
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-        // Close connection
-        curl_close($ch);
-
-        // FCM response
-        die('Curl Success: ' . $result);
     }
 }

@@ -116,7 +116,9 @@ class MessageController extends Controller
 
         $user = User::find($receiver);
 
-        $user->send_notification_FCM('Nouveau message');
+        if (!isset($user->device_token) && !empty($user->device_token)) {
+            $user->sendFcmNotification($data['message']);
+        }
 
         return $this->sendResponse($message, 'New message');
     }
@@ -147,8 +149,6 @@ class MessageController extends Controller
             'projet' => $request->has('projet') ? $request->projet : null,
             'message' => html_entity_decode(htmlentities(trim($request->input('body'))))
         ];
-
-        // dd($request->input());
 
         $message = Message::create($data);
 
@@ -182,8 +182,10 @@ class MessageController extends Controller
         }
 
         $user = User::find($receiver);
-        
-        $user->send_notification_FCM('Nouveau message');
+
+        if (!isset($user->device_token) && !empty($user->device_token)) {
+            $user->sendFcmNotification($data['message']);
+        }
 
         Toastr::success('Votre message a été envoyé', 'Succès');
 
