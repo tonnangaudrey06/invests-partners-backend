@@ -144,11 +144,7 @@ class MessageController extends Controller
 
         $user = User::find($receiver);
 
-        // event(new MessageEvent($message));
-
         $user->notify(new MessageNotification($message));
-
-        // $user->notify(new MessageNotification($message));
 
         return $this->sendResponse($message, 'New message');
     }
@@ -188,6 +184,10 @@ class MessageController extends Controller
         $invest = User::find($sender);
 
         $projet->secteur_data->conseiller_data->notify(new MessageNotification($message));
+
+        $user = User::find($receiver);
+
+        $user->notify(new MessageNotification($message));
 
         try {
             Mail::to($projet->secteur_data->conseiller_data->email)->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));

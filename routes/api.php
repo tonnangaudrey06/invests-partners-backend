@@ -80,6 +80,7 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('/{id}', [UserController::class, 'show']);
         Route::put('/{id}', [UserController::class, 'update']);
+        Route::put('/{id}/device/token', [UserController::class, 'deviceToken']);
         Route::put('/{id}/update/password', [UserController::class, 'updatePassword']);
         Route::prefix('{id}/upload')->group(function () {
             Route::post('/photo', [UserController::class, 'uploadProfilePicture']);
