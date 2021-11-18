@@ -96,9 +96,9 @@ class MessageController extends Controller
 
         $user = User::find($receiver);
 
-        $user->notify(new MessageNotification($message));
+        // $user->notify(new MessageNotification($message));
 
-        $user->send_notification_FCM('Nouveau message');
+        $user->sendWebNotification('Nouveau message');
 
         return $this->sendResponse($message, 'New message');
     }
@@ -150,7 +150,7 @@ class MessageController extends Controller
 
         $user->notify(new MessageNotification($message));
 
-        $user->send_notification_FCM('Nouveau message');
+        $user->sendWebNotification('Nouveau message');
 
         return $this->sendResponse($message, 'New message');
     }

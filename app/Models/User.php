@@ -125,48 +125,6 @@ class User extends Authenticatable
 
     public function send_notification_FCM($body)
     {
-        // $url = 'https://fcm.googleapis.com/fcm/send';
-
-        // $header = [
-        //     'Content-type: application/json',
-        //     'Authorization: ' . env('FCM_KEY')
-        // ];
-
-        // $post_data = "{
-        //         'to' : '$notification_id ',
-        //         'data' : {
-        //           'body' : '',
-        //           'title' : '$title',
-        //           'type' : '$type',
-        //           'id' : '$id',
-        //           'message' : '$message',
-        //         },
-        //         'notification' : {
-        //              'body' : '$message',
-        //              'title' : '$title',
-        //               'type' : '$type',
-        //              'id' : '$id . ',
-        //              'message' : '$message',
-        //             'icon' : 'new',
-        //             'sound' : 'default'
-        //             },
-        //       }";
-        // // print_r($post_data);die;
-
-        // $crl = curl_init();
-        // curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, false);
-
-        // curl_setopt($crl, CURLOPT_URL, $url);
-        // curl_setopt($crl, CURLOPT_HTTPHEADER, $header);
-
-        // curl_setopt($crl, CURLOPT_POST, true);
-        // curl_setopt($crl, CURLOPT_POSTFIELDS, $post_data);
-        // curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
-
-        // $rest = curl_exec($crl);
-
-        // return $rest;
-
         $url = 'https://fcm.googleapis.com/fcm/send';
 
         $dataArr = [
@@ -197,7 +155,6 @@ class User extends Authenticatable
             'Authorization: ' . env('FCM_KEY')
         ];
 
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -210,5 +167,61 @@ class User extends Authenticatable
         curl_close($ch);
 
         return $result;
+    }
+
+    public function sendWebNotification($body)
+    {
+        $url = 'https://fcm.googleapis.com/fcm/send';
+
+        // $FcmToken = User::whereNotNull('device_key')->pluck('device_key')->all();
+
+        $serverKey = 'AAAAp7I2kBQ:APA91bGVBlX27Lfh9C9VdmWRkELtCeHAAFjwxwamlnjmSxiu5mzctSEIFSsxYqvzeL6dRfLJptUbM6TcySabiOXBqG6q1dySJJw3UPAklRZ3wcDbF6AhkTiVPo5lAgWehYC9ZJ-qo0d3';
+
+        $data = [
+            "to" => "dCv-IcOVLN4:APA91bFlf861BuQKtpNpFW5dLBJEknZZUEVdbI7afD_UMygzxM2X2pitNXQjTQN5bJby-Ee4RTjhORaZuq9VkMvPwzngijD0h4NeyuiHW4R6Lj7f3CzXs2N2hWo4I9KXzGx6vgxitQY_",
+            "direct_boot_ok" => true,
+            "notification" => [
+                "title" => 'Invest & Partners',
+                "body" => $body,
+                'sound' => 'default',
+                'badge' => '1'
+            ],
+            'topic' => 'Nouveau message test',
+            'priority' => 'high'
+        ];
+        
+        $encodedData = json_encode($data);
+
+        $headers = [
+            'Authorization:key=' . $serverKey,
+            'Content-Type:application/json',
+        ];
+
+        // dd($encodedData);
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        // Disabling SSL Certificate support temporarly
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
+
+        // Execute post
+        $result = curl_exec($ch);
+
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+
+        // Close connection
+        curl_close($ch);
+
+        // FCM response
+        die('Curl Success: ' . $result);
     }
 }

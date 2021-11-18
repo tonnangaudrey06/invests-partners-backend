@@ -114,6 +114,10 @@ class MessageController extends Controller
             }
         }
 
+        $user = User::find($receiver);
+
+        $user->send_notification_FCM('Nouveau message');
+
         return $this->sendResponse($message, 'New message');
     }
 
@@ -176,6 +180,10 @@ class MessageController extends Controller
                 }
             }
         }
+
+        $user = User::find($receiver);
+        
+        $user->send_notification_FCM('Nouveau message');
 
         Toastr::success('Votre message a été envoyé', 'Succès');
 
