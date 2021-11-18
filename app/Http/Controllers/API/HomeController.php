@@ -40,6 +40,17 @@ class HomeController extends Controller
         ->get();
         return $this->sendResponse($secteur, 'App ville');
     }
+
+    public function villeParSecteur($idSecteur, $pays)
+    {
+        $villeParSecteur = DB::table('projets')
+        ->join('secteurs', 'projets.secteur', '=', 'secteurs.id')
+        ->where('secteur',$idSecteur)
+        ->where('pays_activite',$pays)
+        ->get();
+        return $this->sendResponse($villeParSecteur, 'App ville');
+    }
+
     public function showbycityandsector($ville, $secteur)
     {
         $projet = Projet::where('ville_activite',$ville)->where('secteur', $secteur)->get();
