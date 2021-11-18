@@ -55,7 +55,6 @@ class UserSeeder extends Seeder
             'telephone' => $faker->phoneNumber(),
             'role' => 4,
             'folder' => hexdec(uniqid()),
-            'profil' => 1,
             'status' => 'PARTICULIER',
             'email_verified_at' => now(),
             'password' => Hash::make('investisseur')

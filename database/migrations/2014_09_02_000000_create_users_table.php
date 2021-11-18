@@ -34,6 +34,7 @@ class CreateUsersTable extends Migration
             $table->string('ville')->nullable();
             $table->string('profession')->nullable();
             $table->text('parcours')->nullable();
+            $table->string('device_token')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

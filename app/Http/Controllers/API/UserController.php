@@ -54,6 +54,14 @@ class UserController extends Controller
         return $this->show($id);
     }
 
+    public function deviceToken($id, Request $request)
+    {
+        $user = User::find($id);
+        $user->device_token = $request->except('device_token');
+        $user->save();
+        return $this->show($id);
+    }
+
     public function uploadProfilePicture($id, Request $request)
     {
         $photo = $request->file('photo');

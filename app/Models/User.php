@@ -27,6 +27,7 @@ class User extends Authenticatable
         'status',
         'profil',
         'role',
+        'device_token',
         'email_verified_at'
     ];
 
@@ -118,53 +119,52 @@ class User extends Authenticatable
         return 'App.User.' . $this->id;
     }
 
-    public function routeNotificationForFcm()
-    {
-        return $this->fcm_token;
-    }
-
-    function send_notification_FCM($notification_id, $title, $message, $id, $type)
+    public function sendFcmNotification($body)
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
 
-        $header = [
-            'Content-type: application/json',
-            'Authorization: ' . env('FCM_KEY')
+        $FcmToken = $this->device_token;
+
+        $serverKey = 'AAAAp7I2kBQ:APA91bGVBlX27Lfh9C9VdmWRkELtCeHAAFjwxwamlnjmSxiu5mzctSEIFSsxYqvzeL6dRfLJptUbM6TcySabiOXBqG6q1dySJJw3UPAklRZ3wcDbF6AhkTiVPo5lAgWehYC9ZJ-qo0d3';
+
+        $data = [
+            "to" => $FcmToken,
+            "direct_boot_ok" => true,
+            "notification" => [
+                "title" => 'Nouveau message',
+                "body" => $body,
+                'notification_priority' => 'PRIORITY_MAX',
+                "default_vibrate_timings" => true,
+                "visibility" => 'SECRET',
+                'sound' => 'default',
+                'badge' => '1'
+            ],
+            'priority' => 'HIGH'
         ];
 
-        $post_data = "{
-                'to' : '$notification_id ',
-                'data' : {
-                  'body' : '',
-                  'title' : '$title',
-                  'type' : '$type',
-                  'id' : '$id',
-                  'message' : '$message',
-                },
-                'notification' : {
-                     'body' : '$message',
-                     'title' : '$title',
-                      'type' : '$type',
-                     'id' : '$id . ',
-                     'message' : '$message',
-                    'icon' : 'new',
-                    'sound' : 'default'
-                    },
-              }";
-        // print_r($post_data);die;
+        $encodedData = json_encode($data);
 
-        $crl = curl_init();
-        curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, false);
+        $headers = [
+            'Authorization:key=' . $serverKey,
+            'Content-Type:application/json',
+        ];
 
-        curl_setopt($crl, CURLOPT_URL, $url);
-        curl_setopt($crl, CURLOPT_HTTPHEADER, $header);
+        try {
+            $ch = curl_init();
 
-        curl_setopt($crl, CURLOPT_POST, true);
-        curl_setopt($crl, CURLOPT_POSTFIELDS, $post_data);
-        curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $encodedData);
 
-        $rest = curl_exec($crl);
-
-        return $rest;
+            curl_exec($ch);
+            curl_close($ch);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

@@ -114,6 +114,12 @@ class MessageController extends Controller
             }
         }
 
+        $user = User::find($receiver);
+
+        if (!isset($user->device_token) && !empty($user->device_token)) {
+            $user->sendFcmNotification($data['message']);
+        }
+
         return $this->sendResponse($message, 'New message');
     }
 
@@ -144,8 +150,6 @@ class MessageController extends Controller
             'message' => html_entity_decode(htmlentities(trim($request->input('body'))))
         ];
 
-        // dd($request->input());
-
         $message = Message::create($data);
 
         if ($request->hasFile('attachement')) {
@@ -175,6 +179,12 @@ class MessageController extends Controller
                     return $this->sendError("La taille de certains fichiers dépasse 150Mo !", [], 500);
                 }
             }
+        }
+
+        $user = User::find($receiver);
+
+        if (!isset($user->device_token) && !empty($user->device_token)) {
+            $user->sendFcmNotification($data['message']);
         }
 
         Toastr::success('Votre message a été envoyé', 'Succès');
