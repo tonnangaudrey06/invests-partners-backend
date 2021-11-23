@@ -27,6 +27,54 @@ class HomeController extends Controller
         $projets =Projet::where('type', 'IP')->get();
         return $this->sendResponse($projets, 'App projets');
     }
+    public function ville()
+    {
+        $villes= DB::table('projets')->select('ville_activite','pays_activite')->where('type', 'IP')->groupBy('ville_activite')->get();
+        return $this->sendResponse($villes, 'App ville');
+    }
+    public function secteurparville()
+    {
+        $secteur = DB::table('secteurs')
+        ->join('projets', 'secteurs.id', '=', 'projets.secteur')
+        ->select('secteurs.libelle', 'secteurs.photo','secteurs.id','projets.ville_activite')
+        ->get();
+        return $this->sendResponse($secteur, 'App ville');
+    }
+
+    public function villeParSecteur($idSecteur, $pays)
+    {
+        $villeParSecteur = DB::table('projets')
+        ->join('secteurs', 'projets.secteur', '=', 'secteurs.id')
+        ->where('secteur',$idSecteur)
+        ->where('pays_activite',$pays)
+        ->get();
+        return $this->sendResponse($villeParSecteur, 'App ville');
+    }
+
+    public function showbycityandsector($ville, $secteur)
+    {
+        $projet = Projet::where('ville_activite',$ville)->where('secteur', $secteur)->get();
+        
+        return $this->sendResponse($projet, 'Project');
+    }
+    public function getactualites($id)
+    {
+        $actualite = DB::table('actualites')->where('projet',$id)->get();
+        
+        return $this->sendResponse($actualite, 'SUCCESS_ACTUALITE');
+    }
+
+    public function financements($id)
+    {
+        $invest = DB::table('investissements')->select('projet', DB::raw('SUM(montant) as total_montant'), DB::raw('COUNT(id) as total_contrib'))->groupBy('projet')->where('projet', $id)->get();
+        return $this->sendResponse($invest, 'Investissement');
+    }
+    public function getprojetparsecteur()
+    {
+        $projetParSect = Projet::groupBy('secteur')->get();
+        return $this->sendResponse($projetParSect, 'ProjetParSecteur');
+    }
+
 
     public function chiffres()
     {

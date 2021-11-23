@@ -128,7 +128,6 @@ class UserController extends Controller
 
             return view('pages.user.profil', compact('user', 'total', 'projets'));
         }
-
         return view('pages.user.profil')->with('user', $user);
     }
 
