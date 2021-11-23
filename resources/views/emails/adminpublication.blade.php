@@ -13,6 +13,7 @@
   Vous pouvez suivre l'évolution de l'investissement directement depuis votre tableau de bord ou contacter un
   conseiller.</p>
   <p><strong><em>Entreprendre et investir autrement!</em></strong></p>
+  @include('partials.signature')
 </body>
 
 </html>

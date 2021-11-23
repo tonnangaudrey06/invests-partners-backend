@@ -8,6 +8,7 @@
 
 <body>
     <p><strong>Restez connecté!</strong></p>
+    @include('partials.signature')
 </body>
 
 </html>

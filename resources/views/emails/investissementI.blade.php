@@ -13,6 +13,7 @@
     en compte sur notre plateforme. Suivez vos investissements; continuez à être informé de l'évolution, parlez à nos
     conseillers en investissement.</p>
   <p><strong><em>Entreprendre et investir autrement!</em></strong></p>
+  @include('partials.signature')
 </body>
 
 </html>

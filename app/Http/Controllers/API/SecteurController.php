@@ -18,12 +18,18 @@ class SecteurController extends Controller
     public function show($id)
     {
         $secteur = Secteur::find($id);
-        $pays = Projet::select('pays_activite')->distinct()->where('secteur', $id)->where('etat', 'PUBLIE')->get();
+        $pays = Projet::select('pays_activite')
+        ->distinct()
+        ->where('secteur', $id)
+        ->where('etat', 'PUBLIE')
+        ->get();
         foreach ($pays as $key => $value) {
             $data = [
                 'libelle' => $value->pays_activite,
                 'viles' => Projet::select(DB::raw('ville_activite as libelle'))
                     ->distinct()
+                    ->where('secteur', $id)
+                    ->where('etat', 'PUBLIE')
                     ->where('pays_activite', $value->pays_activite)
                     ->get()
             ];

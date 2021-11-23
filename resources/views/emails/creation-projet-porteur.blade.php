@@ -17,6 +17,7 @@
     <p>
         <strong>Entreprendre et investir autrement !</strong>
     </p>
+    @include('partials.signature')
 </body>
 
 </html>

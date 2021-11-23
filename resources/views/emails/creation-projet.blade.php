@@ -14,6 +14,7 @@
   <p>Cordialement<br />
     <strong>Invest & Partners</strong>
   </p>
+  @include('partials.signature')
 </body>
 
 </html>

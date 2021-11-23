@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image as Image;
+use Illuminate\Support\Facades\File;
 
 class HomeController extends Controller
 {
@@ -23,19 +24,20 @@ class HomeController extends Controller
 
     public function StoreSlide(Request $request)
     {
-        $validated = $request->validate([
-            'image' => 'required|mimes:jpg,jpeg,png',
-        ],
+        $validated = $request->validate(
+            [
+                'image' => 'required|mimes:jpg,jpeg,png',
+            ],
 
-       );
+        );
 
         $slider_image = $request->file('image');
 
         $name_gen = hexdec(uniqid());
         $img_ext = strtolower($slider_image->getClientOriginalExtension());
-        $img_name = $name_gen.'.'.$img_ext;
+        $img_name = $name_gen . '.' . $img_ext;
         $up_location = 'images/slides/';
-        $last_img = $up_location.$img_name;
+        $last_img = $up_location . $img_name;
         $slider_image->move($up_location, $img_name);
 
         // $name_gen = hexdec(uniqid()) . '.' . $slider_image->getClientOriginalExtension();
@@ -64,31 +66,24 @@ class HomeController extends Controller
         $data = array();
         $data['title'] = $request->title;
         $data['description'] = $request->description;
-        DB::table('sliders')->where('id', $id)->update($data);
 
-        $oldimage = $request->oldimage;
-        $image = $request->image;
-        if ($image) {
+        if ($request->has('image')) {
+            $old_image = $request->oldimage;
+            $actu_image = $request->file('image');
             $name_gen = hexdec(uniqid());
-            $img_ext = strtolower($image->getClientOriginalExtension());
-            $img_name = $name_gen.'.'.$img_ext;
+            $img_ext = strtolower($actu_image->getClientOriginalExtension());
+            $img_name = $name_gen . '.' . $img_ext;
             $up_location = 'images/slides/';
-            $last_img = $up_location.$img_name;
-            $image->move($up_location, $img_name);
+            $actu_image->move($up_location, $img_name);
+
+            $path = parse_url($old_image);
+            File::delete(public_path($path['path']));
 
             $data['image'] = url($up_location) . '/' . $img_name;
-    
-            unlink($oldimage);
-            DB::table('sliders')->where('id', $id)->update($data);
-            
-
-            return Redirect()->route('slider.home')->with('success', 'Slide updated succesfully');
-        } else {
-
-            $data['image'] = $oldimage;
-            DB::table('sliders')->where('id', $id)->update($data);
-            return Redirect()->route('slider.home')->with('success', 'Slide updated succesfully');
         }
+
+        DB::table('sliders')->where('id', $id)->update($data);
+        return Redirect()->route('slider.home')->with('success', 'Slide updated succesfully');
     }
 
     public function DeleteSlide($id)
@@ -169,7 +164,7 @@ class HomeController extends Controller
         if ($image) {
             $image_one = uniqid() . '.' . $image->getClientOriginalExtension();
             Image::make($image)->resize(500, 300)->save('images/chiffres/' . $image_one);
-            $data['image'] = url('images/chiffres/') . '/' . $image_one; 
+            $data['image'] = url('images/chiffres/') . '/' . $image_one;
             DB::table('chiffres')->where('id', $id)->update($data);
             unlink($oldimage);
 
@@ -180,6 +175,5 @@ class HomeController extends Controller
             DB::table('chiffres')->where('id', $id)->update($data);
             return Redirect()->back()->with('success', 'Chiffres updated succesfully');
         }
-
     }
 }
