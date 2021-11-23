@@ -12,6 +12,7 @@
     href="{{ route('projet.details', $projet['id']) }}"><strong>{{$projet['intitule']}}</strong></a><br />
   Le délai pour le traitement et la publication sur le site est de 15 jours.</p>
   <p><strong>Bonne chance!</strong></p>
+  @include('partials.signature')
 </body>
 
 </html>

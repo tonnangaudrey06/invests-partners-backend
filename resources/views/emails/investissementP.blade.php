@@ -13,6 +13,7 @@
     investissement de <strong>{{$investissement['montant']}} XAF</strong>. <br />
     Vous continuerez d'etre informé de tous les avancements dudit projet.
   </p>
+  @include('partials.signature')
 </body>
 
 </html>

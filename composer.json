@@ -9,6 +9,7 @@
         "brian2694/laravel-toastr": "^5.56",
         "darkaonline/l5-swagger": "^8.0",
         "dirape/token": "^2.3",
+        "fedeisas/laravel-mail-css-inliner": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.6",

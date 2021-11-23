@@ -14,6 +14,7 @@
     Nous nous engageons à vous informer de toute évolution relative à son exécution.
   </p>
   <p><strong>Restez connecté!</strong></p>
+  @include('partials.signature')
 </body>
 
 </html>

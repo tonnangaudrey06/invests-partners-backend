@@ -30,6 +30,7 @@
     @endif
 
     <p><strong><em>Entreprendre et investir autrement!</em></strong></p>
+    @include('partials.signature')
 </body>
 
 </html>

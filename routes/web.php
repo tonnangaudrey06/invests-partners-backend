@@ -12,6 +12,8 @@ use App\Http\Controllers\Client\ProfilInvestisseurController;
 use App\Http\Controllers\Client\ProjetController;
 use App\Http\Controllers\Client\PrivilegeController;
 use App\Http\Controllers\Client\HomeController;
+use App\Mail\TestMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,18 +27,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/dashboard', function () {
-//     return view('pages.dashboard.home');
-// })->name('dashboard');
+Route::get('/welcome', function () {
+    // return view('welcome');
+    try {
+        Mail::to('donfackeddy12@gmail.com')->queue(new TestMail());
+        return response(['og']);
+    } catch (\Throwable $th) {
+        throw $th;
+    }
+});
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
-
-// Route::get('test', function () {
-//     event(new App\Events\TestEvent('Someone'));
-//     return "Event has been sent!";
-// });
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
@@ -62,8 +65,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', function () {
             return redirect()->route('user.administrateur');
         })->name('home');
-        Route::get('/add/{id}', [UserController::class, 'add'])->name('add');  
-        Route::get('/{id}/report', [UserController::class, 'getReport'])->name('report');        
+        Route::get('/add/{id}', [UserController::class, 'add'])->name('add');
+        Route::get('/{id}/report', [UserController::class, 'getReport'])->name('report');
         Route::post('/store', [UserController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [UserController::class, 'update'])->name('update');
@@ -177,4 +180,3 @@ Route::post('/update/{privilege}', [PrivilegeController::class, 'UpdateWriter'])
 Route::get('/delete/writer/{privilege}', [PrivilegeController::class, 'DeleteWriter'])->name('delete.writer');
 
 Route::get('/get/user/{user_id}', [SecteurController::class, 'GetUserEdit']);
-

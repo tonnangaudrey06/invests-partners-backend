@@ -13,6 +13,7 @@
         Au plaisir de travailler avec vous dans un avenir proche!</p>
     <p><strong>Bonne chance!</strong></p>
     <p><strong><em>Entreprendre et investir autrement!</em></strong></p>
+    @include('partials.signature')
 </body>
 
 </html>
