@@ -13,7 +13,7 @@ use Brian2694\Toastr\Facades\Toastr;
 
 class MessageController extends Controller
 {
-    public function index($id = null, $conversation = null)
+    public function index($id = null, $conversation = null, Request $request)
     {
         $messages = [];
         $projet = null;

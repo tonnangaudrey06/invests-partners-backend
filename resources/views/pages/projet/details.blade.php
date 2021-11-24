@@ -271,23 +271,35 @@
 
                                     <div class="table-responsive">
                                         <table class="table align-middle table-nowrap">
+                                            <thead>
+                                                <th></th>
+                                                <th>Membre</th>
+                                                <th>Téléphone</th>
+                                                <th>Email</th>
+                                            </thead>
                                             <tbody>
                                                 @foreach ($projet->membres as $item)
                                                 <tr>
                                                     <td>
-                                                        <img src="{{ $item->photo }}" class="rounded-circle avatar-xs"
+                                                        <a target="_blank" href="{{ $item->photo }}">
+                                                            <img src="{{ $item->photo }}" class="rounded-circle avatar-xs"
                                                             alt="">
+                                                        </a>
                                                     </td>
                                                     <td>
                                                         <h5 class="font-size-14 m-0">
                                                             <a href="javascript: void(0);" class="text-dark">{{
                                                                 $item->nom_complet }}</a>
                                                         </h5>
-                                                    </td>
-                                                    <td>
                                                         <span
                                                             class="badge bg-primary bg-soft text-primary font-size-11">{{
                                                             $item->pivot->statut }}</span>
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->telephone }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->email }}
                                                     </td>
                                                 </tr>
                                                 @endforeach

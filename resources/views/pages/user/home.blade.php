@@ -91,12 +91,15 @@
                                             </div>
                                             @endif
                                         </td>
+
                                         <th rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">
                                             <a href="{{ route('user.profile', $user->id) }}">{{ $user->nom_complet
                                                 }}</a>
                                         </th>
+                                        
                                         <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">{{
                                             $user->email }}</td>
+                                        
                                         <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">{{
                                             $user->telephone }}</td>
 
@@ -121,6 +124,7 @@
 
                                         <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}"
                                             class="text-center">
+
                                             @if ($role->value == 2 && (auth()->user()->role == 1 || auth()->user()->role
                                             == 5))
                                             <a href="{{route('chat.view', $user->id)}}" class="btn btn-sm btn-info"><i
@@ -128,16 +132,19 @@
                                             <a href="{{route('user.report', $user->id)}}"
                                                 class="btn btn-sm btn-secondary"><i class="bx bx-notepad"></i></a>
                                             @endif
+
                                             @if ($role->value == 3 || $role->value == 4 )
-                                            <button id="openMessageModal"
+                                            <button id="openMessageModal{{ $user->id }}" data-user="{{ $user->nom_complet }}"
                                                 data-url="{{ route('chat.new', ['sender' => auth()->user()->id, 'receiver' => $user->id]) }}"
-                                                class="btn btn-sm btn-info" onclick="openMessageModal()"><i
+                                                class="btn btn-sm btn-info" onclick="openMessageModal({{ $user->id }})"><i
                                                     class="mdi mdi-email-plus"></i></button>
                                             @endif
+
                                             @if ($role->value == 1 || $role->value == 2  || $role->value == 5)
                                             <a href="{{route('user.edit', $user->id)}}"
                                                 class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
                                             @endif
+
                                             <a href="{{route('user.delete', $user->id)}}"
                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
                                                 class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></i></a>
@@ -166,7 +173,6 @@
 
         </div>
     </div>
-
     @include('partials.footer')
 </div>
 
@@ -178,7 +184,7 @@
             <form id="userMessageForm" action="" method="POST">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="userMessageLabel">Nouveau message {{ $role->name }}
+                    <h5 class="modal-title" id="userMessageLabel">Nouveau message à <span id="message-user-name"></span>
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -218,9 +224,11 @@
 <script type="text/javascript" src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
 
 <script type="text/javascript">
-    function openMessageModal() {
-        const url = $('#openMessageModal').data('url');
+    function openMessageModal(id) {
+        const url = $('#openMessageModal' + id).data('url');
+        const user = $('#openMessageModal' + id).data('user');
         $('#userMessageForm').attr('action', url);
+        $('#message-user-name').text(user);
         new bootstrap.Modal(document.getElementById('userMessage')).show()
     }
 </script>
