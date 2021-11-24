@@ -65,7 +65,7 @@
                             <ul class="list-unstyled chat-list bg-white" data-simplebar style="max-height: 500px;">
                                 @if (!empty($contacts))
                                 @foreach($contacts as $key => $contact)
-                                <li>
+                                <li class="active">
                                     <a
                                         href="{{ route('chat.conversation', ['id' => $contact->recepteur->id, 'conversation' => $contact->conversation]) }}">
                                         <div class="d-flex">
