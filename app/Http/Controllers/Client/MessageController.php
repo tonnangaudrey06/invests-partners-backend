@@ -69,6 +69,7 @@ class MessageController extends Controller
             ->with('sender', $sender)
             ->with('receiver', $receiver)
             ->with('projet', $projet)
+            ->with('conversation', $conversation)
             ->with('messages', $messages)
             ->with('contacts', $contacts);
     }

@@ -29,10 +29,10 @@
                 </div>
             </div>
 
-            <div class="d-lg-flex">
-                <div class="chat-leftsidebar me-lg-4">
-                    <div class="card">
-                        <div class="px-3 py-4 border-bottom">
+            <div class="d-lg-flex mb-4">
+                <div class="chat-leftsidebar shadow-lg rounded me-lg-4" style="height: fit-content;">
+                    <div class="card mb-0">
+                        <div class="px-3 py-4">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 align-self-center me-3">
                                     @if (!empty($sender->photo))
@@ -57,11 +57,11 @@
                             </div>
                         </div>
 
-                        <div class="chat-leftsidebar-nav">
-                            <ul class="list-unstyled chat-list bg-white" data-simplebar style="max-height: 500px;">
+                        <div class="chat-leftsidebar-nav bg-light">
+                            <ul class="list-unstyled chat-list" data-simplebar style="max-height: 40rem;">
                                 @if (!empty($contacts))
                                 @foreach($contacts as $key => $contact)
-                                <li>
+                                <li class="{{ $conversation ==  $contact->conversation ? 'active' : ''}}">
                                     <a
                                         href="{{ route('chat.view.conversation', ['id' => $sender->id, 'receiver' => $contact->recepteur->id, 'conversation' => $contact->conversation]) }}">
                                         <div class="d-flex">
@@ -133,14 +133,14 @@
                                                 <button class="btn nav-btn dropdown-toggle" type="button"
                                                     data-bs-toggle="dropdown" aria-haspopup="true"
                                                     aria-expanded="false">
-                                                    <i class="bx bx-cog"></i>
+                                                    <i class="mdi mdi-menu-open"></i>
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-end">
                                                     @if(!empty($projet))
-                                                    <a class="dropdown-item" href="#">Voir le projet</a>
+                                                    <a class="dropdown-item" href="{{ route('projet.details', $projet->id) }}">Voir le projet</a>
                                                     @endif
                                                     <a class="dropdown-item"
-                                                        href="{{ route('user.profile', $receiver->id) }}">Voir de {{
+                                                        href="{{ route('user.profile', $receiver->id) }}">Voir le profile de {{
                                                         $receiver->nom_complet }}</a>
                                                 </div>
                                             </div>
@@ -157,16 +157,34 @@
                                 @if($message->envoyeur == $sender->id)
                                 <li class="w-50 float-start">
                                     <div class="conversation-list">
-                                        <div class="ctext-wrap">
-                                            <div class="conversation-name"><a class="text-decoration-none"
-                                                    href="{{ route('user.profile', $sender->id) }}">{{
-                                                    $sender->nom_complet }}</a></div>
-                                            <p>
+                                        <div class="ctext-wrap bg-primary">
+                                            <div class="conversation-name text-white">
+                                                <a class="text-decoration-none text-white"
+                                                    href="{{ route('user.profile', $sender->id) }}">
+                                                    {{$sender->nom_complet }}
+                                                </a>
+                                            </div>
+                                            <p class="text-white">
                                                 {{ $message->message }}
                                             </p>
-                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i>
-                                                {{
-                                                \Carbon\Carbon::parse($message->created_at)->diffForHumans() }}</p>
+                                           @if(count($message->attachements) > 0)
+                                                <div
+                                                    class="d-flex justify-content-start align-items-center flex-wrap mb-3">
+                                                    @foreach($message->attachements as $key => $file)
+                                                    <a target="_blank" href="{{$file->url}}"
+                                                        style='max-width: 15rem; cursor: pointer'
+                                                        title="Télécharger le fichier"
+                                                        class='badge bg-white text-primary badge-pill me-2 mb-2 p-2 overflow-hidden text-truncate font-size-12'>
+                                                        <i class='mdi mdi-file-document-outline me-1'></i>
+                                                        {{$file->nom}}
+                                                    </a>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+                                            <p class="chat-time mb-0 text-white">
+                                                <i class="bx bx-time-five align-middle me-1"></i> 
+                                                {{ \Carbon\Carbon::parse($message->created_at)->diffForHumans() }}
+                                            </p>
                                         </div>
 
                                     </div>
@@ -182,9 +200,25 @@
                                                 {{ $message->message }}
                                             </p>
 
-                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i>
-                                                {{
-                                                \Carbon\Carbon::parse($message->created_at)->diffForHumans() }}</p>
+                                            @if(count($message->attachements) > 0)
+                                                <div
+                                                    class="d-flex justify-content-start align-items-center flex-wrap mb-3">
+                                                    @foreach($message->attachements as $key => $file)
+                                                    <a target="_blank" href="{{$file->url}}"
+                                                        style='max-width: 15rem; cursor: pointer'
+                                                        title="Télécharger le fichier"
+                                                        class='badge bg-primary text-white badge-pill me-2 mb-2 p-2 overflow-hidden text-truncate font-size-12'>
+                                                        <i class='mdi mdi-file-document-outline me-1'></i>
+                                                        {{$file->nom}}
+                                                    </a>
+                                                    @endforeach
+                                                </div>
+                                            @endif
+
+                                            <p class="chat-time mb-0">
+                                                <i class="bx bx-time-five align-middle me-1"></i>
+                                                {{ \Carbon\Carbon::parse($message->created_at)->diffForHumans() }}
+                                            </p>
                                         </div>
                                     </div>
                                 </li>

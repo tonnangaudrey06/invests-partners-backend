@@ -145,7 +145,7 @@
                                                         projet</a>
                                                     @endif
                                                     <a class="dropdown-item"
-                                                        href="{{ route('user.profile', $receiver->id) }}">Voir de {{
+                                                        href="{{ route('user.profile', $receiver->id) }}">Voir le profile de {{
                                                         $receiver->nom_complet }}</a>
                                                 </div>
                                             </div>
