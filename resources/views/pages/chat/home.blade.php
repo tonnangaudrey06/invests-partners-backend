@@ -28,9 +28,9 @@
                 </div>
             </div>
 
-            <div class="d-lg-flex">
-                <div class="chat-leftsidebar me-lg-4">
-                    <div class="card">
+            <div class="d-lg-flex mb-4">
+                <div class="chat-leftsidebar shadow-lg rounded me-lg-4" style="height: fit-content;">
+                    <div class="card mb-0">
                         <div class="px-3 py-4">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 align-self-center me-3">
@@ -61,11 +61,11 @@
                                 conversation</button>
                         </div> --}}
 
-                        <div class="chat-leftsidebar-nav">
-                            <ul class="list-unstyled chat-list bg-white" data-simplebar style="max-height: 500px;">
+                        <div class="chat-leftsidebar-nav bg-light">
+                            <ul class="list-unstyled chat-list" data-simplebar style="max-height: 40rem;">
                                 @if (!empty($contacts))
                                 @foreach($contacts as $key => $contact)
-                                <li class="active">
+                                <li class="{{ $conversation ==  $contact->conversation ? 'active' : ''}}">
                                     <a
                                         href="{{ route('chat.conversation', ['id' => $contact->recepteur->id, 'conversation' => $contact->conversation]) }}">
                                         <div class="d-flex">
@@ -145,7 +145,7 @@
                                                         projet</a>
                                                     @endif
                                                     <a class="dropdown-item"
-                                                        href="{{ route('user.profile', $receiver->id) }}">Voir de {{
+                                                        href="{{ route('user.profile', $receiver->id) }}">Voir le profile de {{
                                                         $receiver->nom_complet }}</a>
                                                 </div>
                                             </div>
