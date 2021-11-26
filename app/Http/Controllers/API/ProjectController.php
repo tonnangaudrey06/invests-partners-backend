@@ -87,20 +87,15 @@ class ProjectController extends Controller
             ]);
         }
 
-        $admin = User::where('role', 1)->first();
-
         // Retrieve projects informations
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
 
         // try {
             Mail::to($user->email)->queue(new CreationProjetPorteurMail($projet->toArray()));
+            Mail::to('info@invest--partners.com')->queue(new CreationProjetMail($projet->toArray()));
 
             if (!empty($projet->secteur_data->conseiller_data)) {
                 Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
-            }
-
-            if (!empty($admin)) {
-                Mail::to($admin->email)->queue(new CreationProjetMail($projet->toArray()));
             }
         // } catch (\Throwable $e) {
         //     return $this->sendError('Impossible d\'envoyer un mail car l\'email n\'existe pas.', $projet);
@@ -161,20 +156,15 @@ class ProjectController extends Controller
             Archive::create($data);
         }
 
-        $admin = User::where('role', 1)->first();
-
         // Retrieve projects informations
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->where('id', $projet->id)->first();
 
         try {
             Mail::to($user->email)->queue(new CreationProjetPorteurMail($projet->toArray()));
+            Mail::to('info@invest--partners.com')->queue(new CreationProjetMail($projet->toArray()));
 
             if (!empty($projet->secteur_data->conseiller_data)) {
                 Mail::to($projet->secteur_data->conseiller_data->email)->queue(new CreationProjetMail($projet->toArray()));
-            }
-
-            if (!empty($admin)) {
-                Mail::to($admin->email)->queue(new CreationProjetMail($projet->toArray()));
             }
         } catch (\Throwable $e) {
             return $this->sendResponse($projet, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
@@ -218,12 +208,10 @@ class ProjectController extends Controller
         $projet->etat = 'VALIDE';
         $projet->save();
 
-        $admin = User::where('role', 1)->first();
-
         try {
             Mail::to($projet->secteur_data->conseiller_data->email)->queue(new PaiementProjetConseilleMail($projet->toArray()));
             Mail::to($projet->user_data->email)->queue(new PaiementProjetPorteurMail($projet->toArray()));
-            Mail::to($admin->email)->queue(new PaiementProjetConseilleMail($projet->toArray()));
+            Mail::to('info@invest--partners.com')->queue(new PaiementProjetConseilleMail($projet->toArray()));
         } catch (\Throwable $e) {
             return $this->sendResponse($projet, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
         }
@@ -234,7 +222,6 @@ class ProjectController extends Controller
     public function projetsTown($id, $town, Request $request)
     {
         $user = $request->user();
-        $profil = DB::table('profile_investisseurs')->find($user->profil);
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])
             ->where('secteur', $id)
             ->where('ville_activite', 'like', $town)

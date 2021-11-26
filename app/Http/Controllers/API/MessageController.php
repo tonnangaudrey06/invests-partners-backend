@@ -180,7 +180,6 @@ class MessageController extends Controller
         $message = Message::create($data);
 
         $projet = Projet::with(['secteur_data'])->where('id', $request->projet)->first();
-        $admin = User::where('role', 1)->first();
         $invest = User::find($sender);
 
         $projet->secteur_data->conseiller_data->notify(new MessageNotification($message));
@@ -191,7 +190,7 @@ class MessageController extends Controller
 
         try {
             Mail::to($projet->secteur_data->conseiller_data->email)->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));
-            Mail::to($admin->email)->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));
+            Mail::to('info@invest--partners.com')->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));
         } catch (\Throwable $e) {
             return $this->sendResponse($message, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
         }

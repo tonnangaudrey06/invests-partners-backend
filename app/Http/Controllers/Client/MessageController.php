@@ -117,7 +117,7 @@ class MessageController extends Controller
 
         $user = User::find($receiver);
 
-        if (!isset($user->device_token) && !empty($user->device_token)) {
+        if (!empty($user->device_token)) {
             $user->sendFcmNotification($data['message']);
         }
 
@@ -184,7 +184,7 @@ class MessageController extends Controller
 
         $user = User::find($receiver);
 
-        if (!isset($user->device_token) && !empty($user->device_token)) {
+        if (!empty($user->device_token)) {
             $user->sendFcmNotification($data['message']);
         }
 

@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::share('currentUser', Auth::user());
+        
         if (config('app.env') === 'production') {
             URL::forceScheme('https');
         }

@@ -12,7 +12,6 @@
         Cordialement,<br /><br />
         <strong>{{ $data['nom_complet'] }}</strong>
     </p>
-    @include('partials.signature')
 </body>
 
 </html>

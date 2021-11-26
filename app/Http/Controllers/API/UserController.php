@@ -57,7 +57,7 @@ class UserController extends Controller
     public function deviceToken($id, Request $request)
     {
         $user = User::find($id);
-        $user->device_token = $request->except('device_token');
+        $user->device_token = $request->device_token;
         $user->save();
         return $this->show($id);
     }

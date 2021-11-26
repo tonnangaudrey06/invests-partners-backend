@@ -88,8 +88,7 @@ class AuthController extends Controller
         $user = User::with(['role_data', 'documents_fiscaux', 'profil_invest'])->find($data->id);
 
         try {
-            Mail::to($user->email)
-                ->queue(new InscriptionMail($user->toArray()));
+            Mail::to($user->email)->queue(new InscriptionMail($user->toArray()));
         } catch (\Throwable $e) {
             return $this->sendResponse($user, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
         }
