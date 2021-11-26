@@ -245,7 +245,6 @@ class ProjetController extends Controller
                 'delai_recup' => 'required|:projets',
                 'ca_previsionnel' => 'required|:projets',
             ],
-
             [
                 'taux_rentabilite.required' => 'Champ obligatoire!',
                 'duree.required' => 'Champ obligatoire!',
@@ -321,14 +320,12 @@ class ProjetController extends Controller
             Archive::create($data);
         }
 
-
         // Save actual member
         if (!empty($photo)) {
             $filename = hexdec(uniqid()) . '.' . $photo->getClientOriginalExtension();
             $membre['photo'] = url('storage/uploads/membres/') . '/' . $filename;
             $photo->storeAs('uploads/membres/', $filename, ['disk' => 'public']);
         }
-
 
         // Retrieve projects informations
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('id', $projet->id)->first();
@@ -470,6 +467,12 @@ class ProjetController extends Controller
         Mail::to($projet->user_data->email)
             ->queue(new AdminPublication($projet->toArray()));
 
+        $user = User::find($projet->user_data->id);
+
+        if (!empty($user->device_token)) {
+            $user->sendFcmNotification("Votre projet '$projet->intitule' est à present publié sur notre plateforme");
+        }
+
         Toastr::success('Projet publié avec succès!', 'Succès');
 
         return back();
@@ -493,6 +496,13 @@ class ProjetController extends Controller
         Mail::to($projet->user_data->email)
             ->queue(new AdminCloture($projet->toArray()));
 
+        $user = User::find($projet->user_data->id);
+
+        if (!empty($user->device_token)) {
+            $user->sendFcmNotification("Nous avons le plaisir de vous annoncer que les investissements sont officiellement clos pour votre projet
+            '$projet->intitule'.", "Clôture de votre projet");
+        }
+
         foreach ($investisseurs as $investisseur) {
             Mail::to($investisseur->user_data->email)
                 ->queue(new AdminClotureI($projet->toArray(), (array) $investisseur));
@@ -509,6 +519,14 @@ class ProjetController extends Controller
 
         Mail::to($projet->user_data->email)
             ->queue(new AdminValidation($projet->toArray()));
+
+        $user = User::find($projet->user_data->id);
+
+        if (!empty($user->device_token)) {
+            $user->sendFcmNotification("Félicitations ! Votre projet '$projet->intitule' a retenu l'attention  de
+            l'équipe d'invest & partners. Afin de travailler à la recherche d'investisseurs grâce à votre visibilité sur la
+            plateforme, veuillez procéder au paiement des travaux.", "Validation de votre projet");
+        }
 
         Toastr::success('Mail envoyé avec succès!', 'Projet epprouvé');
 

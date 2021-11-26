@@ -7,9 +7,8 @@
 </head>
 
 <body>
-    <p> Félicitations ! Votre projet <strong>{{ $projet['user_data']['nom_complet'] }}</strong> a retenu l'attention
-        de
-        l'équipe d'invest & partners.<br />
+    <p> Félicitations ! Votre projet <strong>{{ $projet['intitule'] }}</strong> a retenu l'attention
+        de l'équipe d'invest & partners.<br />
         Afin de rendre votre projet plus attractif, nos experts établiront avec vous les meilleures stratégies
         d'implémentation et de marketing, mais aussi d'organisation financière et managériale.<br />
         Aussi pour nous permettre de travailler à la recherche d'investisseurs grâce à votre visibilité sur la

@@ -68,6 +68,16 @@ class InvestissementController extends Controller
         Mail::to($projet->user_data->email)
             ->queue(new AddInvestissementP($investissement->toArray(), $admin->toArray(), $projet->toArray()));
 
+        $user = User::find($projet->user_data->id);
+
+        if (!empty($user->device_token)) {
+            $user->sendFcmNotification("Nous avons le plaisir de vous annoncer que vous avez recu un
+            investissement de $investissement->montant XAF pour votre projet '$projet->intitule'.", "Nouvelle investissement sur votre projet");
+        }
+
+        Mail::to('info@invest--partners.com')
+            ->queue(new AddInvestissement($investissement->toArray(), $admin->toArray(), $projet->toArray()));
+
         Toastr::success('Investissement ajouté avec succès!', 'Succès');
 
         return redirect()->intended(route('investissement.home'));

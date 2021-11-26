@@ -119,7 +119,7 @@ class User extends Authenticatable
         return 'App.User.' . $this->id;
     }
 
-    public function sendFcmNotification($body)
+    public function sendFcmNotification($body, $title = 'Nouveau message')
     {
         $url = 'https://fcm.googleapis.com/fcm/send';
 
@@ -131,7 +131,7 @@ class User extends Authenticatable
             "to" => $FcmToken,
             "direct_boot_ok" => true,
             "notification" => [
-                "title" => 'Nouveau message',
+                "title" => $title,
                 "body" => $body,
                 'notification_priority' => 'PRIORITY_MAX',
                 "default_vibrate_timings" => true,

@@ -8,7 +8,7 @@
 
 <body>
     <p>
-        Félicitations ! Vous vous êtes inscrit à notre plateforme <strong>Invest & Partners</strong> en qualité
+        Félicitations ! Vous vous êtes inscrits à notre plateforme <strong>Invest & Partners</strong> en qualité
         <strong>{{ $user['role'] == 3 ? 'Porteur de projet' : 'Investisseur' }}</strong>!
     </p>
     {{-- <p>

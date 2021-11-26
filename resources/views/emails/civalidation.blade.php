@@ -16,7 +16,6 @@
     Cordialement, <br />
     <strong>{{Auth()->user()->nom}} {{Auth()->user()->prenom}}</strong>
   </p>
-  @include('partials.signature')
 </body>
 
 </html>
