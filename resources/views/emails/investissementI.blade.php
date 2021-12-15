@@ -8,10 +8,10 @@
 
 <body>
   <p>Cher <strong>{{$investissement['user_data']['nom_complet']}}</strong>,</p>
-  <p>L'équipe d'Invest & Partners a le plaisir de vous annoncer que votre investissement pour le projet
-    <strong>"{{$investissement['projet_data']['intitule']}}"</strong> a été pris
-    en compte sur notre plateforme. Suivez vos investissements; continuez à être informé de l'évolution, parlez à nos
-    conseillers en investissement.</p>
+  <p>L'équipe d'Invest & Partners a le plaisir de vous annoncer que votre investissement pour le compte du projet
+    <strong>"{{$investissement['projet_data']['intitule']}}"</strong> a été approuvé sur notre plateforme. <br>
+    Suivez vos investissements, restez connecté pour en recevoir les mises à jour, échangez avec nos conseillers.
+  </p>
   <p><strong><em>Entreprendre et investir autrement!</em></strong></p>
   @include('partials.signature')
 </body>

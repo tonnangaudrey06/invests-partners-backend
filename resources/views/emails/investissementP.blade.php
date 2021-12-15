@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <h2>Nouvelle investissement sur votre projet {{$projet['intitule']}}</h2>
+  <h2>Nouvel investissement sur votre projet {{$projet['intitule']}}</h2>
 </head>
 
 <body>

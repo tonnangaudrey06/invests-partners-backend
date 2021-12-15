@@ -8,8 +8,8 @@
 
 <body>
     <p>Cher <strong>{{ $projet['user_data']['nom_complet'] }}</strong>,</p>
-    <p>Malheureusement, votre projet ne répond pas aux critères requis pour être retenu sur notre plateforme.<br />
-        Pour plus de détails, vous pouvez contacter un conseiller<br />
+    <p>Votre projet ne répond malheureusement pas aux critères requis pour être retenu sur notre plateforme 😞.<br />
+        Pour plus de détails, veuillez contacter un conseiller.<br />
         Au plaisir de travailler avec vous dans un avenir proche!</p>
     <p><strong>Bonne chance!</strong></p>
     <p><strong><em>Entreprendre et investir autrement!</em></strong></p>

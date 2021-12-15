@@ -8,7 +8,7 @@
 
 <body>
     <p> Félicitations ! Votre projet <strong>{{ $projet['intitule'] }}</strong> a retenu l'attention
-        de l'équipe d'invest & partners.<br />
+        de l'équipe Invest & Partners.<br />
         Afin de rendre votre projet plus attractif, nos experts établiront avec vous les meilleures stratégies
         d'implémentation et de marketing, mais aussi d'organisation financière et managériale.<br />
         Aussi pour nous permettre de travailler à la recherche d'investisseurs grâce à votre visibilité sur la
@@ -19,6 +19,8 @@
         d'une somme de {{ $projet['user_data']['status'] == 'PARTICULIER' ? '15 000' : '50 000' }} XAF pour les frais
         d'étude et de publication de votre projet puis commencez
         votre aventure avec Invest & Partners !</p>
+
+        <p> <strong>Entreprendre et investir autrement!</strong></p>
     @include('partials.signature')
 </body>
 
