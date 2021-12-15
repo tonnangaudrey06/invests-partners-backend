@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel</title>
+    <title>I&P</title>
     <style>
         h4 {
             font-size: calc(1.275rem + .3vw);

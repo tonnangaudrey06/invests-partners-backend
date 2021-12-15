@@ -66,8 +66,9 @@
                         </div>
 
                         @if($item->image)
-                        <div class="position-relative" style="h"eight: 10rem>
-                            <img src="{{$item->image}}" alt="" class="img-thumbnail w-100 h-100" style="object-fit: cover">
+                        <div class="position-relative" style="height: 15rem">
+                            <img src="{{$item->image}}" alt="" class="img-thumbnail w-100 h-100"
+                                style="object-fit: cover">
                         </div>
                         @endif
 
@@ -88,9 +89,17 @@
 
                             <p>{!!Str::limit($item->description, 100)!!}</p>
 
-                            <a href="{{($item->secteur) ? route('actualites.details', [$type, $item->id, $item->secteur]) : route('actualites.details', [$type, $item->id, $item->projet])}}"
-                                class="btn w-100 btn-sm btn-primary">En savoir plus <i
-                                    class="mdi mdi-arrow-right"></i></a>
+                            <div class="d-flex justify-content-between">
+                                <a href="{{($item->secteur) ? route('actualites.details', [$type, $item->id, $item->secteur]) : route('actualites.details', [$type, $item->id, $item->projet])}}"
+                                    class="btn w-100 btn-sm btn-primary me-1">En savoir plus <i
+                                        class="mdi mdi-arrow-right"></i></a>
+                                <a href="{{($item->secteur) ? route('actualites.delete', [$type, $item->id, $item->secteur]) : route('actualites.details', [$type, $item->id, $item->projet])}}"
+                                    onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                    class="btn w-100 btn-sm btn-outline-primary ms-1">Supprimer <i
+                                        class="mdi mdi-delete"></i></a>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
