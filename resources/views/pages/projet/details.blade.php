@@ -175,7 +175,7 @@
                                                                 }}</a></span>
                                                         <h5>
                                                 </div>
-                                                <span class="badge bg-info p-2">{{ $projet->etat }}</span>
+                                                <span class="badge bg-success p-2">@if($projet->etat == 'VALIDE') PAYE @else{{ $projet->etat }} @endif</span>
                                             </div>
                                         </li>
                                     </ul>

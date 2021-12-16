@@ -8,10 +8,10 @@
 
 <body>
     <p>Cher <strong>{{ $projet['user_data']['nom_complet'] }}</strong>,</p>
-    <p>Nous avons le plaisir de vous annoncer que les investissements sont officiellement clos pour le projet
+    <p>Félicitations ! Les investissements sont officiellement clos pour le compte de votre projet
         <strong>{{ $projet['intitule'] }}</strong>.<br />
-        L'équipe d'Invest & Partners vous remercie pour votre contribution!<br />
-        Nous nous engageons à vous informer de toute évolution relative à son exécution.
+        L'équipe d'Invest & Partners vous remercie pour votre participation.<br />
+        Nous nous engageons à vous tenir informé de toute évolution relative à son exécution.
     </p>
     <p><strong>Restez connecté!</strong></p>
     @include('partials.signature')

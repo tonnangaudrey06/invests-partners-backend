@@ -61,7 +61,7 @@
                                 conversation</button>
                         </div> --}}
 
-                        <div class="chat-leftsidebar-nav bg-light">
+                        <div class="chat-leftsidebar-nav bg-white">
                             <ul class="list-unstyled chat-list" data-simplebar style="max-height: 40rem;">
                                 @if (!empty($contacts))
                                 @foreach($contacts as $key => $contact)
@@ -90,8 +90,7 @@
                                                                 text-success" : "mdi-email text-danger" }}
                                                                 font-size-16"></i></span>
                                                     </h5>
-                                                    <p class="text-truncate mb-0 {{ $contact->vu == 1 ? "" : "
-                                                        fw-bolder" }}">{{ $contact->projet ?
+                                                    <p class="text-truncate mb-0 text-primary fw-bolder">{{ $contact->projet ?
                                                         $contact->projet->intitule : 'Renseignements' }}</p>
                                                     <p class="text-truncate small mb-0 {{ $contact->vu == 1 ? "" : "
                                                         fw-bolder" }}">{{ $contact->message }}</p>
@@ -145,7 +144,8 @@
                                                         projet</a>
                                                     @endif
                                                     <a class="dropdown-item"
-                                                        href="{{ route('user.profile', $receiver->id) }}">Voir le profile de {{
+                                                        href="{{ route('user.profile', $receiver->id) }}">Voir le profil
+                                                        de {{
                                                         $receiver->nom_complet }}</a>
                                                 </div>
                                             </div>
@@ -157,14 +157,14 @@
 
                         <div>
                             <div class="chat-conversation p-3">
-                                <ul class="list-unstyled mb-0" id="chat-message" data-simplebar style="height: 486px;">
+                                <ul class="list-unstyled mb-0 px-3" id="chat-message" data-simplebar style="height: 486px;">
                                     @foreach($messages as $key => $message)
 
                                     @if($message->envoyeur == auth()->user()->id)
-                                    <li class="w-50 float-start">
+                                    <li class="w-50 float-end d-flex justify-content-end">
                                         <div class="conversation-list">
                                             @if($message->vu == 0)
-                                            <div class="dropdown">
+                                            <div class="dropdown dropdown-left">
                                                 <a class="dropdown-toggle" href="javascript:void(0)" role="button"
                                                     data-bs-toggle="dropdown" aria-haspopup="true"
                                                     aria-expanded="false">
@@ -203,12 +203,15 @@
                                         </div>
                                     </li>
                                     @else
-                                    <li class="w-50 float-end d-flex justify-content-end">
+                                    <li class="w-50 float-start">
                                         <div class="conversation-list">
                                             <div class="ctext-wrap">
-                                                <div class="conversation-name"><a class="text-decoration-none"
-                                                        href="{{ route('user.profile', $message->sender->id) }}">{{
-                                                        $message->sender->nom_complet }}</a></div>
+                                                <div class="conversation-name">
+                                                    <a class="text-decoration-none"
+                                                        href="{{ route('user.profile', $message->sender->id) }}">
+                                                        {{ $message->sender->nom_complet }}
+                                                    </a>
+                                                </div>
                                                 <p>
                                                     {{ $message->message }}
                                                 </p>
@@ -296,6 +299,14 @@
 @section('script')
 <script type="text/javascript">
     var medias = [];
+    const simpleBar = new SimpleBar(document.getElementById('chat-message'));
+
+    setTimeout(scrollToBottom, 1000);
+
+    function scrollToBottom(){
+        simpleBar.getScrollElement().scrollTo(0, simpleBar.getScrollElement().scrollHeight);
+    }
+
     function removeFileInArray(file) {
         medias = medias.filter((ele) => {
             return ele.name !== file;

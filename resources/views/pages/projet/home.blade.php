@@ -113,7 +113,7 @@ $privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
                                     <i class="bx bx-calendar me-1"></i> Crée {{
                                     Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}
                                 </div>
-                                <span class="badge bg-info p-2">{{ $projet->etat }}</span>
+                                <span class="badge bg-success p-2">@if($projet->etat == 'VALIDE') PAYE @else{{ $projet->etat }} @endif</span>
                             </div>
                         </div>
                     </div>

@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ActualiteIMail;
+use App\Mail\ActualiteMail;
 use App\Models\Actualite;
+use App\Models\Investissement;
 use App\Models\Projet;
 use App\Models\Secteur;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 
 class ActualiteController extends Controller
 {
@@ -67,6 +71,46 @@ class ActualiteController extends Controller
         }
 
         Actualite::create($data);
+
+        if ($type == 'projet') {
+            $projet = Projet::with(['user_data'])->find($id);
+
+            Mail::to($projet->user_data->email)
+                ->queue(new ActualiteMail($projet->toArray()));
+
+            $investisseurs = Investissement::select('*')
+                ->groupBy('projet')
+                ->groupBy('user')
+                ->where('projet', $id)
+                ->with(['projet_data', 'user_data'])
+                ->get();
+
+            foreach ($investisseurs as $investisseur) {
+                Mail::to($investisseur->user_data->email)
+                    ->queue(new ActualiteIMail($projet->toArray(), $investisseur->user_data->toArray()));
+            }
+        }
+
+        if ($type == 'secteur') {
+            $projets = Projet::with(['user_data'])->where('secteur', $id)->get();
+
+            foreach ($projets as $projet) {
+                Mail::to($projet->user_data->email)
+                    ->queue(new ActualiteMail($projet->toArray()));
+
+                $investisseurs = Investissement::select('*')
+                    ->groupBy('projet')
+                    ->groupBy('user')
+                    ->where('projet', $projet->id)
+                    ->with(['projet_data', 'user_data'])
+                    ->get();
+
+                foreach ($investisseurs as $investisseur) {
+                    Mail::to($investisseur->user_data->email)
+                        ->queue(new ActualiteIMail($projet->toArray(), $investisseur->user_data->toArray()));
+                }
+            }
+        }
 
         Toastr::success('Actualité ajouté avec succès!', 'Succès');
 
@@ -129,6 +173,7 @@ class ActualiteController extends Controller
 
         Actualite::find($id)->delete();
         Toastr::success('Actualité supprimée avec succès!', 'Success');
+
 
         return redirect()->intended(route('actualites.home', [$type, $idPS]));
     }

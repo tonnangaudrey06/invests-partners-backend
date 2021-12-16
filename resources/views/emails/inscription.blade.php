@@ -8,8 +8,8 @@
 
 <body>
     <p>
-        Félicitations ! Vous vous êtes inscrits à notre plateforme <strong>Invest & Partners</strong> en qualité
-        <strong>{{ $user['role'] == 3 ? 'Porteur de projet' : 'Investisseur' }}</strong>!
+        Félicitations ! Vous vous êtes inscrits à notre plateforme <strong>'TCHOUAH'</strong> en qualité
+        <strong>{{ $user['role'] == 3 ? 'de Porteur de projet' : 'd\'Investisseur' }}</strong>!
     </p>
     {{-- <p>
         Afin de compléter votre profil et de valider votre abonnement, signez le document en pièce jointe et

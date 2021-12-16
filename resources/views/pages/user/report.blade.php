@@ -70,7 +70,7 @@
                         @empty
                         <div class="list-group-item list-group-item-action" aria-current="true">
                             <div class="d-flex w-100 justify-content-center">
-                                <h5 class="mb-1">Aucune tache effectuer</h5>
+                                <h5 class="mb-1">Aucune tache effectuée</h5>
                             </div>
                         </div>
                         @endforelse
