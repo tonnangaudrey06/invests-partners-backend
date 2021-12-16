@@ -53,6 +53,14 @@ class Message extends Model
         return $this->fetchMessagesQuery($sender, $receiver)->latest()->first();
     }
 
+    public static function getLastestOrderMessageQuery($conversation)
+    {
+        return Message::where('conversation', $conversation)
+            ->latest()
+            ->with(['attachements', 'sender', 'receiver'])
+            ->get();
+    }
+
     public static function getLastestMessageQuery($conversation)
     {
         return Message::where('conversation', $conversation)
