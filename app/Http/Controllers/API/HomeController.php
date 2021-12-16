@@ -45,8 +45,9 @@ class HomeController extends Controller
     {
         $villeParSecteur = DB::table('projets')
         ->join('secteurs', 'projets.secteur', '=', 'secteurs.id')
-        ->where('secteur',$idSecteur)
-        ->where('pays_activite',$pays)
+        ->where('projets.secteur', $idSecteur)
+        ->where('projets.pays_activite', 'like', $pays)
+        ->where('projets.etat', 'PUBLIE')
         ->get();
         return $this->sendResponse($villeParSecteur, 'App ville');
     }
