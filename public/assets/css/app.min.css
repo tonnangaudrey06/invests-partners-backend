@@ -4528,8 +4528,8 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control:before {
 }
 
 .chat-list li.active a {
-    background-color  : #fff;
-    border-color      : transparent;
+    background-color  : #eff2f7;
+    border-color      : #eff2f7;
     -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
     box-shadow        : 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
 }
@@ -4545,8 +4545,8 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control:before {
 }
 
 .chat-list li a:hover {
-    background-color  : #fff;
-    border-color      : transparent;
+    background-color  : #eff2f7;
+    border-color      : #eff2f7;
     -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
     box-shadow        : 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
 }
@@ -4621,7 +4621,11 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>td.dtr-control:before {
 }
 
 .chat-conversation .conversation-list .dropdown {
-    float: right;
+    float: left;
+}
+
+.chat-conversation .conversation-list .dropdown .dropdown-left {
+    float: left !important;
 }
 
 .chat-conversation .conversation-list .dropdown .dropdown-toggle {

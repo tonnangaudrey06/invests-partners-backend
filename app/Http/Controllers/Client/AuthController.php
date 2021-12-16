@@ -31,6 +31,11 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt($credentials, $remember)) {
+            if (Auth::user()->role == 4 || Auth::user()->role == 3) {
+                return back()->withErrors([
+                    'credential' => 'Désolé, vos informations d\'identification sont incorrectes, veuillez réessayer.',
+                ])->withInput(request()->except('password'));
+            }
             $request->session()->regenerate();
             return redirect()->intended(route('dashboard'));
         }
