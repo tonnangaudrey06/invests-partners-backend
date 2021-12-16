@@ -26,7 +26,7 @@ class MessageController extends Controller
     public function inbox($sender, $conversation)
     {
         Message::makeSeen($sender, $conversation);
-        $messages = Message::getLastestMessageQuery($conversation);
+        $messages = Message::getLastestOrderMessageQuery($conversation);
         return $this->sendResponse($messages, 'Conversation messages');
     }
 
