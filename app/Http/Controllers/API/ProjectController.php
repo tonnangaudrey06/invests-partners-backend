@@ -221,7 +221,6 @@ class ProjectController extends Controller
 
     public function projetsTown($id, $town, Request $request)
     {
-        $user = $request->user();
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])
             ->where('secteur', $id)
             ->where('ville_activite', 'like', $town)
