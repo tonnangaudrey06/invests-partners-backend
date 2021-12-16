@@ -56,7 +56,7 @@ class Message extends Model
     public static function getLastestMessageQuery($conversation)
     {
         return Message::where('conversation', $conversation)
-            ->latest()
+            ->latestReverse()
             ->with(['attachements', 'sender', 'receiver'])
             ->get();
     }
@@ -69,15 +69,15 @@ class Message extends Model
     public static function getContacts($sender)
     {
         $contacts = [];
-        // $user = User::find($sender);
 
         $conversations = DB::table('messages')
+            ->latest()
             ->select('conversation')
             ->distinct()
             ->where('envoyeur', $sender)
             ->orWhere('recepteur', $sender)->get();
 
-        foreach ($conversations as $key => $item) {
+        foreach ($conversations as $item) {
             $contact = Message::where('conversation', $item->conversation)
                 ->latest()
                 ->first();
@@ -94,7 +94,13 @@ class Message extends Model
             array_push($contacts, $contact);
         }
 
-        return $contacts;
+        $collection = collect($contacts);
+        
+        $sorted = $collection->sortByDesc('created_at');
+
+        $sorted->values()->all();
+
+        return $sorted;
     }
 
     public static function deleteConversation($conversation)
@@ -139,5 +145,10 @@ class Message extends Model
     public function projet_data()
     {
         return $this->belongsTo(Projet::class, 'projet', 'id');
+    }
+
+    public function scopeLatestReverse($query)
+    {
+        return $query->orderBy('created_at','ASC');
     }
 }
