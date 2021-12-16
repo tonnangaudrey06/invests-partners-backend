@@ -57,7 +57,7 @@
                             </div>
                         </div>
 
-                        <div class="chat-leftsidebar-nav bg-light">
+                        <div class="chat-leftsidebar-nav bg-white">
                             <ul class="list-unstyled chat-list" data-simplebar style="max-height: 40rem;">
                                 @if (!empty($contacts))
                                 @foreach($contacts as $key => $contact)
@@ -151,11 +151,11 @@
                         </div>
 
                         <div class="chat-conversation p-3">
-                            <ul class="list-unstyled mb-0" id="chat-message" data-simplebar style="height: 486px;">
+                            <ul class="list-unstyled mb-0 px-3" id="chat-message" data-simplebar style="height: 486px;">
                                 @foreach($messages as $key => $message)
 
                                 @if($message->envoyeur == $sender->id)
-                                <li class="w-50 float-start">
+                                <li class="w-50 float-end d-flex justify-content-end">
                                     <div class="conversation-list">
                                         <div class="ctext-wrap bg-primary">
                                             <div class="conversation-name text-white">
@@ -190,7 +190,7 @@
                                     </div>
                                 </li>
                                 @else
-                                <li class="w-50 float-end d-flex justify-content-end">
+                                <li class="w-50 float-start">
                                     <div class="conversation-list">
                                         <div class="ctext-wrap">
                                             <div class="conversation-name"><a class="text-decoration-none"
@@ -250,4 +250,13 @@
 @endsection
 
 @section('script')
+<script type="text/javascript">
+    const simpleBar = new SimpleBar(document.getElementById('chat-message'));
+
+    setTimeout(scrollToBottom, 1000);
+
+    function scrollToBottom(){
+        simpleBar.getScrollElement().scrollTo(0, simpleBar.getScrollElement().scrollHeight);
+    }
+</script>
 @endsection

@@ -103,7 +103,7 @@ class Message extends Model
 
         $sorted->values()->all();
 
-        return $sorted;
+        return $sorted->toArray();
     }
 
     public static function deleteConversation($conversation)

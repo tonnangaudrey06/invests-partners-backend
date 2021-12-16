@@ -303,13 +303,8 @@
 
     setTimeout(scrollToBottom, 1000);
 
-    console.log(simpleBar.getScrollElement().scrollHeight);
-
     function scrollToBottom(){
-        // $('body').scrollTop($('body').height());
-        // $('#chat-message').scrollTop($('#chat-message').height());
         simpleBar.getScrollElement().scrollTo(0, simpleBar.getScrollElement().scrollHeight);
-        // window.scrollTo(0, document.body.scrollHeight);
     }
 
     function removeFileInArray(file) {
