@@ -81,6 +81,9 @@ class Message extends Model
             $contact = Message::where('conversation', $item->conversation)
                 ->latest()
                 ->first();
+            $contact->not_seen = Message::where('conversation', $item->conversation)
+                ->where('vu', 0)
+                ->count();
             if ($contact->envoyeur != $sender) {
                 $contact->recepteur = $contact->envoyeur;
             }
@@ -95,7 +98,7 @@ class Message extends Model
         }
 
         $collection = collect($contacts);
-        
+
         $sorted = $collection->sortByDesc('created_at');
 
         $sorted->values()->all();
@@ -149,6 +152,6 @@ class Message extends Model
 
     public function scopeLatestReverse($query)
     {
-        return $query->orderBy('created_at','ASC');
+        return $query->orderBy('created_at', 'ASC');
     }
 }

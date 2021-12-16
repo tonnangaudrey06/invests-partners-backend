@@ -141,8 +141,12 @@ class MessageController extends Controller
                 }
             }
         }
-
+        
         $user = User::find($receiver);
+
+        if (!empty($user->device_token)) {
+            $user->sendFcmNotification($data['message']);
+        }
 
         $user->notify(new MessageNotification($message));
 
