@@ -83,6 +83,7 @@ class Message extends Model
                 ->first();
             $contact->not_seen = Message::where('conversation', $item->conversation)
                 ->where('vu', 0)
+                ->where('recepteur', $sender)
                 ->count();
             if ($contact->envoyeur != $sender) {
                 $contact->recepteur = $contact->envoyeur;
@@ -103,7 +104,7 @@ class Message extends Model
 
         $sorted->values()->all();
 
-        return $sorted->toArray();
+        return $sorted->values();
     }
 
     public static function deleteConversation($conversation)
