@@ -41,20 +41,30 @@
                 </div>
             </div>
 
-            <div class="col-lg-12">
-                <div class="card w-75">
+            <div class="col-md-12">
+                <div class="card">
                     <div class="card-body">
                         <h4 class="card-title mb-4">Ajouter une slide</h4>
                         <form action="{{route('slider.store')}}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="form-group col-md-12 mb-3">
+                            <div class="form-group col-md-6 mb-3">
                                 <label>Titre</label>
                                 <input type="text" class="form-control" name="title"
-                                    placeholder="Slider Title">
+                                    placeholder="Titre">
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label>Titre en anglais</label>
+                                <input type="text" class="form-control" name="title_en"
+                                    placeholder="Titre en anglais">
                             </div>
                             <div class="form-group col-md-12 mb-3">
                                 <label>Description</label>
                                 <textarea class="form-control" name="description"
+                                    rows="3"></textarea>
+                            </div>
+                            <div class="form-group col-md-6 mb-3">
+                                <label>Description en anglais</label>
+                                <textarea class="form-control" name="description_en"
                                     rows="3"></textarea>
                             </div>
                             <div class="form-group col-md-12 mb-3">
@@ -62,12 +72,11 @@
                                 <input type="file" class="form-control" name="image">
                             </div>
                             <div class="form-footer pt-4 pt-5 mt-4 border-top text-center">
-                                <button type="submit" class="btn btn-primary btn-default">Ajouter une slide</button>
+                                <button type="submit" class="btn btn-primary btn-default">Enregistrer</button>
                             </div>
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

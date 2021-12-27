@@ -48,6 +48,8 @@ class HomeController extends Controller
         $data = array();
         $data['title'] = $request->title;
         $data['description'] = $request->description;
+        $data['title_en'] = $request->title_en;
+        $data['description_en'] = $request->description_en;
         $data['image'] = url($up_location) . '/' . $img_name;
         $data['created_at'] = Carbon::now();
         DB::table('sliders')->insert($data);
@@ -66,6 +68,8 @@ class HomeController extends Controller
         $data = array();
         $data['title'] = $request->title;
         $data['description'] = $request->description;
+        $data['title_en'] = $request->title_en;
+        $data['description_en'] = $request->description_en;
 
         if ($request->has('image')) {
             $old_image = $request->oldimage;
