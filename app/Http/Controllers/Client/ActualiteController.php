@@ -78,6 +78,10 @@ class ActualiteController extends Controller
             Mail::to($projet->user_data->email)
                 ->queue(new ActualiteMail($projet->toArray()));
 
+            if (!empty($projet->user_data->device_token)) {
+                $projet->user_data->sendFcmNotification($request->libelle, 'Nouvelle actualité');
+            }
+
             $investisseurs = Investissement::select('*')
                 ->groupBy('projet')
                 ->groupBy('user')
@@ -86,6 +90,10 @@ class ActualiteController extends Controller
                 ->get();
 
             foreach ($investisseurs as $investisseur) {
+                if (!empty($investisseur->user_data->device_token)) {
+                    $investisseur->user_data->sendFcmNotification($request->libelle, 'Nouvelle actualité');
+                }
+
                 Mail::to($investisseur->user_data->email)
                     ->queue(new ActualiteIMail($projet->toArray(), $investisseur->user_data->toArray()));
             }
@@ -98,6 +106,10 @@ class ActualiteController extends Controller
                 Mail::to($projet->user_data->email)
                     ->queue(new ActualiteMail($projet->toArray()));
 
+                if (!empty($projet->user_data->device_token)) {
+                    $projet->user_data->sendFcmNotification($request->libelle, 'Nouvelle actualité');
+                }
+
                 $investisseurs = Investissement::select('*')
                     ->groupBy('projet')
                     ->groupBy('user')
@@ -106,6 +118,10 @@ class ActualiteController extends Controller
                     ->get();
 
                 foreach ($investisseurs as $investisseur) {
+                    if (!empty($investisseur->user_data->device_token)) {
+                        $investisseur->user_data->sendFcmNotification($request->libelle, 'Nouvelle actualité');
+                    }
+
                     Mail::to($investisseur->user_data->email)
                         ->queue(new ActualiteIMail($projet->toArray(), $investisseur->user_data->toArray()));
                 }
