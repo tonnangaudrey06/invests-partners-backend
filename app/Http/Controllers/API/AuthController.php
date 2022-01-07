@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\InscriptionMail;
+use App\Models\NewsletterMail;
 use App\Models\PasswordReset;
 use Illuminate\Support\Facades\DB;
 
@@ -87,6 +88,12 @@ class AuthController extends Controller
 
         $user = User::with(['role_data', 'documents_fiscaux', 'profil_invest'])->find($data->id);
 
+        if ($request->newsletter) {
+            NewsletterMail::updateOrCreate([
+                'email' => $user->email
+            ], []);
+        }
+
         try {
             Mail::to($user->email)->queue(new InscriptionMail($user->toArray()));
         } catch (\Throwable $e) {
@@ -119,10 +126,6 @@ class AuthController extends Controller
         }
 
         PasswordReset::sendResetPasswordLink($request->email, $request->role);
-
-        // if (!$status) {
-        //     return $this->sendError("Impossible d'envoyer un mail car l'email n'existe pas.", null, 500);
-        // }
 
         return $this->sendResponse(null, 'Mail send');
     }

@@ -12,6 +12,7 @@ use App\Http\Controllers\Client\ProfilInvestisseurController;
 use App\Http\Controllers\Client\ProjetController;
 use App\Http\Controllers\Client\PrivilegeController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\NewsletterController;
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -124,6 +125,18 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [HomeController::class, 'HomePartenaires'])->name('home');
         Route::post('/store', [HomeController::class, 'StorePartenaires'])->name('store');
         Route::get('/delete/{id}', [HomeController::class, 'DeletePartenaire'])->name('delete');
+    });
+
+    Route::prefix('newsletter')->name('newsletter.')->group(function () {
+        Route::get('/', [NewsletterController::class, 'index'])->name('home');
+        Route::get('/mails', [NewsletterController::class, 'mails'])->name('mails');
+        Route::get('/add', [NewsletterController::class, 'add'])->name('add');
+        Route::post('/store', [NewsletterController::class, 'store'])->name('store');
+        Route::get('/delete/{id}', [NewsletterController::class, 'delete'])->name('delete');
+        Route::get('/edit/{id}', [NewsletterController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [NewsletterController::class, 'update'])->name('update');
+        Route::get('/send/{id}', [NewsletterController::class, 'send'])->name('send');
+        Route::get('/{id}', [NewsletterController::class, 'show'])->name('show');
     });
 
     Route::prefix('events')->name('events.')->group(function () {
