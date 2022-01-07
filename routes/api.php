@@ -7,6 +7,7 @@ use App\Http\Controllers\API\HomeController;
 use App\Http\Controllers\API\InvestissementController;
 use App\Http\Controllers\API\MembreController;
 use App\Http\Controllers\API\MessageController;
+use App\Http\Controllers\API\NewsletterController;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\SecteurController;
 use App\Http\Controllers\API\UserController;
@@ -47,6 +48,7 @@ Route::prefix('auth')->group(function () {
 
 Route::post('/auth/check/register', [AuthController::class, 'checkRegister']);
 Route::post('/send/mail', [UserController::class, 'sendMailInfo']);
+Route::post('/subscribe/newsletter', [NewsletterController::class, 'store']);
 Route::get('/secteur', [SecteurController::class, 'index']);
 Route::get('/profilinvestisseur', [ProfilInvestisseurController::class, 'index']);
 
@@ -69,8 +71,6 @@ Route::prefix('app')->group(function () {
     Route::get('/financements/financements/{id}', [HomeController::class, 'financements']);
     Route::get('/actualites/actualites/{id}', [HomeController::class, 'getactualites']);
     Route::get('/projetparsecter', [HomeController::class, 'getprojetparsecteur']);
-
-
     Route::get('/chiffre', [HomeController::class, 'chiffres']);
 });
 
@@ -99,6 +99,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}/membres', [MembreController::class, 'index']);
         Route::get('/{id}/projets', [ProjectController::class, 'projets']);
         Route::get('/{id}/projets/invest', [InvestissementController::class, 'projectInvest']);
+        Route::post('/subscribe/newsletter', [NewsletterController::class, 'update']);
     });
 
     Route::prefix('projet')->group(function () {
