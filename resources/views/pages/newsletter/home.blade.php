@@ -13,6 +13,12 @@
 
 
 @section('content')
+    @php
+    $privileges = DB::table('privileges')
+        ->where('user', Auth::user()->id)
+        ->get();
+    @endphp
+
     <div class="main-content">
 
         <div class="page-content">
@@ -45,7 +51,18 @@
                                         <a href="{{ route('newsletter.add') }}" class="btn btn-sm btn-primary me-2">
                                             Nouvelle newsletter
                                         </a>
-                                        <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
+                                        @if (Auth::user()->role == 1)
+                                            <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
+                                        @else
+                                            @foreach ($privileges as $privilege)
+
+                                                @if ($privilege->module == 15 && $privilege->ajouter == 1)
+                                                    <button class="btn btn-sm btn-primary"
+                                                        onclick="reload()">Actualiser</button>
+                                                @endif
+                                            @endforeach
+                                        @endif
+
                                     </div>
                                 </div>
 
@@ -54,6 +71,7 @@
                                         <tr>
                                             <th>Titre</th>
                                             <th>Crée le</th>
+                                            <th class="text-center">Etat</th>
                                             <th style="width: 10%"></th>
                                         </tr>
                                     </thead>
@@ -64,21 +82,55 @@
                                                 <td>
                                                     <strong>{{ $newsletter->titre }}</strong>
                                                 </td>
-                                                <td style="width: 20%">{{ \Carbon\Carbon::parse($newsletter->created_at)->format('d/m/y \à h:i')  }}</td>
+                                                <td style="width: 20%">
+                                                    {{ \Carbon\Carbon::parse($newsletter->created_at)->format('d/m/y \à h:i') }}
+                                                </td>
+                                                <td class="text-center" style="width: 20%">
+                                                    @if ($newsletter->send)
+                                                        <span class="badge bg-success text-white p-2">Envoyé</span>
+                                                    @else
+                                                        <span class="badge bg-danger text-white p-2">Non envoyé</span>
+                                                    @endif
+                                                </td>
                                                 <td style="width: 10%">
-                                                    <a href="{{ route('newsletter.edit', $newsletter->id) }}"
-                                                        class="btn btn-sm btn-warning">
-                                                        <i class="bx bx-edit"></i>
-                                                    </a>
-                                                    <a href="{{ route('newsletter.send', $newsletter->id) }}"
-                                                        class="btn btn-sm btn-info">
-                                                        <i class="mdi mdi-email-send-outline"></i>
-                                                    </a>
-                                                    <a href="{{ route('newsletter.delete', $newsletter->id) }}"
-                                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                        class="btn btn-sm btn-danger">
-                                                        <i class="bx bx-trash"></i>
-                                                    </a>
+                                                    @if (Auth::user()->role == 1)
+                                                        <a href="{{ route('newsletter.edit', $newsletter->id) }}"
+                                                            class="btn btn-sm btn-warning">
+                                                            <i class="bx bx-edit"></i>
+                                                        </a>
+                                                        <a href="{{ route('newsletter.send', $newsletter->id) }}"
+                                                            class="btn btn-sm btn-info">
+                                                            <i class="mdi mdi-email-send-outline"></i>
+                                                        </a>
+                                                        <a href="{{ route('newsletter.delete', $newsletter->id) }}"
+                                                            onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                            class="btn btn-sm btn-danger">
+                                                            <i class="bx bx-trash"></i>
+                                                        </a>
+                                                    @else
+                                                        @foreach ($privileges as $privilege)
+
+                                                            @if ($privilege->module == 15 && $privilege->modifier == 1)
+                                                                <a href="{{ route('newsletter.edit', $newsletter->id) }}"
+                                                                    class="btn btn-sm btn-warning">
+                                                                    <i class="bx bx-edit"></i>
+                                                                </a>
+                                                                <a href="{{ route('newsletter.send', $newsletter->id) }}"
+                                                                    class="btn btn-sm btn-info">
+                                                                    <i class="mdi mdi-email-send-outline"></i>
+                                                                </a>
+                                                            @endif
+
+                                                            @if ($privilege->module == 15 && $privilege->supprimer == 1)
+                                                                <a href="{{ route('newsletter.delete', $newsletter->id) }}"
+                                                                    onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                    class="btn btn-sm btn-danger">
+                                                                    <i class="bx bx-trash"></i>
+                                                                </a>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+
                                                 </td>
                                             </tr>
                                         @endforeach

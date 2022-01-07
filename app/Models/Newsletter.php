@@ -12,6 +12,11 @@ class Newsletter extends Model
     protected $fillable = [
         'id',
         'titre',
-        'mail'
+        'mail',
+        'send'
+    ];
+
+    protected $casts = [
+        'send' => 'boolean',
     ];
 }
