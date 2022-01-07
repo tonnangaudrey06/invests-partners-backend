@@ -17,6 +17,7 @@ class CreateNewslettersTable extends Migration
             $table->id();
             $table->string('titre');
             $table->longText('mail');
+            $table->boolean('send')->default(false);
             $table->timestamps();
         });
     }

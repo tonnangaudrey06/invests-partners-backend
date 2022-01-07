@@ -28,5 +28,6 @@ class ModuleSeeder extends Seeder
         Module::create(['module' => 'Site']);
         Module::create(['module' => 'Archives']);
         Module::create(['module' => 'Actualites']);
+        Module::create(['module' => 'Newsletter']);
     }
 }

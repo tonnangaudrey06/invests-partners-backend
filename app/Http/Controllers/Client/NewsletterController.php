@@ -58,6 +58,10 @@ class NewsletterController extends Controller
             ]));
         }
 
+        $newsletter->send = true;
+
+        $newsletter->save();
+
         Toastr::success('Newsletter envoyée avec succès!', 'Succès');
 
         return redirect()->intended(route('newsletter.home'));
