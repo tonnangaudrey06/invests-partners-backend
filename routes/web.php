@@ -133,6 +133,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/add', [NewsletterController::class, 'add'])->name('add');
         Route::post('/store', [NewsletterController::class, 'store'])->name('store');
         Route::get('/delete/{id}', [NewsletterController::class, 'delete'])->name('delete');
+        Route::get('/delete/email/{id}', [NewsletterController::class, 'deleteEmail'])->name('email.delete');
         Route::get('/edit/{id}', [NewsletterController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [NewsletterController::class, 'update'])->name('update');
         Route::get('/send/{id}', [NewsletterController::class, 'send'])->name('send');

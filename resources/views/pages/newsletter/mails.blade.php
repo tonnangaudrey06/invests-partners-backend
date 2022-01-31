@@ -13,8 +13,13 @@
 
 
 @section('content')
-    <div class="main-content">
+    @php
+    $privileges = DB::table('privileges')
+        ->where('user', Auth::user()->id)
+        ->get();
+    @endphp
 
+    <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
 
@@ -50,6 +55,7 @@
                                     <thead>
                                         <tr>
                                             <th>Email</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
 
@@ -58,6 +64,25 @@
                                             <tr>
                                                 <td>
                                                     <strong>{{ $mail->email }}</strong>
+                                                </td>
+                                                <td style="width: 8%" class="text-center">
+                                                    @if (Auth::user()->role == 1)
+                                                        <a href="{{ route('newsletter.email.delete', $mail->id) }}"
+                                                            onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                            class="btn btn-sm btn-danger">
+                                                            <i class="bx bx-trash"></i>
+                                                        </a>
+                                                    @else
+                                                        @foreach ($privileges as $privilege)
+                                                            @if ($privilege->module == 15 && $privilege->supprimer == 1)
+                                                                <a href="{{ route('newsletter.email.delete', $mail->id) }}"
+                                                                    onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                    class="btn btn-sm btn-danger">
+                                                                    <i class="bx bx-trash"></i>
+                                                                </a>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
