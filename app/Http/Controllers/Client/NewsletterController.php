@@ -101,4 +101,13 @@ class NewsletterController extends Controller
 
         return redirect()->intended(route('newsletter.home'));
     }
+
+    public function deleteEmail($id)
+    {
+        NewsletterMail::where('id', $id)->delete();
+
+        Toastr::success('Email supprimée avec succès!', 'Success');
+
+        return redirect()->intended(route('newsletter.mails'));
+    }
 }

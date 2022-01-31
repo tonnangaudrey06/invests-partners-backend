@@ -130,7 +130,6 @@
                                                             @endif
                                                         @endforeach
                                                     @endif
-
                                                 </td>
                                             </tr>
                                         @endforeach

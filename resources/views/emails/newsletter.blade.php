@@ -8,9 +8,9 @@
 
 <body>
     {!! $data['mail'] !!}
-    <p style="font-size: 1rem; color: #c44636; text-align: center">
+    <p style="font-size: .7rem;">
         <strong>
-            <a href="https://invest--partners.com/newsletter?email={{ urlencode($data['email']) }}">Se désabonner de la newsletter</a>
+            <a style="font-size: .7rem; color: #cacaca; text-align: center" href="https://invest--partners.com/newsletter?email={{ urlencode($data['email']) }}">Se désabonner de la newsletter</a>
         </strong>
     </p>
 </body>
