@@ -34,7 +34,7 @@ class AddInvestissement extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com')->view('emails.investissementI')
+        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.investissementI')
                     ->cc(Auth()->user()->role == 1 ? $this->investissement['user_data']['email'] : $this->admin['email'])
                     ->subject("Approbation de votre investissement sur le projet ". $this->projet['intitule']);
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewInvestorMail;
 use App\Models\Investissement;
 use App\Models\ProfilInvestisseur;
 use App\Models\Projet;
@@ -14,6 +15,8 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -149,7 +152,15 @@ class UserController extends Controller
     {
         $data = $request->input();
         $data['folder'] = hexdec(uniqid());
-        $data['password'] = Hash::make($request->password);
+        $pass = $request->password;
+
+        if ($data['role'] == 3 || $data['role'] == 4) {
+            $pass = Str::random(8);
+        }
+
+        $data['password'] = Hash::make($pass);
+
+        $msgError = 'Utilisateur ajouté avec succès!';
 
         $user =  User::create($data);
 
@@ -157,7 +168,19 @@ class UserController extends Controller
             'user' => $user->id,
         ]);
 
-        Toastr::success('Utilisateur ajouté avec succès!', 'Succès');
+        if ($user->role == 3 || $user->role == 4) {
+            try {
+                $mailData = $user->toArray();
+                $mailData['pass'] = $pass;
+                Mail::to($user->email)->queue(new NewInvestorMail($mailData));
+                Toastr::success($msgError, 'Succès');
+            } catch (\Throwable $e) {
+                $msgError = 'Impossible d\'envoyer un mail car l\'email n\'existe pas!';
+                Toastr::warning($msgError, 'Attention');
+            }
+        } else {
+            Toastr::success($msgError, 'Succès');
+        }
 
         return back();
     }

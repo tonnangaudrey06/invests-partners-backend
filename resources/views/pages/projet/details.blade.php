@@ -270,7 +270,7 @@
                                     <h4 class="card-title mb-4">Membres de l'equipe du projet</h4>
 
                                     <div class="table-responsive">
-                                        <table class="table align-middle table-nowrap">
+                                        <table class="table align-middle">
                                             <thead>
                                                 <th></th>
                                                 <th>Membre</th>
@@ -350,7 +350,7 @@
                             <h4 class="card-title mb-4">Documents du porteur de projet</h4>
                             <div class="table-responsive">
                                 <div class="table-responsive">
-                                    <table class="table table-nowrap align-middle table-hover mb-0">
+                                    <table class="table align-middle table-hover mb-0">
                                         <tbody>
                                             @foreach ($docs as $row)
                                             <tr>
@@ -409,7 +409,7 @@
                         <div class="card-body">
                             <h4 class="card-title mb-4">Document presentation</h4>
                             <div class="table-responsive">
-                                <table class="table table-nowrap align-middle table-hover mb-0">
+                                <table class="table align-middle table-hover mb-0">
                                     <tbody>
                                         <tr>
                                             <td style="width: 10%;">
@@ -458,7 +458,7 @@
                                             <div class="accordion-body">
                                                 @foreach ($projet->medias as $row)
                                                 @if ($row->type == 'FICHIER')
-                                                <table class="table table-nowrap align-middle table-hover mb-0">
+                                                <table class="table align-middle table-hover mb-0">
                                                     <tbody>
                                                         <tr>
                                                             <td style="width: 10%;">
@@ -504,7 +504,7 @@
                                             <div class="accordion-body">
                                                 @foreach ($projet->medias as $row)
                                                 @if ($row->type == 'IMAGE')
-                                                <table class="table table-nowrap align-middle table-hover mb-0">
+                                                <table class="table align-middle table-hover mb-0">
                                                     <tbody>
                                                         <tr>
                                                             <td style="width: 10%;">
@@ -550,7 +550,7 @@
                                             <div class="accordion-body">
                                                 @foreach ($projet->medias as $row)
                                                 @if ($row->type == 'VIDEO')
-                                                <table class="table table-nowrap align-middle table-hover mb-0">
+                                                <table class="table align-middle table-hover mb-0">
                                                     <tbody>
                                                         <tr>
                                                             <td style="width: 10%;">

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\EventMail;
 use App\Models\Evenement;
 use App\Models\Participant;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class EvenementController extends Controller
 {
@@ -28,7 +30,19 @@ class EvenementController extends Controller
         $data = $request->input();
         $data['evenement'] = $id;
 
-        Participant::create($data);
+        $user = Participant::create($data);
+
+        $event = Evenement::find($id);
+
+        try {
+            Mail::to($user->email)
+                ->queue(new EventMail(
+                    $event->toArray(),
+                    $user->toArray()
+                ));
+        } catch (\Throwable $th) {
+            return $this->sendResponse($th, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
+        }
 
         return $this->sendResponse(null, 'Participation done');
     }

@@ -8,11 +8,11 @@ use App\Http\Controllers\API\InvestissementController;
 use App\Http\Controllers\API\MembreController;
 use App\Http\Controllers\API\MessageController;
 use App\Http\Controllers\API\NewsletterController;
+use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\SecteurController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,18 +25,9 @@ use Illuminate\Support\Str;
 |
 */
 
-Route::get('/routes', function () {
-    $routes = [];
-    foreach (Route::getRoutes() as $route) {
-        if (Str::startsWith($route->uri, 'api')) {
-            array_push($routes, (object)[
-                'route' => $route->uri,
-                'methods' => $route->methods,
-                'security' => $route->action['middleware']
-            ]);
-        }
-    }
-    return response()->json($routes);
+Route::prefix('pay')->name('pay.')->group(function () {
+    Route::any('/notify', [PaymentController::class, 'notifier'])->name('notify');
+    Route::post('/{id}', [PaymentController::class, 'payer'])->name('pay');
 });
 
 Route::prefix('auth')->group(function () {

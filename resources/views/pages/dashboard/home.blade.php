@@ -275,7 +275,7 @@
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Statistique des projets par secteur</h4>
                                 <div class="row table-responsive">
-                                    <table class="table align-middle table-nowrap">
+                                    <table class="table align-middle">
                                         <tbody>
                                             @foreach ($secteur as $secteurItem)
                                                 <tr>
@@ -340,7 +340,7 @@
                                                 data-bs-parent="#accordionExample">
                                                 <div class="accordion-body">
                                                     <div class="table-responsive">
-                                                        <table class="table table-nowrap">
+                                                        <table class="table">
                                                             <tbody>
                                                                 @foreach ($item->villes as $item2)
                                                                     <tr>

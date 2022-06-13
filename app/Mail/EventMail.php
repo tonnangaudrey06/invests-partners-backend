@@ -7,10 +7,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class InscriptionMail extends Mailable
+class EventMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $event;
     public $user;
 
     /**
@@ -18,8 +19,9 @@ class InscriptionMail extends Mailable
      *
      * @return void
      */
-    public function __construct(array $user)
+    public function __construct(array $event, array $user)
     {
+        $this->event = $event;
         $this->user = $user;
     }
 
@@ -30,6 +32,8 @@ class InscriptionMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.inscription')->subject('Bienvenue chez Invest & Partners');
+        return $this->from('info@invest--partners.com', 'Invest & Patners')
+        ->view('emails.event')
+        ->subject("Particitpation à l'événement '{$this->event['libelle']}' organisé par Invest & Partners");
     }
 }

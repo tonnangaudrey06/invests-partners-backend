@@ -13,28 +13,37 @@ use Brian2694\Toastr\Facades\Toastr;
 
 class MessageController extends Controller
 {
-    public function index($id = null, $conversation = null, Request $request)
+    public function index()
     {
-        $messages = [];
+        auth()->user()->unreadNotifications->markAsRead();
+
+        $contacts = Message::getContacts(auth()->user()->id);
+
+        return view('pages.chat.home')
+            ->with('sender', auth()->user())
+            ->with('receiver', null)
+            ->with('projet', null)
+            ->with('conversation', '')
+            ->with('messages', [])
+            ->with('contacts', $contacts);
+    }
+
+    public function openConversation($id, $conversation)
+    {
         $projet = null;
 
         auth()->user()->unreadNotifications->markAsRead();
 
-        if (!empty($conversation)) {
-            Message::makeSeen(auth()->user()->id, $conversation);
-            $messages = Message::getLastestMessageQuery($conversation);
+        Message::makeSeen(auth()->user()->id, $conversation);
+        $messages = Message::getLastestMessageQuery($conversation);
 
-            if (count($messages) > 0) {
-                $projet = Projet::find($messages[0]->projet);
-            }
+        if (count($messages) > 0) {
+            $projet = Projet::find($messages[0]->projet);
         }
 
         $contacts = Message::getContacts(auth()->user()->id);
-        $receiver = null;
-
-        if (!empty($id)) {
-            $receiver = User::find($id);
-        }
+        
+        $receiver = User::find($id);
 
         return view('pages.chat.home')
             ->with('sender', auth()->user())

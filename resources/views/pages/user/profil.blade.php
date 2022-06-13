@@ -102,7 +102,7 @@
                         <div class="card-body">
                             <h4 class="card-title mb-4">Informations personnelles</h4>
                             <div class="table-responsive">
-                                <table class="table table-nowrap mb-0">
+                                <table class="table mb-0">
                                     <tbody>
                                         <tr>
                                             <th scope="row">Nom complet :</th>
@@ -127,7 +127,7 @@
                         <div class="card-body">
                             <h4 class="card-title mb-4">Secteurs couverts</h4>
                             <div class="table-responsive">
-                                <table class="table table-nowrap mb-0">
+                                <table class="table mb-0">
                                     <tbody>
                                         @forelse ($user->secteurs_data as $secteur)
                                         <tr>

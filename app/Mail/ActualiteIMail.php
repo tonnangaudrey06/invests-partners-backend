@@ -32,7 +32,7 @@ class ActualiteIMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com')
+        return $this->from('info@invest--partners.com', 'Invest & Patners')
             ->view('emails.actualitesinvest')
             ->subject("Nouvelle actualité");
     }

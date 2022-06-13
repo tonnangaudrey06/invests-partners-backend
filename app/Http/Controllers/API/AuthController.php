@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Passport\Passport;
@@ -13,7 +12,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Mail\InscriptionMail;
 use App\Models\NewsletterMail;
 use App\Models\PasswordReset;
-use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -25,28 +23,22 @@ class AuthController extends Controller
             'role' => 'required'
         ]);
 
-        $user = User::where('email', $request->email)->where('role', $request->role)->with(['role_data', 'documents_fiscaux', 'profil_invest'])->first();
-
-        // return $this->sendError(null, $user, 500);
+        $user = User::where('email', $request->email)
+            ->where('role', $request->role)
+            ->with(['role_data', 'documents_fiscaux', 'profil_invest'])
+            ->first();
 
         if (empty($user)) {
             return $this->sendError("Ce compte n'existe pas. Créez-en un avant de vous connecter.", null, 500);
         }
 
-        $credentials = $request->only('email', 'password');
-
         if (!$request->has('remember') || !$request->remember) {
             Passport::personalAccessTokensExpireIn(now()->addMinutes(1));
         }
 
-
         if (!Hash::check($request->password, $user->password)) {
             return $this->sendError("Votre mot de passe est incorrect. Modifiez-le puis réessayez.", null, 500);
         }
-
-        // if (!Auth::attempt($credentials)) {
-        //     return $this->sendError("Votre mot de passe est incorrect. Modifiez-le puis réessayez.", null, 500);
-        // }
 
         $data['user'] = $user;
         $data['token'] = $user->createToken($request->email)->accessToken;
@@ -62,7 +54,9 @@ class AuthController extends Controller
 
     public function profile(Request $request)
     {
-        return $this->sendResponse(User::with(['role_data', 'documents_fiscaux', 'profil_invest'])->find($request->user()->id), 'User profile');
+        $user = User::with(['role_data', 'documents_fiscaux', 'profil_invest'])
+            ->find($request->user()->id);
+        return $this->sendResponse($user, 'User profile');
     }
 
     public function refresh(Request $request)

@@ -57,7 +57,7 @@ class Message extends Model
     {
         return Message::where('conversation', $conversation)
             ->latest()
-            ->with(['attachements', 'sender', 'receiver'])
+            ->with(['attachements', 'sender', 'receiver', 'projet_data'])
             ->get();
     }
 
@@ -93,9 +93,13 @@ class Message extends Model
                 ->where('vu', 0)
                 ->where('recepteur', $sender)
                 ->count();
+                
+            $contact->sender_data = User::find($contact->envoyeur);
+
             if ($contact->envoyeur != $sender) {
                 $contact->recepteur = $contact->envoyeur;
             }
+
             $contact->envoyeur = (int) $sender;
             $contact->recepteur = User::find($contact->recepteur);
 

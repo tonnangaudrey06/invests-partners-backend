@@ -58,7 +58,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/delete/message/{id}', [MessageController::class, 'deleteMessage'])->name('delete');
         Route::post('/{sender}/send/{receiver}', [MessageController::class, 'newConversation'])->name('new');
         Route::get('/{id}/{receiver}/{conversation}', [MessageController::class, 'index2'])->name('view.conversation');
-        Route::get('/{id}/{conversation}', [MessageController::class, 'index'])->name('conversation');
+        Route::get('/{id}/{conversation}', [MessageController::class, 'openConversation'])->name('conversation');
         Route::post('/{sender}/{conversation}/send/{receiver}', [MessageController::class, 'send'])->name('send');
     });
 

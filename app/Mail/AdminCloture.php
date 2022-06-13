@@ -30,7 +30,7 @@ class AdminCloture extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com')
+        return $this->from('info@invest--partners.com', 'Invest & Patners')
             ->view('emails.admincloture')
             ->subject("Clôture du projet ".$this->projet['intitule']);
     }

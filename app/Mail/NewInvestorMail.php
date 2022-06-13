@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class InscriptionMail extends Mailable
+class NewInvestorMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,6 +30,6 @@ class InscriptionMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.inscription')->subject('Bienvenue chez Invest & Partners');
+        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.new-investor')->subject('Bienvenue chez Invest & Partners');
     }
 }

@@ -540,7 +540,7 @@ class ProjetController extends Controller
     public function AdminInfoSupp(Request $request, $id)
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
-        $conseiller = User::where('id', $projet->secteur_data->id)->first();
+        $conseiller = User::where('id', $projet->secteur_data->user)->first();
 
         $data = array();
         $data['objet'] = $request->objet;

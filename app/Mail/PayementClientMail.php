@@ -7,20 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class InscriptionMail extends Mailable
+class PayementClientMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public $transaction;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(array $user)
+    public function __construct(array $transaction)
     {
-        $this->user = $user;
+        $this->transaction = $transaction;
     }
 
     /**
@@ -30,6 +30,8 @@ class InscriptionMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.inscription')->subject('Bienvenue chez Invest & Partners');
+        return $this->from('info@invest--partners.com', 'Invest & Patners')
+            ->view('emails.paiement-client')
+            ->subject('Avis de réception de votre paiement sur Invest & Patners');
     }
 }

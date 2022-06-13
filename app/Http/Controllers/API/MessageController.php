@@ -148,7 +148,10 @@ class MessageController extends Controller
             $user->sendFcmNotification($data['message']);
         }
 
-        $user->notify(new MessageNotification($message));
+        try {
+            $user->notify(new MessageNotification($message));
+        } catch (\Throwable $th) {}
+
 
         return $this->sendResponse($message, 'New message');
     }

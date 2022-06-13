@@ -14,7 +14,7 @@
         Aussi pour nous permettre de travailler à la recherche d'investisseurs grâce à votre visibilité sur la
         plateforme,
         cliquez sur ce lien (<strong><a href="https://invest--partners.com/dashboard/projets/{{ $projet['id'] }}">
-                https://invest--partners.com/dashboard/projets/{{ $projet['id'] }} </a></strong>) et validez le
+                https://invest--partners.com </a></strong>) et validez le
         paiement
         d'une somme de {{ $projet['user_data']['status'] == 'PARTICULIER' ? '15 000' : '50 000' }} XAF pour les frais
         d'étude et de publication de votre projet puis commencez

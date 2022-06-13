@@ -55,7 +55,6 @@
                                             <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                         @else
                                             @foreach ($privileges as $privilege)
-
                                                 @if ($privilege->module == 15 && $privilege->ajouter == 1)
                                                     <button class="btn btn-sm btn-primary"
                                                         onclick="reload()">Actualiser</button>
