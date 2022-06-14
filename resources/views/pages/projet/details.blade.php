@@ -44,6 +44,12 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="actions-start d-flex align-items-center">
+                                <button id="openMessageModal"
+                                    data-url="{{ route('chat.new', ['sender' => auth()->user()->id, 'receiver' => $projet->secteur_data->conseiller_data->id]) }}"
+                                    class="btn btn-sm btn-primary me-2" onclick="openMessageModal()">
+                                    Message au conseiller d'investissement
+                                    <i class="mdi mdi-email-plus ms-1"></i>
+                                </button>
                                 @if (auth()->user()->role == 1 || auth()->user()->role == 2 || auth()->user()->role == 5)
                                     <button id="openMessageModal"
                                         data-url="{{ route('chat.new', ['sender' => auth()->user()->id, 'receiver' => $projet->user]) }}"
