@@ -78,7 +78,7 @@
                                         @foreach ($users as $user)
                                             <tr>
                                                 <td style="width: 5%" class="text-center"
-                                                    rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">
+                                                    @if ($role->value == 2 && count($user->secteurs_data) > 0) rowspan="{{ count($user->secteurs_data) }}" @endif>
                                                     @if (!empty($user->photo))
                                                         <div>
                                                             <img class="rounded-circle avatar-xs"
@@ -93,9 +93,10 @@
                                                     @endif
                                                 </td>
 
-                                                <th rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}">
-                                                    <a
-                                                        href="{{ route('user.profile', $user->id) }}">{{ $user->nom_complet }}</a>
+                                                <th
+                                                    @if ($role->value == 2 && count($user->secteurs_data) > 0) rowspan="{{ count($user->secteurs_data) }}" @endif>
+                                                    <a href="{{ route('user.profile', $user->id) }}">{{ $user->nom_complet }}
+                                                    </a>
                                                     <div class="d-flex align-items-center gap-2">
                                                         <small>{{ $user->email }}</small>
                                                         <small>{{ $user->telephone }}</small>
@@ -113,7 +114,8 @@
 
                                                 @if ($role->value == 3 || $role->value == 4)
                                                     <td class="text-center text-capitalize">
-                                                        <strong>{{ $user->status }}</strong></td>
+                                                        <strong>{{ $user->status }}</strong>
+                                                    </td>
                                                 @endif
 
                                                 @if ($role->value == 4)
@@ -131,7 +133,7 @@
                                                     </td>
                                                 @endif
 
-                                                <td rowspan="{{ $role->value == 2 ? count($user->secteurs_data) : 1 }}"
+                                                <td @if ($role->value == 2 && count($user->secteurs_data) > 0) rowspan="{{ count($user->secteurs_data) }}" @endif
                                                     class="text-center">
                                                     @if ($role->value == 2 && (auth()->user()->role == 1 || auth()->user()->role == 5))
                                                         <a href="{{ route('chat.view', $user->id) }}"
