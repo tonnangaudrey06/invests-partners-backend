@@ -279,14 +279,14 @@
                                         <tbody>
                                             @foreach ($secteur as $secteurItem)
                                                 <tr>
-                                                    <th style="width: 30%">
+                                                    <th>
                                                         <a class="text-decoration-none"
                                                             href="{{ route('projet.home_secteur', $secteurItem->id) }}">{{ $secteurItem->libelle }}</a>
                                                     </th>
-                                                    <td class="text-center" style="width: 15%">
+                                                    <td class="text-center" style="width: 10%">
                                                         {{ count($secteurItem->projets) }}
                                                     </td>
-                                                    <td>
+                                                    <td style="width: 25%">
                                                         @if ((int) $nbProjets->count() > 0)
                                                             @php
                                                                 $rand = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];

@@ -30,7 +30,14 @@ class EvenementController extends Controller
         $data = $request->input();
         $data['evenement'] = $id;
 
-        $user = Participant::create($data);
+        $user = Participant::where("nom_complet", $request->nom_complet)->first();
+
+        if (!empty($user)) {
+            $user->places += (int)$request->places;
+            $user->save();
+        } else {
+            $user = Participant::create($data);
+        }
 
         $event = Evenement::find($id);
 

@@ -28,7 +28,9 @@ class Transaction extends Model
 
     protected $appends =  [
         'type_complet',
-        'etat_complet'
+        'etat_complet',
+        'methode_complet',
+        'color'
     ];
 
 
@@ -37,16 +39,12 @@ class Transaction extends Model
         switch ($this->type) {
             case 'INSCRIPTION':
                 return 'Paiement lors d\'une inscription';
-                break;
             case 'PROFIL':
                 return 'Paiement lors de la mise à jour d\'une plage d\'investissement';
-                break;
             case 'PROFIL':
                 return 'Paiement lors de l\'enregistrement à un événement';
-                break;
             default:
                 return 'Paiement lors de la validation d\'un projet';
-                break;
         }
     }
 
@@ -55,12 +53,33 @@ class Transaction extends Model
         switch ($this->etat) {
             case 'INITIE':
                 return 'Initié';
-                break;
             case 'REUSSI':
                 return 'Réussi';
-                break;
             default:
                 return 'Échoué';
+        }
+    }
+
+    public function getColorAttribute()
+    {
+        switch ($this->etat) {
+            case 'INITIE':
+                return 'bg-info';
+            case 'REUSSI':
+                return 'bg-success';
+            default:
+                return 'bg-danger';
+        }
+    }
+
+    public function getMethodeCompletAttribute()
+    {
+        switch ($this->methode) {
+            case 'OM':
+                return 'Orange Money';
+            case 'MOMO':
+                return 'MTN Mobile Money';
+            default:
                 break;
         }
     }

@@ -75,7 +75,7 @@
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Investisseur</label>
                                     <select class="form-control" name="investisseur">
-                                        <option>---Selectionner un investisseur---</option>
+                                        <option value="">---Selectionner un investisseur---</option>
                                         @foreach ($investisseurs as $investisseur)
                                         <option value="{{ $investisseur->id }}">{{$investisseur->nom}}
                                             {{$investisseur->prenom}}</option>
@@ -91,7 +91,7 @@
                                 <div class="form-group col-md-12 mb-3">
                                     <label>Projet</label>
                                     <select class="form-control" name="projet">
-                                        <option>---Selectionner un projet---</option>
+                                        <option value="">---Selectionner un projet---</option>
                                         @foreach ($projets as $projet)
                                         <option value="{{$projet->id}}">{{$projet->intitule}}</option>
                                         @endforeach

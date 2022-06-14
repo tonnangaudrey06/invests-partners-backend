@@ -110,7 +110,7 @@
                                                     <div class="col-sm-4">
                                                         <div>
                                                             <p class="text-muted mb-2">Secteur d'activité</p>
-                                                            <h5 class="font-size-15">
+                                                            <h5 class="text-truncated-2 font-size-15">
                                                                 @if ($actualite->secteur)
                                                                     {{ $actualite->secteur_data->libelle }}
                                                                 @else

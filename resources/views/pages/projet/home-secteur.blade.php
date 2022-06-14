@@ -53,7 +53,7 @@ $privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
                         style="border-radius: 0.75rem; box-shadow: 0 -0.25rem 3.5rem rgb(18 38 63 / 26%); cursor: pointer;"
                         onclick="redirectTo('{{ route('projet.details', ['id' => $projet->id]) }}')">
                         <div class="card-body">
-                            <div class="d-flex">
+                            <div class="d-flex flex-wrap">
                                 <div class="flex-shrink-0 me-4">
                                     <div class="avatar-md">
                                         <span class="avatar-title rounded-circle bg-light text-danger font-size-16">
@@ -67,7 +67,7 @@ $privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
                                 </div>
 
                                 <div class="flex-grow-1 overflow-hidden">
-                                    <h5 class="font-size-15">
+                                    <h5 class="text-truncated-2 font-size-15">
                                         <a href="{{ route('projet.details', ['id' => $projet->id]) }}"
                                             class="text-decoration-none">
                                             {{ $projet->intitule }}
@@ -79,7 +79,7 @@ $privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
                                         <p>
                                             <i class="mdi mdi-domain me-1"></i> {{ $projet->secteur_data->libelle }}
                                         </p>
-                                        <p>
+                                        <p class="mb-0">
                                             <i class="mdi mdi-lightbulb-multiple me-1"></i> {{
                                             $projet->avancement_complet }}
                                         </p>
@@ -101,37 +101,7 @@ $privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
                 </div>
                 @endforeach
             </div>
-
-            {{-- <div class="row">
-                <div class="col-lg-12">
-                    <ul class="pagination pagination-rounded justify-content-center mt-2 mb-5">
-                        <li class="page-item disabled">
-                            <a href="javascript: void(0);" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
-                        </li>
-                        <li class="page-item">
-                            <a href="javascript: void(0);" class="page-link">1</a>
-                        </li>
-                        <li class="page-item active">
-                            <a href="javascript: void(0);" class="page-link">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a href="javascript: void(0);" class="page-link">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a href="javascript: void(0);" class="page-link">4</a>
-                        </li>
-                        <li class="page-item">
-                            <a href="javascript: void(0);" class="page-link">5</a>
-                        </li>
-                        <li class="page-item">
-                            <a href="javascript: void(0);" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div> --}}
-            <!-- end row -->
         </div>
-
     </div>
 </div>
 

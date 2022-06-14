@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Evenement;
+use App\Models\Participant;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\File;
@@ -23,8 +24,12 @@ class EvenementController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->input();
+        $data = $request->except('pay');
         $image = $request->file('image');
+
+        if (!$request->pay == "on") {
+            $data['prix'] = null;
+        }
 
         if (!empty($image)) {
             $filename = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
@@ -53,9 +58,13 @@ class EvenementController extends Controller
 
     public function update($id, Request $request)
     {
-        $data = $request->input();
+        $data = $request->except('pay');
         $image = $request->file('image');
         $event = Evenement::where('id', $id)->first();
+
+        if (!$request->pay == "on") {
+            $data['prix'] = null;
+        }
 
         if (!empty($image)) {
             $split = explode('/', $event->image);
@@ -101,5 +110,14 @@ class EvenementController extends Controller
         Toastr::success('Évenement supprimé avec succès!', 'Success');
 
         return redirect()->intended(route('events.home'));
+    }
+
+    public function deleteParticipant($id)
+    {
+        Participant::where('id', $id)->delete();
+
+        Toastr::success('Participant supprimé avec succès!', 'Success');
+
+        return back();
     }
 }

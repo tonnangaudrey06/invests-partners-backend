@@ -83,7 +83,7 @@
                                             <a href="{{route('investissement.delete', $investissement->id)}}"
                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
                                                 class="btn btn-sm btn-danger"><i
-                                                    class="bx bx-trash"></i></i></a>
+                                                    class="bx bx-trash"></i></a>
 
                                         </td>
                                     </tr>

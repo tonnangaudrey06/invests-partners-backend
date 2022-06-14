@@ -76,7 +76,7 @@
                                                 <td>{{ number_format($profil->frais_abonnement, 0, ',', ' ') }}</td>
                                                 <td>
                                                     <a href="{{route('profil.investisseur.edit', $profil->id)}}" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
-                                                    <a href="{{route('profil.investisseur.delete', $profil->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></i></a>
+                                                    <a href="{{route('profil.investisseur.delete', $profil->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></a>
         
                                                 </td>
                                             </tr>

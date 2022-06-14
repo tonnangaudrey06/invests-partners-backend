@@ -71,6 +71,13 @@
 
                         </ul>
                     </li>
+                    
+                    <li>
+                        <a href="{{ route('transactions.home') }}" class="waves-effect">
+                            <i class="mdi mdi-cash"></i>
+                            <span key="t-slide">Transactions</span>
+                        </a>
+                    </li>
 
                     <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect" aria-expanded="true">
@@ -159,7 +166,6 @@
 
                         @endif
 
-
                         @if ($privilege->module == 6 && $privilege->consulter == 1)
                             <li>
                                 <a href="{{ route('investissement.home') }}" class="waves-effect">
@@ -220,6 +226,13 @@
 
                             @endforeach
                         </ul>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('transactions.home') }}" class="waves-effect">
+                            <i class="mdi mdi-cash"></i>
+                            <span key="t-slide">Transactions</span>
+                        </a>
                     </li>
 
                     @foreach ($privileges as $privilege)

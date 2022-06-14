@@ -13,6 +13,7 @@ use App\Http\Controllers\Client\ProjetController;
 use App\Http\Controllers\Client\PrivilegeController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\NewsletterController;
+use App\Http\Controllers\Client\TransactionController;
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -144,10 +145,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [EvenementController::class, 'index'])->name('home');
         Route::get('/add', [EvenementController::class, 'add'])->name('add');
         Route::post('/store', [EvenementController::class, 'store'])->name('store');
+        Route::get('/delete/participant/{id}', [EvenementController::class, 'deleteParticipant'])->name('delete.participant');
         Route::get('/delete/{id}', [EvenementController::class, 'delete'])->name('delete');
         Route::get('/edit/{id}', [EvenementController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [EvenementController::class, 'update'])->name('update');
         Route::get('/{id}', [EvenementController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('transactions')->name('transactions.')->group(function () {
+        Route::get('/', [TransactionController::class, 'index'])->name('home');
     });
 
     Route::prefix('actualites')->name('actualites.')->group(function () {

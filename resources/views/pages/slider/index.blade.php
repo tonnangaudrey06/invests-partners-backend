@@ -77,7 +77,7 @@
                                                         class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
                                                     <a href="{{ url('slider/delete/' . $slider->id) }}"
                                                         onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                        class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></i></a>
+                                                        class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach

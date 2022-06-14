@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Évenements - ' . config('app.name'))
+@section('title', 'Transactions - ' . config('app.name'))
 
 @section('style')
     {{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
@@ -26,13 +26,13 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0 font-size-18">Évenements</h4>
+                            <h4 class="mb-sm-0 font-size-18">Transactions</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">{{ config('app.name') }}</a>
                                     </li>
-                                    <li class="breadcrumb-item active">Évenements</li>
+                                    <li class="breadcrumb-item active">Transactions</li>
                                 </ol>
                             </div>
 
@@ -45,12 +45,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-5">
-                                    <h4 class="card-title">Liste des différents évenements</h4>
+                                    <h4 class="card-title">Liste des transactions</h4>
                                     <div class="actions d-flex align-items-center">
                                         {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
                                         data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
-                                        <a href="{{ route('events.add') }}" class="btn btn-sm btn-primary me-2">Nouveau
-                                            évenement</a>
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -58,57 +56,45 @@
                                 <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
                                     <thead>
                                         <tr>
-                                            <th rowspan="2">Évenement</th>
-                                            <th rowspan="2">Date</th>
-                                            <th rowspan="2">Prix</th>
-                                            <th colspan="2">Places</th>
-                                            <th rowspan="2"></th>
-                                        </tr>
-                                        <tr>
-                                            <th>Disponible</th>
-                                            <th>Reserver</th>
+                                            <th>Action</th>
+                                            <th>Client</th>
+                                            <th>Méthode</th>
+                                            <th>Montant</th>
+                                            <th>Etat</th>
+                                            <th>Date</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($events as $event)
+                                        @foreach ($transactions as $transaction)
                                             <tr>
                                                 <td>
-                                                    <h5 class="font-size-14 mb-1"><a
-                                                            href="{{ route('events.show', $event->id) }}"
-                                                            class="text-decoration-none">{{ $event->libelle }}</a></h5>
-                                                    <p class="text-muted mb-0">{{ $event->lieu }}</p>
+                                                    <p class="font-size-14 mb-0">{{ $transaction->type_complet }}</p>
                                                 </td>
                                                 <td>
-                                                    <h5 class="font-size-14 mb-1 text-dark">@dateFormat($event->date_evenement)
-                                                    </h5>
-                                                    <p class="text-muted mb-0">@timeFormat($event->heure_debut)</p>
+                                                    <p class="text-muted mb-0 fw-bolder">{{ $transaction->user->nom_complet }}</p>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <small>{{ $transaction->user->email }}</small>
+                                                        <small>{{ $transaction->user->telephone }}</small>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    @if (!empty($event->prix))
-                                                        @numberFormat($event->prix) XAF
-                                                    @else
-                                                        Gratuit
-                                                    @endif
+                                                    <p class="text-muted mb-0 fw-bolder">{{ $transaction->methode_complet }}</p>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <small>compte: {{ $transaction->telephone }}</small>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    @numberFormat($event->places) places
+                                                    @numberFormat($transaction->montant) XAF
                                                 </td>
                                                 <td>
-                                                    @numberFormat($event->total_reserve) places
+                                                    <span class="badge {{ $transaction->color }} p-2">
+                                                        {{ $transaction->etat }}
+                                                    </span>
                                                 </td>
-                                                <td class="text-center">
-                                                    <a href="{{ route('events.edit', $event->id) }}"
-                                                        class="btn btn-sm btn-warning float-right"><i
-                                                            class="bx bx-edit"></i></a>
-                                                    <a href="{{ route('events.show', $event->id) }}"
-                                                        class="btn btn-sm btn-warning float-right"><i
-                                                            class="bx bx-detail"></i></a>
-                                                    <a href="{{ route('events.delete', $event->id) }}"
-                                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                        class="btn btn-sm btn-danger float-right"><i
-                                                            class="bx bx-trash"></i>
-                                                    </a>
+                                                <td>
+                                                    <h5 class="font-size-14 mb-1 text-dark">@dateFormat($transaction->created_at)</h5>
+                                                    <p class="text-muted mb-0">@timeFormat($transaction->created_at)</p>
                                                 </td>
                                             </tr>
                                         @endforeach
