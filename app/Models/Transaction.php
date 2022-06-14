@@ -38,13 +38,13 @@ class Transaction extends Model
     {
         switch ($this->type) {
             case 'INSCRIPTION':
-                return 'Paiement lors d\'une inscription';
+                return 'Effectuer lors d\'une inscription';
             case 'PROFIL':
-                return 'Paiement lors de la mise à jour d\'une plage d\'investissement';
+                return 'Effectuer lors de la mise à jour d\'une plage d\'investissement';
             case 'PROFIL':
-                return 'Paiement lors de l\'enregistrement à un événement';
+                return 'Effectuer lors de l\'enregistrement à un événement';
             default:
-                return 'Paiement lors de la validation d\'un projet';
+                return 'Effectuer lors de la validation d\'un projet';
         }
     }
 
