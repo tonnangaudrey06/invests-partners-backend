@@ -30,7 +30,7 @@ class EvenementController extends Controller
         $data = $request->input();
         $data['evenement'] = $id;
 
-        $user = Participant::where("nom_complet", $request->nom_complet)->first();
+        $user = Participant::where("nom_complet", $request->nom_complet)->where("evenement", $id)->first();
 
         if (!empty($user)) {
             $user->places += (int)$request->places;
@@ -41,6 +41,8 @@ class EvenementController extends Controller
 
         $event = Evenement::find($id);
 
+        $message = 'Participation done';
+
         try {
             Mail::to($user->email)
                 ->queue(new EventMail(
@@ -48,10 +50,10 @@ class EvenementController extends Controller
                     $user->toArray()
                 ));
         } catch (\Throwable $th) {
-            return $this->sendResponse($th, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
+            $message = 'Impossible d\'envoyer un mail car l\'email n\'existe pas.';
         }
 
-        return $this->sendResponse(null, 'Participation done');
+        return $this->sendResponse($user, $message);
     }
 
     public function checkSeat($id, Request $request)

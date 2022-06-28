@@ -31,7 +31,12 @@ class CreateTransactionsTable extends Migration
                 ->constrained('evenements')
                 ->onDelete('cascade');
             $table->foreignId('user_id')
+                ->nullable()
                 ->constrained('users')
+                ->onDelete('cascade');
+            $table->foreignId('participant_id')
+                ->nullable()
+                ->constrained('participants')
                 ->onDelete('cascade');
             $table->timestamps();
         });

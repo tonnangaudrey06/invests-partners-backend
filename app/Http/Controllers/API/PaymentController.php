@@ -17,9 +17,14 @@ class PaymentController extends Controller
             "methode" => $request->methode,
             "telephone" => $request->telephone,
             "montant" => $request->montant,
-            "type" => $request->type,
-            "user_id" => $id
+            "type" => $request->type
         ];
+
+        if ($request->has("participant")) {
+            $data["participant_id"] = $id;
+        } else {
+            $data["user_id"] = $id;
+        }
 
         if (isset($request->projet) && !empty($request->projet)) {
             $data['projet_id'] = $request->projet;
@@ -32,24 +37,26 @@ class PaymentController extends Controller
 
         $transaction = Transaction::create($data);
 
-        $transaction = Transaction::with('user')->find($transaction->id);
+        $transaction = Transaction::with('user', 'participant')->find($transaction->id);
 
-        if ($transaction->etat == 'REUSSI' && in_array($transaction->type, array("EVENT", "PROFIL", "INSCRIPTION"))) {
+        $userMail = $transaction->is_client ? $transaction->user->email : $transaction->participant->email;
+
+        // if ($transaction->etat == 'REUSSI') {
             // try {
-                Mail::to($transaction->user->email)
+                Mail::to($userMail)
                     ->queue(new PayementClientMail(
                         $transaction->toArray()
                     ));
             // } catch (\Throwable $th) {
             // }
-        }
+        // }
 
         return $this->sendResponse($transaction, 'Transaction effectuer');
     }
 
     public function notifier(Request $request)
     {
-        $transaction = Transaction::with('user')->where('trans_id', $request->reference)->first();
+        $transaction = Transaction::where('trans_id', $request->reference)->first();
 
         if ($request->status != 'SUCCESSFUL') {
             $transaction->etat = 'ECHOUE';
@@ -60,14 +67,14 @@ class PaymentController extends Controller
 
         $transaction->save();
 
-        if ($request->status != 'SUCCESSFUL') {
-            try {
-                Mail::to($transaction->user->email)
-                    ->queue(new PayementClientMail(
-                        $transaction->toArray()
-                    ));
-            } catch (\Throwable $th) {
-            }
-        }
+        // if ($request->status != 'SUCCESSFUL') {
+        //     try {
+        //         Mail::to($transaction->user->email)
+        //             ->queue(new PayementClientMail(
+        //                 $transaction->toArray()
+        //             ));
+        //     } catch (\Throwable $th) {
+        //     }
+        // }
     }
 }

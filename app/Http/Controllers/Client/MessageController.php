@@ -8,6 +8,7 @@ use App\Models\Message;
 use App\Models\User;
 use App\Models\Archive;
 use App\Models\Projet;
+use App\Notifications\MessageNotification;
 use Illuminate\Support\Str;
 use Brian2694\Toastr\Facades\Toastr;
 
@@ -130,6 +131,10 @@ class MessageController extends Controller
             $user->sendFcmNotification($data['message']);
         }
 
+        try {
+            $user->notify(new MessageNotification($message));
+        } catch (\Throwable $th) {}
+
         return $this->sendResponse($message, 'New message');
     }
 
@@ -196,6 +201,10 @@ class MessageController extends Controller
         if (!empty($user->device_token)) {
             $user->sendFcmNotification($data['message']);
         }
+        
+        try {
+            $user->notify(new MessageNotification($message));
+        } catch (\Throwable $th) {}
 
         Toastr::success('Votre message a été envoyé', 'Succès');
 

@@ -12,8 +12,8 @@
         type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
-        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
 @endsection
 
 
@@ -30,7 +30,8 @@
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">{{ config('app.name') }}</a>
+                                    <li class="breadcrumb-item"><a
+                                            href="javascript: void(0);">{{ config('app.name') }}</a>
                                     </li>
                                     <li class="breadcrumb-item active">Transactions</li>
                                 </ol>
@@ -72,14 +73,25 @@
                                                     <p class="font-size-14 mb-0">{{ $transaction->type_complet }}</p>
                                                 </td>
                                                 <td>
-                                                    <p class="text-muted mb-0 fw-bolder">{{ $transaction->user->nom_complet }}</p>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <small>{{ $transaction->user->email }}</small>
-                                                        <small>{{ $transaction->user->telephone }}</small>
-                                                    </div>
+                                                    @if ($transaction->is_client)
+                                                        <p class="text-muted mb-0 fw-bolder">
+                                                            {{ $transaction->user->nom_complet }}</p>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <small>{{ $transaction->user->email }}</small>
+                                                            <small>{{ $transaction->user->telephone }}</small>
+                                                        </div>
+                                                    @else
+                                                        <p class="text-muted mb-0 fw-bolder">
+                                                            {{ $transaction->participant->nom_complet }}</p>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <small>{{ $transaction->participant->email }}</small>
+                                                            <small>{{ $transaction->participant->telephone }}</small>
+                                                        </div>
+                                                    @endif
                                                 </td>
                                                 <td>
-                                                    <p class="text-muted mb-0 fw-bolder">{{ $transaction->methode_complet }}</p>
+                                                    <p class="text-muted mb-0 fw-bolder">
+                                                        {{ $transaction->methode_complet }}</p>
                                                     <div class="d-flex align-items-center gap-2">
                                                         <small>compte: {{ $transaction->telephone }}</small>
                                                     </div>

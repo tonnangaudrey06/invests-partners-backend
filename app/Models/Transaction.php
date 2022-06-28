@@ -19,7 +19,8 @@ class Transaction extends Model
         'montant',
         'valider',
         'type',
-        'etat'
+        'etat',
+        'participant_id'
     ];
 
     protected $casts = [
@@ -30,9 +31,19 @@ class Transaction extends Model
         'type_complet',
         'etat_complet',
         'methode_complet',
+        'is_client',
         'color'
     ];
 
+    public function getIsClientAttribute()
+    {
+        switch ($this->user_id) {
+            case null:
+                return false;
+            default:
+                return true;
+        }
+    }
 
     public function getTypeCompletAttribute()
     {
@@ -88,6 +99,12 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function participant()
+    {
+        return $this->belongsTo(Participant::class, 'participant_id', 'id');
+    }
+
 
     public function projet()
     {

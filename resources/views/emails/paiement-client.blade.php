@@ -7,7 +7,11 @@
 </head>
 
 <body>
-    <p>Cher <strong>{{ $transaction['user']['nom_complet'] }}</strong>,</p>
+    @if ($transaction['is_client'])
+        <p>Cher <strong>{{ $transaction['user']['nom_complet'] }}</strong>,</p>
+    @else
+        <p>Cher <strong>{{ $transaction['participant']['nom_complet'] }}</strong>,</p>
+    @endif
     <p>
         Nous affirmons avoir perçu un montant de <strong>{{ $transaction['montant'] }} FCFA</strong>
         @switch($transaction['type'])
