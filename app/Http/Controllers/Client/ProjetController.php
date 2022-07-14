@@ -29,24 +29,26 @@ class ProjetController extends Controller
 {
     public function index()
     {
-        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
-            ->where('type', 'AUTRE')
-            ->where(
-                function ($query) {
-                    return $query
-                        ->where('etat', '!=', 'CLOTURE')
-                        ->orWhere('etat', '!=', 'REJETE');
-                }
-            )
-            ->get();
+        // $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+        //     ->where('type', 'AUTRE')
+        //     ->where(
+        //         function ($query) {
+        //             return $query
+        //                 ->where('etat', '!=', 'CLOTURE')
+        //                 ->orWhere('etat', '!=', 'REJETE');
+        //         }
+        //     )
+        //     ->get();
 
-        if (auth()->user()->role == 1 || auth()->user()->role == 5) {
-            $secteurs = Secteur::with(['conseiller_data'])->get();
-        } else {
-            $secteurs = Secteur::with(['conseiller_data'])
-                ->where('user', auth()->user()->id)
-                ->get();
-        }
+        $secteurs = Secteur::with(['conseiller_data'])->get();
+
+        // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
+        //     $secteurs = Secteur::with(['conseiller_data'])->get();
+        // } else {
+        //     $secteurs = Secteur::with(['conseiller_data'])
+        //         ->where('user', auth()->user()->id)
+        //         ->get();
+        // }
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
@@ -63,29 +65,31 @@ class ProjetController extends Controller
                 ->get();
         }
 
-        return view('pages.projet.home', compact('projets', 'secteurs'))->with('type', 'AUTRE');
+        return view('pages.projet.home', compact('secteurs'))->with('type', 'AUTRE');
     }
 
     public function index_ip()
     {
-        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
-            ->where('type', 'IP')
-            ->where(
-                function ($query) {
-                    return $query
-                        ->where('etat', '!=', 'CLOTURE')
-                        ->orWhere('etat', '!=', 'REJETE');
-                }
-            )
-            ->get();
+        // $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+        //     ->where('type', 'IP')
+        //     ->where(
+        //         function ($query) {
+        //             return $query
+        //                 ->where('etat', '!=', 'CLOTURE')
+        //                 ->orWhere('etat', '!=', 'REJETE');
+        //         }
+        //     )
+        //     ->get();
 
-        if (auth()->user()->role == 1 || auth()->user()->role == 5) {
-            $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
-        } else {
-            $secteurs = Secteur::with(['projets', 'conseiller_data'])
-                ->where('user', auth()->user()->id)
-                ->get();
-        }
+        $secteurs = Secteur::with(['conseiller_data'])->get();
+
+        // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
+        //     $secteurs = Secteur::with(['conseiller_data'])->get();
+        // } else {
+        //     $secteurs = Secteur::with(['conseiller_data'])
+        //         ->where('user', auth()->user()->id)
+        //         ->get();
+        // }
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
@@ -102,40 +106,51 @@ class ProjetController extends Controller
                 ->get();
         }
 
-        return view('pages.projet.home', compact('projets', 'secteurs'))->with('type', 'IP');
+        return view('pages.projet.home', compact('secteurs'))->with('type', 'IP');
     }
 
     public function index_secteur($secteur)
     {
-        if (auth()->user()->role == 1 || auth()->user()->role == 5) {
-            $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
-                ->where('secteur', $secteur)
-                ->where(
-                    function ($query) {
-                        return $query
-                            ->where('etat', '!=', 'CLOTURE')
-                            ->orWhere('etat', '!=', 'REJETE');
-                    }
-                )
-                ->get();
-        } else {
-            $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
-                ->where('secteur', $secteur)
-                ->whereIn('secteur', function ($query) {
-                    $query->select('id')
-                        ->from(with(new Secteur())->getTable())
-                        ->where('user', auth()->user()->id);
-                })
-                ->where(
-                    function ($query) {
-                        return $query
-                            ->where('etat', '!=', 'CLOTURE')
-                            ->orWhere('etat', '!=', 'REJETE');
-                    }
-                )
-                ->latest()
-                ->get();
-        }
+        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+            ->where('secteur', $secteur)
+            ->where(
+                function ($query) {
+                    return $query
+                        ->where('etat', '!=', 'CLOTURE')
+                        ->orWhere('etat', '!=', 'REJETE');
+                }
+            )
+            ->get();
+
+        // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
+        //     $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+        //         ->where('secteur', $secteur)
+        //         ->where(
+        //             function ($query) {
+        //                 return $query
+        //                     ->where('etat', '!=', 'CLOTURE')
+        //                     ->orWhere('etat', '!=', 'REJETE');
+        //             }
+        //         )
+        //         ->get();
+        // } else {
+        //     $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+        //         ->where('secteur', $secteur)
+        //         ->whereIn('secteur', function ($query) {
+        //             $query->select('id')
+        //                 ->from(with(new Secteur())->getTable())
+        //                 ->where('user', auth()->user()->id);
+        //         })
+        //         ->where(
+        //             function ($query) {
+        //                 return $query
+        //                     ->where('etat', '!=', 'CLOTURE')
+        //                     ->orWhere('etat', '!=', 'REJETE');
+        //             }
+        //         )
+        //         ->latest()
+        //         ->get();
+        // }
 
         $secteur = Secteur::where('id', $secteur)->first()->libelle;
 
@@ -144,11 +159,13 @@ class ProjetController extends Controller
 
     public function index_ville($ville)
     {
-        if (auth()->user()->role == 1 || auth()->user()->role == 5) {
-            $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
-        } else {
-            $secteurs = Secteur::with(['projets', 'conseiller_data'])->where('user', auth()->user()->id)->get();
-        }
+        $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
+
+        // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
+        //     $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
+        // } else {
+        //     $secteurs = Secteur::with(['projets', 'conseiller_data'])->where('user', auth()->user()->id)->get();
+        // }
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
@@ -170,11 +187,13 @@ class ProjetController extends Controller
 
     public function index_etat($etat)
     {
-        if (auth()->user()->role == 1 || auth()->user()->role == 5) {
-            $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
-        } else {
-            $secteurs = Secteur::with(['projets', 'conseiller_data'])->where('user', auth()->user()->id)->get();
-        }
+        $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
+
+        // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
+        //     $secteurs = Secteur::with(['projets', 'conseiller_data'])->get();
+        // } else {
+        //     $secteurs = Secteur::with(['projets', 'conseiller_data'])->where('user', auth()->user()->id)->get();
+        // }
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
@@ -189,18 +208,20 @@ class ProjetController extends Controller
 
     public function archives()
     {
-        $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
-            ->where('etat', 'REJETE')
-            ->orwhere('etat', 'CLOTURE')
-            ->get();
+        // $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+        //     ->where('etat', 'REJETE')
+        //     ->orwhere('etat', 'CLOTURE')
+        //     ->get();
 
-        if (auth()->user()->role == 1 || auth()->user()->role == 5) {
-            $secteurs = Secteur::with(['conseiller_data'])->get();
-        } else {
-            $secteurs = Secteur::with(['conseiller_data'])
-                ->where('user', auth()->user()->id)
-                ->get();
-        }
+        $secteurs = Secteur::with(['conseiller_data'])->get();
+
+        // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
+        //     $secteurs = Secteur::with(['conseiller_data'])->get();
+        // } else {
+        //     $secteurs = Secteur::with(['conseiller_data'])
+        //         ->where('user', auth()->user()->id)
+        //         ->get();
+        // }
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
@@ -220,7 +241,7 @@ class ProjetController extends Controller
 
         // DB::disableQueryLog();
 
-        return view('pages.projet.home', compact('projets', 'secteurs'))->with('type', 'ARCHIVE');
+        return view('pages.projet.home', compact('secteurs'))->with('type', 'ARCHIVE');
     }
 
     public function add()
