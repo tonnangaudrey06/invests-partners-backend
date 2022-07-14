@@ -24,7 +24,8 @@ class HomeController extends Controller
 
     public function projet()
     {
-        $projets =Projet::where('type', 'IP')->get();
+        
+        $projets = Projet::with(['secteur_data'])->where('type', 'IP')->latest()->get();
         return $this->sendResponse($projets, 'App projets');
     }
     public function ville()
