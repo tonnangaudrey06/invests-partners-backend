@@ -50,7 +50,7 @@
                                 @endif
 
 
-                                <table id="datatable" class="table table-bordered dt-responsive align-middle w-100">
+                                <table id="datatable" class="table table-bordered align-middle w-100">
                                     <thead>
                                         <tr>
                                             <th scope="col" width="5%">SL</th>

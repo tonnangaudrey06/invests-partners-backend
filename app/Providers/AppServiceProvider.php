@@ -52,11 +52,15 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::directive('dateFormat', function ($value) {
-            return "<?php echo date('d/m/Y', strtotime($value));?> ";
+            return "<?php echo date('d/m/Y', strtotime($value));?>";
+        });
+
+        Blade::directive('dateFormat2', function ($value) {
+            return "<?php echo date('d-m-Y', strtotime($value));?>";
         });
 
         Blade::directive('timeFormat', function ($value) {
-            return "<?php echo date('H:i', strtotime($value));?> ";
+            return "<?php echo date('H:i', strtotime($value));?>";
         });
     }
 }

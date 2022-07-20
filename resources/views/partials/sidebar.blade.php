@@ -71,7 +71,7 @@
 
                         </ul>
                     </li>
-                    
+
                     <li>
                         <a href="{{ route('transactions.home') }}" class="waves-effect">
                             <i class="mdi mdi-cash"></i>
@@ -108,6 +108,13 @@
                     </li>
 
                     <li>
+                        <a href="{{ route('experts.home') }}" class="waves-effect">
+                            <i class="mdi mdi-account-group"></i>
+                            <span key="t-categorie">Experts</span>
+                        </a>
+                    </li>
+
+                    <li>
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
                             <i class="mdi mdi-shield-account"></i>
                             <span key="t-user">Privilèges</span>
@@ -135,9 +142,7 @@
                     </li>
 
                 </ul>
-
             @else
-
                 <ul class="metismenu list-unstyled" id="side-menu">
                     <li class="menu-title" key="t-menu">Menu</li>
 
@@ -149,9 +154,7 @@
                     </li>
 
                     @foreach ($privileges as $privilege)
-
                         @if ($privilege->module == 1 && $privilege->consulter == 1)
-
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect" aria-expanded="true">
                                     <i class="bx bx-briefcase-alt-2"></i>
@@ -159,11 +162,11 @@
                                 </a>
                                 <ul class="sub-menu" aria-expanded="false" style="">
                                     <li><a href="{{ route('projet.home') }}" key="t-p-grid">Plateforme</a></li>
-                                    <li><a href="{{ route('projet.home_ip') }}" key="t-p-list">Invest & Partners</a>
+                                    <li><a href="{{ route('projet.home_ip') }}" key="t-p-list">Invest &
+                                            Partners</a>
                                     </li>
                                 </ul>
                             </li>
-
                         @endif
 
                         @if ($privilege->module == 6 && $privilege->consulter == 1)
@@ -202,7 +205,6 @@
                         </a>
                         <ul class="sub-menu" aria-expanded="false">
                             @foreach ($privileges as $privilege)
-
                                 @if ($privilege->module == 3 && $privilege->consulter == 1)
                                     <li><a href="{{ route('user.sous_administrateur') }}"
                                             key="t-admin">Sous-administrateurs</a></li>
@@ -210,7 +212,8 @@
 
 
                                 @if ($privilege->module == 4 && $privilege->consulter == 1)
-                                    <li><a href="{{ route('user.conseiller') }}" key="t-counsellor">Conseillers </a>
+                                    <li><a href="{{ route('user.conseiller') }}" key="t-counsellor">Conseillers
+                                        </a>
                                     </li>
                                 @endif
 
@@ -223,7 +226,6 @@
                                     <li><a href="{{ route('user.investisseur') }}" key="t-investisor">Investisseurs
                                         </a></li>
                                 @endif
-
                             @endforeach
                         </ul>
                     </li>
@@ -236,9 +238,7 @@
                     </li>
 
                     @foreach ($privileges as $privilege)
-
                         @if ($privilege->module == 15 && $privilege->consulter == 1)
-
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect" aria-expanded="true">
                                     <i class="bx bx-briefcase-alt-2"></i>
@@ -247,11 +247,11 @@
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{ route('newsletter.home') }}" key="t-newsletter-mail">Mails</a>
                                     </li>
-                                    <li><a href="{{ route('newsletter.mails') }}" key="t-newsletter-email">Emails</a>
+                                    <li><a href="{{ route('newsletter.mails') }}"
+                                            key="t-newsletter-email">Emails</a>
                                     </li>
                                 </ul>
                             </li>
-
                         @endif
                     @endforeach
 
@@ -259,7 +259,6 @@
                     <li class="menu-title" key="t-menu">Paramètrage</li>
 
                     @foreach ($privileges as $privilege)
-
                         @if ($privilege->module == 7 && $privilege->consulter == 1)
                             <li>
                                 <a href="{{ route('profil.investisseur.home') }}" class="waves-effect">
@@ -267,24 +266,29 @@
                                     <span key="t-profil-investisseur">Profils investisseurs</span>
                                 </a>
                             </li>
-
                         @endif
 
 
                         @if ($privilege->module == 11 && $privilege->consulter == 1)
-
                             <li>
                                 <a href="{{ route('category.home') }}" class="waves-effect">
                                     <i class="mdi mdi-domain"></i>
                                     <span key="t-categorie">Secteurs d'activités</span>
                                 </a>
                             </li>
+                        @endif
 
+                        @if ($privilege->module == 16 && $privilege->consulter == 1)
+                            <li>
+                                <a href="{{ route('experts.home') }}" class="waves-effect">
+                                    <i class="mdi mdi-account-group"></i>
+                                    <span key="t-categorie">Experts</span>
+                                </a>
+                            </li>
                         @endif
 
 
                         @if ($privilege->module == 10 && $privilege->consulter == 1)
-
                             <li>
                                 <a href="javascript: void(0);" class="has-arrow waves-effect">
                                     <i class="mdi mdi-shield-account"></i>
@@ -316,7 +320,7 @@
                                 </a>
                             </li>
                         @endif
-
+                        
                     @endforeach
                 </ul>
 

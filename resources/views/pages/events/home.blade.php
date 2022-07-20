@@ -55,18 +55,14 @@
                                     </div>
                                 </div>
 
-                                <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
+                                <table id="datatable" class="table table-bordered align-middle w-100">
                                     <thead>
                                         <tr>
-                                            <th rowspan="2">Évenement</th>
-                                            <th rowspan="2">Date</th>
-                                            <th rowspan="2">Prix</th>
-                                            <th colspan="2">Places</th>
-                                            <th rowspan="2"></th>
-                                        </tr>
-                                        <tr>
-                                            <th>Disponible</th>
-                                            <th>Reserver</th>
+                                            <th>Évenement</th>
+                                            <th>Date</th>
+                                            <th>Prix</th>
+                                            <th>Places restant</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
 
@@ -74,7 +70,7 @@
                                         @foreach ($events as $event)
                                             <tr>
                                                 <td>
-                                                    <h5 class="font-size-14 mb-1"><a
+                                                    <h5 class="font-size-14 mb-1 text-truncated-2 text-capitalize"><a
                                                             href="{{ route('events.show', $event->id) }}"
                                                             class="text-decoration-none">{{ $event->libelle }}</a></h5>
                                                     <p class="text-muted mb-0">{{ $event->lieu }}</p>
@@ -82,7 +78,7 @@
                                                 <td>
                                                     <h5 class="font-size-14 mb-1 text-dark">@dateFormat($event->date_evenement)
                                                     </h5>
-                                                    <p class="text-muted mb-0">@timeFormat($event->heure_debut)</p>
+                                                    <p class="text-muted mb-0">à parti de @timeFormat($event->heure_debut)</p>
                                                 </td>
                                                 <td>
                                                     @if (!empty($event->prix))
@@ -92,10 +88,8 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @numberFormat($event->places) places
-                                                </td>
-                                                <td>
-                                                    @numberFormat($event->total_reserve) places
+                                                    <h5 class="font-size-14 mb-1 text-dark">@numberFormat($event->places - $event->total_reserve) / @numberFormat($event->places) places</h5>
+                                                    <p class="text-muted mb-0">@numberFormat($event->total_reserve) places reservées</p>
                                                 </td>
                                                 <td class="text-center">
                                                     <a href="{{ route('events.edit', $event->id) }}"

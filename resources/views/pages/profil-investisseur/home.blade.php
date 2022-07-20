@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
 
-                                <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
+                                <table id="datatable" class="table table-bordered align-middle w-100">
                                     <thead>
                                         <tr>
                                             <th>Type</th>

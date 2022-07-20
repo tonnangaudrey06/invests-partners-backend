@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Expert;
 use App\Models\Investissement;
 use App\Models\Projet;
 use App\Models\User;
@@ -10,6 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
+    public function expert()
+    {
+        $experts = Expert::where("cacher", false)->get();
+        return $this->sendResponse($experts, 'App experts');
+    }
+    
     public function slider()
     {
         $sliders = DB::table('sliders')->get();
@@ -28,11 +35,13 @@ class HomeController extends Controller
         $projets = Projet::with(['secteur_data'])->where('type', 'IP')->latest()->get();
         return $this->sendResponse($projets, 'App projets');
     }
+
     public function ville()
     {
         $villes= DB::table('projets')->select('ville_activite','pays_activite')->where('type', 'IP')->groupBy('ville_activite')->get();
         return $this->sendResponse($villes, 'App ville');
     }
+
     public function secteurparville()
     {
         $secteur = DB::table('secteurs')
@@ -59,6 +68,7 @@ class HomeController extends Controller
         
         return $this->sendResponse($projet, 'Project');
     }
+
     public function getactualites($id)
     {
         $actualite = DB::table('actualites')->where('projet',$id)->get();
@@ -71,12 +81,12 @@ class HomeController extends Controller
         $invest = DB::table('investissements')->select('projet', DB::raw('SUM(montant) as total_montant'), DB::raw('COUNT(id) as total_contrib'))->groupBy('projet')->where('projet', $id)->get();
         return $this->sendResponse($invest, 'Investissement');
     }
+
     public function getprojetparsecteur()
     {
         $projetParSect = Projet::groupBy('secteur')->get();
         return $this->sendResponse($projetParSect, 'ProjetParSecteur');
     }
-
 
     public function chiffres()
     {

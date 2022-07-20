@@ -114,7 +114,27 @@
             }
         }
 
+        $.fn.datepicker.dates['en'] = {
+            days: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
+            daysShort: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+            daysMin: ["Di", "Lu", "Ma", "Me", "Je", "Ve", "Sa"],
+            months: ["Janvier", "Fervrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre",
+                "Octobre",
+                "Novembre", "Decembre"
+            ],
+            monthsShort: ["Jan", "Fev", "Mar", "Avr", "Mai", "Jun", "Jul", "Aou", "Sep", "Oct", "Nov",
+                "Dec"
+            ],
+            today: "Aujourd'hui",
+            clear: "Effacer",
+            format: "mm/dd/yyyy",
+            titleFormat: "MM yyyy",
+            /* Leverages same syntax as 'format' */
+            weekStart: 1
+        };
+
         $(document).ready(function() {
+
             $("#flip").click(function() {
                 $("#panel").slideDown("slow");
             });

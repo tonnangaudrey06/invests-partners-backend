@@ -14,14 +14,14 @@ class EvenementController extends Controller
 {
     public function index()
     {
-        $events = Evenement::whereDate('date_evenement', '>', Carbon::now())->get();
+        $events = Evenement::get();
         $month = Evenement::whereMonth('date_evenement', '=', Carbon::now()->month)->get();
         return $this->sendResponse(['all' => $events, 'month' => $month], 'All events');
     }
 
     public function new()
     {
-        $events = Evenement::latest()->take(5)->get();
+        $events = Evenement::latest()->take(6)->get();
         return $this->sendResponse($events, 'Latest events');
     }
 

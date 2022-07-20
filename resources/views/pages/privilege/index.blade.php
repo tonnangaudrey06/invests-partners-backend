@@ -52,7 +52,7 @@
                                 </div>
                             </div>
 
-                            <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
+                            <table id="datatable" class="table table-bordered align-middle w-100">
                                 <thead>
                                     <tr>
                                         <th style="width: 20%">Utilisateur</th>
@@ -65,7 +65,7 @@
                                     <tr>
                                         <td>{{$user->nom_complet}}</td>
                                         <td>
-                                            <table class="table table-bordered dt-responsive align-middle nowrap w-100">
+                                            <table class="table table-bordered align-middle w-100">
                                                 <thead>
                                                     <tr>
                                                         <th style="width: 15%">Module</th>

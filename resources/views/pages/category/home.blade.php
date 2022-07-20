@@ -1,18 +1,14 @@
 @extends('layouts.main')
 
-@section('title', 'Secteurs d\'activités - ' . config('app.name'))
+@section('title', 'Experts - ' . config('app.name'))
 
 @section('style')
-    {{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
     <meta name="_token" content="{{ csrf_token() }}" />
 
-    <!-- Datatable -->
     <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
         type="text/css" />
-
-    <!-- Responsive datatable examples -->
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
         rel="stylesheet" type="text/css" />
 @endsection
@@ -75,7 +71,7 @@
 
                                 @if (auth()->user()->role == 1 || auth()->user()->role == 5)
                                     <table id="datatable"
-                                        class="table table-bordered dt-responsive align-middle nowrap w-100">
+                                        class="table table-bordered align-middle w-100">
                                         <thead>
                                             <tr>
                                                 <th style="width: 5%"></th>
@@ -124,11 +120,12 @@
                                     </table>
                                 @else
                                     <table id="datatable"
-                                        class="table table-bordered dt-responsive align-middle nowrap w-100">
+                                        class="table table-bordered align-middle w-100">
                                         <thead>
                                             <tr>
                                                 <th style="width: 5%"></th>
                                                 <th>Secteur d'activité</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
 
@@ -151,6 +148,12 @@
                                                     </td>
                                                     <td>
                                                         <strong>{{ $categorie->libelle }}</strong>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="{{ route('actualites.home', ['secteur', $categorie->id]) }}"
+                                                            class="btn btn-sm btn-info">
+                                                            <i class="mdi mdi-newspaper-variant-multiple-outline"></i>
+                                                        </a>
                                                     </td>
                                                 </tr>
                                             @endforeach

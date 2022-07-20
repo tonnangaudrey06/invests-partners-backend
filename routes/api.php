@@ -63,6 +63,7 @@ Route::prefix('app')->group(function () {
     Route::get('/actualites/actualites/{id}', [HomeController::class, 'getactualites']);
     Route::get('/projetparsecter', [HomeController::class, 'getprojetparsecteur']);
     Route::get('/chiffre', [HomeController::class, 'chiffres']);
+    Route::get('/expert', [HomeController::class, 'expert']);
 });
 
 Route::middleware('auth:api')->group(function () {

@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
 
-                                <table id="datatable" class="table table-bordered dt-responsive align-middle nowrap w-100">
+                                <table id="datatable" class="table table-bordered align-middle w-100">
                                     <thead>
                                         <tr>
                                             <th>Action</th>
@@ -63,13 +63,14 @@
                                             <th>Montant</th>
                                             <th>Etat</th>
                                             <th>Date</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
                                         @foreach ($transactions as $transaction)
                                             <tr>
-                                                <td>
+                                                <td style="width: 20%">
                                                     <p class="font-size-14 mb-0">{{ $transaction->type_complet }}</p>
                                                 </td>
                                                 <td>
@@ -107,6 +108,13 @@
                                                 <td>
                                                     <h5 class="font-size-14 mb-1 text-dark">@dateFormat($transaction->created_at)</h5>
                                                     <p class="text-muted mb-0">@timeFormat($transaction->created_at)</p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('transactions.delete', $transaction->id) }}"
+                                                        onclick="return confirm('Voulez-vous vraiment supprimer cette transaction ?')"
+                                                        class="btn btn-sm btn-danger float-right"><i
+                                                            class="bx bx-trash"></i>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach

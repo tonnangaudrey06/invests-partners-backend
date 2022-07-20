@@ -80,7 +80,7 @@
                                                 </div>
 
                                                 <div class="flex-grow-1 overflow-hidden">
-                                                    <h5 class="text-truncated-2 font-size-15">
+                                                    <h5 class="text-truncate font-size-15">
                                                         <a href="{{ route('projet.details', ['id' => $projet->id]) }}"
                                                             class="text-decoration-none">
                                                             {{ $projet->intitule }}
@@ -89,11 +89,11 @@
                                                     <p class="font-size-14 fw-bolder">@numberFormat($projet->financement) XAF</p>
                                                     <hr>
                                                     <div class="text-muted fw-bolder">
-                                                        <p>
+                                                        {{-- <p>
                                                             <i class="mdi mdi-domain me-1"></i>
                                                             {{ $projet->secteur_data->libelle }}
-                                                        </p>
-                                                        <p class="mb-0">
+                                                        </p> --}}
+                                                        <p class="mb-0 text-truncate">
                                                             <i class="mdi mdi-lightbulb-multiple me-1"></i>
                                                             {{ $projet->avancement_complet }}
                                                         </p>
@@ -108,7 +108,7 @@
                                                     <i class="bx bx-calendar me-1"></i> Crée
                                                     {{ Carbon\Carbon::parse($projet->created_at)->diffForHumans() }}
                                                 </div>
-                                                <span class="badge bg-info p-2">{{ $projet->etat }}</span>
+                                                <span class="badge bg-primary p-2">{{ $projet->etat_complet }}</span>
                                             </div>
                                         </div>
                                     </div>

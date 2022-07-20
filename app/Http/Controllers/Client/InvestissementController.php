@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\File;
 
 class InvestissementController extends Controller
 {
@@ -30,31 +31,37 @@ class InvestissementController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate(
             [
                 'date_versement' => 'required|:investissements',
                 'investisseur' => 'required|:investissements',
                 'projet' => 'required|:investissements',
                 'montant_investi' => 'required|:investissements',
-                'numero_versement' => 'required|:investissements',
+                'facture_versement' => 'required|:investissements',
             ],
-
             [
                 'date_versement.required' => 'Champ obligatoire!',
                 'investisseur.required' => 'Champ obligatoire!',
                 'projet.required' => 'Champ obligatoire!',
                 'montant_investi.required' => 'Champ obligatoire!',
-                'numero_versement.required' => 'Champ obligatoire!',
+                'facture_versement.required' => 'Champ obligatoire!',
             ]
         );
 
         $data = array();
         $data['user'] = $request->investisseur;
         $data['projet'] = $request->projet;
-        $data['date_versement'] = Carbon::parse($request->date_versement);
+        $data['date_versement'] = Carbon::createFromFormat('d/m/Y', $request->date_versement)->toDateTimeString();
         $data['montant'] = $request->montant_investi;
-        $data['numero_versement'] = $request->numero_versement;
+        $data['folder'] = hexdec(uniqid());
+
+        if ($request->has('facture_versement')) {
+            $facture = $request->file('facture_versement');
+            $fileExt = strtolower($facture->getClientOriginalExtension());
+            $data['facture_file'] = 'facture.' . $fileExt;
+            $data['facture_versement'] = url('storage/uploads/investments/' . $data['folder']) . '/' . $data['facture_file'];
+            $facture->storeAs('uploads/investments/' . $data['folder'] . '/', $data['facture_file'], ['disk' => 'public']);
+        }
 
         Investissement::create($data);
 
@@ -99,25 +106,37 @@ class InvestissementController extends Controller
                 'investisseur' => 'required|:investissements',
                 'projet' => 'required|:investissements',
                 'montant_investi' => 'required|:investissements',
-                'numero_versement' => 'required|:investissements',
             ],
 
             [
                 'date_versement.required' => 'Champ obligatoire!',
                 'investisseur.required' => 'Champ obligatoire!',
                 'projet.required' => 'Champ obligatoire!',
-                'numero_versement.required' => 'Champ obligatoire!',
+                'montant_investi.required' => 'Champ obligatoire!',
             ]
         );
 
         $data = Investissement::find($id);
-        $data->update([
+
+        $form = [
             'user' => $request->investisseur,
             'projet' => $request->projet,
-            'date_versement' => Carbon::parse($request->date_versement),
-            'montant' => $request->montant_investi,
-            'numero_versement' => $request->numero_versement,
-        ]);
+            'date_versement' => Carbon::createFromFormat('d/m/Y', $request->date_versement)->toDateTimeString(),
+            'montant' => $request->montant_investi
+        ];
+
+        if ($request->has('facture_versement')) {
+            File::delete(storage_path('app/public/uploads/investments/' . $data->folder . '/' . $data->facture_file));
+            $facture = $request->file('facture_versement');
+            $fileExt = strtolower($facture->getClientOriginalExtension());
+            $form['facture_file'] = 'facture.' . $fileExt;
+            $form['facture_versement'] = url('storage/uploads/investments/' . $data->folder) . '/' . $form['facture_file'];
+            $facture->storeAs('uploads/investments/' . $data->folder . '/', $form['facture_file'], ['disk' => 'public']);
+        }
+
+        // dd($form);
+
+        $data->update($form);
 
         Toastr::success('Investissement modifié avec succès!', 'Succès');
 
@@ -126,6 +145,10 @@ class InvestissementController extends Controller
 
     public function delete($id)
     {
+        $invest = Investissement::find($id);
+        if ($invest->folder != null) {
+            File::deleteDirectory(storage_path('app/public/uploads/investments') . $invest->folder);
+        }
         Investissement::find($id)->delete();
         Toastr::success('Investissement supprimé avec succès!', 'Success');
         return redirect()->intended(route('investissement.home'));

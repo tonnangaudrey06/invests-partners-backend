@@ -29,17 +29,6 @@ class ProjetController extends Controller
 {
     public function index()
     {
-        // $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
-        //     ->where('type', 'AUTRE')
-        //     ->where(
-        //         function ($query) {
-        //             return $query
-        //                 ->where('etat', '!=', 'CLOTURE')
-        //                 ->orWhere('etat', '!=', 'REJETE');
-        //         }
-        //     )
-        //     ->get();
-
         $secteurs = Secteur::with(['conseiller_data'])->get();
 
         // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
@@ -70,17 +59,6 @@ class ProjetController extends Controller
 
     public function index_ip()
     {
-        // $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
-        //     ->where('type', 'IP')
-        //     ->where(
-        //         function ($query) {
-        //             return $query
-        //                 ->where('etat', '!=', 'CLOTURE')
-        //                 ->orWhere('etat', '!=', 'REJETE');
-        //         }
-        //     )
-        //     ->get();
-
         $secteurs = Secteur::with(['conseiller_data'])->get();
 
         // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
@@ -208,11 +186,6 @@ class ProjetController extends Controller
 
     public function archives()
     {
-        // $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
-        //     ->where('etat', 'REJETE')
-        //     ->orwhere('etat', 'CLOTURE')
-        //     ->get();
-
         $secteurs = Secteur::with(['conseiller_data'])->get();
 
         // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
@@ -235,11 +208,7 @@ class ProjetController extends Controller
                 )
                 ->latest()
                 ->get();
-
-            // dd(DB::getQueryLog());
         }
-
-        // DB::disableQueryLog();
 
         return view('pages.projet.home', compact('secteurs'))->with('type', 'ARCHIVE');
     }
@@ -301,9 +270,6 @@ class ProjetController extends Controller
 
         $medias = $request->has('medias') ? $request->file('medias') : [];
 
-        // return $this->sendResponse($membres, 'Project');
-
-        // Save project
         $data['folder'] = hexdec(uniqid());
 
         if (!empty($logo)) {
@@ -312,10 +278,8 @@ class ProjetController extends Controller
             $logo->storeAs('uploads/projets/' . $data['folder'] . '/', $filename, ['disk' => 'public']);
         }
 
-        // return response()->json($data);
         $projet = Projet::create($data);
 
-        // Save all project medias
         foreach ($medias as $media) {
             $extension = $media->getClientOriginalExtension();
 
@@ -341,19 +305,17 @@ class ProjetController extends Controller
             Archive::create($data);
         }
 
-        // Save actual member
         if (!empty($photo)) {
             $filename = hexdec(uniqid()) . '.' . $photo->getClientOriginalExtension();
             $membre['photo'] = url('storage/uploads/membres/') . '/' . $filename;
             $photo->storeAs('uploads/membres/', $filename, ['disk' => 'public']);
         }
 
-        // Retrieve projects informations
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('id', $projet->id)->first();
 
         Toastr::success('Projet ajouté avec succès!', 'Succès');
 
-        return redirect()->route('projet.home');
+        return redirect()->route('projet.home_ip');
     }
 
     public function edit($id)
@@ -390,7 +352,10 @@ class ProjetController extends Controller
         $projet->ca_previsionnel = $request->ca_previsionnel;
         $projet->description = $request->description;
         $projet->financement = $request->financement;
-        $projet->etat = 'COMPLET';
+
+        if($projet->type == "AUTRE") {
+            $projet->etat = 'COMPLET';
+        }
 
         if (auth()->user()->role == 2) {
             $data_report = [
@@ -485,8 +450,7 @@ class ProjetController extends Controller
             'etat' => 'PUBLIE',
         ]);
 
-        Mail::to($projet->user_data->email)
-            ->queue(new AdminPublication($projet->toArray()));
+        Mail::to($projet->user_data->email)->queue(new AdminPublication($projet->toArray()));
 
         $user = User::find($projet->user_data->id);
 

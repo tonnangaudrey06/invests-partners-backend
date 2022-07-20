@@ -9,7 +9,6 @@ use App\Models\Actualite;
 use App\Models\Investissement;
 use App\Models\Projet;
 use App\Models\Secteur;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\File;

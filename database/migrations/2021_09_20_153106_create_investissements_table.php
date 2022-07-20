@@ -19,7 +19,9 @@ class CreateInvestissementsTable extends Migration
             $table->unsignedBigInteger('projet');
             $table->bigInteger('montant');
             $table->timestamp('date_versement');
-            $table->string('numero_versement');
+            $table->string('folder');
+            $table->string('facture_file');
+            $table->string('facture_versement');
             $table->foreign('user')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('projet')->references('id')->on('projets')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

@@ -13,12 +13,15 @@ class Investissement extends Model
         'user',
         'projet',
         'date_versement',
-        'numero_versement',
+        'facture_versement',
         'montant',
+        'folder',
+        'facture_file'
     ];
 
 
-    public function projet_data(){
+    public function projet_data()
+    {
         return $this->belongsTo(Projet::class, 'projet', 'id')->with(['secteur_data']);
     }
 

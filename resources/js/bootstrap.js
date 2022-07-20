@@ -46,5 +46,4 @@ window.Echo = new Echo({
 window.Echo.private('App.Models.User.' + user.id)
     .notification((notification) => {
         document.getElementById('notification-count').innerHTML = parseInt(document.getElementById('notification-count').innerText()) + 1;
-        console.log(notification.type);
     });

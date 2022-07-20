@@ -5,6 +5,7 @@ use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\AuthController;
 use App\Http\Controllers\Client\DashboardController;
 use App\Http\Controllers\Client\EvenementController;
+use App\Http\Controllers\Client\ExpertController;
 use App\Http\Controllers\Client\InvestissementController;
 use App\Http\Controllers\Client\SecteurController;
 use App\Http\Controllers\Client\MessageController;
@@ -14,8 +15,8 @@ use App\Http\Controllers\Client\PrivilegeController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\NewsletterController;
 use App\Http\Controllers\Client\TransactionController;
-use App\Mail\TestMail;
-use Illuminate\Support\Facades\Mail;
+// use App\Mail\TestMail;
+// use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,15 +30,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/welcome', function () {
-    // return view('welcome');
-    try {
-        Mail::to('donfackeddy12@gmail.com')->queue(new TestMail());
-        return response(['og']);
-    } catch (\Throwable $th) {
-        throw $th;
-    }
-});
+// Route::get('/welcome', function () {
+//     try {
+//         Mail::to('donfackeddy12@gmail.com')->queue(new TestMail());
+//         return response(['og']);
+//     } catch (\Throwable $th) {
+//         throw $th;
+//     }
+// });
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
@@ -154,6 +154,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('transactions')->name('transactions.')->group(function () {
         Route::get('/', [TransactionController::class, 'index'])->name('home');
+        Route::get('/delete/{id}', [TransactionController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('actualites')->name('actualites.')->group(function () {
@@ -164,6 +165,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/details/show/{type}/{id}/{idPS}', [ActualiteController::class, 'showDetails'])->name('details');
         Route::post('/store/{type}/{id}', [ActualiteController::class, 'store'])->name('store');
         Route::get('/delete/{type}/{id}/{idPS}', [ActualiteController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('experts')->name('experts.')->group(function () {
+        Route::get('/', [ExpertController::class, 'index'])->name('home');
+        Route::get('/add', [ExpertController::class, 'add'])->name('add');
+        Route::get('/edit/{id}', [ExpertController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [ExpertController::class, 'update'])->name('update');
+        Route::post('/store', [ExpertController::class, 'store'])->name('store');
+        Route::get('/delete/{id}', [ExpertController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('projet')->name('projet.')->group(function () {
