@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Client\ActualiteController;
+use App\Http\Controllers\Client\ArchiveController;
 use App\Http\Controllers\Client\UserController;
 use App\Http\Controllers\Client\AuthController;
 use App\Http\Controllers\Client\DashboardController;
@@ -176,6 +177,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/delete/{id}', [ExpertController::class, 'delete'])->name('delete');
     });
 
+    Route::prefix('archive')->name('archive.')->group(function () {
+        Route::get('/delete/projet/{id}', [ArchiveController::class, 'deleteProjectDocument'])->name('delete.projet');
+    });
+
     Route::prefix('projet')->name('projet.')->group(function () {
         Route::get('/', [ProjetController::class, 'index'])->name('home');
         Route::get('/ip', [ProjetController::class, 'index_ip'])->name('home_ip');
@@ -198,15 +203,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/rejet/{id}', [ProjetController::class, 'Rejeter'])->name('rejet');
         Route::get('/{id}', [ProjetController::class, 'showp'])->name('details');
     });
+
+
+    Route::get('/add/writer', [PrivilegeController::class, 'InsertWriter'])->name('add.writer');
+    Route::get('/all/writer', [PrivilegeController::class, 'AllWriter'])->name('all.writer');
+    Route::post('/store/writer', [PrivilegeController::class, 'StoreWriter'])->name('store.writer');
+    Route::get('/edit/writer/{privilege}', [PrivilegeController::class, 'EditWriter'])->name('edit.writer');
+    Route::post('/update/{privilege}', [PrivilegeController::class, 'UpdateWriter'])->name('update.writer');
+    Route::get('/delete/writer/{privilege}', [PrivilegeController::class, 'DeleteWriter'])->name('delete.writer');
+
+    Route::get('/get/user/{user_id}', [SecteurController::class, 'GetUserEdit']);
 });
-
-// Privilèges Routes
-
-Route::get('/add/writer', [PrivilegeController::class, 'InsertWriter'])->name('add.writer');
-Route::get('/all/writer', [PrivilegeController::class, 'AllWriter'])->name('all.writer');
-Route::post('/store/writer', [PrivilegeController::class, 'StoreWriter'])->name('store.writer');
-Route::get('/edit/writer/{privilege}', [PrivilegeController::class, 'EditWriter'])->name('edit.writer');
-Route::post('/update/{privilege}', [PrivilegeController::class, 'UpdateWriter'])->name('update.writer');
-Route::get('/delete/writer/{privilege}', [PrivilegeController::class, 'DeleteWriter'])->name('delete.writer');
-
-Route::get('/get/user/{user_id}', [SecteurController::class, 'GetUserEdit']);

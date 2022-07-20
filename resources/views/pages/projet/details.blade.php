@@ -398,7 +398,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <h5 class="font-size-14 text-truncated-2"><a
+                                                                <h5 class="font-size-12 text-truncated-2 mb-0"><a
                                                                         target="_blank" download
                                                                         href="{{ $row->document }}"
                                                                         class="text-dark">{{ $row->type }}</a></h5>
@@ -408,7 +408,7 @@
                                                                     <a download target="_blank"
                                                                         href="{{ $row->document }}"
                                                                         class="text-dark"><i
-                                                                            class="bx bx-download h3 m-0"></i></a>
+                                                                            class="bx bx-download h4 m-0"></i></a>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -424,7 +424,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <h5 class="font-size-14 text-truncated-2"><a
+                                                                <h5 class="font-size-12 text-truncated-2 mb-0"><a
                                                                         target="_blank" download
                                                                         href="{{ $projet->user_data->cni }}"
                                                                         class="text-dark">CNI /
@@ -435,7 +435,7 @@
                                                                     <a download target="_blank"
                                                                         href="{{ $projet->user_data->cni }}"
                                                                         class="text-dark"><i
-                                                                            class="bx bx-download h3 m-0"></i></a>
+                                                                            class="bx bx-download h4 m-0"></i></a>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -465,8 +465,8 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <h5 class="font-size-14 text-truncated-2"><a download target="_blank"
-                                                                href="{{ $projet->doc_presentation }}"
+                                                        <h5 class="font-size-12 text-truncated-2 mb-0"><a download
+                                                                target="_blank" href="{{ $projet->doc_presentation }}"
                                                                 class="text-dark">Presentation du projet</a></h5>
                                                     </td>
                                                     <td style="width: 10%;">
@@ -474,7 +474,7 @@
                                                             <a download target="_blank"
                                                                 href="{{ $projet->doc_presentation }}"
                                                                 class="text-dark"><i
-                                                                    class="bx bx-download h3 m-0"></i></a>
+                                                                    class="bx bx-download h4 m-0"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -486,28 +486,36 @@
                             </div>
                         @endif
 
-                        @if (count($projet->medias) > 0)
+                        <?php
+                        $filesPP = $projet->medias->filter(function ($media, $key) {
+                            return $media->source == 'PP';
+                        });
+                        $filesIV = $projet->medias->filter(function ($media, $key) {
+                            return $media->source == 'CONSEILLER';
+                        });
+                        ?>
+
+                        @if (count($filesPP) > 0)
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title mb-4">Fichiers joints</h4>
+                                    <h4 class="card-title mb-4">Fichiers joints de la part du porteur de projet</h4>
                                     <div class="table-responsive">
 
-                                        <div class="accordion" id="accordionExample">
+                                        <div class="accordion" id="accordionExamplePP">
                                             <div class="accordion-item">
-                                                <h2 class="accordion-header" id="headingOne">
+                                                <h2 class="accordion-header" id="headingOnePP">
                                                     <button class="accordion-button fw-bolder collapsed" type="button"
-                                                        data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                                                        aria-expanded="false" aria-controls="collapseOne">
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseOnePP"
+                                                        aria-expanded="false" aria-controls="collapseOnePP">
                                                         Documents
                                                     </button>
                                                 </h2>
-                                                <div id="collapseOne" class="accordion-collapse collapse"
-                                                    aria-labelledby="headingOne" data-bs-parent="#accordionExample"
-                                                    style="">
+                                                <div id="collapseOnePP" class="accordion-collapse collapse"
+                                                    aria-labelledby="headingOnePP" data-bs-parent="#accordionExamplePP">
                                                     <div class="accordion-body">
                                                         <table class="table align-middle table-hover mb-0">
                                                             <tbody>
-                                                                @foreach ($projet->medias as $row)
+                                                                @foreach ($filesPP as $row)
                                                                     @if ($row->type == 'FICHIER')
                                                                         <tr>
                                                                             <td style="width: 10%;">
@@ -519,20 +527,22 @@
                                                                                 </div>
                                                                             </td>
                                                                             <td>
-                                                                                <h5
-                                                                                    class="font-size-14 text-truncated-2">
+                                                                                <h5 class="font-size-12 text-truncated-2 mb-0">
                                                                                     <a download target="_blank"
                                                                                         href="{{ $row->url }}"
                                                                                         class="text-dark">{{ $row->nom }}</a>
                                                                                 </h5>
-                                                                                {{-- <small>{{ $row->type }}</small> --}}
                                                                             </td>
-                                                                            <td style="width: 10%;">
+                                                                            <td style="width: 20%;">
                                                                                 <div class="text-center">
+                                                                                    <a href="{{ route("archive.delete.projet", $row->id) }}">
+                                                                                        <i class="bx bx-trash h4 m-0 me-2 text-danger"></i>
+                                                                                    </a>
                                                                                     <a download target="_blank"
                                                                                         href="{{ $row->url }}"
-                                                                                        class="text-dark"><i
-                                                                                            class="bx bx-download h3 m-0"></i></a>
+                                                                                        class="text-dark">
+                                                                                        <i class="bx bx-download h4 m-0"></i>
+                                                                                    </a>
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -545,19 +555,19 @@
                                                 </div>
                                             </div>
                                             <div class="accordion-item">
-                                                <h2 class="accordion-header" id="headingTwo">
+                                                <h2 class="accordion-header" id="headingTwoPP">
                                                     <button class="accordion-button fw-bolder collapsed" type="button"
-                                                        data-bs-toggle="collapse" data-bs-target="#collapseTwo"
-                                                        aria-expanded="false" aria-controls="collapseTwo">
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseTwoPP"
+                                                        aria-expanded="false" aria-controls="collapseTwoPP">
                                                         Images
                                                     </button>
                                                 </h2>
-                                                <div id="collapseTwo" class="accordion-collapse collapse"
-                                                    aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                <div id="collapseTwoPP" class="accordion-collapse collapse"
+                                                    aria-labelledby="headingTwoPP" data-bs-parent="#accordionExamplePP">
                                                     <div class="accordion-body">
                                                         <table class="table align-middle table-hover mb-0">
                                                             <tbody>
-                                                                @foreach ($projet->medias as $row)
+                                                                @foreach ($filesPP as $row)
                                                                     @if ($row->type == 'IMAGE')
                                                                         <tr>
                                                                             <td style="width: 10%;">
@@ -569,20 +579,22 @@
                                                                                 </div>
                                                                             </td>
                                                                             <td>
-                                                                                <h5
-                                                                                    class="font-size-14 text-truncated-2">
+                                                                                <h5 class="font-size-12 text-truncated-2 mb-0">
                                                                                     <a download target="_blank"
                                                                                         href="{{ $row->url }}"
                                                                                         class="text-dark">{{ $row->nom }}</a>
                                                                                 </h5>
-                                                                                {{-- <small>{{ $row->type }}</small> --}}
                                                                             </td>
-                                                                            <td style="width: 10%;">
+                                                                            <td style="width: 20%;">
                                                                                 <div class="text-center">
+                                                                                    <a href="{{ route("archive.delete.projet", $row->id) }}">
+                                                                                        <i class="bx bx-trash h4 m-0 me-2 text-danger"></i>
+                                                                                    </a>
                                                                                     <a download target="_blank"
                                                                                         href="{{ $row->url }}"
-                                                                                        class="text-dark"><i
-                                                                                            class="bx bx-download h3 m-0"></i></a>
+                                                                                        class="text-dark">
+                                                                                        <i class="bx bx-download h4 m-0"></i>
+                                                                                    </a>
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -594,42 +606,216 @@
                                                 </div>
                                             </div>
                                             <div class="accordion-item">
-                                                <h2 class="accordion-header" id="headingThree">
+                                                <h2 class="accordion-header" id="headingThreePP">
                                                     <button class="accordion-button fw-bolder collapsed" type="button"
-                                                        data-bs-toggle="collapse" data-bs-target="#collapseThree"
-                                                        aria-expanded="false" aria-controls="collapseThree">
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseThreePP"
+                                                        aria-expanded="false" aria-controls="collapseThreePP">
                                                         Vidéos
                                                     </button>
                                                 </h2>
-                                                <div id="collapseThree" class="accordion-collapse collapse"
-                                                    aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                                <div id="collapseThreePP" class="accordion-collapse collapse"
+                                                    aria-labelledby="headingThreePP" data-bs-parent="#accordionExamplePP">
                                                     <div class="accordion-body">
                                                         <table class="table align-middle table-hover mb-0">
                                                             <tbody>
-                                                                @foreach ($projet->medias as $row)
+                                                                @foreach ($filesPP as $row)
                                                                     @if ($row->type == 'VIDEO')
                                                                         <tr>
                                                                             <td style="width: 10%;">
                                                                                 <div class="avatar-xs">
                                                                                     <span
                                                                                         class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
-                                                                                        <i class="mdi mdi-play-circle-outline"></i>
+                                                                                        <i
+                                                                                            class="mdi mdi-play-circle-outline"></i>
                                                                                     </span>
                                                                                 </div>
                                                                             </td>
                                                                             <td>
-                                                                                <h5 class="font-size-14 text-truncated-2">
+                                                                                <h5 class="font-size-12 text-truncated-2 mb-0">
                                                                                     <a download target="_blank"
                                                                                         href="{{ $row->url }}"
                                                                                         class="text-dark">{{ $row->nom }}</a>
                                                                                 </h5>
                                                                             </td>
-                                                                            <td>
+                                                                            <td style="width: 20%;">
                                                                                 <div class="text-center">
+                                                                                    <a href="{{ route("archive.delete.projet", $row->id) }}">
+                                                                                        <i class="bx bx-trash h4 m-0 me-2 text-danger"></i>
+                                                                                    </a>
                                                                                     <a download target="_blank"
                                                                                         href="{{ $row->url }}"
-                                                                                        class="text-dark"><i
-                                                                                            class="bx bx-download h3 m-0"></i></a>
+                                                                                        class="text-dark">
+                                                                                        <i class="bx bx-download h4 m-0"></i>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if (count($filesIV) > 0)
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title mb-4">Fichiers joints pour l'investisseur</h4>
+                                    <div class="table-responsive">
+
+                                        <div class="accordion" id="accordionExampleIV">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingOneIV">
+                                                    <button class="accordion-button fw-bolder collapsed" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseOneIV"
+                                                        aria-expanded="false" aria-controls="collapseOneIV">
+                                                        Documents
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseOneIV" class="accordion-collapse collapse"
+                                                    aria-labelledby="headingOneIV" data-bs-parent="#accordionExampleIV">
+                                                    <div class="accordion-body">
+                                                        <table class="table align-middle table-hover mb-0">
+                                                            <tbody>
+                                                                @foreach ($filesIV as $row)
+                                                                    @if ($row->type == 'FICHIER')
+                                                                        <tr>
+                                                                            <td style="width: 10%;">
+                                                                                <div class="avatar-xs">
+                                                                                    <span
+                                                                                        class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
+                                                                                        <i class="bx bxs-file-doc"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <h5 class="font-size-12 text-truncated-2 mb-0">
+                                                                                    <a download target="_blank"
+                                                                                        href="{{ $row->url }}"
+                                                                                        class="text-dark">{{ $row->nom }}</a>
+                                                                                </h5>
+                                                                            </td>
+                                                                            <td style="width: 20%;">
+                                                                                <div class="text-center">
+                                                                                    <a href="{{ route("archive.delete.projet", $row->id) }}">
+                                                                                        <i class="bx bx-trash h4 m-0 me-2 text-danger"></i>
+                                                                                    </a>
+                                                                                    <a download target="_blank"
+                                                                                        href="{{ $row->url }}"
+                                                                                        class="text-dark">
+                                                                                        <i class="bx bx-download h4 m-0"></i>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endforeach
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingTwoIV">
+                                                    <button class="accordion-button fw-bolder collapsed" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseTwoIV"
+                                                        aria-expanded="false" aria-controls="collapseTwoIV">
+                                                        Images
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseTwoIV" class="accordion-collapse collapse"
+                                                    aria-labelledby="headingTwoIV" data-bs-parent="#accordionExampleIV">
+                                                    <div class="accordion-body">
+                                                        <table class="table align-middle table-hover mb-0">
+                                                            <tbody>
+                                                                @foreach ($filesIV as $row)
+                                                                    @if ($row->type == 'IMAGE')
+                                                                        <tr>
+                                                                            <td style="width: 10%;">
+                                                                                <div class="avatar-xs">
+                                                                                    <span
+                                                                                        class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
+                                                                                        <i class="mdi mdi-image"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <h5 class="font-size-12 text-truncated-2 mb-0">
+                                                                                    <a download target="_blank"
+                                                                                        href="{{ $row->url }}"
+                                                                                        class="text-dark">{{ $row->nom }}</a>
+                                                                                </h5>
+                                                                            </td>
+                                                                            <td style="width: 20%;">
+                                                                                <div class="text-center">
+                                                                                    <a href="{{ route("archive.delete.projet", $row->id) }}">
+                                                                                        <i class="bx bx-trash h4 m-0 me-2 text-danger"></i>
+                                                                                    </a>
+                                                                                    <a download target="_blank"
+                                                                                        href="{{ $row->url }}"
+                                                                                        class="text-dark">
+                                                                                        <i class="bx bx-download h4 m-0"></i>
+                                                                                    </a>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingThreeIV">
+                                                    <button class="accordion-button fw-bolder collapsed" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseThreeIV"
+                                                        aria-expanded="false" aria-controls="collapseThreeIV">
+                                                        Vidéos
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseThreeIV" class="accordion-collapse collapse"
+                                                    aria-labelledby="headingThreeIV" data-bs-parent="#accordionExampleIV">
+                                                    <div class="accordion-body">
+                                                        <table class="table align-middle table-hover mb-0">
+                                                            <tbody>
+                                                                @foreach ($filesIV as $row)
+                                                                    @if ($row->type == 'VIDEO')
+                                                                        <tr>
+                                                                            <td style="width: 10%;">
+                                                                                <div class="avatar-xs">
+                                                                                    <span
+                                                                                        class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-24">
+                                                                                        <i
+                                                                                            class="mdi mdi-play-circle-outline"></i>
+                                                                                    </span>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td>
+                                                                                <h5 class="font-size-12 text-truncated-2 mb-0">
+                                                                                    <a download target="_blank"
+                                                                                        href="{{ $row->url }}"
+                                                                                        class="text-dark">{{ $row->nom }}</a>
+                                                                                </h5>
+                                                                            </td>
+                                                                            <td style="width: 20%;">
+                                                                                <div class="text-center">
+                                                                                    <a href="{{ route("archive.delete.projet", $row->id) }}">
+                                                                                        <i class="bx bx-trash h4 m-0 me-2 text-danger"></i>
+                                                                                    </a>
+                                                                                    <a download target="_blank"
+                                                                                        href="{{ $row->url }}"
+                                                                                        class="text-dark">
+                                                                                        <i class="bx bx-download h4 m-0"></i>
+                                                                                    </a>
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -687,7 +873,7 @@
 
 @section('script')
     <!-- crypto dash init js -->
-    <script type="text/javascript" src="{{ asset('assets/js/pages/project-overview.init.js') }}"></script>
+    {{-- <script type="text/javascript" src="{{ asset('assets/js/pages/project-overview.init.js') }}"></script> --}}
 
     <script type="text/javascript">
         function openMessageModal() {

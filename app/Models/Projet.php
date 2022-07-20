@@ -50,7 +50,7 @@ class Projet extends Model
                 return 'Validé';
                 break;
             case 'COMPLET':
-                return 'Étude terminé';
+                return 'Étude terminée';
                 break;
             case 'ATTENTE_VALIDATION_ADMIN':
                 return 'En attente de validation administrative';
@@ -80,10 +80,10 @@ class Projet extends Model
                 return 'Juste l\'idée';
                 break;
             case 'PROTOTYPE':
-                return 'Prototype';
+                return 'Un prototype';
                 break;
             default:
-                return 'Sur le marché';
+                return 'Projet sur le marché';
                 break;
         }
     }

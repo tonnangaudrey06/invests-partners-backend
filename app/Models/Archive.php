@@ -34,23 +34,18 @@ class Archive extends Model
         return ['mp4', 'avi', 'mkv', 'm4v', 'mpg', 'mpeg', 'mov', '3gp'];
     }
 
-    public function secteur()
+    public function message_data()
     {
-        return $this->belongsTo(Secteur::class, 'secteur', 'id');
+        return $this->belongsTo(Message::class, 'message', 'id');
     }
 
-    public function projet()
+    public function projet_data()
     {
-        return $this->belongsTo(Secteur::class, 'secteur', 'id');
+        return $this->belongsTo(Projet::class, 'projet', 'id');
     }
 
-    // public function actualite()
-    // {
-    //     return $this->belongsTo(secteur::class, 'secteur', 'id');
-    // }
-
-    public function user()
+    public function actualite_data()
     {
-        return $this->belongsTo(User::class, 'user', 'id');
+        return $this->belongsTo(Actualite::class, 'actualite', 'id');
     }
 }

@@ -16,6 +16,7 @@ class EvenementController extends Controller
     {
         $events = Evenement::get();
         $month = Evenement::whereMonth('date_evenement', '=', Carbon::now()->month)->get();
+
         return $this->sendResponse(['all' => $events, 'month' => $month], 'All events');
     }
 

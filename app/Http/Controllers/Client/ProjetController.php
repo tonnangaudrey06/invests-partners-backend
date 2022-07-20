@@ -285,7 +285,8 @@ class ProjetController extends Controller
 
             $data = [
                 'projet' => $projet->id,
-                'nom' => $media->getClientOriginalName()
+                'nom' => $media->getClientOriginalName(),
+                'source' => 'CONSEILLER'
             ];
 
             if (in_array($extension, Archive::getAllowedFiles())) {
