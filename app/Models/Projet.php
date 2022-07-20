@@ -55,7 +55,7 @@ class Projet extends Model
             case 'ATTENTE_VALIDATION_ADMIN':
                 return 'En attente de validation administrative';
                 break;
-            case 'ATTENTE_DOCUMENT_SUP':
+            case 'ATTENTE_INFO_SUPPL':
                 return 'Besoin d\'informations supplementaire';
                 break;
             case 'ATTENTE_PAIEMENT':
