@@ -82,7 +82,7 @@
                                     </div>
 
                                     <div class="form-group col-md-12 mb-3">
-                                        <label>Projet <small>(Seule les projets publiés sont affichés)</small></label>
+                                        <label>Projet <small>(Seuls les projets publiés sont affichés)</small></label>
                                         <select class="form-control" name="projet" required>
                                             <option value="">Selectionner un projet</option>
                                             @foreach ($projets as $projet)

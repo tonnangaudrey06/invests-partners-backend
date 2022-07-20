@@ -44,7 +44,7 @@
                     <li>
                         <a href="{{ route('events.home') }}" class="waves-effect">
                             <i class="mdi mdi-calendar-multiple-check"></i>
-                            <span key="t-evenement">Événements</span>
+                            <span key="t-evenement">Évènements</span>
                         </a>
                     </li>
 
@@ -183,7 +183,7 @@
                             <li>
                                 <a href="{{ route('events.home') }}" class="waves-effect">
                                     <i class="mdi mdi-calendar-multiple-check"></i>
-                                    <span key="t-evenement">Événements</span>
+                                    <span key="t-evenement">Évènements</span>
                                 </a>
                             </li>
                         @endif
