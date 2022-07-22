@@ -85,7 +85,7 @@
                                             @foreach ($secteurs as $categorie)
                                                 <tr>
                                                     <td>
-                                                        @if (empty($categorie->photo))
+                                                        @if (!empty($categorie->photo))
                                                             <div>
                                                                 <img class="rounded-circle avatar-xs"
                                                                     src="{{ $categorie->photo }}" alt="">

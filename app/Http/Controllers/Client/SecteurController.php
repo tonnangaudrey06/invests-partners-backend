@@ -7,10 +7,8 @@ use App\Models\Secteur;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image as Image;
 
 class SecteurController extends Controller
 {
@@ -31,7 +29,7 @@ class SecteurController extends Controller
     public function store(Request $request)
     {
 
-        $validated = $request->validate(
+        $request->validate(
             [
                 'libelle' => 'required|unique:secteurs|max:255',
                 'user' => 'required|:secteurs',
@@ -45,15 +43,12 @@ class SecteurController extends Controller
             ]
         );
 
-        // dd($validated);
-
         $secteur_image = $request->file('image');
 
         $name_gen = hexdec(uniqid());
         $img_ext = strtolower($secteur_image->getClientOriginalExtension());
         $img_name = $name_gen . '.' . $img_ext;
         $up_location = 'images/secteurs/';
-        $last_img = $up_location . $img_name;
         $secteur_image->move($up_location, $img_name);
 
 
@@ -83,7 +78,7 @@ class SecteurController extends Controller
 
     public function update($id, Request $request)
     {
-        $validated = $request->validate(
+        $request->validate(
             [
                 'libelle' => 'required|:secteurs',
                 'user' => 'required|:secteurs',
@@ -104,10 +99,11 @@ class SecteurController extends Controller
             $img_ext = strtolower($secteur_image->getClientOriginalExtension());
             $img_name = $name_gen . '.' . $img_ext;
             $up_location = 'images/secteurs/';
-            $last_img = $up_location . $img_name;
             $secteur_image->move($up_location, $img_name);
 
-            unlink($old_image);
+            $path = parse_url($old_image);
+
+            File::delete(public_path($path['path']));
 
             $data = Secteur::find($id);
             $data->libelle = $request->libelle;
@@ -126,7 +122,6 @@ class SecteurController extends Controller
         Toastr::success('Secteur mis à jour avec succès!', 'Success');
 
         return redirect()->intended(route('category.home'));
-        // return response()->json($data);
     }
 
     public function delete($id)
@@ -134,12 +129,11 @@ class SecteurController extends Controller
         $secteur = Secteur::find($id);
 
         if (!empty($secteur->photo)) {
-            $split = explode('/', $secteur->photo);
-            $filename = end($split);
-            $path = public_path("images/secteurs/$filename");
+            $path = parse_url($secteur->photo);
+            $file = public_path($path['path']);
 
-            if (File::exists($path)) {
-                File::delete($path);
+            if (File::exists($file)) {
+                File::delete($file);
             }
         }
 
