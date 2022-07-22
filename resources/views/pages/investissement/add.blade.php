@@ -95,8 +95,6 @@
                                         @enderror
                                     </div>
 
-
-
                                     <div class="form-group col-md-12 mb-3">
                                         <label>Montant Investi</label>
                                         <input type="number" class="form-control" name="montant_investi"

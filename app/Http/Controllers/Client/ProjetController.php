@@ -466,7 +466,7 @@ class ProjetController extends Controller
 
     public function cloture($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data', 'secteur_data'])->find($id);
 
         $investisseurs = Investissement::select('*')
             ->groupBy('projet')
@@ -479,8 +479,7 @@ class ProjetController extends Controller
             'etat' => 'CLOTURE',
         ]);
 
-        Mail::to($projet->user_data->email)
-            ->queue(new AdminCloture($projet->toArray()));
+        Mail::to($projet->user_data->email)->queue(new AdminCloture($projet->toArray()));
 
         $user = User::find($projet->user_data->id);
 
@@ -491,7 +490,7 @@ class ProjetController extends Controller
 
         foreach ($investisseurs as $investisseur) {
             Mail::to($investisseur->user_data->email)
-                ->queue(new AdminClotureI($projet->toArray(), (array) $investisseur));
+                ->queue(new AdminClotureI($projet->toArray(), $investisseur->toArray()["user_data"]));
         }
 
         Toastr::success('Projet cloturé avec succès!', 'Succès');
