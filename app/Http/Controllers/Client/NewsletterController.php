@@ -51,11 +51,13 @@ class NewsletterController extends Controller
         $newsletterMails = NewsletterMail::all();
 
         foreach ($newsletterMails as $value) {
-            Mail::to($value->email)->queue(new MailNewsletterMail([
-                'email' => $value->email,
-                'mail' => $newsletter->mail,
-                'titre' => $newsletter->titre
-            ]));
+            try {
+                Mail::to($value->email)->queue(new MailNewsletterMail([
+                    'email' => $value->email,
+                    'mail' => $newsletter->mail,
+                    'titre' => $newsletter->titre
+                ]));
+            } catch (\Throwable $th) {}
         }
 
         $newsletter->send = true;
