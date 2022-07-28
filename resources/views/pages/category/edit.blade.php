@@ -75,8 +75,8 @@
                                 </div>
 
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Ancienne image :</label>
-                                    <img src="{{ URL::to($secteur->photo) }}" style="width: 50px; height:50px;" alt="">
+                                    <label>Ancienne image</label>
+                                    <img src="{{ URL::to($secteur->photo) }}" style="width: 50px; height:50px;" alt="{{$secteur->libelle}}">
                                     <input type="hidden" name="oldimage" value={{ $secteur->photo }}>
                                 </div>
                             </div>

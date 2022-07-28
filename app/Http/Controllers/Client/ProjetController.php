@@ -321,8 +321,9 @@ class ProjetController extends Controller
 
     public function edit($id)
     {
+        $secteurs = Secteur::all();
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
-        return view('pages.projet.edit', compact('projet'));
+        return view('pages.projet.edit', compact('projet', 'secteurs'));
     }
 
     public function update(Request $request, $id)
@@ -334,6 +335,8 @@ class ProjetController extends Controller
                 'delai_recup' => 'required|:projets|max:255',
                 'ca_previsionnel' => 'required|:projets|max:255',
                 'description' => 'required|:projets',
+                'intitule' => 'required|:projets',
+                'secteur' => 'required|:projets'
             ],
 
             [
@@ -342,6 +345,8 @@ class ProjetController extends Controller
                 'delai_recup.required' => 'Champ obligatoire!',
                 'ca_previsionnel.required' => 'Champ obligatoire!',
                 'description.required' => 'Champ obligatoire!',
+                'intitule.required' => 'Champ obligatoire!',
+                'secteur.required' => 'Champ obligatoire!',
             ]
         );
 
@@ -353,8 +358,10 @@ class ProjetController extends Controller
         $projet->ca_previsionnel = $request->ca_previsionnel;
         $projet->description = $request->description;
         $projet->financement = $request->financement;
+        $projet->intitule = $request->intitule;
+        $projet->secteur = $request->secteur;
 
-        if($projet->type == "AUTRE") {
+        if ($projet->type == "AUTRE") {
             $projet->etat = 'COMPLET';
         }
 
@@ -370,6 +377,15 @@ class ProjetController extends Controller
             $this->Report($data_report);
         }
 
+        if ($request->hasFile('logo')) {
+            $logo = $request->file('logo');
+            $path = parse_url($projet->logo);
+            File::delete(public_path($path['path']));
+            $filename = 'logo.' . $logo->getClientOriginalExtension();
+            $projet->logo = url('storage/uploads/' . $projet->user_data->folder . '/projets/' . $projet->folder) . '/' . $filename;
+            $logo->storeAs('uploads/' . $projet->user_data->folder . '/projets/' . $projet->folder . '/', $filename, ['disk' => 'public']);
+        }
+
         $projet->save();
 
         if ($request->hasFile('fichier')) {
@@ -378,33 +394,27 @@ class ProjetController extends Controller
 
             foreach ($files as $media) {
                 $extension = $media->getClientOriginalExtension();
-                $allowed_extension = array_merge(Archive::getAllowedFiles(), Archive::getAllowedImages(), Archive::getAllowedVideos());
-                $check = in_array($extension, $allowed_extension);
 
                 $data = [
                     'projet' => $projet->id,
                     'nom' => $media->getClientOriginalName(),
                     'source' => 'CONSEILLER'
                 ];
-
-                if ($check) {
-                    if (in_array($extension, Archive::getAllowedFiles())) {
-                        $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/documents') . '/' . $data['nom'];
-                        $data['type'] = 'FICHIER';
-                        $media->storeAs('uploads/projets/' . $projet->folder . '/documents/', $data['nom'], ['disk' => 'public']);
-                    } else if (in_array($extension, Archive::getAllowedImages())) {
-                        $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/images') . '/' . $data['nom'];
-                        $data['type'] = 'IMAGE';
-                        $media->storeAs('uploads/projets/' . $projet->folder . '/images/', $data['nom'], ['disk' => 'public']);
-                    } else {
-                        $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/videos') . '/' . $data['nom'];
-                        $data['type'] = 'VIDEO';
-                        $media->storeAs('uploads/projets/' . $projet->folder . '/videos/', $data['nom'], ['disk' => 'public']);
-                    }
-                    Archive::create($data);
+                
+                if (in_array($extension, Archive::getAllowedFiles())) {
+                    $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/documents') . '/' . $data['nom'];
+                    $data['type'] = 'FICHIER';
+                    $media->storeAs('uploads/projets/' . $projet->folder . '/documents/', $data['nom'], ['disk' => 'public']);
+                } else if (in_array($extension, Archive::getAllowedImages())) {
+                    $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/images') . '/' . $data['nom'];
+                    $data['type'] = 'IMAGE';
+                    $media->storeAs('uploads/projets/' . $projet->folder . '/images/', $data['nom'], ['disk' => 'public']);
                 } else {
-                    Toastr::danger('Désolé, vous ne pouvez télécharger que des png, jpg xls et doc.', 'Alerte');
+                    $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/videos') . '/' . $data['nom'];
+                    $data['type'] = 'VIDEO';
+                    $media->storeAs('uploads/projets/' . $projet->folder . '/videos/', $data['nom'], ['disk' => 'public']);
                 }
+                Archive::create($data);
             }
         }
 

@@ -53,6 +53,7 @@
                                 <div class="form-group col-md-6 mb-3">
                                     <label>Secteur d'activité</label>
                                     <select class="form-control" name="secteur">
+                                        <option value="">Choisir un secteur d'activité</option>
                                         @foreach ($secteurs as $secteur)
                                         <option value="{{$secteur->id}}">{{$secteur->libelle}} </option>
                                         @endforeach

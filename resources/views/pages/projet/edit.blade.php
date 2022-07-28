@@ -41,6 +41,44 @@
 
                                 @csrf
 
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="intitule">Intitule</label>
+                                    <input id="intitule" name="intitule" type="text"
+                                        class="form-control" value="{{$projet->intitule}}">
+
+                                    @error('intitule')
+                                        <span class="text-danger"> {{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-6 mb-3">
+                                    <label>Secteur d'activité</label>
+                                    <select class="form-control" name="secteur">
+                                        <option value="">Choisir un secteur d'activité</option>
+                                        @foreach ($secteurs as $secteur)
+                                            <option @if ($secteur->id == $projet->secteur) selected @endif value="{{$secteur->id}}">{{$secteur->libelle}}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('secteur')
+                                        <span class="text-danger"> {{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-10 mb-3">
+                                    <label for="logo">Logo</label>
+                                    <input id="logo" name="logo" type="file" class="form-control" value="{{$projet->logo}}">
+
+                                    @error('financement')
+                                        <span class="text-danger"> {{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-2 text-center mb-3">
+                                    <label>Logo actuel</label> <br>
+                                    <img class="rounded img-fluid" src="{{ URL::to($projet->logo) }}" width="35" alt="{{$projet->intitule}}">
+                                </div>
+
                                 <div class="form-group col-md-12 mb-3">
                                     <label for="projectdesc">Description</label>
                                     <textarea class="form-control" name="description"

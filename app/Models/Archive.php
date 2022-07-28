@@ -26,7 +26,7 @@ class Archive extends Model
 
     public static function getAllowedImages()
     {
-        return ['png', 'jpg', 'jpeg', 'gif'];
+        return ['png', 'jpg', 'jpeg', 'gif', '.ico', '.psd', '.tif', '.webp'];
     }
 
     public static function getAllowedVideos()
