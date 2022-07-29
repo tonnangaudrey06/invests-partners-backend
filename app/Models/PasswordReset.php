@@ -111,7 +111,7 @@ class PasswordReset extends Model
 
     private function buildResetMail($email, $role, $token)
     {
-        return "http://localhost:3000/auth/password/reset/$token?email=" . urlencode($email) . "&role=$role";
+        return "https://invest--partners.com/auth/password/reset/$token?email=" . urlencode($email) . "&role=$role";
     }
 
     private function sendResetEMail($email, $role, $token)
