@@ -39,6 +39,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('profil')->references('id')->on('profile_investisseurs')->onUpdate('cascade')->onDelete('set null');
+            $table->foreign('status')->references('type')->on('profil_porteur_projets')->onUpdate('cascade')->onDelete('set null');
             $table->foreign('role')->references('id')->on('roles')->onUpdate('cascade')->onDelete('set null');
         });
     }

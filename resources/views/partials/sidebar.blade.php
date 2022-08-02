@@ -11,7 +11,6 @@
             @endphp
 
             @if (Auth::user()->role == 1)
-
                 <ul class="metismenu list-unstyled" id="side-menu">
                     <li class="menu-title" key="t-menu">Menu</li>
 
@@ -97,6 +96,13 @@
                         <a href="{{ route('profil.investisseur.home') }}" class="waves-effect">
                             <i class="mdi mdi-account-cog"></i>
                             <span key="t-profil-investisseur">Profils investisseurs</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('profil.porteur.home') }}" class="waves-effect">
+                            <i class="mdi mdi-account-cog"></i>
+                            <span key="t-profil-investisseur">Profils des PPs</span>
                         </a>
                     </li>
 
@@ -247,8 +253,7 @@
                                 <ul class="sub-menu" aria-expanded="false">
                                     <li><a href="{{ route('newsletter.home') }}" key="t-newsletter-mail">Mails</a>
                                     </li>
-                                    <li><a href="{{ route('newsletter.mails') }}"
-                                            key="t-newsletter-email">Emails</a>
+                                    <li><a href="{{ route('newsletter.mails') }}" key="t-newsletter-email">Emails</a>
                                     </li>
                                 </ul>
                             </li>
@@ -264,6 +269,15 @@
                                 <a href="{{ route('profil.investisseur.home') }}" class="waves-effect">
                                     <i class="mdi mdi-account-cog"></i>
                                     <span key="t-profil-investisseur">Profils investisseurs</span>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if ($privilege->module == 17 && $privilege->consulter == 11)
+                            <li>
+                                <a href="{{ route('profil.porteur.home') }}" class="waves-effect">
+                                    <i class="mdi mdi-account-cog"></i>
+                                    <span key="t-profil-investisseur">Profils des PPs</span>
                                 </a>
                             </li>
                         @endif
@@ -320,7 +334,6 @@
                                 </a>
                             </li>
                         @endif
-                        
                     @endforeach
                 </ul>
 

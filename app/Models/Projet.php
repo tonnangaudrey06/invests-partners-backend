@@ -110,7 +110,7 @@ class Projet extends Model
 
     public function user_data()
     {
-        return $this->belongsTo(User::class, 'user', 'id');
+        return $this->belongsTo(User::class, 'user', 'id')->with(['profil_porteur']);
     }
 
     public function actualites()

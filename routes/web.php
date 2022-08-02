@@ -15,6 +15,7 @@ use App\Http\Controllers\Client\ProjetController;
 use App\Http\Controllers\Client\PrivilegeController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\NewsletterController;
+use App\Http\Controllers\Client\ProfilPorteurProjetController;
 use App\Http\Controllers\Client\TransactionController;
 // use App\Mail\TestMail;
 // use Illuminate\Support\Facades\Mail;
@@ -94,6 +95,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit/{id}', [ProfilInvestisseurController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [ProfilInvestisseurController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [ProfilInvestisseurController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('profil-porteur-projet')->name('profil.porteur.')->group(function () {
+        Route::get('/', [ProfilPorteurProjetController::class, 'index'])->name('home');
+        Route::get('/add', [ProfilPorteurProjetController::class, 'add'])->name('add');
+        Route::post('/store', [ProfilPorteurProjetController::class, 'store'])->name('store');
+        Route::get('/edit/{type}', [ProfilPorteurProjetController::class, 'edit'])->name('edit');
+        Route::post('/update/{type}', [ProfilPorteurProjetController::class, 'update'])->name('update');
+        Route::get('/delete/{type}', [ProfilPorteurProjetController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('investissement')->name('investissement.')->group(function () {

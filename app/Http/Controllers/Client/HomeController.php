@@ -94,7 +94,8 @@ class HomeController extends Controller
     {
 
         $slider = DB::table('sliders')->where('id', $id)->first();
-        unlink($slider->image);
+        $path = parse_url($slider->image);
+        File::delete(public_path($path['path']));
 
         DB::table('sliders')->where('id', $id)->delete();
 
@@ -134,7 +135,8 @@ class HomeController extends Controller
     {
 
         $partenaires = DB::table('partenaires')->where('id', $id)->first();
-        unlink($partenaires->image);
+        $path = parse_url($partenaires->image);
+        File::delete(public_path($path['path']));
 
         DB::table('partenaires')->where('id', $id)->delete();
 
@@ -170,7 +172,9 @@ class HomeController extends Controller
             Image::make($image)->resize(500, 300)->save('images/chiffres/' . $image_one);
             $data['image'] = url('images/chiffres/') . '/' . $image_one;
             DB::table('chiffres')->where('id', $id)->update($data);
-            unlink($oldimage);
+            
+            $path = parse_url($oldimage);
+            File::delete(public_path($path['path']));
 
             return Redirect()->route('home.chiffre')->with('success', 'Chiffres updated succesfully');
         } else {

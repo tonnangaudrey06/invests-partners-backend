@@ -90,6 +90,11 @@ class User extends Authenticatable
         return $this->belongsTo(ProfilInvestisseur::class, 'profil', 'id');
     }
 
+    public function profil_porteur()
+    {
+        return $this->belongsTo(ProfilPorteurProjet::class, 'status', 'type');
+    }
+
     public function modules()
     {
         return $this->belongsToMany(Module::class, 'privileges', 'user', 'module')->withPivot('id', 'consulter', 'modifier', 'ajouter', 'supprimer');
