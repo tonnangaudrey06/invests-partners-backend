@@ -273,7 +273,7 @@
                             </li>
                         @endif
 
-                        @if ($privilege->module == 17 && $privilege->consulter == 11)
+                        @if ($privilege->module == 17 && $privilege->consulter == 1)
                             <li>
                                 <a href="{{ route('profil.porteur.home') }}" class="waves-effect">
                                     <i class="mdi mdi-account-cog"></i>
