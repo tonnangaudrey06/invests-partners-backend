@@ -66,11 +66,21 @@ Route::prefix('app')->group(function () {
     Route::get('/expert', [HomeController::class, 'expert']);
 });
 
+Route::prefix('secteur')->group(function () {
+    Route::get('/{id}', [SecteurController::class, 'show']);
+    Route::get('/{id}/{town}', [ProjectController::class, 'projetsTown']);
+});
+
+Route::prefix('projet')->group(function () {
+    Route::get('/', [ProjectController::class, 'index']);
+    Route::post('/', [ProjectController::class, 'store']);
+    Route::post('/mobile', [ProjectController::class, 'store2']);
+    Route::post('/mobile/{id}/membre', [ProjectController::class, 'store3']);
+    Route::get('/{id}', [ProjectController::class, 'show']);
+    Route::post('/{id}/valide', [ProjectController::class, 'valide']);
+});
+
 Route::middleware('auth:api')->group(function () {
-    Route::prefix('secteur')->group(function () {
-        Route::get('/{id}', [SecteurController::class, 'show']);
-        Route::get('/{id}/{town}', [ProjectController::class, 'projetsTown']);
-    });
 
     Route::prefix('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
@@ -92,16 +102,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}/projets', [ProjectController::class, 'projets']);
         Route::get('/{id}/projets/invest', [InvestissementController::class, 'projectInvest']);
         Route::post('/subscribe/newsletter', [NewsletterController::class, 'update']);
-    });
-
-    Route::prefix('projet')->group(function () {
-        Route::get('/', [ProjectController::class, 'index']);
-        Route::post('/', [ProjectController::class, 'store']);
-        Route::post('/mobile', [ProjectController::class, 'store2']);
-        Route::post('/mobile/{id}/membre', [ProjectController::class, 'store3']);
-        Route::get('/{id}', [ProjectController::class, 'show']);
-        
-        Route::post('/{id}/valide', [ProjectController::class, 'valide']);
     });
 
     Route::prefix('membre')->group(function () {
