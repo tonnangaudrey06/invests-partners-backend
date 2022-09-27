@@ -6,14 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Mail\PaiementProjetConseilleMail;
 use App\Mail\PaiementProjetPorteurMail;
 use App\Mail\CreationProjetMail;
-use App\Mail\CreationProjetPorteur;
 use App\Mail\CreationProjetPorteurMail;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Actualite;
 use App\Models\Archive;
 use App\Models\Equipe;
+use App\Models\ProjectLike;
 use App\Models\Projet;
 use App\Models\User;
 
@@ -21,7 +20,7 @@ class ProjectController extends Controller
 {
     public function index()
     {
-        $projets = Projet::latest()->with(['membres', 'user_data'])->get();
+        $projets = Projet::latest()->with(['user_data', 'likes'])->get();
         $this->sendResponse($projets, 'All projects');
     }
 
@@ -191,14 +190,14 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->find($id);
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data','investissements', 'likes'])->find($id);
         $projet->actualites = Actualite::where('secteur', $projet->secteur)->orWhere('projet', $projet->id)->get();
         return $this->sendResponse($projet, 'Project');
     }
 
     public function projets($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])
+        $projet = Projet::with(['user_data', 'secteur_data','investissements', 'likes'])
             ->where('user', $id)
             ->latest()
             ->get();
@@ -207,7 +206,7 @@ class ProjectController extends Controller
 
     public function valide($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])->find($id);
+        $projet = Projet::with(['user_data', 'secteur_data', 'investissements'])->find($id);
         $projet->etat = 'VALIDE';
         $projet->save();
 
@@ -222,12 +221,30 @@ class ProjectController extends Controller
         return $this->sendResponse($projet, 'Project valide');
     }
 
+    public function like($id, $user)
+    {
+        $likes = ProjectLike::where('user', $user)->where('projet', $id)->get();
+        
+        if (count($likes) > 0) {
+            ProjectLike::where('user', $user)->where('projet', $id)->delete();
+            $likes = ProjectLike::where('user', $user)->where('projet', $id)->get();
+        } else {
+            ProjectLike::create([
+                'user' => $user,
+                'projet' => $id
+            ]);
+            $likes = ProjectLike::where('user', $user)->where('projet', $id)->get();
+        }
+
+        return $this->sendResponse(['project' => $id, 'like' => $likes], 'Project like');
+    }
+
     public function projetsTown($id, $town, Request $request)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data', 'investissements'])
+        $projet = Projet::with(['user_data', 'secteur_data','investissements', 'likes'])
             ->where('secteur', $id)
             ->where('ville_activite', 'like', $town)
-            ->where('etat', 'PUBLIE')
+            ->whereIn('etat', ['PUBLIE', 'CLOTURE'])
             ->latest()
             ->get();
         return $this->sendResponse($projet, 'Projects');

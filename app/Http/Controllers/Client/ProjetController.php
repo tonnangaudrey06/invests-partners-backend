@@ -41,6 +41,7 @@ class ProjetController extends Controller
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+                ->withCount('likes')
                 ->where('secteur', $secteur->id)
                 ->where('type', 'AUTRE')
                 ->where(
@@ -71,6 +72,7 @@ class ProjetController extends Controller
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+                ->withCount('likes')
                 ->where('secteur', $secteur->id)
                 ->where('type', 'IP')
                 ->where(
@@ -90,6 +92,7 @@ class ProjetController extends Controller
     public function index_secteur($secteur)
     {
         $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+            ->withCount('likes')
             ->where('secteur', $secteur)
             ->where(
                 function ($query) {
@@ -147,6 +150,7 @@ class ProjetController extends Controller
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+                ->withCount('likes')
                 ->where('secteur', $secteur->id)
                 ->where('ville_activite', $ville)
                 ->where(
@@ -175,6 +179,7 @@ class ProjetController extends Controller
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+                ->withCount('likes')
                 ->where('secteur', $secteur->id)
                 ->where('etat', $etat)
                 ->latest()
@@ -198,6 +203,7 @@ class ProjetController extends Controller
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+                ->withCount('likes')
                 ->where('secteur', $secteur->id)
                 ->where(
                     function ($query) {
@@ -312,8 +318,6 @@ class ProjetController extends Controller
             $photo->storeAs('uploads/membres/', $filename, ['disk' => 'public']);
         }
 
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('id', $projet->id)->first();
-
         Toastr::success('Projet ajouté avec succès!', 'Succès');
 
         return redirect()->route('projet.home_ip');
@@ -350,7 +354,7 @@ class ProjetController extends Controller
             ]
         );
 
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data', 'secteur_data'])->find($id);
 
         $projet->taux_rentabilite = $request->taux_rentabilite;
         $projet->duree = $request->duree;
@@ -400,7 +404,7 @@ class ProjetController extends Controller
                     'nom' => $media->getClientOriginalName(),
                     'source' => 'CONSEILLER'
                 ];
-                
+
                 if (in_array($extension, Archive::getAllowedFiles())) {
                     $data['url'] = url('storage/uploads/projets/' . $projet->folder . '/documents') . '/' . $data['nom'];
                     $data['type'] = 'FICHIER';
@@ -430,7 +434,7 @@ class ProjetController extends Controller
 
     public function delete($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data'])->find($id);
         File::deleteDirectory(storage_path('app/public/uploads/') . $projet->user_data->folder . '/' . 'projets/' . $projet->folder);
         $projet->delete();
         Toastr::success('Projet supprimé avec succès!', 'Success');
@@ -439,7 +443,7 @@ class ProjetController extends Controller
 
     public function showp($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->withCount('likes')->find($id);
         $docs = DocumentFiscaux::with(['user_data'])->where('user', $projet->user_data->id)->get();
         $total_invest = DB::table('investissements')->where('projet', $id)->sum('montant');
         $nber_invest = DB::table('investissements')->where('projet', $id)->count();
@@ -449,13 +453,13 @@ class ProjetController extends Controller
 
     public function typemessage($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data','secteur_data'])->find($id);
         return view('pages.projet.askinfo', compact('projet'));
     }
 
     public function publish($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data', 'secteur_data'])->find($id);
 
         $projet->update([
             'etat' => 'PUBLIE',
@@ -510,7 +514,7 @@ class ProjetController extends Controller
 
     public function AdminValidate($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data'])->find($id);
 
         Mail::to($projet->user_data->email)
             ->queue(new AdminValidation($projet->toArray()));
@@ -534,7 +538,7 @@ class ProjetController extends Controller
 
     public function AdminInfoSupp(Request $request, $id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data', 'secteur_data'])->find($id);
         $conseiller = User::where('id', $projet->secteur_data->user)->first();
 
         $data = array();
@@ -555,7 +559,7 @@ class ProjetController extends Controller
 
     public function CIInfoSupp(Request $request, $id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data', 'secteur_data'])->find($id);
 
         $data = array();
         $data['objet'] = $request->objet;
@@ -586,7 +590,7 @@ class ProjetController extends Controller
     public function CIValidate($id)
     {
 
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data', 'secteur_data'])->find($id);
         $admin = User::where('role', 1)->first();
 
         $data_report = [
@@ -613,7 +617,7 @@ class ProjetController extends Controller
 
     public function Rejeter($id)
     {
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->find($id);
+        $projet = Projet::with(['user_data', 'secteur_data'])->find($id);
         $admin = User::where('role', 1)->first();
 
         if (auth()->user()->role == 2) {

@@ -108,6 +108,11 @@ class Projet extends Model
         return $this->hasMany(Investissement::class, 'projet', 'id')->with(['user_data']);
     }
 
+    public function likes()
+    {
+        return $this->hasMany(ProjectLike::class, 'projet', 'id');
+    }
+
     public function user_data()
     {
         return $this->belongsTo(User::class, 'user', 'id')->with(['profil_porteur']);

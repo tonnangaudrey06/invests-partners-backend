@@ -16,7 +16,7 @@ class HomeController extends Controller
         $experts = Expert::where("cacher", false)->get();
         return $this->sendResponse($experts, 'App experts');
     }
-    
+
     public function slider()
     {
         $sliders = DB::table('sliders')->get();
@@ -31,47 +31,54 @@ class HomeController extends Controller
 
     public function projet()
     {
-        $projets = Projet::with(['secteur_data'])->where('etat', 'PUBLIE')->latest()->limit(20)->get();
+        $projets = Projet::with(['secteur_data', 'likes'])
+            ->whereIn('etat', ['PUBLIE', 'CLOTURE'])
+            ->latest()->limit(20)
+            ->get();
         return $this->sendResponse($projets, 'App projets');
     }
 
     public function ville()
     {
-        $villes= DB::table('projets')->select('ville_activite','pays_activite')->where('type', 'IP')->groupBy('ville_activite')->get();
+        $villes = DB::table('projets')
+            ->select('ville_activite', 'pays_activite')
+            ->where('type', 'IP')
+            ->groupBy('ville_activite')
+            ->get();
         return $this->sendResponse($villes, 'App ville');
     }
 
     public function secteurparville()
     {
         $secteur = DB::table('secteurs')
-        ->join('projets', 'secteurs.id', '=', 'projets.secteur')
-        ->select('secteurs.libelle', 'secteurs.photo','secteurs.id','projets.ville_activite')
-        ->get();
+            ->join('projets', 'secteurs.id', '=', 'projets.secteur')
+            ->select('secteurs.libelle', 'secteurs.photo', 'secteurs.id', 'projets.ville_activite')
+            ->get();
         return $this->sendResponse($secteur, 'App ville');
     }
 
     public function villeParSecteur($idSecteur, $pays)
     {
         $villeParSecteur = DB::table('projets')
-        ->join('secteurs', 'projets.secteur', '=', 'secteurs.id')
-        ->where('projets.secteur', $idSecteur)
-        ->where('projets.pays_activite', 'like', $pays)
-        ->where('projets.etat', 'PUBLIE')
-        ->get();
+            ->join('secteurs', 'projets.secteur', '=', 'secteurs.id')
+            ->where('projets.secteur', $idSecteur)
+            ->where('projets.pays_activite', 'like', $pays)
+            ->whereIn('projets.etat', ['PUBLIE', 'CLOTURE'])
+            ->get();
         return $this->sendResponse($villeParSecteur, 'App ville');
     }
 
     public function showbycityandsector($ville, $secteur)
     {
-        $projet = Projet::where('ville_activite',$ville)->where('secteur', $secteur)->get();
-        
+        $projet = Projet::where('ville_activite', $ville)->where('secteur', $secteur)->get();
+
         return $this->sendResponse($projet, 'Project');
     }
 
     public function getactualites($id)
     {
-        $actualite = DB::table('actualites')->where('projet',$id)->get();
-        
+        $actualite = DB::table('actualites')->where('projet', $id)->get();
+
         return $this->sendResponse($actualite, 'SUCCESS_ACTUALITE');
     }
 

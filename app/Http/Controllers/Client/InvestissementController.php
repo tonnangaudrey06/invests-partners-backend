@@ -8,6 +8,7 @@ use App\Mail\AddInvestissementP;
 use App\Models\Investissement;
 use App\Models\Projet;
 use App\Models\User;
+use App\Utils\Helpers;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
@@ -33,11 +34,11 @@ class InvestissementController extends Controller
     {
         $request->validate(
             [
-                'date_versement' => 'required|:investissements',
-                'investisseur' => 'required|:investissements',
-                'projet' => 'required|:investissements',
-                'montant_investi' => 'required|:investissements',
-                'facture_versement' => 'required|:investissements',
+                'date_versement' => 'required',
+                'investisseur' => 'required',
+                'projet' => 'required',
+                'montant_investi' => 'required',
+                'facture_versement' => 'required',
             ],
             [
                 'date_versement.required' => 'Champ obligatoire!',
@@ -47,6 +48,23 @@ class InvestissementController extends Controller
                 'facture_versement.required' => 'Champ obligatoire!',
             ]
         );
+
+
+        $projet = Projet::with(['user_data'])
+            ->where('id', $request->projet)
+            ->first();
+
+        $montantInvesti = Investissement::where('user', $request->investisseur)
+            ->where('projet', $request->projet)
+            ->sum('montant');
+
+        if ((int) $projet->financement < ((int) $montantInvesti + (int) $request->montant_investi)) {
+            $reste = (int) $projet->financement - (int) $montantInvesti;
+            $reste = Helpers::numberFormat($reste);
+            return back()->withErrors([
+                'invest' => "Le projet \"$projet->intitule\" ne nécessite qu'un investissement de $reste FCFA.",
+            ])->withInput();
+        }
 
         $data = array();
         $data['user'] = $request->investisseur;
@@ -65,8 +83,11 @@ class InvestissementController extends Controller
 
         Investissement::create($data);
 
-        $investissement = Investissement::with(['projet_data', 'user_data'])->where('user', $data['user'])->where('montant', $data['montant'])->first();
-        $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->where('id', $investissement->projet)->first();
+        $investissement = Investissement::with(['projet_data', 'user_data'])
+            ->where('user', $data['user'])
+            ->where('montant', $data['montant'])
+            ->first();
+
         $admin = User::where('role', 1)->first();
 
         Mail::to($investissement->user_data->email)

@@ -156,7 +156,7 @@
                                                         </button>
                                                     @endif
 
-                                                    @if ($role->value == 1 || $role->value == 2 || $role->value == 5)
+                                                    @if ($role->value == 1 || $role->value == 2 || $role->value == 5 || auth()->user()->role == 1)
                                                         <a href="{{ route('user.edit', $user->id) }}"
                                                             class="btn btn-sm btn-warning"><i
                                                                 class="bx bx-edit"></i></a>

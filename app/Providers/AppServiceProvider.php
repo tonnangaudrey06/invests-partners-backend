@@ -39,15 +39,17 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         Blade::directive('numberFormat', function ($value) {
-            return "<?php echo number_format($value, 0, ',', ' ');?>";
+            $toFormat = (int) $value;
+            return "<?php echo number_format($toFormat, 0, ',', ' ');?>";
         });
 
         Blade::directive('moneyFormat', function ($value) {
+            $toFormat = (int) $value;
             return "<?php
                 if ($value > 999999) {
-                    echo number_format($value/1000000, 0, ',', ' ') . 'M';
+                    echo number_format($toFormat/1000000, 0, ',', ' ') . 'M';
                 } else {
-                    echo number_format($value, 0, ',', ' ');
+                    echo number_format($toFormat, 0, ',', ' ');
                 }
             ?>";
         });

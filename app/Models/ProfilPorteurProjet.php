@@ -9,7 +9,7 @@ class ProfilPorteurProjet extends Model
 {
     use HasFactory;
     
-    protected $table = 'profile_porteur_projets';
+    protected $table = 'profil_porteur_projets';
 
     protected $primaryKey = 'type';
 

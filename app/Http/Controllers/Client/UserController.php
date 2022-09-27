@@ -196,6 +196,10 @@ class UserController extends Controller
     {
         $data = $request->except(['_token', 'password']);
 
+        if ($request->has('password') && !empty($request->password)) {
+            $data['password'] = Hash::make($request->password);
+        }
+
         User::where('id', $id)->update($data);
 
         Toastr::success('Utilisateur mis à jour avec succès!', 'Success');
@@ -214,6 +218,10 @@ class UserController extends Controller
             $filename = 'photo.' . strtolower($photo->getClientOriginalExtension());
             $data['photo'] = url('storage/uploads/' . $user->folder) . '/' . $filename;
             $photo->storeAs('uploads/' . $user->folder . '/', $filename, ['disk' => 'public']);
+        }
+
+        if ($request->has('password')) {
+            $data['password'] = Hash::make($request->password);
         }
 
         $user->update($data);
