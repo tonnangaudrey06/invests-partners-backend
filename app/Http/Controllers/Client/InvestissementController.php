@@ -63,6 +63,8 @@ class InvestissementController extends Controller
             return back()->withErrors([
                 'invest' => "Le projet \"$projet->intitule\" ne nécessite qu'un investissement de $reste FCFA.",
             ])->withInput();
+        } else if((int) $projet->financement == ((int) $montantInvesti + (int) $request->montant_investi)) {
+            $projet->etat = 'CLOTURE';
         }
 
         $data = array();
@@ -81,6 +83,8 @@ class InvestissementController extends Controller
         }
 
         Investissement::create($data);
+
+        $projet->save();
 
         $investissement = Investissement::with(['projet_data', 'user_data'])
             ->where('user', $data['user'])
