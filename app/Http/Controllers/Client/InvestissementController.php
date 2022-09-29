@@ -54,8 +54,7 @@ class InvestissementController extends Controller
             ->where('id', $request->projet)
             ->first();
 
-        $montantInvesti = Investissement::where('user', $request->investisseur)
-            ->where('projet', $request->projet)
+        $montantInvesti = Investissement::where('projet', $request->projet)
             ->sum('montant');
 
         if ((int) $projet->financement < ((int) $montantInvesti + (int) $request->montant_investi)) {
