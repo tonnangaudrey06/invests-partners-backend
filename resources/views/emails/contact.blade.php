@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('emails.template', ['subject' => 'Demande de renseignements'])
 
-<head>
-    <meta charset="utf-8">
-    <title>Demande de renseignements</title>
-</head>
-
-<body>
+@section('content')
     <p>{{ $data['message'] }}</p>
     <p>
         Cordialement,<br /><br />
         <strong>{{ $data['nom_complet'] }}</strong>
     </p>
-</body>
-
-</html>
+@endsection

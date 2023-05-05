@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-  <meta charset="utf-8">
-  <h2>Nouvel investissement sur votre projet {{$projet['intitule']}}</h2>
-</head>
+@extends('emails.template', ['subject' => 'Nouvel investissement sur votre projet {{$projet['intitule']}}'])
 
-<body>
+@section('content')
   <p>Cher <strong>{{$projet['user_data']['nom_complet']}}</strong>,</p>
   <p>L'équipe Invest & Partners a le
     plaisir de vous annoncer que pour votre projet <strong>{{$projet['intitule']}}</strong>, vous avez recu un
@@ -14,6 +11,4 @@
     Vous continuerez d'etre informé de tous les avancements dudit projet.
   </p>
   @include('partials.signature')
-</body>
-
-</html>
+@endsection

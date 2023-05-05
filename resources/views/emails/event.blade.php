@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('emails.template', ['subject' => 'Particitpation à l\'événement '{{ $event['libelle'] }}' organisé par Invest & Partners'])
 
-<head>
-    <meta charset="utf-8">
-    <title>Particitpation à l'événement '{{ $event['libelle'] }}' organisé par Invest & Partners</title>
-</head>
-
-<body>
+@section('content')
     <p>Cher <strong>{{ $user['nom_complet'] }}</strong>,</p>
     <p>
         Vous avez manifestez votre intérêt à participer à l'événement <strong>"{{ $event['libelle'] }}"</strong>
@@ -19,6 +13,4 @@
     </p>
     <p><strong><em>Entreprendre et investir autrement!</em></strong></p>
     @include('partials.signature')
-</body>
-
-</html>
+@endsection

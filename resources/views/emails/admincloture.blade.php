@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('emails.template', ['subject' => 'Clôture de votre projet {{ $projet['intitule'] }}'])
 
-<head>
-    <meta charset="utf-8">
-    <title>Clôture de votre projet {{ $projet['intitule'] }}</title>
-</head>
-
-<body>
+@section('content')
     <p>Cher <strong>{{ $projet['user_data']['nom_complet'] }}</strong>,</p>
     <p>Félicitations ! Les investissements sont officiellement clos pour le compte de votre projet
         <strong>{{ $projet['intitule'] }}</strong>.<br />
@@ -15,6 +9,4 @@
     </p>
     <p><strong>Restez connecté!</strong></p>
     @include('partials.signature')
-</body>
-
-</html>
+@endsection

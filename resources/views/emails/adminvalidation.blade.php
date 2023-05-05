@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('emails.template', ['subject' => 'Validation de votre projet {{$projet['intitule']}}'])
 
-<head>
-    <meta charset="utf-8">
-    <title>Validation de votre projet {{ $projet['intitule'] }}</title>
-</head>
-
-<body>
+@section('content')
     <p> Félicitations ! Votre projet <strong>{{ $projet['intitule'] }}</strong> a retenu l'attention
         de l'équipe Invest & Partners.<br />
         Afin de rendre votre projet plus attractif, nos experts établiront avec vous les meilleures stratégies
@@ -20,8 +14,6 @@
         d'étude et de publication de votre projet puis commencez
         votre aventure avec Invest & Partners !</p>
 
-        <p> <strong>Entreprendre et investir autrement!</strong></p>
+    <p> <strong>Entreprendre et investir autrement!</strong></p>
     @include('partials.signature')
-</body>
-
-</html>
+@endsection

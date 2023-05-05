@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('emails.template', ['subject' => 'Modification du projet {{$projet['intitule']}} par le conseiller'])
 
-<head>
-  <meta charset="utf-8">
-  <title>Modification du projet {{$projet['intitule']}} par le conseiller</title>
-</head>
-
-<body>
+@section('content')
   <p>Bonjour Admin,</p>
   <p>J'ai modifié les informations du projet <a
       href="{{url('projet'). '/'. $projet['id'] }}"><strong>{{$projet['intitule']}}</strong></a>.<br />
@@ -16,6 +10,4 @@
     Cordialement, <br />
     <strong>{{Auth()->user()->nom}} {{Auth()->user()->prenom}}</strong>
   </p>
-</body>
-
-</html>
+@endsection

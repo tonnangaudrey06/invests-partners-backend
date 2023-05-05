@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('emails.template', ['subject' => 'Avis de réception de votre paiement sur Invest & Patners'])
 
-<head>
-    <meta charset="utf-8">
-    <title>Avis de réception de votre paiement sur Invest & Patners</title>
-</head>
-
-<body>
+@section('content')
     @if ($transaction['is_client'])
         <p>Cher <strong>{{ $transaction['user']['nom_complet'] }}</strong>,</p>
     @else
@@ -34,6 +28,4 @@
 
     <p><strong><em>Entreprendre et investir autrement!</em></strong></p>
     @include('partials.signature')
-</body>
-
-</html>
+@endsection

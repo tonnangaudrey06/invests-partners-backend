@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('emails.template', ['subject' => 'Test Mail'])
 
-<head>
-    <meta charset="utf-8">
-    <title>Test Mail</title>
-</head>
-
-<body>
+@section('content')
     <p><strong>Restez connecté!</strong></p>
     @include('partials.signature')
-</body>
-
-</html>
+@endsection

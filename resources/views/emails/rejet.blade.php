@@ -1,19 +1,11 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('emails.template', ['subject' => 'Refus de votre projet {{ $projet['intitule'] }}'])
 
-<head>
-    <meta charset="utf-8">
-    <title>Refus de votre projet {{ $projet['intitule'] }}</title>
-</head>
-
-<body>
-    <p>Cher <strong>{{ $projet['user_data']['nom_complet'] }}</strong>,</p>
-    <p>Votre projet ne répond malheureusement pas aux critères requis pour être retenu sur notre plateforme 😞.<br />
-        Pour plus de détails, veuillez contacter un conseiller.<br />
-        Au plaisir de travailler avec vous dans un avenir proche!</p>
+@section('content')
+    <p>A votre attention {{ $projet['secteur_data']['conseiller_data']['nom_complet'] }},</p>
+    <p>Paiement de la somme de ({{ $projet['user_data']['profil_porteur']['montant'] }} XAF) effectué
+        pour le projet <a
+            href="{{ route('projet.details', $projet['id']) }}"><strong>{{ $projet['intitule'] }}</strong></a><br />
+        Le délai pour le traitement et la publication sur le site est de 15 jours.</p>
     <p><strong>Bonne chance!</strong></p>
-    <p><strong><em>Entreprendre et investir autrement!</em></strong></p>
     @include('partials.signature')
-</body>
-
-</html>
+@endsection

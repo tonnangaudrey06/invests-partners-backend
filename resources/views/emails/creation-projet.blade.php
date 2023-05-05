@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('emails.template', ['subject' => 'Nouveau projet dans le secteur "{{$projet['secteur_data']['libelle']}}'])
 
-<head>
-  <meta charset="utf-8">
-  <title>Nouveau projet dans le secteur "{{$projet['secteur_data']['libelle']}}"</title>
-</head>
-
-<body>
+@section('content')
   <p>Le projet <strong>{{$projet['intitule']}}</strong> vient d'être soumis par le proteur de projet
     {{$projet['user_data']['nom_complet']}}. Jetez-y un coup d'œil <a
       href="{{ route('projet.details', $projet['id']) }}">{{ route('projet.home', $projet['id']) }}</a>
@@ -15,6 +9,4 @@
     <strong>Invest & Partners</strong>
   </p>
   @include('partials.signature')
-</body>
-
-</html>
+@endsection

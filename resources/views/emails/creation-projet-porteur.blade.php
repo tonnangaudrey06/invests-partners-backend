@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('emails.template', ['subject' => 'Accusé de réception du projet "{{ $projet['intitule'] }}'])
 
-<head>
-    <meta charset="utf-8">
-    <title>Accusé de réception du projet "{{ $projet['intitule'] }}"</title>
-</head>
-
-<body>
+@section('content')
     <p>Félicitations {{ $projet['user_data']['nom_complet'] }} !!!</p>
     <p>Votre projet <strong>{{ $projet['intitule'] }}</strong> a été crée avec succès.</p>
     <p>
@@ -24,6 +18,4 @@
         <strong>INVEST & PARTNERS, Entreprendre et investir autrement !</strong>
     </p>
     @include('partials.signature')
-</body>
-
-</html>
+@endsection
