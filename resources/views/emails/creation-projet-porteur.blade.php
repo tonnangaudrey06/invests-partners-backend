@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Accusé de réception du projet "{{ $projet['intitule'] }}'])
+@extends('emails.template', ['subject' => 'Accusé de réception du projet {{ $projet["intitule"] }}'])
 
 @section('content')
     <p>Félicitations {{ $projet['user_data']['nom_complet'] }} !!!</p>

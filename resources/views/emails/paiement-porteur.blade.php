@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Accusé de réception du paiement des frais de votre {{$projet['intitule']}}'])
+@extends('emails.template', ['subject' => 'Accusé de réception du paiement des frais de votre {{$projet["intitule"]}}'])
 
 @section('content')
   <p>Félicitations <strong>{{$projet['user_data']['nom_complet']}}</strong>! Votre paiement a été approuvé.<br/>

@@ -14,6 +14,7 @@ use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 
 class InvestissementController extends Controller
 {
@@ -50,68 +51,78 @@ class InvestissementController extends Controller
         );
 
 
-        $projet = Projet::with(['user_data'])
-            ->where('id', $request->projet)
-            ->first();
+        // try {
+            DB::beginTransaction();
 
-        $montantInvesti = Investissement::where('projet', $request->projet)
-            ->sum('montant');
+            $projet = Projet::with(['user_data'])
+                ->where('id', $request->projet)
+                ->first();
 
-        if ((int) $projet->financement < ((int) $montantInvesti + (int) $request->montant_investi)) {
-            $reste = (int) $projet->financement - (int) $montantInvesti;
-            $reste = Helpers::numberFormat($reste);
-            return back()->withErrors([
-                'invest' => "Le projet \"$projet->intitule\" ne nécessite qu'un investissement de $reste FCFA.",
-            ])->withInput();
-        } else if((int) $projet->financement == ((int) $montantInvesti + (int) $request->montant_investi)) {
-            $projet->etat = 'CLOTURE';
-        }
+            $montantInvesti = Investissement::where('projet', $request->projet)
+                ->sum('montant');
 
-        $data = array();
-        $data['user'] = $request->investisseur;
-        $data['projet'] = $request->projet;
-        $data['date_versement'] = Carbon::createFromFormat('d/m/Y', $request->date_versement)->toDateTimeString();
-        $data['montant'] = $request->montant_investi;
-        $data['folder'] = hexdec(uniqid());
+            if ((int) $projet->financement < ((int) $montantInvesti + (int) $request->montant_investi)) {
+                $reste = (int) $projet->financement - (int) $montantInvesti;
+                $reste = Helpers::numberFormat($reste);
+                return back()->withErrors([
+                    'invest' => "Le projet \"$projet->intitule\" ne nécessite qu'un investissement de $reste FCFA.",
+                ])->withInput();
+            } else if ((int) $projet->financement == ((int) $montantInvesti + (int) $request->montant_investi)) {
+                $projet->etat = 'CLOTURE';
+            }
 
-        if ($request->has('facture_versement')) {
-            $facture = $request->file('facture_versement');
-            $fileExt = strtolower($facture->getClientOriginalExtension());
-            $data['facture_file'] = 'facture.' . $fileExt;
-            $data['facture_versement'] = url('storage/uploads/investments/' . $data['folder']) . '/' . $data['facture_file'];
-            $facture->storeAs('uploads/investments/' . $data['folder'] . '/', $data['facture_file'], ['disk' => 'public']);
-        }
+            $data = array();
+            $data['user'] = $request->investisseur;
+            $data['projet'] = $request->projet;
+            $data['date_versement'] = Carbon::createFromFormat('d/m/Y', $request->date_versement)->toDateTimeString();
+            $data['montant'] = $request->montant_investi;
+            $data['folder'] = hexdec(uniqid());
 
-        Investissement::create($data);
+            if ($request->has('facture_versement')) {
+                $facture = $request->file('facture_versement');
+                $fileExt = strtolower($facture->getClientOriginalExtension());
+                $data['facture_file'] = 'facture.' . $fileExt;
+                $data['facture_versement'] = url('storage/uploads/investments/' . $data['folder']) . '/' . $data['facture_file'];
+                $facture->storeAs('uploads/investments/' . $data['folder'] . '/', $data['facture_file'], ['disk' => 'public']);
+            }
 
-        $projet->save();
+            Investissement::create($data);
 
-        $investissement = Investissement::with(['projet_data', 'user_data'])
-            ->where('user', $data['user'])
-            ->where('montant', $data['montant'])
-            ->first();
+            $projet->save();
 
-        $admin = User::where('role', 1)->first();
+            $investissement = Investissement::with(['projet_data', 'user_data'])
+                ->where('user', $data['user'])
+                ->where('montant', $data['montant'])
+                ->first();
 
-        Mail::to($investissement->user_data->email)
-            ->queue(new AddInvestissement($investissement->toArray(), $admin->toArray(), $projet->toArray()));
+            $admin = User::where('role', 1)->first();
 
-        Mail::to($projet->user_data->email)
-            ->queue(new AddInvestissementP($investissement->toArray(), $admin->toArray(), $projet->toArray()));
+            Mail::to($investissement->user_data->email)
+                ->queue(new AddInvestissement($investissement->toArray(), $admin->toArray(), $projet->toArray()));
 
-        $user = User::find($projet->user_data->id);
+            Mail::to($projet->user_data->email)
+                ->queue(new AddInvestissementP($investissement->toArray(), $admin->toArray(), $projet->toArray()));
 
-        if (!empty($user->device_token)) {
-            $user->sendFcmNotification("Nous avons le plaisir de vous annoncer que vous avez recu un
-            investissement de $investissement->montant XAF pour votre projet '$projet->intitule'.", "Nouvelle investissement sur votre projet");
-        }
+            $user = User::find($projet->user_data->id);
 
-        Mail::to('info@invest--partners.com')
-            ->queue(new AddInvestissement($investissement->toArray(), $admin->toArray(), $projet->toArray()));
+            if (!empty($user->device_token)) {
+                $user->sendFcmNotification("Nous avons le plaisir de vous annoncer que vous avez recu un
+                investissement de $investissement->montant XAF pour votre projet '$projet->intitule'.", "Nouvelle investissement sur votre projet");
+            }
 
-        Toastr::success('Investissement ajouté avec succès!', 'Succès');
+            Mail::to('info@invest--partners.com')
+                ->queue(new AddInvestissement($investissement->toArray(), $admin->toArray(), $projet->toArray()));
 
-        return redirect()->intended(route('investissement.home'));
+            Toastr::success('Investissement ajouté avec succès!', 'Succès');
+
+            DB::commit();
+            return redirect()->intended(route('investissement.home'));
+
+        // } catch (\Throwable $th) {
+        //     DB::rollBack();
+        //     throw $th;
+        //     return back()->with('error', "Impossible de publier l'investissement !");
+        // }
     }
 
     public function edit($id)

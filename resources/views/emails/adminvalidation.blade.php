@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Validation de votre projet {{$projet['intitule']}}'])
+@extends('emails.template', ['subject' => 'Validation de votre projet {{$projet["intitule"]}}'])
 
 @section('content')
     <p> Félicitations ! Votre projet <strong>{{ $projet['intitule'] }}</strong> a retenu l'attention

@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Refus de votre projet {{ $projet['intitule'] }}'])
+@extends('emails.template', ['subject' => 'Refus de votre projet {{ $projet["intitule"] }}'])
 
 @section('content')
     <p>A votre attention {{ $projet['secteur_data']['conseiller_data']['nom_complet'] }},</p>

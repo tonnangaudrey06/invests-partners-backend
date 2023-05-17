@@ -74,11 +74,11 @@
 
 </style>
 
-<div class="w-75 d-flex justify-content-start" style="margin-top: 4rem">
+<div class="d-flex justify-content-start" style="margin-top: 4rem">
     <div class="row">
         <div class="col-md-4 d-flex align-items-center flex-column" style="margin: 0 3rem">
             <div class="d-flex justify-content-center">
-                <img src="{{ asset('assets/images/logo-light.png') }}" height="150">
+                <img src="{{ asset('assets/images/logo-light.png') }}" style="height: 150px" height="150">
             </div>
             <div class="d-flex justify-content-center">
                 <a href="https://invest--partners.com" class="me-2 icon">

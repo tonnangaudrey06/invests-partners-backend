@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Approbation de votre investissement sur le projet {{$projet['intitule']}}'])
+@extends('emails.template', ['subject' => 'Approbation de votre investissement sur le projet {{ $projet["intitule"] }}'])
 
 @section('content')
   <p>Cher <strong>{{$investissement['user_data']['nom_complet']}}</strong>,</p>

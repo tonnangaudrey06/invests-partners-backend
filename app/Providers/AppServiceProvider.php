@@ -32,9 +32,9 @@ class AppServiceProvider extends ServiceProvider
     {
         View::share('currentUser', Auth::user());
         
-        if (config('app.env') === 'production') {
-            URL::forceScheme('https');
-        }
+        // if (config('app.env') === 'production') {
+        //     URL::forceScheme('https');
+        // }
 
         Schema::defaultStringLength(191);
 

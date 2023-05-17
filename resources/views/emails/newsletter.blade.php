@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => $data['titre']])
+@extends('emails.template', ['subject' => $data["titre"]])
 
 @section('content')
     {!! $data['mail'] !!}
@@ -7,4 +7,6 @@
             <a style="font-size: .7rem; color: #cacaca; text-align: center" href="https://invest--partners.com/newsletter?email={{ urlencode($data['email']) }}">Se désabonner de la newsletter</a>
         </strong>
     </p>
+    
+  @include('partials.signature')
 @endsection

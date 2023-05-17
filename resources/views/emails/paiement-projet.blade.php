@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Paiement des frais d\'etude du projet {{ $projet['intitule'] }}'])
+@extends('emails.template', ['subject' => 'Paiement des frais d\'etude du projet {{ $projet["intitule"] }}'])
 
 @section('content')
 <p>A votre attention {{ $projet['secteur_data']['conseiller_data']['nom_complet'] }},</p>

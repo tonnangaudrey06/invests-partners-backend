@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => '{{$data['objet']}}'])
+@extends('emails.template', ['subject' => '{{$data["objet"]}}'])
 
 @section('content')
   <p>{!!$data['message']!!}</p>

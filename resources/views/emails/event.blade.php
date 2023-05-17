@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Particitpation à l\'événement '{{ $event['libelle'] }}' organisé par Invest & Partners'])
+@extends('emails.template', ['subject' => 'Particitpation à l\'événement {{ $event["libelle"] }} organisé par Invest & Partners'])
 
 @section('content')
     <p>Cher <strong>{{ $user['nom_complet'] }}</strong>,</p>
