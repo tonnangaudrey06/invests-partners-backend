@@ -3,6 +3,11 @@
 @section('title', 'Messagerie - ' . config('app.name'))
 
 @section('content')
+    @php
+        $privileges = DB::table('privileges')
+            ->where('user', auth()->user()->id)
+            ->get();
+    @endphp
     <div class="main-content">
 
         <div class="page-content">
@@ -36,7 +41,8 @@
                                     <div class="flex-shrink-0 align-self-center me-3">
                                         @if (!empty($sender->photo))
                                             <div>
-                                                <img class="rounded-circle avatar-xs" src="{{ $sender->photo }}" alt="">
+                                                <img class="rounded-circle avatar-xs" src="{{ $sender->photo }}"
+                                                    alt="">
                                             </div>
                                         @else
                                             <div class="avatar-xs">
@@ -89,7 +95,7 @@
                                                                     <span><i
                                                                             class="mdi {{ $contact->vu == 1
                                                                                 ? " mdi-email-open
-                                                                                                                                            text-success"
+                                                                                                                                                                                                                                                                                                    text-success"
                                                                                 : 'mdi-email text-danger' }}
                                                                 font-size-16"></i></span>
                                                                 </h5>
@@ -100,7 +106,7 @@
                                                                     class="text-truncate small mb-0 {{ $contact->vu == 1
                                                                         ? ''
                                                                         : "
-                                                                                                                            fw-bolder" }}">
+                                                                                                                                                                                                                                                                    fw-bolder" }}">
                                                                     {{ $contact->message }}</p>
                                                             </div>
                                                             <div
@@ -181,10 +187,15 @@
                                                                         <i class="bx bx-dots-vertical-rounded"></i>
                                                                     </a>
                                                                     <div class="dropdown-menu">
-                                                                        <a class="dropdown-item"
-                                                                            href="{{ route('chat.delete', $message->id) }}">Supprimer
-                                                                            le
-                                                                            message</a>
+
+                                                                        @foreach ($privileges as $privilege)
+                                                                            @if ($privilege->module == 9 && $privilege->supprimer == 1)
+                                                                                <a class="dropdown-item"
+                                                                                    href="{{ route('chat.delete', $message->id) }}">Supprimer
+                                                                                    le
+                                                                                    message</a>
+                                                                            @endif
+                                                                        @endforeach
                                                                     </div>
                                                                 </div>
                                                             @endif
@@ -266,7 +277,8 @@
                                                     <div class="position-relative">
                                                         <input type="hidden" name="projet"
                                                             value="{{ !empty($projet) ? $projet->id : '' }}">
-                                                        <textarea id="autoresize" name="body" class="form-control overflow-hidden" placeholder="Votre message..." rows="4"></textarea>
+                                                        <textarea id="autoresize" name="body" class="form-control overflow-hidden" placeholder="Votre message..."
+                                                            rows="4"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-auto d-flex align-items-center flex-column">
@@ -277,10 +289,15 @@
                                                         <span class="d-none d-sm-inline-block me-2"> Fichier</span>
                                                         <i class="mdi mdi-file-document-outline"></i>
                                                     </label>
-                                                    <button type="submit"
-                                                        class="btn btn-primary btn-rounded chat-send w-md mt-2 waves-effect waves-light btn-sm"><span
-                                                            class="d-none d-sm-inline-block me-2">Envoyer</span> <i
-                                                            class="mdi mdi-send"></i></button>
+
+                                                    @foreach ($privileges as $privilege)
+                                                        @if ($privilege->module == 9 && $privilege->ajouter == 1)
+                                                            <button type="submit"
+                                                                class="btn btn-primary btn-rounded chat-send w-md mt-2 waves-effect waves-light btn-sm"><span
+                                                                    class="d-none d-sm-inline-block me-2">Envoyer</span> <i
+                                                                    class="mdi mdi-send"></i></button>
+                                                        @endif
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </form>

@@ -9,23 +9,23 @@
         type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
-        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
 @endsection
 
 
 @section('content')
 
     @php
-    $privileges = DB::table('privileges')
-        ->where('user', auth()->user()->id)
-        ->get();
-
-    // if (auth()->user()->role != 1 || auth()->user()->role != 5) {
+        $privileges = DB::table('privileges')
+            ->where('user', auth()->user()->id)
+            ->get();
+        
+        // if (auth()->user()->role != 1 || auth()->user()->role != 5) {
         $secteurs_user = DB::table('secteurs')
             ->where('user', auth()->user()->id)
             ->get();
-    // }
+        // }
     @endphp
 
     <div class="main-content">
@@ -58,7 +58,6 @@
                                     <h4 class="card-title">Liste des secteurs d'activité</h4>
                                     <div class="actions d-flex align-items-center">
                                         @foreach ($privileges as $privilege)
-
                                             @if ($privilege->module == 11 && $privilege->ajouter == 1)
                                                 <a href="{{ route('category.add') }}"
                                                     class="btn btn-sm btn-primary me-2">Nouveau secteur d'activité</a>
@@ -70,8 +69,7 @@
                                 </div>
 
                                 @if (auth()->user()->role == 1 || auth()->user()->role == 5)
-                                    <table id="datatable"
-                                        class="table table-bordered align-middle w-100">
+                                    <table id="datatable" class="table table-bordered align-middle w-100">
                                         <thead>
                                             <tr>
                                                 <th style="width: 5%"></th>
@@ -106,21 +104,26 @@
                                                         <a href="{{ route('actualites.home', ['secteur', $categorie->id]) }}"
                                                             class="btn btn-sm btn-info"><i
                                                                 class="mdi mdi-newspaper-variant-multiple-outline"></i></a>
-                                                        <a href="{{ route('category.edit', $categorie->id) }}"
-                                                            class="btn btn-sm btn-warning"><i
-                                                                class="bx bx-edit"></i></a>
-                                                        <a href="{{ route('category.delete', $categorie->id) }}"
-                                                            onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                            class="btn btn-sm btn-danger"><i
-                                                                class="bx bx-trash"></i></a>
+                                                        @foreach ($privileges as $privilege)
+                                                            @if ($privilege->module == 11 && $privilege->modifier == 1)
+                                                                <a href="{{ route('category.edit', $categorie->id) }}"
+                                                                    class="btn btn-sm btn-warning"><i
+                                                                        class="bx bx-edit"></i></a>
+                                                            @endif
+                                                            @if ($privilege->module == 11 && $privilege->supprimer == 1)
+                                                                <a href="{{ route('category.delete', $categorie->id) }}"
+                                                                    onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                    class="btn btn-sm btn-danger"><i
+                                                                        class="bx bx-trash"></i></a>
+                                                            @endif
+                                                        @endforeach
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 @else
-                                    <table id="datatable"
-                                        class="table table-bordered align-middle w-100">
+                                    <table id="datatable" class="table table-bordered align-middle w-100">
                                         <thead>
                                             <tr>
                                                 <th style="width: 5%"></th>

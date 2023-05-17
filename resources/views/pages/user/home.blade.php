@@ -16,6 +16,37 @@
 
 
 @section('content')
+@php
+    $privileges = DB::table('privileges')
+        ->where('user', auth()->user()->id)
+        ->get();
+    switch ($role->value) {
+        case 1:
+            $module = 3;
+            break;
+        
+        case 2:
+            $module = 4;
+            break;
+        
+        case 3:
+            $module =5;
+            break;
+
+        case 4:
+            $module = 2;
+            break;
+
+        case 5:
+            $module = 3;
+            break;
+
+        default:
+            $module = 3;
+            break;
+    }
+    
+@endphp
     <div class="main-content">
 
         <div class="page-content">
@@ -49,8 +80,12 @@
                                     <div class="actions d-flex align-items-center">
                                         {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
                                         data-bs-target="#userMessage">Nouveau {{ $role->name }}</button> --}}
-                                        <a href="{{ route('user.add', $role->value) }}"
-                                            class="btn btn-sm btn-primary me-2">Nouveau {{ $role->name }}</a>
+                                        @foreach ($privileges as $privilege)
+                                            @if ($privilege->module == $module && $privilege->ajouter == 1)
+                                                <a href="{{ route('user.add', $role->value) }}"
+                                                    class="btn btn-sm btn-primary me-2">Nouveau {{ $role->name }}</a>
+                                            @endif
+                                        @endforeach
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -81,8 +116,8 @@
                                                     @if ($role->value == 2 && count($user->secteurs_data) > 0) rowspan="{{ count($user->secteurs_data) }}" @endif>
                                                     @if (!empty($user->photo))
                                                         <div>
-                                                            <img class="rounded-circle avatar-xs"
-                                                                src="{{ $user->photo }}" alt="">
+                                                            <img class="rounded-circle avatar-xs" src="{{ $user->photo }}"
+                                                                alt="">
                                                         </div>
                                                     @else
                                                         <div class="avatar-xs">
@@ -156,15 +191,22 @@
                                                         </button>
                                                     @endif
 
-                                                    @if ($role->value == 1 || $role->value == 2 || $role->value == 5 || auth()->user()->role == 1)
-                                                        <a href="{{ route('user.edit', $user->id) }}"
-                                                            class="btn btn-sm btn-warning"><i
-                                                                class="bx bx-edit"></i></a>
-                                                    @endif
+                                                    @foreach ($privileges as $privilege)
+                                                        @if ($privilege->module == $module && $privilege->modifier == 1)
+                                                            @if ($role->value == 1 || $role->value == 2 || $role->value == 5 || auth()->user()->role == 1)
+                                                                <a href="{{ route('user.edit', $user->id) }}"
+                                                                    class="btn btn-sm btn-warning"><i
+                                                                        class="bx bx-edit"></i></a>
+                                                            @endif
+                                                        @endif
 
-                                                    <a href="{{ route('user.delete', $user->id) }}"
-                                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                        class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></a>
+                                                        @if ($privilege->module == $module && $privilege->supprimer == 1)
+                                                            <a href="{{ route('user.delete', $user->id) }}"
+                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                class="btn btn-sm btn-danger"><i
+                                                                    class="bx bx-trash"></i></a>
+                                                        @endif
+                                                    @endforeach
                                                 </td>
                                             </tr>
                                             @if ($role->value == 2)
@@ -200,8 +242,7 @@
                 <form id="userMessageForm" action="" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="userMessageLabel">Nouveau message à <span
-                                id="message-user-name"></span>
+                        <h5 class="modal-title" id="userMessageLabel">Nouveau message à <span id="message-user-name"></span>
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>

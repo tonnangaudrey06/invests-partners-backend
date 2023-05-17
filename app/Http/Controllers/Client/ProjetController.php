@@ -448,7 +448,7 @@ class ProjetController extends Controller
         $total_invest = DB::table('investissements')->where('projet', $id)->sum('montant');
         $nber_invest = DB::table('investissements')->where('projet', $id)->count();
         $privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
-        return view('pages.projet.details', compact('projet', 'docs', 'total_invest', 'nber_invest', 'privileges'));
+        return view('pages.projet.details', compact('projet', 'docs', 'total_invest', 'nber_invest', 'privileges'))->with('type', 'ARCHIVE');
     }
 
     public function typemessage($id)

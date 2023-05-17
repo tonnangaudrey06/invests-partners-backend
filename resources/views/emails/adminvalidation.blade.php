@@ -10,7 +10,7 @@
         cliquez sur ce lien (<strong><a href="https://invest--partners.com/dashboard/projets/{{ $projet['id'] }}">
                 https://invest--partners.com </a></strong>) et validez le
         paiement
-        d'une somme de {{ $projet['user_data']['status'] == 'PARTICULIER' ? '15 000' : '50 000' }} XAF pour les frais
+        d'une somme de {{ $projet['user_data']['profil_porteur']['montant'] }} XAF pour les frais
         d'étude et de publication de votre projet puis commencez
         votre aventure avec Invest & Partners !</p>
 

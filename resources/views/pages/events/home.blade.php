@@ -12,12 +12,17 @@
         type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
-        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
 @endsection
 
 
 @section('content')
+    @php
+        $privileges = DB::table('privileges')
+            ->where('user', auth()->user()->id)
+            ->get();
+    @endphp
     <div class="main-content">
 
         <div class="page-content">
@@ -49,8 +54,13 @@
                                     <div class="actions d-flex align-items-center">
                                         {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
                                         data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
-                                        <a href="{{ route('events.add') }}" class="btn btn-sm btn-primary me-2">Nouveau
-                                            évenement</a>
+                                        @foreach ($privileges as $privilege)
+                                            @if ($privilege->module == 8 && $privilege->ajouter == 1)
+                                                <a href="{{ route('events.add') }}"
+                                                    class="btn btn-sm btn-primary me-2">Nouveau
+                                                    évenement</a>
+                                            @endif
+                                        @endforeach
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -88,21 +98,30 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <h5 class="font-size-14 mb-1 text-dark">@numberFormat($event->places - $event->total_reserve) / @numberFormat($event->places) places</h5>
+                                                    <h5 class="font-size-14 mb-1 text-dark">@numberFormat($event->places - $event->total_reserve) /
+                                                        @numberFormat($event->places) places</h5>
                                                     <p class="text-muted mb-0">@numberFormat($event->total_reserve) places reservées</p>
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('events.edit', $event->id) }}"
-                                                        class="btn btn-sm btn-warning float-right"><i
-                                                            class="bx bx-edit"></i></a>
+                                                    @foreach ($privileges as $privilege)
+                                                        @if ($privilege->module == 8 && $privilege->modifier == 1)
+                                                            <a href="{{ route('events.edit', $event->id) }}"
+                                                                class="btn btn-sm btn-warning float-right"><i
+                                                                    class="bx bx-edit"></i></a>
+                                                        @endif
+                                                    @endforeach
                                                     <a href="{{ route('events.show', $event->id) }}"
                                                         class="btn btn-sm btn-warning float-right"><i
                                                             class="bx bx-detail"></i></a>
-                                                    <a href="{{ route('events.delete', $event->id) }}"
-                                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                        class="btn btn-sm btn-danger float-right"><i
-                                                            class="bx bx-trash"></i>
-                                                    </a>
+                                                    @foreach ($privileges as $privilege)
+                                                        @if ($privilege->module == 8 && $privilege->supprimer == 1)
+                                                            <a href="{{ route('events.delete', $event->id) }}"
+                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                class="btn btn-sm btn-danger float-right"><i
+                                                                    class="bx bx-trash"></i>
+                                                            </a>
+                                                        @endif
+                                                    @endforeach
                                                 </td>
                                             </tr>
                                         @endforeach

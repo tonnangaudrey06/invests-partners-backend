@@ -12,13 +12,18 @@
         type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
-        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
 @endsection
 
 
 @section('content')
 
+    @php
+        $privileges = DB::table('privileges')
+            ->where('user', auth()->user()->id)
+            ->get();
+    @endphp
     <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
@@ -33,8 +38,13 @@
                                     <div class="actions d-flex align-items-center">
                                         {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
                                         data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
-                                        <a href="{{ route('slider.add') }}" class="btn btn-sm btn-primary me-2">Nouvelle
-                                            slide</a>
+                                        @foreach ($privileges as $privilege)
+                                            @if ($privilege->module == 12 && $privilege->ajouter == 1)
+                                                <a href="{{ route('slider.add') }}"
+                                                    class="btn btn-sm btn-primary me-2">Nouvelle
+                                                    slide</a>
+                                            @endif
+                                        @endforeach
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -42,8 +52,7 @@
                                 @if (session('success'))
                                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                                         <strong>{{ session('success') }}</strong>
-                                        <button type="button" class="close" data-dismiss="alert"
-                                            aria-label="Close">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
@@ -73,11 +82,19 @@
                                                         style="height:80px; width: 80px;">
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="{{ url('slider/edit/' . $slider->id) }}"
-                                                        class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
-                                                    <a href="{{ url('slider/delete/' . $slider->id) }}"
-                                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                        class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></a>
+                                                    @foreach ($privileges as $privilege)
+                                                        @if ($privilege->module == 12 && $privilege->modifier == 1)
+                                                            <a href="{{ url('slider/edit/' . $slider->id) }}"
+                                                                class="btn btn-sm btn-warning"><i
+                                                                    class="bx bx-edit"></i></a>
+                                                        @endif
+                                                        @if ($privilege->module == 12 && $privilege->supprimer == 1)
+                                                            <a href="{{ url('slider/delete/' . $slider->id) }}"
+                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                class="btn btn-sm btn-danger"><i
+                                                                    class="bx bx-trash"></i></a>
+                                                        @endif
+                                                    @endforeach
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -12,12 +12,17 @@
         type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
-        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
 @endsection
 
 
 @section('content')
+    @php
+        $privileges = DB::table('privileges')
+            ->where('user', auth()->user()->id)
+            ->get();
+    @endphp
     <div class="main-content">
 
         <div class="page-content">
@@ -49,7 +54,12 @@
                                     <div class="actions d-flex align-items-center">
                                         {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
                                             data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
-                                            <a href="{{route('profil.investisseur.add')}}" class="btn btn-sm btn-primary me-2" >Nouveau profil</a>
+                                        @foreach ($privileges as $privilege)
+                                            @if ($privilege->module == 7 && $privilege->ajouter == 1)
+                                                <a href="{{ route('profil.investisseur.add') }}"
+                                                    class="btn btn-sm btn-primary me-2">Nouveau profil</a>
+                                            @endif
+                                        @endforeach
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -75,9 +85,19 @@
                                                 <td>{{ number_format($profil->montant_max, 0, ',', ' ') }}</td>
                                                 <td>{{ number_format($profil->frais_abonnement, 0, ',', ' ') }}</td>
                                                 <td>
-                                                    <a href="{{route('profil.investisseur.edit', $profil->id)}}" class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
-                                                    <a href="{{route('profil.investisseur.delete', $profil->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></a>
-        
+                                                    @foreach ($privileges as $privilege)
+                                                        @if ($privilege->module == 7 && $privilege->modifier == 1)
+                                                            <a href="{{ route('profil.investisseur.edit', $profil->id) }}"
+                                                                class="btn btn-sm btn-warning"><i
+                                                                    class="bx bx-edit"></i></a>
+                                                        @endif
+                                                        @if ($privilege->module == 7 && $privilege->supprimer == 1)
+                                                            <a href="{{ route('profil.investisseur.delete', $profil->id) }}"
+                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                class="btn btn-sm btn-danger"><i
+                                                                    class="bx bx-trash"></i></a>
+                                                        @endif
+                                                    @endforeach
                                                 </td>
                                             </tr>
                                         @endforeach

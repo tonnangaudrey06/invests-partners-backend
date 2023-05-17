@@ -19,6 +19,12 @@
 
 
 @section('content')
+    @php
+        $privileges = DB::table('privileges')
+            ->where('user', auth()->user()->id)
+            ->get();
+        $module = $type == 'IP' ? 1 : ($type == 'AUTRE' ? 5 : 13);
+    @endphp
     <div class="main-content">
 
         <div class="page-content">
@@ -91,7 +97,7 @@
                                 @endforeach
 
                                 @foreach ($privileges as $privilege)
-                                    @if ($privilege->module == 1 && $privilege->supprimer == 1)
+                                    @if ($privilege->module == $module && $privilege->supprimer == 1)
                                         @if ($projet->etat == 'VALIDE' || $projet->etat == 'COMPLET' || $projet->etat == 'PUBLIE')
                                             <a href="{{ route('projet.edit', $projet->id) }}"
                                                 class="btn btn-sm btn-warning me-2">Modifier</a>
@@ -107,7 +113,7 @@
                                 @endif
 
                                 @foreach ($privileges as $privilege)
-                                    @if ($privilege->module == 1 && $privilege->supprimer == 1)
+                                    @if ($privilege->module == $module && $privilege->supprimer == 1)
                                         <a href="{{ route('projet.delete', $projet->id) }}"
                                             onclick="return confirm('Voulez-vous vraiment supprimer?')"
                                             class="btn btn-sm btn-danger me-2">Supprimer</a>

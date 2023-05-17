@@ -16,9 +16,9 @@
 @section('content')
 
     @php
-    $privileges = DB::table('privileges')
-        ->where('user', auth()->user()->id)
-        ->get();
+        $privileges = DB::table('privileges')
+            ->where('user', auth()->user()->id)
+            ->get();
     @endphp
 
     <div class="main-content">
@@ -33,8 +33,7 @@
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a
-                                            href="javascript: void(0);">{{ config('app.name') }}</a>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">{{ config('app.name') }}</a>
                                     </li>
                                     <li class="breadcrumb-item active">Experts</li>
                                 </ol>
@@ -51,17 +50,12 @@
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des experts</h4>
                                     <div class="actions d-flex align-items-center">
-                                        @if (auth()->user()->role == 1 || auth()->user()->role == 5)
-                                            <a href="{{ route('experts.add') }}"
-                                                class="btn btn-sm btn-primary me-2">Nouveau expert</a>
-                                        @else
-                                            @foreach ($privileges as $privilege)
-                                                @if ($privilege->module == 16 && $privilege->ajouter == 1)
-                                                    <a href="{{ route('experts.add') }}"
-                                                        class="btn btn-sm btn-primary me-2">Nouveau expert</a>
-                                                @endif
-                                            @endforeach
-                                        @endif
+                                        @foreach ($privileges as $privilege)
+                                            @if ($privilege->module == 17 && $privilege->ajouter == 1)
+                                                <a href="{{ route('experts.add') }}"
+                                                    class="btn btn-sm btn-primary me-2">Nouveau expert</a>
+                                            @endif
+                                        @endforeach
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -103,13 +97,21 @@
                                                 <td>{{ $expert->email ?? 'Aucun' }}</td>
                                                 <td>{{ $expert->telephone ?? 'Aucun' }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('experts.edit', $expert->id) }}"
-                                                        class="btn btn-sm btn-warning"><i class="bx bx-edit"></i>
-                                                    </a>
-                                                    <a href="{{ route('experts.delete', $expert->id) }}"
-                                                        onclick="return confirm('Voulez-vous vraiment supprimer cet expert?')"
-                                                        class="btn btn-sm btn-danger"><i class="bx bx-trash"></i>
-                                                    </a>
+
+                                                    @foreach ($privileges as $privilege)
+                                                        @if ($privilege->module == 17 && $privilege->modifier == 1)
+                                                            <a href="{{ route('experts.edit', $expert->id) }}"
+                                                                class="btn btn-sm btn-warning"><i class="bx bx-edit"></i>
+                                                            </a>
+                                                        @endif
+
+                                                        @if ($privilege->module == 17 && $privilege->supprimer == 1)
+                                                            <a href="{{ route('experts.delete', $expert->id) }}"
+                                                                onclick="return confirm('Voulez-vous vraiment supprimer cet expert?')"
+                                                                class="btn btn-sm btn-danger"><i class="bx bx-trash"></i>
+                                                            </a>
+                                                        @endif
+                                                    @endforeach
                                                 </td>
                                             </tr>
                                         @endforeach

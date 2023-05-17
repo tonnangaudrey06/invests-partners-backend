@@ -12,12 +12,17 @@
         type="text/css" />
 
     <!-- Responsive datatable examples -->
-    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
-        rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
 @endsection
 
 
 @section('content')
+@php
+    $privileges = DB::table('privileges')
+        ->where('user', auth()->user()->id)
+        ->get();
+@endphp
     <div class="main-content">
 
         <div class="page-content">
@@ -96,10 +101,19 @@
                                     </div>
                                 </div>
 
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary w-md">Ajouter</button>
-                                </div>
-
+                                @if (auth()->user()->role == 1 || auth()->user()->role == 5)
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary w-md">Ajouter</button>
+                                    </div>
+                                @else
+                                    @foreach ($privileges as $privilege)
+                                        @if ($privilege->module == 10 && $privilege->ajouter == 1)
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-primary w-md">Ajouter</button>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @endif
 
                             </form>
 

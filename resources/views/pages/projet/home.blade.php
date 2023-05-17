@@ -11,6 +11,7 @@
     $privileges = DB::table('privileges')
         ->where('user', auth()->user()->id)
         ->get();
+        $module = $type == 'IP' ? 1 : ($type == 'AUTRE' ? 5 : 13);
     @endphp
 
     <div class="main-content">
@@ -32,7 +33,6 @@
                                     <li class="breadcrumb-item active">Projets</li>
                                 </ol>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                             <div class="actions d-flex align-items-center">
                                 @if ($type == 'IP')
                                     @foreach ($privileges as $privilege)
-                                        @if ($privilege->module == 1 && $privilege->ajouter == 1)
+                                        @if ($privilege->module == $module && $privilege->ajouter == 1)
                                             <a href="{{ route('projet.add') }}"
                                                 class="btn btn-sm btn-primary me-2">Nouveau projet</a>
                                         @endif

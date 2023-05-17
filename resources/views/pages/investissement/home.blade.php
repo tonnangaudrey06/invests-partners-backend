@@ -54,7 +54,7 @@
                                         {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
                                             data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
                                         @foreach ($privileges as $privilege)
-                                            @if ($privilege->module == 2 && $privilege->ajouter == 1)
+                                            @if ($privilege->module == 6 && $privilege->ajouter == 1)
                                                 <a href="{{ route('investissement.add') }}"
                                                     class="btn btn-sm btn-primary me-2">Nouvel
                                                     investissement</a>
@@ -98,13 +98,13 @@
                                                 </td>
                                                 <td>
                                                     @foreach ($privileges as $privilege)
-                                                        @if ($privilege->module == 2 && $privilege->modifier == 1)
+                                                        @if ($privilege->module == 6 && $privilege->modifier == 1)
                                                             <a href="{{ route('investissement.edit', $investissement->id) }}"
                                                                 class="btn btn-sm btn-warning"><i
                                                                     class="bx bx-edit"></i></a>
                                                         @endif
 
-                                                        @if ($privilege->module == 2 && $privilege->supprimer == 1)
+                                                        @if ($privilege->module == 6 && $privilege->supprimer == 1)
                                                             <a href="{{ route('investissement.delete', $investissement->id) }}"
                                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
                                                                 class="btn btn-sm btn-danger"><i
