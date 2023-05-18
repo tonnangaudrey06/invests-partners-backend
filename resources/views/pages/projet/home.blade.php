@@ -95,7 +95,8 @@
                                                             {{ $projet->intitule }}
                                                         </a>
                                                     </h5>
-                                                    <p class="font-size-14 fw-bolder">@numberFormat($projet->financement) XAF</p>
+                                                    {{-- <p class="font-size-14 fw-bolder">@numberFormat($projet->financement) XAF</p> --}}
+                                                    <p class="font-size-14 fw-bolder">{{ number_format($projet->financement, 0, ',', ' ') }} XAF</p>
                                                     <hr>
                                                     <div class="text-muted fw-bolder">
                                                         {{-- <p>
