@@ -68,58 +68,77 @@
                             </div>
 
                             <div class="actions d-flex align-items-center">
-                                @foreach ($privileges as $privilege)
-
-                                    @if ($privilege->module == 1 && $privilege->modifier == 1)
-                                        @if (auth()->user()->role == 1)
-                                            @if ($projet->etat == 'ATTENTE_VALIDATION_ADMIN' || $projet->etat == 'ATTENTE_INFO_SUPPL')
-                                                <a href="{{ route('projet.admin.validate', $projet->id) }}"
-                                                    class="btn btn-sm btn-success me-2">Approuver</a>
-                                                <a href="{{ route('projet.askinfosupp', $projet->id) }}"
-                                                    class="btn btn-sm btn-info me-2">Demander info
-                                                    supple</a>
-                                                <a href="{{ route('projet.rejet', $projet->id) }}"
-                                                    class="btn btn-sm btn-dark me-2">Rejeter</a>
-                                            @endif
-                                        @else
-                                            @if ($projet->etat == 'ATTENTE' || $projet->etat == 'ATTENTE_INFO_SUPPL')
-                                                <a href="{{ route('projet.civalidate', $projet->id) }}"
-                                                    class="btn btn-sm btn-success me-2">Approuver</a>
-                                                <a href="{{ route('projet.askinfosupp', $projet->id) }}"
-                                                    class="btn btn-sm btn-info me-2">Demander info
-                                                    supp</a>
-                                                <a href="{{ route('projet.rejet', $projet->id) }}"
-                                                    class="btn btn-sm btn-dark me-2">Rejeter</a>
+                                @if (auth()->user()->role == 1)
+                                    @if ($projet->etat == 'ATTENTE_VALIDATION_ADMIN' || $projet->etat == 'ATTENTE_INFO_SUPPL')
+                                        <a href="{{ route('projet.admin.validate', $projet->id) }}"
+                                            class="btn btn-sm btn-success me-2">Approuver</a>
+                                        <a href="{{ route('projet.askinfosupp', $projet->id) }}"
+                                            class="btn btn-sm btn-info me-2">Demander info
+                                            supple</a>
+                                        <a href="{{ route('projet.rejet', $projet->id) }}"
+                                            class="btn btn-sm btn-dark me-2">Rejeter</a>
+                                    @endif
+                                @else
+                                    @foreach ($privileges as $privilege)
+                                        @if ($privilege->module == 1 && $privilege->modifier == 1)
+                                            {{-- @if (auth()->user()->role == 1)
+                                                @if ($projet->etat == 'ATTENTE_VALIDATION_ADMIN' || $projet->etat == 'ATTENTE_INFO_SUPPL')
+                                                    <a href="{{ route('projet.admin.validate', $projet->id) }}"
+                                                        class="btn btn-sm btn-success me-2">Approuver</a>
+                                                    <a href="{{ route('projet.askinfosupp', $projet->id) }}"
+                                                        class="btn btn-sm btn-info me-2">Demander info
+                                                        supple</a>
+                                                    <a href="{{ route('projet.rejet', $projet->id) }}"
+                                                        class="btn btn-sm btn-dark me-2">Rejeter</a>
+                                                @endif
+                                            @else --}}
+                                                @if ($projet->etat == 'ATTENTE' || $projet->etat == 'ATTENTE_INFO_SUPPL')
+                                                    <a href="{{ route('projet.civalidate', $projet->id) }}"
+                                                        class="btn btn-sm btn-success me-2">Approuver</a>
+                                                    <a href="{{ route('projet.askinfosupp', $projet->id) }}"
+                                                        class="btn btn-sm btn-info me-2">Demander info
+                                                        supp</a>
+                                                    <a href="{{ route('projet.rejet', $projet->id) }}"
+                                                        class="btn btn-sm btn-dark me-2">Rejeter</a>
+                                                @endif
+                                            {{-- @endif --}}
+                                        @endif
+                                    @endforeach
+                                @endif
+                                @if (auth()->user()->role == 1)
+                                    @if ($projet->etat == 'VALIDE' || $projet->etat == 'COMPLET' || $projet->etat == 'PUBLIE')
+                                        <a href="{{ route('projet.edit', $projet->id) }}"
+                                            class="btn btn-sm btn-warning me-2">Modifier</a>
+                                    @endif
+                                @else
+                                    @foreach ($privileges as $privilege)
+                                        @if ($privilege->module == $module && $privilege->supprimer == 1)
+                                            @if ($projet->etat == 'VALIDE' || $projet->etat == 'COMPLET' || $projet->etat == 'PUBLIE')
+                                                <a href="{{ route('projet.edit', $projet->id) }}"
+                                                    class="btn btn-sm btn-warning me-2">Modifier</a>
                                             @endif
                                         @endif
-                                    @endif
-
-                                @endforeach
-
-                                @foreach ($privileges as $privilege)
-                                    @if ($privilege->module == $module && $privilege->supprimer == 1)
-                                        @if ($projet->etat == 'VALIDE' || $projet->etat == 'COMPLET' || $projet->etat == 'PUBLIE')
-                                            <a href="{{ route('projet.edit', $projet->id) }}"
-                                                class="btn btn-sm btn-warning me-2">Modifier</a>
-                                        @endif
-                                    @endif
-                                @endforeach
-
+                                    @endforeach
+                                @endif
                                 @if ($projet->etat == 'PUBLIE')
                                     <a href="{{ route('actualites.home', ['projet', $projet->id]) }}"
                                         class="btn btn-sm btn-info me-2">Actualités</a>
                                     {{-- <a href="{{ route('projet.add') }}" class="btn btn-sm btn-info me-2">Actualités</a>
        --}}
                                 @endif
-
-                                @foreach ($privileges as $privilege)
-                                    @if ($privilege->module == $module && $privilege->supprimer == 1)
-                                        <a href="{{ route('projet.delete', $projet->id) }}"
-                                            onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                            class="btn btn-sm btn-danger me-2">Supprimer</a>
-                                    @endif
-                                @endforeach
-
+                                @if (auth()->user()->role == 1)
+                                    <a href="{{ route('projet.delete', $projet->id) }}"
+                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                        class="btn btn-sm btn-danger me-2">Supprimer</a>
+                                @else
+                                    @foreach ($privileges as $privilege)
+                                        @if ($privilege->module == $module && $privilege->supprimer == 1)
+                                            <a href="{{ route('projet.delete', $projet->id) }}"
+                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                class="btn btn-sm btn-danger me-2">Supprimer</a>
+                                        @endif
+                                    @endforeach
+                                @endif
                                 @if (auth()->user()->role == 1)
                                     @if ($projet->etat == 'COMPLET')
                                         <a href="{{ route('projet.publish', $projet->id) }}"
@@ -212,7 +231,8 @@
                                                     <span class="text-primary">{{ $projet->avancement_complet }}</span>
                                                 </p>
                                                 <p>
-                                                    <i class="mdi mdi-chevron-right text-primary me-1"></i> Pays d'activité:
+                                                    <i class="mdi mdi-chevron-right text-primary me-1"></i> Pays
+                                                    d'activité:
                                                     <span class="text-primary">{{ $projet->pays_activite }}</span>
                                                 </p>
                                                 <p>

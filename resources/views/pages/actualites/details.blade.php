@@ -50,21 +50,27 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-end align-items-center">
                             <div class="actions d-flex align-items-center">
-                                @foreach ($privileges as $privilege)
+                                @if (auth()->user()->role == 1)
+                                    <a href="{{ route('actualites.edit', [$type, $actualite->id, $idPS]) }}"
+                                    class="btn btn-sm btn-warning me-2">Modifier</a>
+                                    <a href="{{ route('actualites.delete', [$type, $actualite->id, $idPS]) }}"
+                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                        class="btn btn-sm btn-danger me-2">Supprimer</a>
+                                @else
+                                    @foreach ($privileges as $privilege)
 
-                                    @if ($privilege->module == 14 && $privilege->modifier == 1)
-                                        <a href="{{ route('actualites.edit', [$type, $actualite->id, $idPS]) }}"
-                                            class="btn btn-sm btn-warning me-2">Modifier</a>
-                                    @endif
+                                        @if ($privilege->module == 14 && $privilege->modifier == 1)
+                                            <a href="{{ route('actualites.edit', [$type, $actualite->id, $idPS]) }}"
+                                                class="btn btn-sm btn-warning me-2">Modifier</a>
+                                        @endif
 
-                                    @if ($privilege->module == 14 && $privilege->supprimer == 1)
-                                        <a href="{{ route('actualites.delete', [$type, $actualite->id, $idPS]) }}"
-                                            onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                            class="btn btn-sm btn-danger me-2">Supprimer</a>
-                                    @endif
-                                @endforeach
-
-
+                                        @if ($privilege->module == 14 && $privilege->supprimer == 1)
+                                            <a href="{{ route('actualites.delete', [$type, $actualite->id, $idPS]) }}"
+                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                class="btn btn-sm btn-danger me-2">Supprimer</a>
+                                        @endif
+                                    @endforeach
+                                @endif
                                 <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
 
 

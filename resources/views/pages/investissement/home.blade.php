@@ -51,15 +51,19 @@
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des différents investissements</h4>
                                     <div class="actions d-flex align-items-center">
-                                        {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
-                                            data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
-                                        @foreach ($privileges as $privilege)
-                                            @if ($privilege->module == 6 && $privilege->ajouter == 1)
-                                                <a href="{{ route('investissement.add') }}"
-                                                    class="btn btn-sm btn-primary me-2">Nouvel
-                                                    investissement</a>
-                                            @endif
-                                        @endforeach
+                                        @if (auth()->user()->role == 1)
+                                            <a href="{{ route('investissement.add') }}"
+                                                class="btn btn-sm btn-primary me-2">Nouvel
+                                                investissement</a>
+                                        @else
+                                            @foreach ($privileges as $privilege)
+                                                @if ($privilege->module == 6 && $privilege->ajouter == 1)
+                                                    <a href="{{ route('investissement.add') }}"
+                                                        class="btn btn-sm btn-primary me-2">Nouvel
+                                                        investissement</a>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -97,21 +101,28 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    @foreach ($privileges as $privilege)
-                                                        @if ($privilege->module == 6 && $privilege->modifier == 1)
-                                                            <a href="{{ route('investissement.edit', $investissement->id) }}"
-                                                                class="btn btn-sm btn-warning"><i
-                                                                    class="bx bx-edit"></i></a>
-                                                        @endif
+                                                    @if (auth()->user()->role == 1)
+                                                        <a href="{{ route('investissement.edit', $investissement->id) }}"
+                                                            class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
+                                                        <a href="{{ route('investissement.delete', $investissement->id) }}"
+                                                            onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                            class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></a>
+                                                    @else
+                                                        @foreach ($privileges as $privilege)
+                                                            @if ($privilege->module == 6 && $privilege->modifier == 1)
+                                                                <a href="{{ route('investissement.edit', $investissement->id) }}"
+                                                                    class="btn btn-sm btn-warning"><i
+                                                                        class="bx bx-edit"></i></a>
+                                                            @endif
 
-                                                        @if ($privilege->module == 6 && $privilege->supprimer == 1)
-                                                            <a href="{{ route('investissement.delete', $investissement->id) }}"
-                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                                class="btn btn-sm btn-danger"><i
-                                                                    class="bx bx-trash"></i></a>
-                                                        @endif
-                                                    @endforeach
-
+                                                            @if ($privilege->module == 6 && $privilege->supprimer == 1)
+                                                                <a href="{{ route('investissement.delete', $investissement->id) }}"
+                                                                    onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                    class="btn btn-sm btn-danger"><i
+                                                                        class="bx bx-trash"></i></a>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -57,12 +57,17 @@
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des secteurs d'activité</h4>
                                     <div class="actions d-flex align-items-center">
-                                        @foreach ($privileges as $privilege)
-                                            @if ($privilege->module == 11 && $privilege->ajouter == 1)
-                                                <a href="{{ route('category.add') }}"
-                                                    class="btn btn-sm btn-primary me-2">Nouveau secteur d'activité</a>
-                                            @endif
-                                        @endforeach
+                                        @if (auth()->user()->role == 1)
+                                            <a href="{{ route('category.add') }}"
+                                                class="btn btn-sm btn-primary me-2">Nouveau secteur d'activité</a>
+                                        @else
+                                            @foreach ($privileges as $privilege)
+                                                @if ($privilege->module == 11 && $privilege->ajouter == 1)
+                                                    <a href="{{ route('category.add') }}"
+                                                        class="btn btn-sm btn-primary me-2">Nouveau secteur d'activité</a>
+                                                @endif
+                                            @endforeach
+                                        @endif
 
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
@@ -104,19 +109,29 @@
                                                         <a href="{{ route('actualites.home', ['secteur', $categorie->id]) }}"
                                                             class="btn btn-sm btn-info"><i
                                                                 class="mdi mdi-newspaper-variant-multiple-outline"></i></a>
-                                                        @foreach ($privileges as $privilege)
-                                                            @if ($privilege->module == 11 && $privilege->modifier == 1)
-                                                                <a href="{{ route('category.edit', $categorie->id) }}"
-                                                                    class="btn btn-sm btn-warning"><i
-                                                                        class="bx bx-edit"></i></a>
-                                                            @endif
-                                                            @if ($privilege->module == 11 && $privilege->supprimer == 1)
-                                                                <a href="{{ route('category.delete', $categorie->id) }}"
-                                                                    onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                                    class="btn btn-sm btn-danger"><i
-                                                                        class="bx bx-trash"></i></a>
-                                                            @endif
-                                                        @endforeach
+                                                        @if (auth()->user()->role == 1)
+                                                            <a href="{{ route('category.edit', $categorie->id) }}"
+                                                                class="btn btn-sm btn-warning"><i
+                                                                    class="bx bx-edit"></i></a>
+                                                            <a href="{{ route('category.delete', $categorie->id) }}"
+                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                class="btn btn-sm btn-danger"><i
+                                                                    class="bx bx-trash"></i></a>
+                                                        @else
+                                                            @foreach ($privileges as $privilege)
+                                                                @if ($privilege->module == 11 && $privilege->modifier == 1)
+                                                                    <a href="{{ route('category.edit', $categorie->id) }}"
+                                                                        class="btn btn-sm btn-warning"><i
+                                                                            class="bx bx-edit"></i></a>
+                                                                @endif
+                                                                @if ($privilege->module == 11 && $privilege->supprimer == 1)
+                                                                    <a href="{{ route('category.delete', $categorie->id) }}"
+                                                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                        class="btn btn-sm btn-danger"><i
+                                                                            class="bx bx-trash"></i></a>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach

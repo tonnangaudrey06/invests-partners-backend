@@ -36,15 +36,18 @@
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des différentes slides</h4>
                                     <div class="actions d-flex align-items-center">
-                                        {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
-                                        data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
-                                        @foreach ($privileges as $privilege)
-                                            @if ($privilege->module == 12 && $privilege->ajouter == 1)
-                                                <a href="{{ route('slider.add') }}"
-                                                    class="btn btn-sm btn-primary me-2">Nouvelle
-                                                    slide</a>
-                                            @endif
-                                        @endforeach
+                                        @if (auth()->user()->role == 1)
+                                            <a href="{{ route('slider.add') }}" class="btn btn-sm btn-primary me-2">Nouvelle
+                                                slide</a>
+                                        @else
+                                            @foreach ($privileges as $privilege)
+                                                @if ($privilege->module == 12 && $privilege->ajouter == 1)
+                                                    <a href="{{ route('slider.add') }}"
+                                                        class="btn btn-sm btn-primary me-2">Nouvelle
+                                                        slide</a>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -82,19 +85,27 @@
                                                         style="height:80px; width: 80px;">
                                                 </td>
                                                 <td class="text-center">
-                                                    @foreach ($privileges as $privilege)
-                                                        @if ($privilege->module == 12 && $privilege->modifier == 1)
-                                                            <a href="{{ url('slider/edit/' . $slider->id) }}"
-                                                                class="btn btn-sm btn-warning"><i
-                                                                    class="bx bx-edit"></i></a>
-                                                        @endif
-                                                        @if ($privilege->module == 12 && $privilege->supprimer == 1)
-                                                            <a href="{{ url('slider/delete/' . $slider->id) }}"
-                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                                class="btn btn-sm btn-danger"><i
-                                                                    class="bx bx-trash"></i></a>
-                                                        @endif
-                                                    @endforeach
+                                                    @if (auth()->user()->role == 1)
+                                                        <a href="{{ url('slider/edit/' . $slider->id) }}"
+                                                            class="btn btn-sm btn-warning"><i class="bx bx-edit"></i></a>
+                                                        <a href="{{ url('slider/delete/' . $slider->id) }}"
+                                                            onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                            class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></a>
+                                                    @else
+                                                        @foreach ($privileges as $privilege)
+                                                            @if ($privilege->module == 12 && $privilege->modifier == 1)
+                                                                <a href="{{ url('slider/edit/' . $slider->id) }}"
+                                                                    class="btn btn-sm btn-warning"><i
+                                                                        class="bx bx-edit"></i></a>
+                                                            @endif
+                                                            @if ($privilege->module == 12 && $privilege->supprimer == 1)
+                                                                <a href="{{ url('slider/delete/' . $slider->id) }}"
+                                                                    onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                    class="btn btn-sm btn-danger"><i
+                                                                        class="bx bx-trash"></i></a>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

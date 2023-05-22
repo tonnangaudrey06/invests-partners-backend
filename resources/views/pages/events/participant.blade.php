@@ -13,11 +13,11 @@
 @endsection
 
 @section('content')
-@php
-    $privileges = DB::table('privileges')
-        ->where('user', auth()->user()->id)
-        ->get();
-@endphp
+    @php
+        $privileges = DB::table('privileges')
+            ->where('user', auth()->user()->id)
+            ->get();
+    @endphp
     <div class="main-content">
 
         <div class="page-content">
@@ -71,23 +71,37 @@
 
                                     <div class="col-sm-12">
                                         <div class="pt-4 d-flex justify-content-between">
-                                            @foreach ($privileges as $privilege)
-                                                @if ($privilege->module == 8 && $privilege->modifier == 1)
-                                                    <div>
-                                                        <a href="{{ route('events.edit', $event->id) }}"
-                                                            class="btn btn-primary waves-effect waves-light btn-sm">Modifier
-                                                            <i class="mdi mdi-arrow-right ms-1"></i></a>
-                                                    </div>
-                                                @endif
-                                                @if ($privilege->module == 8 && $privilege->supprimer == 1)
-                                                    <div>
-                                                        <a href="{{ route('events.delete', $event->id) }}"
-                                                            onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                            class="btn btn-primary waves-effect waves-light btn-sm">Supprimer
-                                                            <i class="mdi mdi-trash-can ms-1"></i></a>
-                                                    </div>
-                                                @endif
-                                            @endforeach
+                                            @if (auth()->user()->role == 1)
+                                                <div>
+                                                    <a href="{{ route('events.edit', $event->id) }}"
+                                                        class="btn btn-primary waves-effect waves-light btn-sm">Modifier
+                                                        <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                                </div>
+                                                <div>
+                                                    <a href="{{ route('events.delete', $event->id) }}"
+                                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                        class="btn btn-primary waves-effect waves-light btn-sm">Supprimer
+                                                        <i class="mdi mdi-trash-can ms-1"></i></a>
+                                                </div>
+                                            @else
+                                                @foreach ($privileges as $privilege)
+                                                    @if ($privilege->module == 8 && $privilege->modifier == 1)
+                                                        <div>
+                                                            <a href="{{ route('events.edit', $event->id) }}"
+                                                                class="btn btn-primary waves-effect waves-light btn-sm">Modifier
+                                                                <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                                        </div>
+                                                    @endif
+                                                    @if ($privilege->module == 8 && $privilege->supprimer == 1)
+                                                        <div>
+                                                            <a href="{{ route('events.delete', $event->id) }}"
+                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                class="btn btn-primary waves-effect waves-light btn-sm">Supprimer
+                                                                <i class="mdi mdi-trash-can ms-1"></i></a>
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

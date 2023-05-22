@@ -8,9 +8,9 @@
 
 @section('content')
     @php
-    $privileges = DB::table('privileges')
-        ->where('user', auth()->user()->id)
-        ->get();
+        $privileges = DB::table('privileges')
+            ->where('user', auth()->user()->id)
+            ->get();
         $module = $type == 'IP' ? 1 : ($type == 'AUTRE' ? 5 : 13);
     @endphp
 
@@ -43,12 +43,17 @@
                             <h4 class="card-title">Liste des projets par secteur</h4>
                             <div class="actions d-flex align-items-center">
                                 @if ($type == 'IP')
-                                    @foreach ($privileges as $privilege)
-                                        @if ($privilege->module == $module && $privilege->ajouter == 1)
-                                            <a href="{{ route('projet.add') }}"
-                                                class="btn btn-sm btn-primary me-2">Nouveau projet</a>
-                                        @endif
-                                    @endforeach
+                                    @if (auth()->user()->role == 1)
+                                        <a href="{{ route('projet.add') }}" class="btn btn-sm btn-primary me-2">Nouveau
+                                            projet</a>
+                                    @else
+                                        @foreach ($privileges as $privilege)
+                                            @if ($privilege->module == $module && $privilege->ajouter == 1)
+                                                <a href="{{ route('projet.add') }}"
+                                                    class="btn btn-sm btn-primary me-2">Nouveau projet</a>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 @endif
 
                                 <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
@@ -78,8 +83,7 @@
                                                     <div class="avatar-md">
                                                         <span
                                                             class="avatar-title rounded-circle bg-light text-danger font-size-16">
-                                                            <a
-                                                                href="{{ route('projet.details', ['id' => $projet->id]) }}">
+                                                            <a href="{{ route('projet.details', ['id' => $projet->id]) }}">
                                                                 <img class="rounded-circle avatar-sm"
                                                                     src="{{ $projet->logo ? $projet->logo : asset('assets/images/projet.jpg') }}"
                                                                     alt="" height="30">
@@ -96,7 +100,8 @@
                                                         </a>
                                                     </h5>
                                                     {{-- <p class="font-size-14 fw-bolder">@numberFormat($projet->financement) XAF</p> --}}
-                                                    <p class="font-size-14 fw-bolder">{{ number_format($projet->financement, 0, ',', ' ') }} XAF</p>
+                                                    <p class="font-size-14 fw-bolder">
+                                                        {{ number_format($projet->financement, 0, ',', ' ') }} XAF</p>
                                                     <hr>
                                                     <div class="text-muted fw-bolder">
                                                         {{-- <p>

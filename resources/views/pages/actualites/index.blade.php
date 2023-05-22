@@ -40,19 +40,27 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Liste des actualités</h4>
                             <div class="actions d-flex align-items-center">
-                                {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
-                                data-bs-target="#profilInvestisseurModal">Nouveau profil</button> --}}
-                                @foreach ($privileges as $privilege)
-                                    @if ($privilege->module == 14 && $privilege->ajouter == 1)
-                                        @if ($type == 'secteur')
-                                            <a href=" {{ route('actualites.add', [$type, $secteur->id]) }}"
-                                                class="btn btn-sm btn-primary me-2">Ajouter une actualité</a>
-                                        @else
-                                            <a href=" {{ route('actualites.add', [$type, $projet->id]) }}"
-                                                class="btn btn-sm btn-primary me-2">Ajouter une actualité</a>
-                                        @endif
+                                @if (auth()->user()->role == 1)
+                                    @if ($type == 'secteur')
+                                        <a href=" {{ route('actualites.add', [$type, $secteur->id]) }}"
+                                            class="btn btn-sm btn-primary me-2">Ajouter une actualité</a>
+                                    @else
+                                        <a href=" {{ route('actualites.add', [$type, $projet->id]) }}"
+                                            class="btn btn-sm btn-primary me-2">Ajouter une actualité</a>
                                     @endif
-                                @endforeach
+                                @else
+                                    @foreach ($privileges as $privilege)
+                                        @if ($privilege->module == 14 && $privilege->ajouter == 1)
+                                            @if ($type == 'secteur')
+                                                <a href=" {{ route('actualites.add', [$type, $secteur->id]) }}"
+                                                    class="btn btn-sm btn-primary me-2">Ajouter une actualité</a>
+                                            @else
+                                                <a href=" {{ route('actualites.add', [$type, $projet->id]) }}"
+                                                    class="btn btn-sm btn-primary me-2">Ajouter une actualité</a>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                @endif
                                 <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                             </div>
                         </div>
@@ -99,15 +107,21 @@
                                         <a href="{{ $item->secteur ? route('actualites.details', [$type, $item->id, $item->secteur]) : route('actualites.details', [$type, $item->id, $item->projet]) }}"
                                             class="btn w-100 btn-sm btn-primary me-1">En savoir plus <i
                                                 class="mdi mdi-arrow-right"></i></a>
-
-                                        @foreach ($privileges as $privilege)
-                                            @if ($privilege->module == 14 && $privilege->modifier == 1)
-                                                <a href="{{ $item->secteur ? route('actualites.delete', [$type, $item->id, $item->secteur]) : route('actualites.details', [$type, $item->id, $item->projet]) }}"
-                                                    onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                    class="btn w-100 btn-sm btn-outline-primary ms-1">Supprimer <i
-                                                        class="mdi mdi-delete"></i></a>
-                                            @endif
-                                        @endforeach
+                                        @if (auth()->user()->role == 1)
+                                            <a href="{{ $item->secteur ? route('actualites.delete', [$type, $item->id, $item->secteur]) : route('actualites.details', [$type, $item->id, $item->projet]) }}"
+                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                class="btn w-100 btn-sm btn-outline-primary ms-1">Supprimer <i
+                                                    class="mdi mdi-delete"></i></a>
+                                        @else
+                                            @foreach ($privileges as $privilege)
+                                                @if ($privilege->module == 14 && $privilege->modifier == 1)
+                                                    <a href="{{ $item->secteur ? route('actualites.delete', [$type, $item->id, $item->secteur]) : route('actualites.details', [$type, $item->id, $item->projet]) }}"
+                                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                        class="btn w-100 btn-sm btn-outline-primary ms-1">Supprimer <i
+                                                            class="mdi mdi-delete"></i></a>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                     </div>
 
 

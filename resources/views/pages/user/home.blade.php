@@ -16,37 +16,37 @@
 
 
 @section('content')
-@php
-    $privileges = DB::table('privileges')
-        ->where('user', auth()->user()->id)
-        ->get();
-    switch ($role->value) {
-        case 1:
-            $module = 3;
-            break;
+    @php
+        $privileges = DB::table('privileges')
+            ->where('user', auth()->user()->id)
+            ->get();
+        switch ($role->value) {
+            case 1:
+                $module = 3;
+                break;
         
-        case 2:
-            $module = 4;
-            break;
+            case 2:
+                $module = 4;
+                break;
         
-        case 3:
-            $module =5;
-            break;
-
-        case 4:
-            $module = 2;
-            break;
-
-        case 5:
-            $module = 3;
-            break;
-
-        default:
-            $module = 3;
-            break;
-    }
-    
-@endphp
+            case 3:
+                $module = 5;
+                break;
+        
+            case 4:
+                $module = 2;
+                break;
+        
+            case 5:
+                $module = 3;
+                break;
+        
+            default:
+                $module = 3;
+                break;
+        }
+        
+    @endphp
     <div class="main-content">
 
         <div class="page-content">
@@ -78,14 +78,17 @@
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des {{ lcfirst($title) }}</h4>
                                     <div class="actions d-flex align-items-center">
-                                        {{-- <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal"
-                                        data-bs-target="#userMessage">Nouveau {{ $role->name }}</button> --}}
-                                        @foreach ($privileges as $privilege)
-                                            @if ($privilege->module == $module && $privilege->ajouter == 1)
-                                                <a href="{{ route('user.add', $role->value) }}"
-                                                    class="btn btn-sm btn-primary me-2">Nouveau {{ $role->name }}</a>
-                                            @endif
-                                        @endforeach
+                                        @if (auth()->user()->role == 1)
+                                            <a href="{{ route('user.add', $role->value) }}"
+                                                class="btn btn-sm btn-primary me-2">Nouveau {{ $role->name }}</a>
+                                        @else
+                                            @foreach ($privileges as $privilege)
+                                                @if ($privilege->module == $module && $privilege->ajouter == 1)
+                                                    <a href="{{ route('user.add', $role->value) }}"
+                                                        class="btn btn-sm btn-primary me-2">Nouveau {{ $role->name }}</a>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -191,22 +194,33 @@
                                                         </button>
                                                     @endif
 
-                                                    @foreach ($privileges as $privilege)
-                                                        @if ($privilege->module == $module && $privilege->modifier == 1)
-                                                            @if ($role->value == 1 || $role->value == 2 || $role->value == 5 || auth()->user()->role == 1)
-                                                                <a href="{{ route('user.edit', $user->id) }}"
-                                                                    class="btn btn-sm btn-warning"><i
-                                                                        class="bx bx-edit"></i></a>
+                                                    @if (auth()->user()->role == 1)
+                                                        @if ($role->value == 1 || $role->value == 2 || $role->value == 5 || auth()->user()->role == 1)
+                                                            <a href="{{ route('user.edit', $user->id) }}"
+                                                                class="btn btn-sm btn-warning"><i
+                                                                    class="bx bx-edit"></i></a>
+                                                        @endif
+                                                        <a href="{{ route('user.delete', $user->id) }}"
+                                                            onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                            class="btn btn-sm btn-danger"><i class="bx bx-trash"></i></a>
+                                                    @else
+                                                        @foreach ($privileges as $privilege)
+                                                            @if ($privilege->module == $module && $privilege->modifier == 1)
+                                                                @if ($role->value == 1 || $role->value == 2 || $role->value == 5 || auth()->user()->role == 1)
+                                                                    <a href="{{ route('user.edit', $user->id) }}"
+                                                                        class="btn btn-sm btn-warning"><i
+                                                                            class="bx bx-edit"></i></a>
+                                                                @endif
                                                             @endif
-                                                        @endif
 
-                                                        @if ($privilege->module == $module && $privilege->supprimer == 1)
-                                                            <a href="{{ route('user.delete', $user->id) }}"
-                                                                onclick="return confirm('Voulez-vous vraiment supprimer?')"
-                                                                class="btn btn-sm btn-danger"><i
-                                                                    class="bx bx-trash"></i></a>
-                                                        @endif
-                                                    @endforeach
+                                                            @if ($privilege->module == $module && $privilege->supprimer == 1)
+                                                                <a href="{{ route('user.delete', $user->id) }}"
+                                                                    onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                                    class="btn btn-sm btn-danger"><i
+                                                                        class="bx bx-trash"></i></a>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @if ($role->value == 2)
@@ -242,7 +256,8 @@
                 <form id="userMessageForm" action="" method="POST">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="userMessageLabel">Nouveau message à <span id="message-user-name"></span>
+                        <h5 class="modal-title" id="userMessageLabel">Nouveau message à <span
+                                id="message-user-name"></span>
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>

@@ -47,13 +47,19 @@
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="card-title">Liste des profils disponible pour un porteur de projet</h4>
                                     <div class="actions d-flex align-items-center">
-                                        @foreach ($privileges as $privilege)
-                                            @if ($privilege->module == 16 && $privilege->ajouter == 1)
-                                                <a href="{{ route('profil.porteur.add') }}"
-                                                    class="btn btn-sm btn-primary me-2">Nouveau profil
-                                                </a>
-                                            @endif
-                                        @endforeach
+                                        @if (auth()->user()->role == 1)
+                                            <a href="{{ route('profil.porteur.add') }}"
+                                                class="btn btn-sm btn-primary me-2">Nouveau profil
+                                            </a>
+                                        @else
+                                            @foreach ($privileges as $privilege)
+                                                @if ($privilege->module == 16 && $privilege->ajouter == 1)
+                                                    <a href="{{ route('profil.porteur.add') }}"
+                                                        class="btn btn-sm btn-primary me-2">Nouveau profil
+                                                    </a>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                         <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
                                     </div>
                                 </div>
@@ -75,19 +81,31 @@
                                                 </td>
                                                 <td>{{ number_format($profil->montant, 0, ',', ' ') }}</td>
                                                 <td>
-                                                    @foreach ($privileges as $privilege)
-                                                        @if ($privilege->module == 16 && $privilege->modifier == 1)
-                                                            <a href="{{ route('profil.porteur.edit', $profil->type) }}"
-                                                                class="btn btn-sm btn-warning"><i class="bx bx-edit"></i>
-                                                            </a>
-                                                        @endif
-                                                        @if ($privilege->module == 16 && $privilege->supprimer == 1)
-                                                            <a href="{{ route('profil.porteur.delete', $profil->type) }}"
-                                                                onclick="return confirm('Voulez-vous vraiment supprimer le profile \'{{ $profil->type }}\'?')"
-                                                                class="btn btn-sm btn-danger"><i class="bx bx-trash"></i>
-                                                            </a>
-                                                        @endif
-                                                    @endforeach
+                                                    @if (auth()->user()->role == 1)
+                                                        <a href="{{ route('profil.porteur.edit', $profil->type) }}"
+                                                            class="btn btn-sm btn-warning"><i class="bx bx-edit"></i>
+                                                        </a>
+                                                        <a href="{{ route('profil.porteur.delete', $profil->type) }}"
+                                                            onclick="return confirm('Voulez-vous vraiment supprimer le profile \'{{ $profil->type }}\'?')"
+                                                            class="btn btn-sm btn-danger"><i class="bx bx-trash"></i>
+                                                        </a>
+                                                    @else
+                                                        @foreach ($privileges as $privilege)
+                                                            @if ($privilege->module == 16 && $privilege->modifier == 1)
+                                                                <a href="{{ route('profil.porteur.edit', $profil->type) }}"
+                                                                    class="btn btn-sm btn-warning"><i
+                                                                        class="bx bx-edit"></i>
+                                                                </a>
+                                                            @endif
+                                                            @if ($privilege->module == 16 && $privilege->supprimer == 1)
+                                                                <a href="{{ route('profil.porteur.delete', $profil->type) }}"
+                                                                    onclick="return confirm('Voulez-vous vraiment supprimer le profile \'{{ $profil->type }}\'?')"
+                                                                    class="btn btn-sm btn-danger"><i
+                                                                        class="bx bx-trash"></i>
+                                                                </a>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
