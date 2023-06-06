@@ -30,8 +30,8 @@ class PayementClientMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')
+        return $this->from('info@invest--partners.com', 'Invest & Partners')
             ->view('emails.paiement-client')
-            ->subject('Avis de réception de votre paiement sur Invest & Patners');
+            ->subject('Avis de réception de votre paiement sur Invest & Partners');
     }
 }

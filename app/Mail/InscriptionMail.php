@@ -30,6 +30,6 @@ class InscriptionMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.inscription')->subject('Bienvenue chez Invest & Partners');
+        return $this->from('info@invest--partners.com', 'Invest & Partners')->view('emails.inscription')->subject('Bienvenue chez Invest & Partners');
     }
 }

@@ -30,7 +30,7 @@ class CreationProjetPorteurMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.creation-projet-porteur')
+        return $this->from('info@invest--partners.com', 'Invest & Partners')->view('emails.creation-projet-porteur')
             ->subject("Accusé de réception du projet '{$this->projet['intitule']}'");
     }
 }

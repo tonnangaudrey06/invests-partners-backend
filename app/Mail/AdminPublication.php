@@ -30,7 +30,7 @@ class AdminPublication extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')
+        return $this->from('info@invest--partners.com', 'Invest & Partners')
             ->view('emails.adminpublication')
             ->subject("Publication de votre projet " . $this->projet['intitule']);
     }

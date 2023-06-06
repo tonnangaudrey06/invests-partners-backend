@@ -30,7 +30,7 @@ class RelancerConseillerProjetMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.relancer-conseiller-projet')
+        return $this->from('info@invest--partners.com', 'Invest & Partners')->view('emails.relancer-conseiller-projet')
             ->subject("Relance sur les projets en attente");
     }
 }

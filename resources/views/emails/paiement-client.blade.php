@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Avis de réception de votre paiement sur Invest & Patners'])
+@extends('emails.template', ['subject' => 'Avis de réception de votre paiement sur Invest & Partners'])
 
 @section('content')
     @if ($transaction['is_client'])

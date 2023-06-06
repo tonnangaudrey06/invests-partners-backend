@@ -33,7 +33,7 @@ class RejetMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.rejet')
+        return $this->from('info@invest--partners.com', 'Invest & Partners')->view('emails.rejet')
                     ->cc(Auth()->user()->role == 1 ? $this->projet['secteur_data']['conseiller_data']['email'] : $this->admin['email'])
                     ->cc('info@invest--partners.com')
                     ->subject("Refus de votre projet {$this->projet['intitule']}");

@@ -30,7 +30,7 @@ class CreationProjetMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.creation-projet')
+        return $this->from('info@invest--partners.com', 'Invest & Partners')->view('emails.creation-projet')
                     ->subject("Nouveau projet dans le secteur '{$this->projet['secteur_data']['libelle']}'");
     }
 }

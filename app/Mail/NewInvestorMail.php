@@ -30,6 +30,6 @@ class NewInvestorMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Patners')->view('emails.new-investor')->subject('Bienvenue chez Invest & Partners');
+        return $this->from('info@invest--partners.com', 'Invest & Partners')->view('emails.new-investor')->subject('Bienvenue chez Invest & Partners');
     }
 }
