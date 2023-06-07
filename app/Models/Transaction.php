@@ -52,7 +52,7 @@ class Transaction extends Model
                 return 'Effectuer lors d\'une inscription';
             case 'PROFIL':
                 return 'Effectuer lors de la mise à jour d\'une plage d\'investissement';
-            case 'PROFIL':
+            case 'EVENT':
                 return 'Effectuer lors de l\'enregistrement à un événement';
             default:
                 return 'Effectuer lors de la validation d\'un projet';
