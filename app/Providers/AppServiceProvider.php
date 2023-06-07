@@ -39,8 +39,9 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         Blade::directive('numberFormat', function ($value) {
-            $toFormat = (int) $value;
-            return "<?php echo number_format($toFormat, 0, ',', ' ');?>";
+            // $toFormat = (int) $value;
+            // return $toFormat;
+            return "<?php echo number_format($value, 0, ',', ' ')?>";
         });
 
         Blade::directive('moneyFormat', function ($value) {
