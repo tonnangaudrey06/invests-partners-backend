@@ -56,6 +56,7 @@ Route::prefix('app')->group(function () {
     Route::get('/partenaire', [HomeController::class, 'partenaire']);
     Route::get('/projet', [HomeController::class, 'projet']);
     Route::get('/villes/villes', [HomeController::class, 'ville']);
+    Route::get('/villes/projets', [HomeController::class, 'publishProject']);
     Route::get('/secteurparville', [HomeController::class, 'secteurparville']);
     Route::get('/{ville}/{secteur}', [HomeController::class, 'showbycityandsector']);
     Route::get('/projVilles/{idSecteur}/{pays}', [HomeController::class, 'villeParSecteur']);

@@ -48,6 +48,16 @@ class HomeController extends Controller
         return $this->sendResponse($villes, 'App ville');
     }
 
+    public function publishProject()
+    {
+        $villes = DB::table('projets')
+            ->select('ville_activite', 'pays_activite')
+            ->where('type', 'IP')
+            ->where('etat', 'PUBLIE')
+            ->groupBy('ville_activite')
+            ->get();
+        return $this->sendResponse($villes, 'App ville');
+    }
     public function secteurparville()
     {
         $secteur = DB::table('secteurs')
