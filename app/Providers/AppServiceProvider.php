@@ -41,7 +41,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('numberFormat', function ($value) {
             // $toFormat = (int) $value;
             // return $toFormat;
-            return "<?php echo number_format($value, 0, ',', ' ')?>";
+            // return "<?php echo number_format($value, 0, ',', ' ');
+            return "<?php echo $value?>";
         });
 
         Blade::directive('moneyFormat', function ($value) {
