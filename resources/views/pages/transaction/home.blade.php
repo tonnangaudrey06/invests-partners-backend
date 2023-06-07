@@ -98,7 +98,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    @numberFormat($transaction->montant) XAF
+                                                    {{$transaction->montant}} XAF
                                                 </td>
                                                 <td>
                                                     <span class="badge {{ $transaction->color }} p-2">

@@ -98,12 +98,12 @@
                                     <div class="text-muted font-size-15 fw-bolder">
                                         <p>
                                             <i class="mdi mdi-chevron-right text-warning me-1"></i> <span
-                                                class="text-warning">@numberFormat($conseiller->count())</span>
+                                                class="text-warning">{{$conseiller->count()}}</span>
                                             conseillers
                                         </p>
                                         <p>
                                             <i class="mdi mdi-chevron-right text-primary me-1"></i> <span
-                                                class="text-warning">@numberFormat($secteurCouv->count())</span>
+                                                class="text-warning">{{$secteurCouv->count()}}</span>
                                             secteurs
                                             couverts
                                         </p>
@@ -194,12 +194,12 @@
                                             <div class="text-muted font-size-15 fw-bolder">
                                                 <p>
                                                     <i class="mdi mdi-chevron-right text-warning me-1"></i> <span
-                                                        class="text-warning">@numberFormat($conseiller->count())</span>
+                                                        class="text-warning">{{$conseiller->count()}}</span>
                                                     conseillers
                                                 </p>
                                                 <p>
                                                     <i class="mdi mdi-chevron-right text-primary me-1"></i> <span
-                                                        class="text-warning">@numberFormat($secteurCouv->count())</span>
+                                                        class="text-warning">{{$secteurCouv->count()}}</span>
                                                     secteurs
                                                     couverts
                                                 </p>
@@ -220,7 +220,7 @@
                                     <div class="mb-4">
                                         <i class="bx bx-briefcase-alt-2 text-primary display-4"></i>
                                     </div>
-                                    <h4 class="card-title mb-4">@numberFormat($nbProjets->count()) projets enregistrés</h4>
+                                    <h4 class="card-title mb-4">{{$nbProjets->count()}} projets enregistrés</h4>
                                 </div>
 
                                 <hr>
@@ -234,7 +234,7 @@
                                                         INVEST & PARTNERS</a>
                                                 </p>
                                             </strong>
-                                            <h5 class="mb-0 text-primary">@numberFormat($ip)</h5>
+                                            <h5 class="mb-0 text-primary">{{$ip}}</h5>
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -245,7 +245,7 @@
                                                         class="text-muted">PLATEFORME</a>
                                                 </p>
                                             </strong>
-                                            <h5 class="mb-0 text-primary">@numberFormat($autres)</h5>
+                                            <h5 class="mb-0 text-primary">{{$autres}}</h5>
                                         </div>
                                     </div>
                                 </div>

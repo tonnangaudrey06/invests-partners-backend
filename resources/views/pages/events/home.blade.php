@@ -95,15 +95,15 @@
                                                 </td>
                                                 <td>
                                                     @if (!empty($event->prix))
-                                                        @numberFormat($event->prix) XAF
+                                                        {{$event->prix}} XAF
                                                     @else
                                                         Gratuit
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <h5 class="font-size-14 mb-1 text-dark">@numberFormat($event->places - $event->total_reserve) /
-                                                        @numberFormat($event->places) places</h5>
-                                                    <p class="text-muted mb-0">@numberFormat($event->total_reserve) places reservées</p>
+                                                    <h5 class="font-size-14 mb-1 text-dark">{{$event->places - $event->total_reserve}} /
+                                                        {{$event->places}} places</h5>
+                                                    <p class="text-muted mb-0">{{$event->total_reserve}} places reservées</p>
                                                 </td>
                                                 <td class="text-center">
                                                     @if (auth()->user()->role == 1)

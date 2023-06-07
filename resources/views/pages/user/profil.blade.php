@@ -241,7 +241,7 @@
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
                                             <p class="text-muted fw-medium mb-2">Financements demandés</p>
-                                            <h4 class="mb-0">@numberFormat($total) XAF</h4>
+                                            <h4 class="mb-0">{{$total}} XAF</h4>
                                         </div>
 
                                         <div class="flex-shrink-0 align-self-center">
@@ -286,7 +286,7 @@
                                     <div class="d-flex">
                                         <div class="flex-grow-1">
                                             <p class="text-muted fw-medium mb-2">Investissements effectués</p>
-                                            <h4 class="mb-0">@numberFormat($total) XAF</h4>
+                                            <h4 class="mb-0">{{$total}} XAF</h4>
                                         </div>
 
                                         <div class="flex-shrink-0 align-self-center">
@@ -330,7 +330,7 @@
                                                     href="{{ route('projet.details', $projet->projet_data->id) }}"
                                                     class="text-decoration-none">{{ $projet->projet_data->intitule }}</a></th>
                                             <td style="max-width: 20rem !important">{{ $projet->projet_data->secteur_data->libelle }}</td>
-                                            <td style="max-width: 20rem !important">@numberFormat($projet->total_investi) XAF</td>
+                                            <td style="max-width: 20rem !important">projet->total_investi XAF</td>
                                             <td style="max-width: 20rem !important">{{ $projet->projet_data->etat }}</td>
                                         </tr>
                                         @endforeach
@@ -361,7 +361,7 @@
                                                     href="{{ route('projet.details', $projet->id) }}"
                                                     class="text-decoration-none">{{ $projet->intitule }}</a></th>
                                             <td style="max-width: 20rem !important">{{ $projet->secteur_data->libelle }}</td>
-                                            <td style="max-width: 20rem !important">@numberFormat($projet->financement) XAF</td>
+                                            <td style="max-width: 20rem !important">{{$projet->financement}} XAF</td>
                                             <td>{{ $projet->etat }}</td>
                                         </tr>
                                         @endforeach
@@ -392,7 +392,7 @@
                                                     href="{{ route('projet.details', $projet->id) }}"
                                                     class="text-decoration-none">{{ $projet->intitule }}</a></th>
                                             <td style="max-width: 20rem !important">{{ $projet->secteur_data->libelle }}</td>
-                                            <td style="max-width: 20rem !important">@numberFormat($projet->financement) XAF</td>
+                                            <td style="max-width: 20rem !important">{{$projet->financement}} XAF</td>
                                             <td>{{ $projet->etat }}</td>
                                         </tr>
                                         @endforeach

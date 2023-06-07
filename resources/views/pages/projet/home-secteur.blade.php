@@ -73,7 +73,7 @@ $privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
                                             {{ $projet->intitule }}
                                         </a>
                                     </h5>
-                                    <p class="font-size-14 fw-bolder">@numberFormat($projet->financement) XAF</p>
+                                    <p class="font-size-14 fw-bolder">{{$projet->financement}} XAF</p>
                                     <hr>
                                     <div class="text-muted fw-bolder">
                                         {{-- <p>

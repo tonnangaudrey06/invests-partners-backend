@@ -124,7 +124,7 @@
                                                 <th scope="row">Prix :</th>
                                                 <td>
                                                     @if (!empty($event->prix))
-                                                        @numberFormat($event->prix) XAF
+                                                        {{$event->prix}} XAF
                                                     @else
                                                         Gratuit
                                                     @endif
@@ -132,15 +132,15 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row">Places reservées :</th>
-                                                <td>@numberFormat($event->total_reserve) places</td>
+                                                <td>{{$event->total_reserve}} places</td>
                                             </tr>
                                             <tr>
                                                 <th scope="row">Places disponibles :</th>
-                                                <td>@numberFormat($event->places - $event->total_reserve) / @numberFormat($event->places) places</td>
+                                                <td>{{$event->places - $event->total_reserve}} / {{$event->places}} places</td>
                                             </tr>
                                             {{-- <tr>
                                                 <th scope="row">Places restants :</th>
-                                                <td>@numberFormat($event->places - $event->total_reserve) places</td>
+                                                <td>$event->places - $event->total_reserve) places</td>
                                             </tr> --}}
                                         </tbody>
                                     </table>
@@ -183,7 +183,7 @@
                                                         {{ $participant->telephone }}
                                                     </td> --}}
                                                     <td style="width: 15%">
-                                                        @numberFormat($participant->places) places
+                                                        {{$participant->places}} places
                                                     </td>
                                                     <td style="width: 5%" class="text-center">
                                                         <a href="{{ route('events.delete.participant', $participant->id) }}"
