@@ -63,6 +63,7 @@ class HomeController extends Controller
         $secteur = DB::table('secteurs')
             ->join('projets', 'secteurs.id', '=', 'projets.secteur')
             ->select('secteurs.libelle', 'secteurs.photo', 'secteurs.id', 'projets.ville_activite')
+            ->where('projets.etat', 'PUBLIE')
             ->get();
         return $this->sendResponse($secteur, 'App ville');
     }
@@ -80,7 +81,10 @@ class HomeController extends Controller
 
     public function showbycityandsector($ville, $secteur)
     {
-        $projet = Projet::where('ville_activite', $ville)->where('secteur', $secteur)->get();
+        $projet = Projet::where('ville_activite', $ville)
+        ->where('secteur', $secteur)
+        ->where('etat', 'PUBLIE')
+        ->get();
 
         return $this->sendResponse($projet, 'Project');
     }
