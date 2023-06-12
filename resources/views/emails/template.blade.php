@@ -123,7 +123,7 @@
                                                                 style="font-size:0px;padding:10px 25px;padding-top:0;word-break:break-word;">
                                                                 <div
                                                                     style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:13px;font-weight:bold;letter-spacing:1px;line-height:20px;text-align:center;text-transform:uppercase;color:#1D1E20;">
-                                                                    2308 Douala, Cameroun <br> (+237) 6 55 45 90 79
+                                                                    2308 Douala, Cameroun <br> (+237) 6 99 85 86 06
                                                                 </div>
                                                             </td>
                                                         </tr>
