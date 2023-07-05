@@ -11,5 +11,11 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run() {}
+    public function run() {
+        $this->call(RoleSeeder::class);
+        $this->call(ModuleSeeder::class);
+        $this->call(ProfilPorteurProjetSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(SecteurSeeder::class);
+    }
 }
