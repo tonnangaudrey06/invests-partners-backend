@@ -76,7 +76,7 @@
 
 <div class="d-flex justify-content-start" style="margin-top: 4rem">
     <div class="row">
-        <div class="col-md-4 d-flex align-items-center flex-column" style="margin: 0 3rem">
+        <div class="col-md-4 col-sm-12 d-flex align-items-center flex-column" style="margin: 0 3rem">
             <div class="d-flex justify-content-center">
                 <img src="{{ asset('assets/images/logo-light.png') }}" style="height: 150px" height="150">
             </div>
@@ -101,7 +101,7 @@
                 </a>
             </div>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 col-sm-12">
             <div>
                 <h4 class="text-muted"><b>Invest & Partners</b></h4>
                 <p class="text-muted"> <em>Entreprendre et investir autrement!</em> </p>
