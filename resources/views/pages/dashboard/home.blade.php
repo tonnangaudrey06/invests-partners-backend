@@ -46,7 +46,7 @@
                                         </p>
                                         <p>
                                             <i class="mdi mdi-chevron-right text-primary me-1"></i> <span
-                                                class="text-primary">@moneyFormat($investissement) XAF</span> déjà
+                                                class="text-primary">@moneyFormat($investissement)</span> déjà
                                             investis
                                         </p>
                                     </div>
@@ -77,7 +77,7 @@
                                             <i class="mdi mdi-chevron-right text-success me-1"></i> Besoin d'un
                                             financement
                                             de
-                                            <span class="text-success"> @moneyFormat($besoinFinancement) XAF</span>
+                                            <span class="text-success"> @moneyFormat($besoinFinancement)</span>
                                         </p>
                                     </div>
                                 </div>
@@ -135,7 +135,7 @@
                                                 </p>
                                                 <p>
                                                     <i class="mdi mdi-chevron-right text-primary me-1"></i> <span
-                                                        class="text-primary">@moneyFormat($investissement) XAF</span> déjà
+                                                        class="text-primary">@moneyFormat($investissement) </span> déjà
                                                     investis
                                                 </p>
                                             </div>
@@ -152,8 +152,7 @@
                                             <div class="mb-4 d-flex align-items-center">
                                                 <i class="mdi mdi-account-circle text-success h1 me-3"></i>
                                                 <div class="flex-grow-1 d-flex align-items-center">
-                                                    <h4 class="h3"> <a
-                                                            href="{{ route('user.porteur.projet') }}"
+                                                    <h4 class="h3"> <a href="{{ route('user.porteur.projet') }}"
                                                             class="text-muted">Porteurs de projets</a></h4>
                                                 </div>
                                             </div>
@@ -171,7 +170,7 @@
                                                     financement
                                                     de
                                                     <span class="text-success"> @moneyFormat($besoinFinancement)
-                                                        XAF</span>
+                                                    </span>
                                                 </p>
                                             </div>
                                         </div>
@@ -187,8 +186,8 @@
                                             <div class="mb-4 d-flex align-items-center">
                                                 <i class="mdi mdi-account-circle text-warning h1 me-3"></i>
                                                 <div class="flex-grow-1 d-flex align-items-center">
-                                                    <h4 class="h3"> <a href="{{ route('user.conseiller') }}"
-                                                            class="text-muted">Conseillers</a></h4>
+                                                    <h3 class="h3"> <a href="{{ route('user.conseiller') }}"
+                                                            class="text-muted">Conseillers</a></h3>
                                                 </div>
                                             </div>
                                             <div class="text-muted font-size-15 fw-bolder">
@@ -216,98 +215,243 @@
                     <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
-                                <div class="text-center">
-                                    <div class="mb-4">
-                                        <i class="bx bx-briefcase-alt-2 text-primary display-4"></i>
-                                    </div>
-                                    <h4 class="card-title mb-4">@numberFormat($nbProjets->count()) projets enregistrés</h4>
+                                <div class="mb-4 d-flex align-items-center">
+                                    <i class="bx bx-briefcase-alt-2 text-primary h1 me-3"></i>
+                                    <h3 class="h3 flex-grow-1">
+                                        @numberFormat($nbProjets->count()) projets enregistrés
+                                    </h3>
                                 </div>
+                                {{-- <h4 class="h4" class="card-title d-flex align-items-center gap-3 mb-4">
+                                    <i class="bx bx-briefcase-alt-2 text-primary h1"></i>
+                                    @numberFormat($nbProjets->count()) projets enregistrés
+                                </h4> --}}
 
-                                <hr>
+                                <div class="accordion mb-3" id="accordion-global-project">
+                                    <div class="accordion-item bg-white">
+                                        <div class="accordion-header" id="heading-global-project">
+                                            <div role="button" class="accordion-button collapsed fw-medium" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapse-global-project"
+                                                aria-expanded="false" aria-controls="collapse-global-project">
+                                                <h5 class="font-size-14 fw-bolder">
+                                                    Statistique par plateforme
+                                                </h5>
+                                            </div>
+                                        </div>
 
-                                <div class="row text-center">
-                                    <div class="col-6">
-                                        <div>
-                                            <strong>
-                                                <p class="text-muted text-truncate mb-2 font-weight-bold text-uppercase">
-                                                    <a href="{{ route('projet.home_ip') }}" class="text-muted">
-                                                        INVEST & PARTNERS</a>
-                                                </p>
-                                            </strong>
-                                            <h5 class="mb-0 text-primary">@numberFormat($ip)</h5>
+                                        <div id="collapse-global-project" class="accordion-collapse collapse"
+                                            aria-labelledby="heading-global-project"
+                                            data-bs-parent="#accordion-global-project">
+                                            <div class="accordion-body">
+                                                <div class="row text-center">
+                                                    <div class="col-6">
+                                                        <div>
+                                                            <strong>
+                                                                <p
+                                                                    class="text-muted text-truncate mb-2 font-weight-bold text-uppercase">
+                                                                    <a href="{{ route('projet.home_ip') }}"
+                                                                        class="text-muted">
+                                                                        INVEST & PARTNERS</a>
+                                                                </p>
+                                                            </strong>
+                                                            <h5 class="mb-0 text-primary">@numberFormat($ip)</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div>
+                                                            <strong>
+                                                                <p
+                                                                    class="text-muted text-truncate mb-2 font-weight-bold text-uppercase">
+                                                                    <a href="{{ route('projet.home') }}"
+                                                                        class="text-muted">PLATEFORME</a>
+                                                                </p>
+                                                            </strong>
+                                                            <h5 class="mb-0 text-primary">@numberFormat($autres)</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-6">
-                                        <div>
-                                            <strong>
-                                                <p class="text-muted text-truncate mb-2 font-weight-bold text-uppercase">
-                                                    <a href="{{ route('projet.home') }}"
-                                                        class="text-muted">PLATEFORME</a>
-                                                </p>
-                                            </strong>
-                                            <h5 class="mb-0 text-primary">@numberFormat($autres)</h5>
+                                </div>
+
+                                <div class="accordion mb-3" id="accordion-state-project">
+                                    <div class="accordion-item bg-white">
+                                        <div class="accordion-header" id="heading-state-project">
+                                            <div role="button" class="accordion-button collapsed fw-medium" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapse-state-project"
+                                                aria-expanded="false" aria-controls="collapse-state-project">
+                                                <h5 class="font-size-14 fw-bolder">
+                                                    Statistique des projects par état
+                                                </h5>
+                                            </div>
+                                        </div>
+
+                                        <div id="collapse-state-project" class="accordion-collapse collapse"
+                                            aria-labelledby="heading-state-project"
+                                            data-bs-parent="#accordion-state-project">
+                                            <div class="accordion-body">
+                                                <div class="row table-responsive">
+                                                    <table class="table align-middle">
+                                                        <tbody>
+                                                            @foreach ($etat as $item)
+                                                                @switch($item->etat)
+                                                                    @case('ATTENTE')
+                                                                        <tr>
+                                                                            <th>
+                                                                                <a class="text-decoration-none"
+                                                                                    href="{{ route('projet.home_etat', $item->etat) }}">En
+                                                                                    attente</a>
+                                                                            </th>
+                                                                            <td class="text-center" style="width: 10%">
+                                                                                <strong>{{ $item->total_etat }}</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @break
+
+                                                                    @case('VALIDE')
+                                                                        <tr>
+                                                                            <th>
+                                                                                <a class="text-decoration-none"
+                                                                                    href="{{ route('projet.home_etat', $item->etat) }}">Validé</a>
+                                                                            </th>
+                                                                            <td class="text-center bg-info" style="width: 10%">
+                                                                                <strong>{{ $item->total_etat }}</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @break
+
+                                                                    @case('ATTENTE_PAIEMENT')
+                                                                        <tr>
+                                                                            <th>
+                                                                                <a class="text-decoration-none"
+                                                                                    href="{{ route('projet.home_etat', $item->etat) }}">En
+                                                                                    attente paiement des frais
+                                                                            <td class="text-center bg-secondary"
+                                                                                style="width: 10%">
+                                                                                <strong>{{ $item->total_etat }}</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @break
+
+                                                                    @case('ATTENTE_INFO_SUPPL')
+                                                                        <tr>
+                                                                            <th>
+                                                                                <a class="text-decoration-none"
+                                                                                    href="{{ route('projet.home_etat', $item->etat) }}">En
+                                                                                    attente d'infos supplementaires</a>
+                                                                            </th>
+                                                                            <td class="text-center bg-warning" style="width: 10%">
+                                                                                <strong>{{ $item->total_etat }}</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @break
+
+                                                                    @case('ATTENTE_VALIDATION_ADMIN')
+                                                                        <tr>
+                                                                            <th>
+                                                                                <a class="text-decoration-none"
+                                                                                    href="{{ route('projet.home_etat', $item->etat) }}">En
+                                                                                    attente validation de l'administration</a>
+                                                                            </th>
+                                                                            <td class="text-center bg-warning" style="width: 10%">
+                                                                                <strong>{{ $item->total_etat }}</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @break
+
+                                                                    @case('COMPLET')
+                                                                        <tr>
+                                                                            <th>
+                                                                                <a class="text-decoration-none"
+                                                                                    href="{{ route('projet.home_etat', $item->etat) }}">Complet</a>
+                                                                            </th>
+                                                                            <td class="text-center bg-success" style="width: 10%">
+                                                                                <strong>{{ $item->total_etat }}</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @break
+
+                                                                    @case('PUBLIE')
+                                                                        <tr>
+                                                                            <th>
+                                                                                <a class="text-decoration-none"
+                                                                                    href="{{ route('projet.home_etat', $item->etat) }}">Publié</a>
+                                                                            </th>
+                                                                            <td class="text-center" style="width: 10%">
+                                                                                <strong>{{ $item->total_etat }}</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @break
+
+                                                                    @case('CLOTURE')
+                                                                        <tr>
+                                                                            <th>
+                                                                                <a class="text-decoration-none"
+                                                                                    href="{{ route('projet.home_etat', $item->etat) }}">Cloturé</a>
+                                                                            </th>
+                                                                            <td class="text-center bg-success" style="width: 10%">
+                                                                                <strong>{{ $item->total_etat }}</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @break
+
+                                                                    @default
+                                                                        <tr>
+                                                                            <th>
+                                                                                <a class="text-decoration-none"
+                                                                                    href="{{ route('projet.home_etat', $item->etat) }}">Rejeté</a>
+                                                                            </th>
+                                                                            <td class="text-center bg-danger" style="width: 10%">
+                                                                                <strong>{{ $item->total_etat }}</strong>
+                                                                            </td>
+                                                                        </tr>
+                                                                @endswitch
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <hr>
-
-                                <div class="row d-flex justify-content-center text-center">
-                                    @foreach ($etat as $item)
-                                        <div class="mb-4 pt-0 mt-0 col-md-4" style="cursor: pointer"
-                                            onclick="redirectTo('{{ route('projet.home_etat', $item->etat) }}')">
-                                            <h5 class="card-title"><span>{{ $item->etat }}</span></h5>
-                                            <p>
-                                                @if ($item->etat == 'COMPLET')
-                                                    <span
-                                                        class="align-items-center justify-content-center badge badge-pill badge-soft-success font-size-15">{{ $item->total_etat }}</span>
-                                                @else
-                                                    <span
-                                                        class="align-items-center justify-content-center badge badge-pill badge-soft-warning font-size-15">{{ $item->total_etat }}</span>
-                                                @endif
-                                            </p>
+                                <div class="accordion mb-3" id="accordion-secteur-project">
+                                    <div class="accordion-item bg-white">
+                                        <div class="accordion-header" id="heading-secteur-project">
+                                            <div role="button" class="accordion-button collapsed fw-medium" type="button"
+                                                data-bs-toggle="collapse" data-bs-target="#collapse-secteur-project"
+                                                aria-expanded="false" aria-controls="collapse-secteur-project">
+                                                <h5 class="font-size-14 fw-bolder">
+                                                    Statistique des projets par secteur
+                                                    d'activité
+                                                </h5>
+                                            </div>
                                         </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-4">Statistique des projets par secteur</h4>
-                                <div class="row table-responsive">
-                                    <table class="table align-middle">
-                                        <tbody>
-                                            @foreach ($secteur as $secteurItem)
-                                                <tr>
-                                                    <th>
-                                                        <a class="text-decoration-none"
-                                                            href="{{ route('projet.home_secteur', $secteurItem->id) }}">{{ $secteurItem->libelle }}</a>
-                                                    </th>
-                                                    <td class="text-center" style="width: 10%">
-                                                        {{ count($secteurItem->projets) }}
-                                                    </td>
-                                                    <td style="width: 25%">
-                                                        @if ((int) $nbProjets->count() > 0)
-                                                            @php
-                                                                $rand = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
-                                                                $color = '#' . $rand[rand(0, 15)] . $rand[rand(0, 15)] . '1' . $rand[rand(0, 15)] . 'f' . 'f';
-                                                                $percentage = round((count($secteurItem->projets) / $nbProjets->count()) * 100);
-                                                            @endphp
-                                                            <div class="progress bg-transparent progress-xl">
-                                                                <div class="progress-bar rounded" role="progressbar"
-                                                                    style="width: {{ $percentage }}%; background:{{ $color }}"
-                                                                    aria-valuenow="{{ $percentage }}" aria-valuemin="0"
-                                                                    aria-valuemax="100">
-                                                                    {{ count($secteurItem->projets) }} /
-                                                                    {{ $nbProjets->count() }}
-                                                                </div>
-                                                            </div>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+
+                                        <div id="collapse-secteur-project" class="accordion-collapse collapse"
+                                            aria-labelledby="heading-secteur-project"
+                                            data-bs-parent="#accordion-secteur-project">
+                                            <div class="accordion-body">
+                                                <div class="row table-responsive">
+                                                    <table class="table align-middle">
+                                                        <tbody>
+                                                            @foreach ($secteur as $secteurItem)
+                                                                <tr>
+                                                                    <th>
+                                                                        <a class="text-decoration-none"
+                                                                            href="{{ route('projet.home_secteur', $secteurItem->id) }}">{{ $secteurItem->libelle }}</a>
+                                                                    </th>
+                                                                    <td class="text-center" style="width: 10%">
+                                                                        <strong>{{ count($secteurItem->projets) }}</strong>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -316,28 +460,23 @@
                     <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
-                                <div class="accordion" id="accordionExample">
-                                    <h4 class="card-title mb-4">Pays</h4>
-                                    @foreach ($pays as $key => $item)
+                                <h4 class="card-title mb-4">Statistique des projets par pays</h4>
+                                @foreach ($pays as $key => $item)
+                                    <div class="accordion mb-3" id="accordion-{{ $key }}">
                                         <div class="accordion-item">
-                                            <h2 class="accordion-header" id="heading-{{ $key }}">
-                                                <button class="accordion-button fw-medium" type="button"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#collapse-{{ $key }}" aria-expanded="true"
-                                                    aria-controls="collapse{{ $key }}">
+                                            <div class="accordion-header" id="heading-{{ $key }}">
+                                                <div class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapse-{{ $key }}" aria-expanded="false"
+                                                    aria-controls="collapse-{{ $key }}">
                                                     <h5 class="font-size-14 fw-bolder">
-                                                        <span class="badge rounded badge-soft-primary p-2 fw-bolder me-2">
-                                                            {{ $item->total_projets }}
-                                                        </span>
-                                                        {{ $item->pays_activite }}
+                                                        {{ $item->pays_activite }} ({{ $item->total_projets }} projets)
                                                     </h5>
-                                                </button>
-                                            </h2>
+                                                </div>
+                                            </div>
 
-                                            <div id="collapse-{{ $key }}"
-                                                class="accordion-collapse collapse show"
+                                            <div id="collapse-{{ $key }}" class="accordion-collapse collapse"
                                                 aria-labelledby="heading-{{ $key }}"
-                                                data-bs-parent="#accordionExample">
+                                                data-bs-parent="#accordion-{{ $key }}">
                                                 <div class="accordion-body">
                                                     <div class="table-responsive">
                                                         <table class="table">
@@ -348,7 +487,7 @@
                                                                                 href="{{ route('projet.home_ville', $item2->ville_activite) }}">{{ $item2->ville_activite }}</a>
                                                                         </th>
                                                                         <td class="text-end">
-                                                                            {{ $item2->total_ville_projet }} projets
+                                                                            <strong>{{ $item2->total_ville_projet }}</strong>
                                                                         </td>
                                                                     </tr>
                                                                 @endforeach
@@ -358,8 +497,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endforeach
-                                </div>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

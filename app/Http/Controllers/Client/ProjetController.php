@@ -55,6 +55,8 @@ class ProjetController extends Controller
                 ->get();
         }
 
+        // return response()->json($secteurs);
+
         return view('pages.projet.home', compact('secteurs'))->with('type', 'AUTRE');
     }
 
@@ -219,7 +221,7 @@ class ProjetController extends Controller
         return view('pages.projet.home', compact('secteurs'))->with('type', 'ARCHIVE');
     }
 
-    public function add()
+    public function aprint_r()
     {
         $secteurs = Secteur::all();
         return view('pages.projet.add', compact('secteurs'));
