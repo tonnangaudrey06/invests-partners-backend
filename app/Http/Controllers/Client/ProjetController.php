@@ -55,6 +55,8 @@ class ProjetController extends Controller
                 ->get();
         }
 
+        // return response()->json($secteurs);
+
         return view('pages.projet.home', compact('secteurs'))->with('type', 'AUTRE');
     }
 
@@ -219,7 +221,7 @@ class ProjetController extends Controller
         return view('pages.projet.home', compact('secteurs'))->with('type', 'ARCHIVE');
     }
 
-    public function add()
+    public function aprint_r()
     {
         $secteurs = Secteur::all();
         return view('pages.projet.add', compact('secteurs'));
@@ -445,15 +447,16 @@ class ProjetController extends Controller
     {
         $projet = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])->withCount('likes')->find($id);
         $docs = DocumentFiscaux::with(['user_data'])->where('user', $projet->user_data->id)->get();
-        $total_invest = DB::table('investissements')->where('projet', $id)->sum('montant');
-        $nber_invest = DB::table('investissements')->where('projet', $id)->count();
+        $investments = DB::table('investissements')->where('projet', $id);
+        $total_invest = $investments->sum('montant');
+        $nber_invest = $investments->count();
         $privileges = DB::table('privileges')->where('user', auth()->user()->id)->get();
         return view('pages.projet.details', compact('projet', 'docs', 'total_invest', 'nber_invest', 'privileges'))->with('type', 'ARCHIVE');
     }
 
     public function typemessage($id)
     {
-        $projet = Projet::with(['user_data','secteur_data'])->find($id);
+        $projet = Projet::with(['user_data', 'secteur_data'])->find($id);
         return view('pages.projet.askinfo', compact('projet'));
     }
 

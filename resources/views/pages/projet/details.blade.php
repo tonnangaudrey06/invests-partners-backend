@@ -123,8 +123,7 @@
                                 @if ($projet->etat == 'PUBLIE')
                                     <a href="{{ route('actualites.home', ['projet', $projet->id]) }}"
                                         class="btn btn-sm btn-info me-2">Actualités</a>
-                                    {{-- <a href="{{ route('projet.add') }}" class="btn btn-sm btn-info me-2">Actualités</a>
-       --}}
+                                    {{-- <a href="{{ route('projet.add') }}" class="btn btn-sm btn-info me-2">Actualités</a>--}}
                                 @endif
                                 @if (auth()->user()->role == 1)
                                     <a href="{{ route('projet.delete', $projet->id) }}"
@@ -158,7 +157,18 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0 font-size-18">Projets</h4>
 
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">{{ config('app.name') }}</a>
+                                    </li>
+                                    <li class="breadcrumb-item active">Projets</li>
+                                </ol>
+                            </div>
 
                 <div class="row">
                     <div class="col-lg-7 h-100">

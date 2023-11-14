@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if(!empty($user) && !Hash::check($request->old, $user->password)) {
+        if (!empty($user) && !Hash::check($request->old, $user->password)) {
             return $this->sendError('Mot de passe incorrect', null, 401);
         }
 
@@ -36,20 +36,24 @@ class UserController extends Controller
     public function update($id, Request $request)
     {
         $data = $request->except('password');
+
         $user = User::find($id);
 
-        $email = User::where('email', $request->email)->first();
-        $telephone = User::where('telephone', $request->telephone)->first();
-
-        if($user->email != $request->email && !empty($email)) {
-            return $this->sendError("L'email '$request->email' à déjà été utilisé pour un compte. Veuillez fournir une autre adresse mail.", null, 500);
+        if (!empty($request->email)) {
+            $emailExist = User::where('email', $request->email)->where('email', '<>', $user->email)->exists();
+            if ($emailExist) {
+                return $this->sendError("L'email '$request->email' à déjà été utilisé pour un compte. Veuillez fournir une autre adresse mail.", null, 500);
+            }
         }
 
-        if($user->telephone != $request->telephone && !empty($telephone)) {
-            return $this->sendError("Le numéro de téléphone '$request->telephone' à déjà été utilisé pour un compte. Veuillez fournir un autre numéro de téléphone.", null, 500);
+        if (!empty($request->telephone)) {
+            $telephoneExist = User::where('telephone', $request->telephone)->where('telephone', '<>', $user->telephone)->exists();
+            if ($telephoneExist) {
+                return $this->sendError("Le numéro de téléphone '$request->telephone' à déjà été utilisé pour un compte. Veuillez fournir un autre numéro de téléphone.", null, 500);
+            }
         }
 
-        User::where('id', $id)->update($data);
+        User::whereId($id)->update($data);
 
         return $this->show($id);
     }
@@ -69,8 +73,8 @@ class UserController extends Controller
 
         if (!empty($photo)) {
             $filename = 'photo.' . strtolower($photo->getClientOriginalExtension());
-            $user->photo = url('storage/uploads/'. $user->folder) . '/' . $filename;
-            $photo->storeAs('uploads/'. $user->folder .'/', $filename, ['disk' => 'public']);
+            $user->photo = url('storage/uploads/' . $user->folder) . '/' . $filename;
+            $photo->storeAs('uploads/' . $user->folder . '/', $filename, ['disk' => 'public']);
         }
 
         $user->save();
@@ -85,15 +89,15 @@ class UserController extends Controller
 
         if (!empty($cni)) {
             $filename = 'cni.' . strtolower($cni->getClientOriginalExtension());
-            $user->cni = url('storage/uploads/'. $user->folder) . '/' . $filename;
-            $cni->storeAs('uploads/'. $user->folder .'/', $filename, ['disk' => 'public']);
+            $user->cni = url('storage/uploads/' . $user->folder) . '/' . $filename;
+            $cni->storeAs('uploads/' . $user->folder . '/', $filename, ['disk' => 'public']);
         }
 
         $user->save();
 
         return $this->show($id);
     }
-    
+
     public function uploadDocumentFiscal($id, Request $request)
     {
         $document = $request->file('document');
@@ -107,13 +111,13 @@ class UserController extends Controller
 
         if (!empty($document)) {
             $filename = Str::lower($request->type) . '.' . strtolower($document->getClientOriginalExtension());
-            $data['document'] = url('storage/uploads/'. $user->folder . '/doucment_fiscaux') . '/' . $filename;
-            $document->storeAs('uploads/'. $user->folder .'/doucment_fiscaux/', $filename, ['disk' => 'public']);
+            $data['document'] = url('storage/uploads/' . $user->folder . '/doucment_fiscaux') . '/' . $filename;
+            $document->storeAs('uploads/' . $user->folder . '/doucment_fiscaux/', $filename, ['disk' => 'public']);
         }
 
         if (!empty($exist)) {
             $file = substr($exist->document, strrpos($exist->document, '/') + 1);
-            Storage::disk('public')->delete('uploads/'. $user->folder . '/doucment_fiscaux/'. $file);
+            Storage::disk('public')->delete('uploads/' . $user->folder . '/doucment_fiscaux/' . $file);
             $exist->document = $data['document'];
             $exist->save();
             return $this->show($id);
@@ -123,7 +127,7 @@ class UserController extends Controller
 
         return $this->show($id);
     }
-    
+
     public function sendMailInfo(Request $request)
     {
         $data = $request->input();

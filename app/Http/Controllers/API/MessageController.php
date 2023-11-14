@@ -141,7 +141,7 @@ class MessageController extends Controller
                 }
             }
         }
-        
+
         $user = User::find($receiver);
 
         if (!empty($user->device_token)) {
@@ -150,7 +150,8 @@ class MessageController extends Controller
 
         try {
             $user->notify(new MessageNotification($message));
-        } catch (\Throwable $th) {}
+        } catch (\Throwable $th) {
+        }
 
 
         return $this->sendResponse($message, 'New message');
@@ -199,7 +200,7 @@ class MessageController extends Controller
             Mail::to($projet->secteur_data->conseiller_data->email)->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));
             Mail::to('info@invest--partners.com')->queue(new InteresseProjetMail($projet->toArray(), $invest->toArray()));
         } catch (\Throwable $e) {
-            return $this->sendResponse($message, 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
+            return $this->sendResponse($message, $e->getMessage(), 'Impossible d\'envoyer un mail car l\'email n\'existe pas.');
         }
 
         return $this->sendResponse($message, 'New message');
