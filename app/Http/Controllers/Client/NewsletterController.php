@@ -69,6 +69,29 @@ class NewsletterController extends Controller
         return redirect()->intended(route('newsletter.home'));
     }
 
+    public function sendme($id)
+    {
+        $newsletter = Newsletter::find($id);
+
+        $newsletterMails = NewsletterMail::all();
+
+        try {
+            Mail::to('gabinnana8@gmail.com')->queue(new MailNewsletterMail([
+                'email' => 'gabinnana8@gmail.com',
+                'mail' => $newsletter->mail,
+                'titre' => $newsletter->titre
+            ]));
+        } catch (\Throwable $th) {}
+
+        $newsletter->send = true;
+
+        $newsletter->save();
+
+        Toastr::success('Newsletter envoyée avec succès!', 'Succès');
+
+        return redirect()->intended(route('newsletter.home'));
+    }
+
     public function edit($id)
     {
         $newsletter = Newsletter::find($id);

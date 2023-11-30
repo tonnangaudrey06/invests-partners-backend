@@ -149,6 +149,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit/{id}', [NewsletterController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [NewsletterController::class, 'update'])->name('update');
         Route::get('/send/{id}', [NewsletterController::class, 'send'])->name('send');
+        Route::get('/sendme/{id}', [NewsletterController::class, 'sendme'])->name('sendme');
         Route::get('/{id}', [NewsletterController::class, 'show'])->name('show');
     });
 
