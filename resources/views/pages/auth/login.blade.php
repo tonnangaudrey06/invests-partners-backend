@@ -34,14 +34,11 @@
                                 </span>
                             </div>
                         </a>
-
-                        <a href="index-2.html" class="auth-logo-dark">
-                            <div class="avatar-md profile-user-wid mb-4">
-                                <span class="avatar-title rounded-circle bg-light">
-                                    <img src="assets/images/logo.svg" alt="" class="rounded-circle" height="34">
-                                </span>
-                            </div>
-                        </a>
+                        <div class="avatar-md profile-user-wid mb-4">
+                            <span class="avatar-title rounded-circle bg-light">
+                                <img src="assets/images/logo.svg" alt="" class="rounded-circle" height="34">
+                            </span>
+                        </div>
                     </div>
                     <div class="p-2">
                         <form class="form-horizontal" method="POST" action="{{ route('auth.login') }}">
