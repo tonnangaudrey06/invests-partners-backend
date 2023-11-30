@@ -92,6 +92,10 @@
                                                     @endif
                                                 </td>
                                                 <td style="width: 10%">
+                                                        <a href="{{ route('newsletter.sendme', $newsletter->id) }}"
+                                                            class="btn btn-sm btn-info">
+                                                            <i class="mdi mdi-send-circle-outline"></i>
+                                                        </a>
                                                     @if (Auth::user()->role == 1)
                                                         <a href="{{ route('newsletter.edit', $newsletter->id) }}"
                                                             class="btn btn-sm btn-warning">
@@ -100,10 +104,6 @@
                                                         <a href="{{ route('newsletter.send', $newsletter->id) }}"
                                                             class="btn btn-sm btn-info">
                                                             <i class="mdi mdi-email-send-outline"></i>
-                                                        </a>
-                                                        <a href="{{ route('newsletter.sendme', $newsletter->id) }}"
-                                                            class="btn btn-sm btn-info">
-                                                            <i class="mdi mdi-send-circle-outline"></i>
                                                         </a>
                                                         <a href="{{ route('newsletter.delete', $newsletter->id) }}"
                                                             onclick="return confirm('Voulez-vous vraiment supprimer?')"
