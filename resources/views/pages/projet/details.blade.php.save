@@ -112,7 +112,7 @@
                                     @endif
                                 @else
                                     @foreach ($privileges as $privilege)
-                                        @if ($privilege->module == 1 && $privilege->modifier == 1)
+                                        @if ($privilege->module == $module && $privilege->modifier == 1)
                                             @if ($projet->etat == 'VALIDE' || $projet->etat == 'COMPLET' || $projet->etat == 'PUBLIE')
                                                 <a href="{{ route('projet.edit', $projet->id) }}"
                                                     class="btn btn-sm btn-warning me-2">Modifier</a>
@@ -131,7 +131,7 @@
                                         class="btn btn-sm btn-danger me-2">Supprimer</a>
                                 @else
                                     @foreach ($privileges as $privilege)
-                                        @if ($privilege->module == 1 && $privilege->supprimer == 1)
+                                        @if ($privilege->module == $module && $privilege->supprimer == 1)
                                             <a href="{{ route('projet.delete', $projet->id) }}"
                                                 onclick="return confirm('Voulez-vous vraiment supprimer?')"
                                                 class="btn btn-sm btn-danger me-2">Supprimer</a>
@@ -144,7 +144,7 @@
                                             class="btn btn-sm btn-primary me-2">Publier</a>
                                     @endif
 
-                                    @if ($projet->etat == 'PUBLIE' )
+                                    @if ($projet->etat == 'PUBLIE' || auth()->user()->role == 2 || auth()->user()->role == 5 )
                                         <a href="{{ route('projet.cloture', $projet->id) }}"
                                             class="btn btn-sm btn-success me-2">Cloturer</a>
                                     @endif
