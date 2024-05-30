@@ -44,10 +44,10 @@
                                                 placeholder="Entrer votre message">
                                                     @if (auth()->user()->role == 2)
 Cher {{ $projet->user_data->nom_complet }}, <br>
-                                            <p>Nous accusons réception de votre projet {{ $projet->intitule }}. </p> 
+                                            <p>Nous accusons réception de votre projet {{ $projet->intitule }}. </p>
                                             <p> Cependant, nous aurons besoin d'amples informations essentielles. </p>
-                                            <p> Veuillez contacter votre conseiller <a href="https://invest--partners.com/dashboard/messages"> ici </a> pour plus de détails.</p> 
-                                            <p><strong>Entreprendre et investir autrement !</strong></p>
+                                            <p> Veuillez contacter votre conseiller <a href="https://invest--partners.com/dashboard/messages"> ici </a> pour plus de détails.</p>
+                                            <p><strong>Construire Ensemble !</strong></p>
 @endif
                                             </textarea>
 

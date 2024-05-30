@@ -250,7 +250,7 @@
                                                                     class="text-muted text-truncate mb-2 font-weight-bold text-uppercase">
                                                                     <a href="{{ route('projet.home_ip') }}"
                                                                         class="text-muted">
-                                                                        INVEST & PARTNERS</a>
+                                                                        IP INVESTMENT</a>
                                                                 </p>
                                                             </strong>
                                                             <h5 class="mb-0 text-primary">@numberFormat($ip)</h5>

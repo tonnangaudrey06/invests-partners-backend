@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Bienvenue chez Invest & Partners'])
+@extends('emails.template', ['subject' => 'Bienvenue chez IP Investment'])
 
 @section('content')
     <p>
@@ -15,6 +15,6 @@
         (<strong><a href="https://invest--partners.com/auth">https://invest--partners.com</a>.</strong>).
     </p>
 
-    <p><strong><em>Entreprendre et investir autrement!</em></strong></p>
+    <p><strong><em>Construire Ensemble!</em></strong></p>
     @include('partials.signature')
 @endsection

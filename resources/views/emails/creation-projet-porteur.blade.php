@@ -15,7 +15,7 @@
         à l'adresse <a href="mailto:info@invest--partners.com">info@invest--partners.com</a>
     </p>
     <p>
-        <strong>INVEST & PARTNERS, Entreprendre et investir autrement !</strong>
+        <strong>IP INVESTMENT, Construire Ensemble !</strong>
     </p>
     @include('partials.signature')
 @endsection

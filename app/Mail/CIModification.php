@@ -15,7 +15,7 @@ class CIModification extends Mailable
      * Create a new message instance.
      *
      * @return void
-     * 
+     *
      */
 
     public $projet;
@@ -32,7 +32,7 @@ class CIModification extends Mailable
      */
     public function build()
     {
-        return $this->from(auth()->user()->email, auth()->user()->nom_complet . ' - Conseiller en investissement chez Invest & Partners')->view('emails.cimodification')
+        return $this->from(auth()->user()->email, auth()->user()->nom_complet . ' - Conseiller en investissement chez IP Investment')->view('emails.cimodification')
             ->subject("Modification du projet {$this->projet['intitule']} par le conseiller");
     }
 }

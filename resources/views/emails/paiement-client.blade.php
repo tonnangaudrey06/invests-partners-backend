@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Avis de réception de votre paiement sur Invest & Partners'])
+@extends('emails.template', ['subject' => 'Avis de réception de votre paiement sur IP Investment'])
 
 @section('content')
     @if ($transaction['is_client'])
@@ -26,6 +26,6 @@
                 Partners</a></strong>.
     </p>
 
-    <p><strong><em>Entreprendre et investir autrement!</em></strong></p>
+    <p><strong><em>Construire Ensemble!</em></strong></p>
     @include('partials.signature')
 @endsection

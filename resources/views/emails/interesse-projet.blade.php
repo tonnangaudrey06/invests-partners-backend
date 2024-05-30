@@ -6,6 +6,6 @@
         <a href="{{ route('chat.home') }}">Discuter avec {{ $investisseur['nom_complet'] }}</a>
     </p>
 
-    <p>Cordialement,<br /><strong>Invest & Partners</strong></p>
+    <p>Cordialement,<br /><strong>IP Investment</strong></p>
     @include('partials.signature')
 @endsection

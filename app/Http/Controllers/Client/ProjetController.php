@@ -526,7 +526,7 @@ class ProjetController extends Controller
 
         if (!empty($user->device_token)) {
             $user->sendFcmNotification("Félicitations ! Votre projet '$projet->intitule' a retenu l'attention  de
-            l'équipe d'invest & partners. Afin de travailler à la recherche d'investisseurs grâce à votre visibilité sur la
+            l'équipe d'IP Investment. Afin de travailler à la recherche d'investisseurs grâce à votre visibilité sur la
             plateforme, veuillez procéder au paiement des travaux.", "Validation de votre projet");
         }
 

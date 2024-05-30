@@ -103,8 +103,8 @@
         </div>
         <div class="col-md-8 col-sm-12">
             <div>
-                <h4 class="text-muted"><b>Invest & Partners</b></h4>
-                <p class="text-muted"> <em>Entreprendre et investir autrement!</em> </p>
+                <h4 class="text-muted"><b>IP Investment</b></h4>
+                <p class="text-muted"> <em>Construire Ensemble!</em> </p>
             </div>
             <hr style="background-color: #c44636;">
             <div>

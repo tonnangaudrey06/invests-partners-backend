@@ -28,7 +28,7 @@
                         </a>
                         <ul class="sub-menu" aria-expanded="false" style="">
                             <li><a href="{{ route('projet.home') }}" key="t-p-grid">Plateforme</a></li>
-                            <li><a href="{{ route('projet.home_ip') }}" key="t-p-list">Invest & Partners</a></li>
+                            <li><a href="{{ route('projet.home_ip') }}" key="t-p-list">IP Investment</a></li>
                         </ul>
                     </li>
 

@@ -115,7 +115,7 @@
             <div class="col-md-8">
                 <div>
                     <h4 class="text-muted" style="font-size: 1.5rem; line-height: 1.2"><b>Invests & Partners</b></h4>
-                    <p class="text-muted"> <em>Entreprendre et investir autrement!</em> </p>
+                    <p class="text-muted"> <em>Construire Ensemble!</em> </p>
                 </div>
                 <hr style="background-color: #c44636;">
                 <div>

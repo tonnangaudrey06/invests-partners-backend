@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Invest & Partners'),
+    'name' => env('APP_NAME', 'IP Investment'),
 
     /*
     |--------------------------------------------------------------------------

@@ -15,7 +15,7 @@ class AddInvestissementP extends Mailable
      * Create a new message instance.
      *
      * @return void
-     * 
+     *
      */
 
     public $investissement, $admin, $projet;
@@ -34,7 +34,7 @@ class AddInvestissementP extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'Invest & Partners')->view('emails.investissementP')
+        return $this->from('info@invest--partners.com', 'IP Investment')->view('emails.investissementP')
                     ->cc(Auth()->user()->role == 1 ? $this->investissement['user_data']['email'] : $this->admin['email'])
                     ->subject("Nouvelle investissement sur votre projet ". $this->projet['intitule']);
     }

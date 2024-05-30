@@ -6,7 +6,7 @@
       href="{{ route('projet.details', $projet['id']) }}">{{ route('projet.home', $projet['id']) }}</a>
   </p>
   <p>Cordialement<br />
-    <strong>Invest & Partners</strong>
+    <strong>IP Investment</strong>
   </p>
   @include('partials.signature')
 @endsection
