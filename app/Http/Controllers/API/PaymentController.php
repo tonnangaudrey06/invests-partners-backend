@@ -75,15 +75,5 @@ class PaymentController extends Controller
         }
 
         $transaction->save();
-
-        // if ($request->status != 'SUCCESSFUL') {
-        //     try {
-        //         Mail::to($transaction->user->email)
-        //             ->queue(new PayementClientMail(
-        //                 $transaction->toArray()
-        //             ));
-        //     } catch (\Throwable $th) {
-        //     }
-        // }
     }
 }

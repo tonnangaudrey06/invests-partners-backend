@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -214,10 +215,37 @@ class UserController extends Controller
 
         $user = User::find($id);
 
+        // if (!Storage::disk('public')->exists($directory)) {
+        //     Storage::disk('public')->makeDirectory($directory);
+        // }
+
+        // if (!empty($photo)) {
+        //     //$filename = $photo->getClientOriginalName();
+        //     $filename = 'photo.' . strtolower($photo->getClientOriginalExtension());
+        //     $data['photo'] = url('storage/uploads/' . $user->folder) . '/' . $filename;
+        //     $photo->storeAs('uploads/' . $user->folder . '/', $filename, ['disk' => 'public']);
+        // }
+
+        // $slider_image = $request->file('image');
+
+        // $name_gen = hexdec(uniqid());
+        // $img_ext = strtolower($slider_image->getClientOriginalExtension());
+        // $img_name = $name_gen . '.' . $img_ext;
+        // $up_location = 'images/slides/';
+        // $last_img = $up_location . $img_name;
+        // $slider_image->move($up_location, $img_name);
+
         if (!empty($photo)) {
+            $directory = 'uploads/' . $user->folder;
+            
+            // Vérifier et créer le dossier s'il n'existe pas
+            if (!Storage::disk('public')->exists($directory)) {
+                Storage::disk('public')->makeDirectory($directory);
+            }
+            
             $filename = 'photo.' . strtolower($photo->getClientOriginalExtension());
-            $data['photo'] = url('storage/uploads/' . $user->folder) . '/' . $filename;
-            $photo->storeAs('uploads/' . $user->folder . '/', $filename, ['disk' => 'public']);
+            $data['photo'] = url('storage/' . $directory . '/' . $filename);
+            $photo->storeAs($directory, $filename, ['disk' => 'public']);
         }
 
         if ($request->has('password')) {

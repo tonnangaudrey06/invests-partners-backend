@@ -27,51 +27,74 @@ use Illuminate\Support\Facades\File;
 
 class ProjetController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $secteurs = Secteur::with(['conseiller_data'])->get();
 
-        // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
-        //     $secteurs = Secteur::with(['conseiller_data'])->get();
-        // } else {
-        //     $secteurs = Secteur::with(['conseiller_data'])
-        //         ->where('user', auth()->user()->id)
-        //         ->get();
-        // }
+        Carbon::setLocale('fr');
+        Carbon::setUtf8(true);
+        Carbon::setToStringFormat('d/m/Y H:i:s');
+        
+        // dd($request->date);
+        $date = $request->date ?? NULL;
+        $status = $request->status ?? NULL;
+        $avancement = $request->avancement ?? NULL;
+        $secteur =$request->secteur ?? NULL;
+        $secteurs = Secteur::with(['conseiller_data'])
+                            
+                            ->get();
 
+        $filtres = array();
         foreach ($secteurs as $key => $secteur) {
-            $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
+            $filtres[$key] = Projet::with(['user_data', 'membres', 'medias', 'secteur_data',])
                 ->withCount('likes')
                 ->where('secteur', $secteur->id)
-                ->where('type', 'AUTRE')
+                ->where('type', 'AUTRE');
+
+            if(isset($request->date) && $request->date!=null){
+                $filtres[$key] = $filtres[$key]->whereDate(\DB::raw('DATE(created_at)'), $request->date);
+            }
+
+            if(isset($request->status) && $request->status!=null){
+                $filtres[$key] = $filtres[$key]->where('etat', $request->status);
+            }
+            if (isset($request->avancement) && $request->avancement != null) {
+                $filtres[$key] = $filtres[$key]->where('avancement', $request->avancement);
+            }
+            if (isset($request->secteur) && $request->secteur != null) {
+                $filtres[$key] = $filtres[$key]->where('secteur', $request->secteur);
+            }
+
+            $secteurs[$key]->projets = $filtres[$key]
                 ->where(
                     function ($query) {
                         return $query
-                            ->where('etat', '!=', 'CLOTURE')
-                            ->where('etat', '!=', 'REJETE');
+                            ->where('etat', '!=', 'CLOTURE');
                     }
                 )
                 ->latest()
                 ->get();
         }
 
-        // return response()->json($secteurs);
-
-        return view('pages.projet.home', compact('secteurs'))->with('type', 'AUTRE');
+         // Formater les dates pour le fuseau horaire du Cameroun
+         foreach ($secteurs as $secteur) {
+            $secteur->created_at = Carbon::parse($secteur->created_at)
+                                             ->tz('Africa/Douala')
+                                             ->format('Y-m-d H:i:s');
+         }
+        
+        return view('pages.projet.home', compact('secteurs','date','status','avancement','secteur'))->with('type', 'AUTRE');
     }
 
     public function index_ip()
     {
+        //$secteurs = Secteur::with(['conseiller_data'])->get();
+
         $secteurs = Secteur::with(['conseiller_data'])->get();
-
-        // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
-        //     $secteurs = Secteur::with(['conseiller_data'])->get();
-        // } else {
-        //     $secteurs = Secteur::with(['conseiller_data'])
-        //         ->where('user', auth()->user()->id)
-        //         ->get();
-        // }
-
+        $date = $request->date ?? NULL;
+        $status = $request->status ?? NULL;
+        $avancement = $request->avancement ?? NULL;
+        $secteur =$request->secteur ?? NULL;
+        $secteurs = Secteur::with(['conseiller_data'])->get();
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
                 ->withCount('likes')
@@ -80,15 +103,15 @@ class ProjetController extends Controller
                 ->where(
                     function ($query) {
                         return $query
-                            ->where('etat', '!=', 'CLOTURE')
-                            ->orWhere('etat', '!=', 'REJETE');
+                            ->where('etat', '!=', 'CLOTURE');
                     }
                 )
-                ->latest()
+                ->orderBy('created_at', 'asc')
                 ->get();
         }
 
-        return view('pages.projet.home', compact('secteurs'))->with('type', 'IP');
+        return view('pages.projet.home', compact('secteurs', 'date', 'status', 'avancement', 'secteur'))->with('type', 'IP');
+        //return view('pages.projet.home', compact('secteurs'))->with('type', 'IP');
     }
 
     public function index_secteur($secteur)
@@ -104,36 +127,6 @@ class ProjetController extends Controller
                 }
             )
             ->get();
-
-        // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
-        //     $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
-        //         ->where('secteur', $secteur)
-        //         ->where(
-        //             function ($query) {
-        //                 return $query
-        //                     ->where('etat', '!=', 'CLOTURE')
-        //                     ->orWhere('etat', '!=', 'REJETE');
-        //             }
-        //         )
-        //         ->get();
-        // } else {
-        //     $projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
-        //         ->where('secteur', $secteur)
-        //         ->whereIn('secteur', function ($query) {
-        //             $query->select('id')
-        //                 ->from(with(new Secteur())->getTable())
-        //                 ->where('user', auth()->user()->id);
-        //         })
-        //         ->where(
-        //             function ($query) {
-        //                 return $query
-        //                     ->where('etat', '!=', 'CLOTURE')
-        //                     ->orWhere('etat', '!=', 'REJETE');
-        //             }
-        //         )
-        //         ->latest()
-        //         ->get();
-        // }
 
         $secteur = Secteur::where('id', $secteur)->first()->libelle;
 
@@ -187,21 +180,17 @@ class ProjetController extends Controller
                 ->latest()
                 ->get();
         }
-
         return view('pages.projet.home-etat', compact('secteurs'))->with('etat', $etat);
     }
 
     public function archives()
     {
         $secteurs = Secteur::with(['conseiller_data'])->get();
-
-        // if (auth()->user()->role == 1 || auth()->user()->role == 5) {
-        //     $secteurs = Secteur::with(['conseiller_data'])->get();
-        // } else {
-        //     $secteurs = Secteur::with(['conseiller_data'])
-        //         ->where('user', auth()->user()->id)
-        //         ->get();
-        // }
+        $date = $request->date ?? NULL;
+        $status = $request->status ?? NULL;
+        $avancement = $request->avancement ?? NULL;
+        $secteur =$request->secteur ?? NULL;
+        $secteurs = Secteur::with(['conseiller_data'])->get();
 
         foreach ($secteurs as $key => $secteur) {
             $secteurs[$key]->projets = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
@@ -217,8 +206,9 @@ class ProjetController extends Controller
                 ->latest()
                 ->get();
         }
+        //return view('pages.projet.home', compact('secteurs', 'date', 'status', 'avancement', 'secteur'))->with('type', 'IP');
 
-        return view('pages.projet.home', compact('secteurs'))->with('type', 'ARCHIVE');
+        return view('pages.projet.home', compact('secteurs', 'date', 'status', 'avancement', 'secteur'))->with('type', 'ARCHIVE');
     }
 
     public function add()

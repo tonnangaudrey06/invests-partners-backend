@@ -14,6 +14,7 @@ class ModuleSeeder extends Seeder
      */
     public function run()
     {
+        
         Module::create(['module' => 'Projet']);
         Module::create(['module' => 'Investisseur']);
         Module::create(['module' => 'Administrateur']);

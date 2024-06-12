@@ -32,6 +32,11 @@ class Projet extends Model
         'complet',
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:00',
+    ];
+
+
     protected $appends =  [
         'etat_complet',
         'avancement_complet',

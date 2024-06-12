@@ -17,8 +17,7 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\NewsletterController;
 use App\Http\Controllers\Client\ProfilPorteurProjetController;
 use App\Http\Controllers\Client\TransactionController;
-// use App\Mail\TestMail;
-// use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,14 +31,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/welcome', function () {
-//     try {
-//         Mail::to('donfackeddy12@gmail.com')->queue(new TestMail());
-//         return response(['og']);
-//     } catch (\Throwable $th) {
-//         throw $th;
-//     }
-// });
 
 Route::get('/', function () {
     return redirect()->route('dashboard');

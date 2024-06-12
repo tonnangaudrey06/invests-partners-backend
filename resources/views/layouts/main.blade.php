@@ -73,6 +73,15 @@
             window.history.back();
         }
 
+        function resetFilters() {
+            document.querySelector('input[name="date"]').value = '';
+            document.querySelector('select[name="status"]').value = '';
+            document.querySelector('select[name="avancement"]').value = '';
+            document.querySelector('select[name="secteur"]').value = '';
+            document.getElementById('filterForm').submit();
+        }
+
+
         function reload() {
             window.location.reload();
         }

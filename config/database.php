@@ -63,7 +63,7 @@ return [
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'prefix_indexes' => true,
-             'strict' => false,
+             'strict' => true,
             'modes' => [
             
             'STRICT_TRANS_TABLES',

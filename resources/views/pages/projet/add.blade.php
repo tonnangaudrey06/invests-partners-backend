@@ -9,7 +9,6 @@
 
 @endsection
 
-
 @section('content')
 <div class="main-content">
 

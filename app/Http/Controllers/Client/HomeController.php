@@ -116,7 +116,6 @@ class HomeController extends Controller
 
         foreach ($image as $multi) {
 
-
             $name_gen = hexdec(uniqid()) . '.' . $multi->getClientOriginalExtension();
             Image::make($multi)->resize(300, 300)->save('images/partenaires/' . $name_gen);
 

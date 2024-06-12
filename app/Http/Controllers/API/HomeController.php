@@ -32,7 +32,7 @@ class HomeController extends Controller
     public function projet()
     {
         $projets = Projet::with(['secteur_data', 'likes'])
-            ->whereIn('etat', ['PUBLIE', 'CLOTURE'])
+            ->whereIn('etat', ['PUBLIE'])
             ->latest()->limit(20)
             ->get();
         return $this->sendResponse($projets, 'App projets');
