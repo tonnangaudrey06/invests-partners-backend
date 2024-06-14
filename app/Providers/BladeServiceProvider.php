@@ -41,7 +41,7 @@ class BladeServiceProvider extends ServiceProvider
         });
 
         Blade::directive('timeFormat', function ($value) {
-            return "<?php echo date('H:i', strtotime($value));?>";
+            return "<?php echo date('H\hi\\m\\i\\n', strtotime($value));?>";
         });
     }
 }

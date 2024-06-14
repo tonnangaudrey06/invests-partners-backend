@@ -68,6 +68,7 @@ return [
     */
 
     'timezone' => 'UTC',
+    //'timezone' => 'Africa/Douala',
 
     /*
     |--------------------------------------------------------------------------
@@ -164,6 +165,7 @@ return [
         App\Providers\BladeServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         App\Providers\DatabaseServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -236,7 +238,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'Token'=>\Dirape\Token\Facades\Facade::class
+        'Token'=>\Dirape\Token\Facades\Facade::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class
     ],
 
 ];

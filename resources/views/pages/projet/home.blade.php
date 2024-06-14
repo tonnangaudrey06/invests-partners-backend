@@ -3,6 +3,7 @@
 @section('title', 'Projets - ' . config('app.name'))
 
 @section('style')
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endsection
 
 
@@ -65,13 +66,15 @@ $module = $type == 'IP' ? 1 : ($type == 'AUTRE' ? 5 : 13);
             <form id="filterForm" action="" method="GET">
                 <div class="row">
                     <div class="col-md-3">
-                        <label> Filtrer par Plage de Dates</label>
-                        <input type="date" name="date" value="{{$date ? $date : NULL}}" class="form-control">
+                        <label>Filtrer par Date de Début</label>
+                        <input type="date" name="start_date" value="{{ request('start_date') }}" class="form-control" placeholder="Start Date"/>
                     </div>
-            <!-- Filtrage par Statut -->
-
                     <div class="col-md-3">
-                        <label> Filtrer par Statut</label>
+                        <label>Filtrer par Date de Fin</label>
+                        <input type="date" name="end_date" value="{{ request('end_date') }}" class="form-control" placeholder="End Date"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Filtrer par Statut</label>
                         <select name="status" class="form-select">
                             <option value="">Select Status</option>
                             <option value="" {{ $status=='' ? 'selected':''}}>Tous les statuts</option>
@@ -83,42 +86,28 @@ $module = $type == 'IP' ? 1 : ($type == 'AUTRE' ? 5 : 13);
                             <option value="PUBLIE" {{ $status=='PUBLIE' ? 'selected':''}}>Publié</option>
                             <option value="CLOTURE" {{ $status=='CLOTURE' ? 'selected':''}}>Clôturé</option>
                         </select>
-
                     </div>
-                    
-                    <!-- filtre par avancement -->
                     <div class="col-md-3">
-                        <label> Filtrer par avancement</label>
+                        <label>Filtrer par Avancement</label>
                         <select name="avancement" class="form-select">
                             <option value="">Select Avancement</option>
-                            <option value="IDEE" {{ $avancement=='IDEE' ? 'selected':''}}>Idee</option>
+                            <option value="IDEE" {{ $avancement=='IDEE' ? 'selected':''}}>Idée</option>
                             <option value="PROTOTYPE" {{ $avancement=='PROTOTYPE' ? 'selected':''}}>Prototype</option>
-                            <option value="SUR_LE_MARCHE" {{ $avancement=='SUR_LE_MARCHE' ? 'selected':''}}>Sur le marche</option>
-
-                            
+                            <option value="SUR_LE_MARCHE" {{ $avancement=='SUR_LE_MARCHE' ? 'selected':''}}>Sur le marché</option>
                         </select>
-
                     </div>
-                     <!-- filtre par secteur -->
                     <div class="col-md-3">
-                        <label> Filtrer par Secteur</label>
+                        <label>Filtrer par Secteur</label>
                         <select name="secteur" class="form-select">
                             <option value="">Select Secteur</option>
-                            <option value="21" {{ $secteur=='21' ? 'selected':''}}>Sante</option>
-                            <option value="20" {{ $secteur=='20' ? 'selected':''}}>Enseignement</option>
-                            <option value="5" {{ $secteur=='5' ? 'selected':''}}>Immobilier</option>
-                            <option value="6" {{ $secteur=='6' ? 'selected':''}}>Agriculture</option>
-                            <option value="8" {{ $secteur=='8' ? 'selected':''}}>Industrie agro-alimentaire</option>
-                            <option value="12" {{ $secteur=='12' ? 'selected':''}}> Filières artisanales</option>
-                            <option value="16" {{ $secteur=='16' ? 'selected':''}}> Media & Transformation Digital</option>
-                            <option value="17" {{ $secteur=='17' ? 'selected':''}}> Cosmétique et oléo-chilie</option>
-                            <option value="18" {{ $secteur=='18' ? 'selected':''}}> Activités Financières & d'Assurances </option>
-
+                            <option value="numerique" {{ $secteur=='numerique' ? 'selected':''}}>Numerique</option>
+                            <option value="foret-bois" {{ $secteur=='foret-bois' ? 'selected':''}}>Forêt & Bois</option>
+                            <option value="agro-industrie" {{ $secteur=='agro-industrie' ? 'selected':''}}>Agro Industrie</option>
+                            <option value="immobiliers" {{ $secteur=='immobiliers' ? 'selected':''}}>Immobiliers</option>
+                            <option value="textilles-confection-cuir" {{ $secteur=='textilles-confection-cuir' ? 'selected':''}}>Textilles confection & Cuir</option>
+                            <option value="industrie-de-lenergie" {{ $secteur=='industrie-de-lenergie' ? 'selected':''}}>Industrie de l'energie</option>
                         </select>
-
                     </div>
-                    
-
                     <div class="col-md-6">
                         <br />
                         <button type="submit" class="btn btn-primary">Filtrer</button>
@@ -205,4 +194,26 @@ $module = $type == 'IP' ? 1 : ($type == 'AUTRE' ? 5 : 13);
 @endsection
 
 @section('script')
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript">
+
+$(function() {
+    $('input[name="start_date"]').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        locale: {
+            format: 'YYYY-MM-DD'
+        }
+    });
+
+    $('input[name="end_date"]').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        locale: {
+            format: 'YYYY-MM-DD'
+        }
+    });
+});
+
+</script>
 @endsection

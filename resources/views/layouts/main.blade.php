@@ -53,6 +53,10 @@
     <script type="text/javascript" src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>  
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/moment.min.js') }}"></script>
     {{-- <script type="text/javascript" src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
 
     @yield('script')
@@ -74,13 +78,13 @@
         }
 
         function resetFilters() {
-            document.querySelector('input[name="date"]').value = '';
-            document.querySelector('select[name="status"]').value = '';
-            document.querySelector('select[name="avancement"]').value = '';
-            document.querySelector('select[name="secteur"]').value = '';
+            $('input[name="start_date"]').val('');
+            $('input[name="end_date"]').val('');
+            $('select[name="status"]').val('');
+            $('select[name="avancement"]').val('');
+            $('select[name="secteur"]').val('');
             document.getElementById('filterForm').submit();
         }
-
 
         function reload() {
             window.location.reload();
@@ -144,7 +148,15 @@
             $('#summernote1').summernote({
                 minHeight: 150
             });
-        });
+
+            $('.input-daterange').datepicker({
+                todayBtn: 'linked',
+                format: 'yyyy-mm-dd',
+                autoclose: true
+            });
+            load_data();
+
+            });
     </script>
 
 

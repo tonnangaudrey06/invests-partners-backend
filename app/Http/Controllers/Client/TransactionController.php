@@ -11,19 +11,13 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        Carbon::setLocale('fr');
-        Carbon::setUtf8(true);
-        Carbon::setToStringFormat('d/m/Y H:i:s');
-
         $transactions = Transaction::with(['user', 'projet', 'event'])
                                ->orderBy('created_at', 'DESC')
                                ->get();
 
         // Formater les dates pour le fuseau horaire du Cameroun
         foreach ($transactions as $transaction) {
-        $transaction->created_at = Carbon::parse($transaction->created_at)
-                                         ->tz('Africa/Douala')
-                                         ->format('Y-m-d H:i:s');
+        $transaction->created_at = $transaction->created_at;
     }
     return view('pages.transaction.home')->with('transactions', $transactions);
     }

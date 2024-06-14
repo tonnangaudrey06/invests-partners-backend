@@ -25,7 +25,6 @@ class Transaction extends Model
 
     protected $casts = [
         'valider' => 'boolean',
-        'created_at' => 'datetime:Y-m-d H:00',
     ];
 
     protected $appends =  [
