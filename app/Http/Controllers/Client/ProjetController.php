@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\File;
 class ProjetController extends Controller
 {
     public function index(Request $request)
-    {
+{
     // Récupération des filtres
     $startDate = $request->start_date ?? null;
     $endDate = $request->end_date ?? null;
@@ -93,7 +93,8 @@ class ProjetController extends Controller
 
     public function index_ip()
     {
-    // Récupération des filtres
+
+        // Récupération des filtres
     $startDate = $request->start_date ?? null;
     $endDate = $request->end_date ?? null;
     $status = $request->status ?? null;
@@ -104,7 +105,7 @@ class ProjetController extends Controller
     $secteurs = Secteur::with(['conseiller_data'])->get();
 
     // Initialisation du tableau des filtres
-    $filtres = array();
+    $filtres = [];
 
     // Parcours des secteurs pour appliquer les filtres
     foreach ($secteurs as $key => $secteur) {
@@ -117,11 +118,11 @@ class ProjetController extends Controller
         if ($startDate && $endDate) {
             $startDate = Carbon::parse($startDate)->startOfDay();
             $endDate = Carbon::parse($endDate)->endOfDay();
-            $filtres[$key] = $filtres[$key]->whereBetween(\DB::raw('DATE(created_at)'), [$startDate, $endDate]);
+            $filtres[$key] = $filtres[$key]->whereBetween('created_at', [$startDate, $endDate]);
         }
 
-        // Filtre par statut
-        if (isset($request->status) && $request->status!=null) {
+         // Filtre par statut
+         if (isset($request->status) && $request->status!=null) {
             $filtres[$key] = $filtres[$key]->where('etat', $request->status);
         }
 
@@ -207,34 +208,33 @@ class ProjetController extends Controller
     public function archives()
     {
         // Récupération des filtres
-        $startDate = $request->start_date ?? null;
-        $endDate = $request->end_date ?? null;
-        $status = $request->status ?? null;
-        $avancement = $request->avancement ?? null;
-        $secteur = $request->secteur ?? null;
+    $startDate = $request->start_date ?? null;
+    $endDate = $request->end_date ?? null;
+    $status = $request->status ?? null;
+    $avancement = $request->avancement ?? null;
+    $secteur = $request->secteur ?? null;
 
-        // Récupération des secteurs
-        $secteurs = Secteur::with(['conseiller_data'])->get();
+    // Récupération des secteurs
+    $secteurs = Secteur::with(['conseiller_data'])->get();
 
-        // Initialisation du tableau des filtres
-        $filtres = array();
+    // Initialisation du tableau des filtres
+    $filtres = [];
 
-        // Parcours des secteurs pour appliquer les filtres
-        foreach ($secteurs as $key => $secteur) {
+    // Parcours des secteurs pour appliquer les filtres
+    foreach ($secteurs as $key => $secteur) {
         $filtres[$key] = Projet::with(['user_data', 'membres', 'medias', 'secteur_data'])
             ->withCount('likes')
-            ->where('secteur', $secteur->id)
-            ->where('type', 'ARCHIVE');
+            ->where('secteur', $secteur->id);
 
         // Filtre par plage de dates
-        if ($startDate && $endDate) {
+        if (isset($request->startDate) && $request->endDate) {
             $startDate = Carbon::parse($startDate)->startOfDay();
             $endDate = Carbon::parse($endDate)->endOfDay();
-            $filtres[$key] = $filtres[$key]->whereBetween(\DB::raw('DATE(created_at)'), [$startDate, $endDate]);
+            $filtres[$key] = $filtres[$key]->whereBetween('created_at', [$request->startDate, $request->endDate]);
         }
 
-        // Filtre par statut
-        if (isset($request->status) && $request->status!=null) {
+         // Filtre par statut
+         if (isset($request->status) && $request->status!=null) {
             $filtres[$key] = $filtres[$key]->where('etat', $request->status);
         }
 
@@ -252,11 +252,16 @@ class ProjetController extends Controller
         // Filtrer par état excluant "CLOTURE" et "REJETE"
         $secteurs[$key]->projets = $filtres[$key]
             ->where(function ($query) {
-                return $query->where('etat', '!=', 'REJETE');
+                return $query->where('etat',  'CLOTURE')
+                            ->orWhere('etat', 'REJETE');
             })
             ->latest()
             ->get();
     }
+
+    // Retourner la vue avec les données filtrées
+        //return view('pages.projet.home', compact('secteurs', 'startDate', 'endDate', 'status', 'avancement', 'secteur'))
+          // ->with('type', 'AUTRE');
         return view('pages.projet.home', compact('secteurs', 'startDate', 'endDate', 'status', 'avancement', 'secteur'))->with('type', 'ARCHIVE');
     }
 
