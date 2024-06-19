@@ -54,7 +54,23 @@ class EvenementController extends Controller
             $message = 'Impossible d\'envoyer un mail car l\'email n\'existe pas.';
         }
 
-        return $this->sendResponse($user, $message);
+        return $this->sendResponse($event, $message);
+    }
+
+    public function downloadFile($id, Request $request)
+    {
+        $fichier = $request->file('fichier');
+        $event = Evenement::find($id);
+
+        if (!empty($fichier)) {
+            $fichierFilename = hexdec(uniqid()) . '.' . $fichier->getClientOriginalExtension();
+            $data['fichier'] = url('storage/uploads/events') . '/' . $fichierFilename;
+            $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
+        }
+
+        $event->save();
+
+        return $this->show($id);
     }
 
     public function checkSeat($id, Request $request)

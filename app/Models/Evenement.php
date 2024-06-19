@@ -19,6 +19,7 @@ class Evenement extends Model
         'prix',
         'places',
         'image',
+        'fichier',
         'description',
         'duree',
     ];

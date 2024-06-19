@@ -22,27 +22,63 @@ class EvenementController extends Controller
         return view('pages.events.add');
     }
 
+    // public function store(Request $request)
+    // {
+    //     $data = $request->except('pay');
+    //     $image = $request->file('image');
+
+    //     if (!$request->pay == "on") {
+    //         $data['prix'] = null;
+    //     }
+
+    //     if (!empty($image)) {
+    //         $filename = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+    //         $data['image'] = url('storage/uploads/events') . '/' . $filename;
+    //         $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
+    //     }
+
+    //     Evenement::create($data);
+
+    //     Toastr::success('Évenement ajouté avec succès!', 'Succès');
+
+    //     return redirect()->intended(route('events.home'));
+    // }
+
     public function store(Request $request)
-    {
-        $data = $request->except('pay');
-        $image = $request->file('image');
+{
+    // Validation des entrées
+    $request->validate([
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+        'fichier' => 'nullable|mimes:pdf|max:5120', 
+    ]);
 
-        if (!$request->pay == "on") {
-            $data['prix'] = null;
-        }
+    $data = $request->except('pay');
+    $image = $request->file('image');
+    $fichier = $request->file('fichier');
 
-        if (!empty($image)) {
-            $filename = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            $data['image'] = url('storage/uploads/events') . '/' . $filename;
-            $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
-        }
-
-        Evenement::create($data);
-
-        Toastr::success('Évenement ajouté avec succès!', 'Succès');
-
-        return redirect()->intended(route('events.home'));
+    if (!$request->pay == "on") {
+        $data['prix'] = null;
     }
+
+    if (!empty($image)) {
+        $filename = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+        $data['image'] = url('storage/uploads/events') . '/' . $filename;
+        $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
+    }
+
+    if (!empty($fichier)) {
+        $fichierFilename = hexdec(uniqid()) . '.' . $fichier->getClientOriginalExtension();
+        $data['fichier'] = url('storage/uploads/events') . '/' . $fichierFilename;
+        $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
+    }
+
+    Evenement::create($data);
+
+    Toastr::success('Évenement ajouté avec succès!', 'Succès');
+
+    return redirect()->intended(route('events.home'));
+}
+
 
     public function edit($id)
     {
@@ -60,6 +96,7 @@ class EvenementController extends Controller
     {
         $data = $request->except('pay');
         $image = $request->file('image');
+        $fichier = $request->file('fichier');
         $event = Evenement::where('id', $id)->first();
 
         if (!$request->pay == "on") {
@@ -84,12 +121,31 @@ class EvenementController extends Controller
             $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
         }
 
+        if (!empty($fichier)) {
+            $split = explode('/', $event->fichier);
+            $fichierFilename = end($split);
+            $path = storage_path("app/public/uploads/events/$fichierFilename");
+
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+
+            $split = explode('.', $fichierFilename);
+
+            $fichierFilename = $split[0];
+
+            $fichierFilename = $fichierFilename . '.' . $fichier->getClientOriginalExtension();
+            $data['fichier'] = url('storage/uploads/events') . '/' . $fichierFilename;
+            $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
+        }
+
         $event->update($data);
 
         Toastr::success('Évenement mise à jour avec succès!', 'Succès');
 
         return redirect()->intended(route('events.home'));
     }
+
 
     public function delete($id)
     {
@@ -111,6 +167,7 @@ class EvenementController extends Controller
 
         return redirect()->intended(route('events.home'));
     }
+    
 
     public function deleteParticipant($id)
     {

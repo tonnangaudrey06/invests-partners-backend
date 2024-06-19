@@ -24,6 +24,7 @@ class CreateEvenementsTable extends Migration
             $table->integer('places')->nullable();
             $table->integer('duree')->nullable();
             $table->string('image')->nullable();
+            //$table->string('fichier')->nullable();
             // $table->unsignedBigInteger('organisateur');
             // $table->foreign('organisateur')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

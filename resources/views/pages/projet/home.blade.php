@@ -96,22 +96,10 @@ $module = $type == 'IP' ? 1 : ($type == 'AUTRE' ? 5 : 13);
                             <option value="SUR_LE_MARCHE" {{ $avancement=='SUR_LE_MARCHE' ? 'selected':''}}>Sur le marché</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label>Filtrer par Secteur</label>
-                        <select name="secteur" class="form-select">
-                            <option value="">Select Secteur</option>
-                            <option value="numerique" {{ $secteur=='numerique' ? 'selected':''}}>Numerique</option>
-                            <option value="foret-bois" {{ $secteur=='foret-bois' ? 'selected':''}}>Forêt & Bois</option>
-                            <option value="agro-industrie" {{ $secteur=='agro-industrie' ? 'selected':''}}>Agro Industrie</option>
-                            <option value="immobiliers" {{ $secteur=='immobiliers' ? 'selected':''}}>Immobiliers</option>
-                            <option value="textilles-confection-cuir" {{ $secteur=='textilles-confection-cuir' ? 'selected':''}}>Textilles confection & Cuir</option>
-                            <option value="industrie-de-lenergie" {{ $secteur=='industrie-de-lenergie' ? 'selected':''}}>Industrie de l'energie</option>
-                        </select>
-                    </div>
                     <div class="col-md-6">
                         <br />
                         <button type="submit" class="btn btn-primary">Filtrer</button>
-                        <button type="button" class="btn btn-secondary" onclick="resetFilters()">Réinitialiser</button>
+                        <!-- <button type="button" class="btn btn-secondary" onclick="resetFilters()">Réinitialiser</button> -->
                     </div>
                 </div>
             </form>

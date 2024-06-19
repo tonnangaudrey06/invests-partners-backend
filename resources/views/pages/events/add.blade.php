@@ -98,6 +98,13 @@
                                         <label class="input-group-text" for="event-image">Télécharger</label>
                                     </div>
                                 </div>
+                                <div class="col-md-12 mb-4">
+                                    <label class="form-label">Fichier joint</label>
+                                    <div class="input-group">
+                                        <input type="file" id="fichier" name="fichier" accept="application/pdf" class="form-control">
+                                        <label class="input-group-text" for="fichier">Télécharger</label>
+                                    </div>
+                                </div>
                                 <div class="col-md-12 mb-5">
                                     <label class="form-label">Description</label>
                                     <textarea name="description" class="form-control" rows="3"></textarea>
