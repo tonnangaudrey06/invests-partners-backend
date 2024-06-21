@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\StrongPassword;
 
 class AuthController extends Controller
 {
@@ -18,6 +19,7 @@ class AuthController extends Controller
         $request->validate([
             'email' => 'bail|required',
             'password' => 'bail|required',
+            //'password' => ['required', 'string', 'min:8', new StrongPassword],
         ]);
 
         $credentials = $request->only('email', 'password');

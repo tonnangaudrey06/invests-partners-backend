@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Mail\InscriptionMail;
 use App\Models\NewsletterMail;
 use App\Models\PasswordReset;
+use Illuminate\Support\Facades\Validator;
+
 
 class AuthController extends Controller
 {
@@ -68,6 +70,23 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'password' => [
+                'required',
+                'string',
+                'min:8', 
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/', 
+                'regex:/[0-9]/', 
+                'regex:/[@$!%*#?&]/' 
+            ],
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         $data = $request->input();
         $data['password'] = Hash::make($request->password);
         $data['folder'] = hexdec(uniqid());
