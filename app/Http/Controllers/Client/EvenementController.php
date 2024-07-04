@@ -8,6 +8,7 @@ use App\Models\Participant;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
 
 class EvenementController extends Controller
 {
@@ -55,6 +56,10 @@ class EvenementController extends Controller
     $data = $request->except('pay');
     $image = $request->file('image');
     $fichier = $request->file('fichier');
+    $date_debut =$request->input('date_debut');
+    $date_fin =$request->input('date_fin');
+    $heure_debut =$request->input('heure_debut');
+    $heure_fin =$request->input('heure_fin');
 
     if (!$request->pay == "on") {
         $data['prix'] = null;
@@ -71,6 +76,11 @@ class EvenementController extends Controller
         $data['fichier'] = url('storage/uploads/events') . '/' . $fichierFilename;
         $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
     }
+
+    
+    $data['heure_debut'] = Carbon::createFromFormat('g:i A', $heure_debut)->format('H:i');
+
+    $data['heure_fin'] = Carbon::createFromFormat('g:i A', $heure_fin)->format('H:i');
 
     Evenement::create($data);
 

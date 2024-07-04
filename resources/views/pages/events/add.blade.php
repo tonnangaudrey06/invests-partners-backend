@@ -55,16 +55,25 @@
                                         placeholder="Lieu">
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label git for="dateevent">Date de l'événement</label>
+                                    <label git for="dateevent">Date de debut</label>
                                     <div class="input-group" id="dateevent">
-                                        <input type="text" class="form-control" name="date_evenement" placeholder="dd M, yyyy"
+                                        <input type="date" class="form-control" name="date_debut" placeholder="dd M, yyyy"
                                             data-date-format="yyyy-mm-dd" data-date-container='#dateevent'
                                             data-provide="datepicker" data-date-autoclose="true">
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="heureevent">Heure de l'événement</label>
+                                    <label git for="dateevent">Date de fin</label>
+                                    <div class="input-group" id="dateevent">
+                                        <input type="date" class="form-control" name="date_fin" placeholder="dd M, yyyy"
+                                            data-date-format="yyyy-mm-dd" data-date-container='#dateevent'
+                                            data-provide="datepicker" data-date-autoclose="true">
+                                        <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="heureevent">Heure de debut</label>
                                     <div class="input-group" id="heureevent">
                                         <input id="heureevent-input" type="text" name="heure_debut" class="form-control"
                                             data-provide="timepicker">
@@ -72,8 +81,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label class="form-label">Durée (en heures)</label>
-                                    <input name="duree" type="number" class="form-control" value="1" min="1">
+                                    <label for="heureevent">Heure de fin</label>
+                                    <div class="input-group" id="heureevent">
+                                        <input id="heureevent-input" type="text" name="heure_fin" class="form-control"
+                                            data-provide="timepicker">
+                                        <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
+                                    </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label">Nombre de places</label>
@@ -147,7 +160,36 @@
             $(t).TouchSpin(a);
         })
 
-        $('#heureevent-input').timepicker({
+        $('#date_debut').timepicker({
+            minuteStep: 1,
+            template: 'dropdown',
+            appendWidgetTo: '#heureevent',
+            showSeconds: false,
+            showMeridian: false,
+            defaultTime: 'current',
+            icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
+        });
+
+        $('#date_fin').timepicker({
+            minuteStep: 1,
+            template: 'dropdown',
+            appendWidgetTo: '#heureevent',
+            showSeconds: false,
+            showMeridian: false,
+            defaultTime: 'current',
+            icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
+        });
+
+        $('#heure_debut').timepicker({
+            minuteStep: 1,
+            template: 'dropdown',
+            appendWidgetTo: '#heureevent',
+            showSeconds: false,
+            showMeridian: false,
+            defaultTime: 'current',
+            icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
+        });
+        $('#heure_fin').timepicker({
             minuteStep: 1,
             template: 'dropdown',
             appendWidgetTo: '#heureevent',

@@ -14,14 +14,15 @@ class Evenement extends Model
     protected $fillable = [
         'libelle',
         'lieu',
-        'date_evenement',
+        'date_debut',
+        'date_fin',
         'heure_debut',
+        'heure_fin',
         'prix',
         'places',
         'image',
         'fichier',
         'description',
-        'duree',
     ];
 
     protected $appends =  [
