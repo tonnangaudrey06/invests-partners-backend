@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\Client;
+
 use App\Http\Controllers\Controller;
 use App\Models\Evenement;
 use App\Models\Participant;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
 
 class EvenementController extends Controller
 {
@@ -14,7 +16,6 @@ class EvenementController extends Controller
     {
         $events = Evenement::with(['participants'])->get();
         return view('pages.events.home')->with('events', $events);
-
     }
 
     public function add()
@@ -22,27 +23,47 @@ class EvenementController extends Controller
         return view('pages.events.add');
     }
 
+    // public function store(Request $request)
+    // {
+    //     $data = $request->except('pay');
+    //     $image = $request->file('image');
+
+    //     if (!$request->pay == "on") {
+    //         $data['prix'] = null;
+    //     }
+
+    //     if (!empty($image)) {
+    //         $filename = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+    //         $data['image'] = url('storage/uploads/events') . '/' . $filename;
+    //         $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
+    //     }
+
+    //     Evenement::create($data);
+
+    //     Toastr::success('Évenement ajouté avec succès!', 'Succès');
+
+    //     return redirect()->intended(route('events.home'));
+    // }
+
     public function store(Request $request)
 {
-    
+    // Validation des entrées
     $request->validate([
-        'libelle' => 'required|string|max:255',
-        'lieu' => 'required|string|max:255',
-        'date_debut' => 'required|date_format:Y-m-d',
-        'date_fin' => 'required|date_format:Y-m-d|after_or_equal:date_debut',
-        'heure_debut' => 'required|date_format:H:i',
-        'heure_fin' => 'required|date_format:H:i|after:heure_debut',
-        'prix' => 'nullable|numeric|min:0',
-        'places' => 'nullable|integer|min:1',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'fichier' => 'nullable|mimes:pdf|max:5120',
-        'description' => 'required|string|max:255'
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+        'fichier' => 'nullable|mimes:pdf|max:5120', 
     ]);
 
-    
-    $data = $request->except(['_token', 'image', 'fichier']);
+    $data = $request->except('pay');
     $image = $request->file('image');
     $fichier = $request->file('fichier');
+    $date_debut =$request->input('date_debut');
+    $date_fin =$request->input('date_fin');
+    $heure_debut =$request->input('heure_debut');
+    $heure_fin =$request->input('heure_fin');
+
+    if (!$request->pay == "on") {
+        $data['prix'] = null;
+    }
 
     if (!empty($image)) {
         $filename = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
@@ -56,22 +77,14 @@ class EvenementController extends Controller
         $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
     }
 
-    Evenement::create([
-        'libelle' => $data['libelle'],
-        'lieu' => $data['lieu'],
-        'date_debut' => $request->input('date_debut'),
-        'date_fin' => $request->input('date_fin'),
-        'heure_debut' => $request->input('heure_debut'),
-        'heure_fin' => $request->input('heure_fin'),
-        'prix' => $data['prix'],
-        'places' => $data['places'],
-        'image' => $data['image'] ?? null,
-        'fichier' => $data['fichier'] ?? null,
-        'description' => $request->input('description'),
-    ]);
-
     
-    Toastr::success('Événement ajouté avec succès!', 'Succès');
+    $data['heure_debut'] = Carbon::createFromFormat('g:i A', $heure_debut)->format('H:i');
+
+    $data['heure_fin'] = Carbon::createFromFormat('g:i A', $heure_fin)->format('H:i');
+
+    Evenement::create($data);
+
+    Toastr::success('Évenement ajouté avec succès!', 'Succès');
 
     return redirect()->intended(route('events.home'));
 }
@@ -84,70 +97,65 @@ class EvenementController extends Controller
     }
 
     public function show($id)
-    {   
+    {
         $event = Evenement::with(['participants'])->find($id);
-       return view('pages.events.participant')->with('event', $event);
+        return view('pages.events.participant')->with('event', $event);
     }
 
     public function update($id, Request $request)
-{
-    // Validation des entrées du formulaire
-    $request->validate([
-        'libelle' => 'required|string|max:255',
-        'lieu' => 'required|string|max:255',
-        'date_debut' => 'required|date_format:Y-m-d',
-        'date_fin' => 'required|date_format:Y-m-d|after_or_equal:date_debut',
-        'heure_debut' => 'required|date_format:H:i',
-        'heure_fin' => 'required|date_format:H:i|after:heure_debut',
-        'prix' => 'nullable|numeric|min:0',
-        'places' => 'nullable|integer|min:1',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'fichier' => 'nullable|mimes:pdf|max:5120',
-        'description' => 'required|string|max:255',
-    ]);
-
-    // Récupération de l'événement à mettre à jour
-    $event = Evenement::findOrFail($id);
-
-    // Traitement des fichiers uploadés (image et fichier)
-    $data = $request->except(['_token', 'image', 'fichier']);
-    $image = $request->file('image');
-    $fichier = $request->file('fichier');
-
-    if ($request->hasFile('image')) {
+    {
+        $data = $request->except('pay');
         $image = $request->file('image');
-        $filename = time() . '.' . $image->getClientOriginalExtension();
-        $image->storeAs('uploads/events', $filename, 'public');
-        $data['image'] = url('storage/uploads/events') . '/' . $filename;
+        $fichier = $request->file('fichier');
+        $event = Evenement::where('id', $id)->first();
+
+        if (!$request->pay == "on") {
+            $data['prix'] = null;
+        }
+
+        if (!empty($image)) {
+            $split = explode('/', $event->image);
+            $filename = end($split);
+            $path = storage_path("app/public/uploads/events/$filename");
+
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+
+            $split = explode('.', $filename);
+
+            $filename = $split[0];
+
+            $filename = $filename . '.' . $image->getClientOriginalExtension();
+            $data['image'] = url('storage/uploads/events') . '/' . $filename;
+            $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
+        }
+
+        if (!empty($fichier)) {
+            $split = explode('/', $event->fichier);
+            $fichierFilename = end($split);
+            $path = storage_path("app/public/uploads/events/$fichierFilename");
+
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+
+            $split = explode('.', $fichierFilename);
+
+            $fichierFilename = $split[0];
+
+            $fichierFilename = $fichierFilename . '.' . $fichier->getClientOriginalExtension();
+            $data['fichier'] = url('storage/uploads/events') . '/' . $fichierFilename;
+            $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
+        }
+
+        $event->update($data);
+
+        Toastr::success('Évenement mise à jour avec succès!', 'Succès');
+
+        return redirect()->intended(route('events.home'));
     }
 
-if ($request->hasFile('fichier')) {
-            $fichier = $request->file('fichier');
-            $fichierFilename = time() . '.' . $fichier->getClientOriginalExtension();
-            $fichier->storeAs('uploads/events', $fichierFilename, 'public');
-            $data['fichier'] = url('storage/uploads/events') . '/' . $fichierFilename;
-        }
-    // Mise à jour des données de l'événement
-    $event->update([
-        'libelle' => $data['libelle'],
-        'lieu' => $data['lieu'],
-        'date_debut' => $request->input('date_debut'),
-        'date_fin' => $request->input('date_fin'),
-        'heure_debut' => $request->input('heure_debut'),
-        'heure_fin' => $request->input('heure_fin'),
-        'prix' => $data['prix'],
-        'places' => $data['places'],
-        'image' => $data['image'] ?? $event->image,
-        'fichier' => $data['fichier'] ?? $event->fichier,
-        'description' => $data['description'] ?? $event->description,
-    ]);
-
-    // Message de succès (facultatif : utilisez Toastr ou autre pour afficher un message à l'utilisateur)
-    Toastr::success('Événement mis à jour avec succès!', 'Succès');
-
-    // Redirection vers la page d'accueil des événements (ou une autre page)
-    return redirect()->intended(route('events.home'));
-}    
 
     public function delete($id)
     {
@@ -169,6 +177,7 @@ if ($request->hasFile('fichier')) {
 
         return redirect()->intended(route('events.home'));
     }
+    
 
     public function deleteParticipant($id)
     {

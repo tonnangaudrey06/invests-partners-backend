@@ -11,11 +11,6 @@
 <link href="{{ asset('assets/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
     type="text/css" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<!-- Include metisMenu CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<link trel="stylesheet" href="{{ asset('assets/metisdatatables.net/css/dataTables.bootstrap4.min.css') }}">
-
 
 @endsection
 
@@ -51,41 +46,45 @@
                                 @csrf
                                 <div class="col-md-12 mb-4">
                                     <label for="projectname">Titre de l'événement</label>
-                                    <input id="projectname" name="libelle" type="text" class="form-control" placeholder="Titre">
+                                    <input id="projectname" name="libelle" type="text" class="form-control"
+                                        placeholder="Titre">
                                 </div>
                                 <div class="col-md-12 mb-4">
-                                    <label for="lieu">Lieu de l'événement</label>
-                                    <input id="lieu" name="lieu" type="text" class="form-control" placeholder="Lieu">
+                                    <label for="projectname">Lieu de l'événement</label>
+                                    <input id="projectname" name="lieu" type="text" class="form-control"
+                                        placeholder="Lieu">
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="date_debut">Date de début</label>
-                                    <div class="input-group" id="dateevent_debut">
-                                        <input id="date_debut" type="text" class="form-control" name="date_debut" placeholder="dd M, yyyy"
-                                            data-date-format="yyyy-mm-dd" data-date-container='#dateevent_debut' data-provide="datepicker"
-                                            data-date-autoclose="true">
+                                    <label git for="dateevent">Date de debut</label>
+                                    <div class="input-group" id="dateevent">
+                                        <input type="date" class="form-control" name="date_debut" placeholder="dd M, yyyy"
+                                            data-date-format="yyyy-mm-dd" data-date-container='#dateevent'
+                                            data-provide="datepicker" data-date-autoclose="true">
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="date_fin">Date de fin</label>
-                                    <div class="input-group" id="dateevent_fin">
-                                        <input id="date_fin" type="text" class="form-control" name="date_fin" placeholder="dd M, yyyy"
-                                            data-date-format="yyyy-mm-dd" data-date-container='#dateevent_fin' data-provide="datepicker"
-                                            data-date-autoclose="true">
+                                    <label git for="dateevent">Date de fin</label>
+                                    <div class="input-group" id="dateevent">
+                                        <input type="date" class="form-control" name="date_fin" placeholder="dd M, yyyy"
+                                            data-date-format="yyyy-mm-dd" data-date-container='#dateevent'
+                                            data-provide="datepicker" data-date-autoclose="true">
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="heure_debut">Heure de début</label>
-                                    <div class="input-group" id="heureevent_debut">
-                                        <input id="heure_debut" type="text" name="heure_debut" class="form-control" data-provide="timepicker">
+                                    <label for="heureevent">Heure de debut</label>
+                                    <div class="input-group" id="heureevent">
+                                        <input id="heureevent-input" type="text" name="heure_debut" class="form-control"
+                                            data-provide="timepicker">
                                         <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="heure_fin">Heure de fin</label>
-                                    <div class="input-group" id="heureevent_fin">
-                                        <input id="heure_fin" type="text" name="heure_fin" class="form-control" data-provide="timepicker">
+                                    <label for="heureevent">Heure de fin</label>
+                                    <div class="input-group" id="heureevent">
+                                        <input id="heureevent-input" type="text" name="heure_fin" class="form-control"
+                                            data-provide="timepicker">
                                         <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
                                     </div>
                                 </div>
@@ -147,11 +146,6 @@
 <script type="text/javascript" src="{{ asset('assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}">
 </script>
 <script type="text/javascript" src="{{ asset('assets/libs/dropzone/min/dropzone.min.js') }}"></script>
-<script src="{{ asset('js/app.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/libs/metismenu/metisMenu.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('assets/metisdatatables.net/js/dataTables.bootstrap4.min.js') }}"></script>
-
 <script type="text/javascript">
     $(document).ready(function() {
         if ($('#paiement').is(':checked')) {
@@ -166,7 +160,36 @@
             $(t).TouchSpin(a);
         })
 
-        $('#heureevent-input').timepicker({
+        $('#date_debut').timepicker({
+            minuteStep: 1,
+            template: 'dropdown',
+            appendWidgetTo: '#heureevent',
+            showSeconds: false,
+            showMeridian: false,
+            defaultTime: 'current',
+            icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
+        });
+
+        $('#date_fin').timepicker({
+            minuteStep: 1,
+            template: 'dropdown',
+            appendWidgetTo: '#heureevent',
+            showSeconds: false,
+            showMeridian: false,
+            defaultTime: 'current',
+            icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
+        });
+
+        $('#heure_debut').timepicker({
+            minuteStep: 1,
+            template: 'dropdown',
+            appendWidgetTo: '#heureevent',
+            showSeconds: false,
+            showMeridian: false,
+            defaultTime: 'current',
+            icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
+        });
+        $('#heure_fin').timepicker({
             minuteStep: 1,
             template: 'dropdown',
             appendWidgetTo: '#heureevent',
@@ -185,8 +208,6 @@
                 $('#event-prix-block').hide();
             }
         });
-        $('#menu').metisMenu();
-        $('.summernote').summernote();
         
     });
 </script>
