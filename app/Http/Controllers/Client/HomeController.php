@@ -104,31 +104,54 @@ class HomeController extends Controller
 
 
     public function HomePartenaires()
-    {
-        $partenaires = DB::table('partenaires')->get();
+{
+    $partenaires = DB::table('partenaires')->get();
+
+    if (is_null($partenaires)) {
+        \Log::error('La variable $partenaires est nulle.', ['userId' => auth()->user()->id]);
+        abort(500, 'Erreur interne du serveur');
+    }
+
+    if (is_array($partenaires) || is_object($partenaires)) {
         return view('pages.partenaire.index', compact('partenaires'));
+    } else {
+        \Log::error('La variable $partenaires n\'est pas un tableau ni un objet.', ['userId' => auth()->user()->id, 'partenaires' => $partenaires]);
+        return view('pages.partenaire.index')->with('error', 'Erreur lors de la récupération des partenaires');
+    }
+}
+
+
+public function StorePartenaires(Request $request)
+{
+    // Vérification si 'image' est présent dans la requête
+    if (!$request->hasFile('image')) {
+        \Log::error('La variable $image est nulle.', ['userId' => auth()->user()->id]);
+        return Redirect()->back()->with('error', 'Aucun fichier image trouvé dans la requête.');
     }
 
-    public function StorePartenaires(Request $request)
-    {
+    $images = $request->file('image');
 
-        $image = $request->file('image');
-
-        foreach ($image as $multi) {
-
-            $name_gen = hexdec(uniqid()) . '.' . $multi->getClientOriginalExtension();
-            Image::make($multi)->resize(300, 300)->save('images/partenaires/' . $name_gen);
-
-            $last_img = 'images/partenaires/' . $name_gen;
-
-            $data = array();
-            $data['image'] = url('images/partenaires/') . '/' . $name_gen;
-            $data['created_at'] = Carbon::now();
-            DB::table('partenaires')->insert($data);
-        }  //end of the foreach
-
-        return Redirect()->back()->with('success', 'Partenaires inserted succesfully');
+    // Vérification si $images est un tableau
+    if (!is_array($images)) {
+        \Log::error('La variable $images n\'est pas un tableau.', ['userId' => auth()->user()->id, 'images' => $images]);
+        return Redirect()->back()->with('error', 'Le format des images est incorrect.');
     }
+
+    foreach ($images as $multi) {
+        $name_gen = hexdec(uniqid()) . '.' . $multi->getClientOriginalExtension();
+        Image::make($multi)->resize(300, 300)->save('images/partenaires/' . $name_gen);
+
+        $last_img = 'images/partenaires/' . $name_gen;
+
+        $data = array();
+        $data['image'] = url('images/partenaires/') . '/' . $name_gen;
+        $data['created_at'] = Carbon::now();
+        DB::table('partenaires')->insert($data);
+    }
+
+    return Redirect()->back()->with('success', 'Partenaires insérés avec succès');
+}
+
 
     public function DeletePartenaire($id)
     {
@@ -184,3 +207,4 @@ class HomeController extends Controller
         }
     }
 }
+

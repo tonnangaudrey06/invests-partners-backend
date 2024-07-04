@@ -56,6 +56,7 @@ Route::prefix('event')->group(function () {
 Route::prefix('app')->group(function () {
     Route::get('/slider', [HomeController::class, 'slider']);
     Route::get('/partenaire', [HomeController::class, 'partenaire']);
+    Route::get('/actualitesecteur', [HomeController::class, 'actualitesecteur']);
     Route::get('/projet', [HomeController::class, 'projet']);
     Route::get('/villes/villes', [HomeController::class, 'ville']);
     Route::get('/villes/projets', [HomeController::class, 'publishProject']);

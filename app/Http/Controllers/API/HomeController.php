@@ -3,11 +3,17 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Mail\EventMail;
+use App\Models\Evenement;
+use App\Models\User;
+use App\Models\Projet;
 use App\Models\Expert;
 use App\Models\Investissement;
-use App\Models\Projet;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use App\Models\Participant;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB; 
 
 class HomeController extends Controller
 {
@@ -58,6 +64,7 @@ class HomeController extends Controller
             ->get();
         return $this->sendResponse($villes, 'App ville');
     }
+
     public function secteurparville()
     {
         $secteur = DB::table('secteurs')
@@ -114,5 +121,16 @@ class HomeController extends Controller
         $projets = Projet::count();
         $total = Investissement::select(DB::raw('sum(montant) as total'))->first()->total;
         return $this->sendResponse(['users' => $users, 'projets' => $projets, 'total' => $total], 'App chiffre');
+    }
+ 
+    public function actualitesecteur()
+    {
+        $actualites = DB::table('actualites')
+            ->join('secteurs', 'actualites.secteur', '=', 'secteurs.id')
+            ->whereNotNull('actualites.secteur')
+            ->select('actualites.*', 'secteurs.libelle as secteur_libelle')
+            ->get();
+
+        return $this->sendResponse($actualites, 'Actualités récupérées avec succès.');
     }
 }

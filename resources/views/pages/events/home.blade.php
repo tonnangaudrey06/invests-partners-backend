@@ -89,7 +89,7 @@
                                                     <p class="text-muted mb-0">{{ $event->lieu }}</p>
                                                 </td>
                                                 <td>
-                                                    <h5 class="font-size-14 mb-1 text-dark">@dateFormat($event->date_evenement)
+                                                    <h5 class="font-size-14 mb-1 text-dark">@dateFormat($event->date_debut)
                                                     </h5>
                                                     <p class="text-muted mb-0">à parti de @timeFormat($event->heure_debut)</p>
                                                 </td>

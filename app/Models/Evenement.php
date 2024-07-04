@@ -14,14 +14,18 @@ class Evenement extends Model
     protected $fillable = [
         'libelle',
         'lieu',
-        'date_evenement',
+        'date_debut',
+        'date_fin',
+        'heure_debut',
+        'heure_fin',
         'heure_debut',
         'prix',
         'places',
         'image',
         'fichier',
         'description',
-        'duree',
+        //'duree',
+        //'partenaire_image',
     ];
 
     protected $appends =  [
@@ -41,12 +45,12 @@ class Evenement extends Model
 
     public function getIsPastAttribute()
     {
-        return Carbon::now()->startOfDay()->gte($this->date_evenement);
+        return Carbon::now()->startOfDay()->gte($this->date_debut);
     }
 
-    public function participants()
+        public function participants()
     {
         return $this->hasMany(Participant::class, 'evenement', 'id');
     }
-
+     
 }

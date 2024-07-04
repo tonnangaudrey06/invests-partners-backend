@@ -117,7 +117,7 @@
                                             <tr>
                                                 <th scope="row">Date :</th>
                                                 <td>
-                                                    @dateFormat($event->date_evenement) à @timeFormat($event->heure_debut)
+                                                    @dateFormat($event->date_debut) à @timeFormat($event->heure_debut)
                                                 </td>
                                             </tr>
                                             <tr>

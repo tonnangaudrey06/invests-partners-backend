@@ -10,6 +10,8 @@
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
 
+    <link href="https://cdn.jsdelivr.net/npm/summernote@latest/dist/summernote-bs4.min.css" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
     @yield('style')
@@ -44,7 +46,11 @@
 
 
     <!-- JAVASCRIPT -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/jquery/jquery.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@latest/dist/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
         integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
@@ -147,6 +153,12 @@
 
             $('#summernote1').summernote({
                 minHeight: 150
+            });
+            
+            $('#exampleFormControlTextarea1').summernote({
+                placeholder: "Écrire une courte description...",
+                tabsize: 2,
+                height: 100
             });
 
             $('.input-daterange').datepicker({

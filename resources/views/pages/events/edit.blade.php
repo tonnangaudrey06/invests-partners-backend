@@ -46,78 +46,79 @@
                                     method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="col-md-12 mb-4">
-                                        <label for="projectname">Titre de l'événement</label>
-                                        <input id="projectname" name="libelle" type="text" class="form-control"
-                                            placeholder="Titre" value="{{ $event->libelle }}">
+                                    <label for="projectname">Titre de l'événement</label>
+                                    <input id="projectname" name="libelle" type="text" class="form-control" placeholder="Titre">
+                                </div>
+                                <div class="col-md-12 mb-4">
+                                    <label for="lieu">Lieu de l'événement</label>
+                                    <input id="lieu" name="lieu" type="text" class="form-control" placeholder="Lieu">
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="date_debut">Date de début</label>
+                                    <div class="input-group" id="dateevent_debut">
+                                        <input id="date_debut" type="text" class="form-control" name="date_debut" placeholder="dd M, yyyy"
+                                            data-date-format="yyyy-mm-dd" data-date-container='#dateevent_debut' data-provide="datepicker"
+                                            data-date-autoclose="true">
+                                        <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                     </div>
-                                    <div class="col-md-12 mb-4">
-                                        <label for="projectname">Lieu de l'événement</label>
-                                        <input id="projectname" name="lieu" type="text" class="form-control"
-                                            placeholder="Lieu" value="{{ $event->lieu }}">
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="date_fin">Date de fin</label>
+                                    <div class="input-group" id="dateevent_fin">
+                                        <input id="date_fin" type="text" class="form-control" name="date_fin" placeholder="dd M, yyyy"
+                                            data-date-format="yyyy-mm-dd" data-date-container='#dateevent_fin' data-provide="datepicker"
+                                            data-date-autoclose="true">
+                                        <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                     </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label git for="dateevent">Date de l'événement</label>
-                                        <div class="input-group" id="dateevent">
-                                            <input type="text" class="form-control" name="date_evenement"
-                                                placeholder="dd M, yyyy" data-date-format="yyyy-mm-dd"
-                                                data-date-container='#dateevent' data-provide="datepicker"
-                                                data-date-autoclose="true"
-                                                value="{{ date('Y-m-d', strtotime($event->date_evenement)) }}">
-                                            <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
-                                        </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="heure_debut">Heure de début</label>
+                                    <div class="input-group" id="heureevent_debut">
+                                        <input id="heure_debut" type="text" name="heure_debut" class="form-control" data-provide="timepicker">
+                                        <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
                                     </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label for="heureevent">Heure de l'événement</label>
-                                        <div class="input-group" id="heureevent">
-                                            <input id="heureevent-input" type="text" name="heure_debut"
-                                                class="form-control" data-provide="timepicker"
-                                                value="{{ date('H:i', strtotime($event->heure_debut)) }}">
-                                            <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
-                                        </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="heure_fin">Heure de fin</label>
+                                    <div class="input-group" id="heureevent_fin">
+                                        <input id="heure_fin" type="text" name="heure_fin" class="form-control" data-provide="timepicker">
+                                        <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
                                     </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label class="form-label">Durée (en heures)</label>
-                                        <input name="duree" type="number" class="form-control"
-                                            value="{{ $event->duree }}" min="1">
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label">Nombre de places</label>
+                                    <input name="places" type="number" class="form-control" value="1" min="1">
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <h5 class="font-size-14 mb-3">Payant?</h5>
+                                    <div>
+                                        <input type="checkbox" id="paiement" switch="bool" checked />
+                                        <label for="paiement" data-on-label="Oui" data-off-label="Non"></label>
                                     </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label class="form-label">Nombre de places</label>
-                                        <input name="places" type="number" class="form-control"
-                                            value="{{ $event->places }}" min="1">
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <h5 class="font-size-14 mb-3">Payant?</h5>
-                                        <div>
-                                            <input type="checkbox" name="pay" id="paiement" switch="bool"
-                                                {{ !empty($event->prix) ? 'checked' : '' }} />
-                                            <label for="paiement" data-on-label="Oui" data-off-label="Non"></label>
-                                        </div>
-                                    </div>
+                                </div>
 
-                                    <div class="col-md-6 mb-4" id="event-prix-block">
-                                        <label class="form-label">Prix</label>
-                                        <input name="prix" type="number" class="form-control"
-                                            value="{{ $event->prix }}" min="0">
+                                <div class="col-md-6 mb-4" id="event-prix-block">
+                                    <label class="form-label">Prix</label>
+                                    <input name="prix" type="number" class="form-control" min="0">
+                                </div>
+                                <div class="col-md-12 mb-4">
+                                    <label class="form-label">Image</label>
+                                    <div class="input-group">
+                                        <input type="file" accept="image/*" name="image" class="form-control" id="event-image">
+                                        <label class="input-group-text" for="event-image">Télécharger</label>
                                     </div>
-                                    <div class="col-md-12 mb-4">
-                                        <label class="form-label">Image</label>
-                                        <div class="input-group">
-                                            <input type="file" accept="image/*" name="image" class="form-control"
-                                                id="event-image">
-                                            <label class="input-group-text" for="event-image">Télécharger</label>
-                                        </div>
+                                </div>
+                                <div class="col-md-12 mb-4">
+                                    <label class="form-label">Fichier joint</label>
+                                    <div class="input-group">
+                                        <input type="file" id="fichier" name="fichier" accept="application/pdf" class="form-control">
+                                        <label class="input-group-text" for="fichier">Télécharger</label>
                                     </div>
-                                    <div class="col-md-12 mb-4">
-                                        <label class="form-label">Fichier joint</label>
-                                        <div class="input-group">
-                                            <input type="file" id="fichier" name="fichier" accept="application/pdf" class="form-control">
-                                            <label class="input-group-text" for="fichier">Télécharger</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mb-5">
-                                        <label class="form-label">Description</label>
-                                        <textarea name="description" class="form-control" rows="3">{{ $event->description }}</textarea>
-                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-5">
+                                    <label class="form-label">Description</label>
+                                    <textarea name="description" class="form-control" rows="3"></textarea>
+                                </div>
                                     <div class="col-md-12 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                                     </div>
