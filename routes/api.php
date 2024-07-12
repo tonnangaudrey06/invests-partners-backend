@@ -49,7 +49,7 @@ Route::prefix('event')->group(function () {
     Route::get('/{id}', [EvenementController::class, 'show']);
     Route::post('/{id}/participer', [EvenementController::class, 'participer']);
     Route::post('/{id}/participer/check/seat', [EvenementController::class, 'checkSeat']);
-    Route::post('/fichier', [EvenementControler::class, 'downloadFile']);
+    Route::post('/fichier', [EvenementController::class, 'downloadFile']);
 
 });
 

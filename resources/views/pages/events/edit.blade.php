@@ -47,18 +47,18 @@
                                     @csrf
                                     <div class="col-md-12 mb-4">
                                     <label for="projectname">Titre de l'événement</label>
-                                    <input id="projectname" name="libelle" type="text" class="form-control" placeholder="Titre">
+                                    <input id="projectname" name="libelle" type="text" class="form-control" value="{{ $event->libelle }}" placeholder="Titre" required>
                                 </div>
                                 <div class="col-md-12 mb-4">
                                     <label for="lieu">Lieu de l'événement</label>
-                                    <input id="lieu" name="lieu" type="text" class="form-control" placeholder="Lieu">
+                                    <input id="lieu" name="lieu" type="text" class="form-control" value="{{ $event->lieu }}" placeholder="Lieu" required>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label for="date_debut">Date de début</label>
                                     <div class="input-group" id="dateevent_debut">
                                         <input id="date_debut" type="text" class="form-control" name="date_debut" placeholder="dd M, yyyy"
                                             data-date-format="yyyy-mm-dd" data-date-container='#dateevent_debut' data-provide="datepicker"
-                                            data-date-autoclose="true">
+                                            data-date-autoclose="true" value="{{ \Carbon\Carbon::parse($event->date_debut)->format('Y-m-d') }}">
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                     </div>
                                 </div>
@@ -67,27 +67,28 @@
                                     <div class="input-group" id="dateevent_fin">
                                         <input id="date_fin" type="text" class="form-control" name="date_fin" placeholder="dd M, yyyy"
                                             data-date-format="yyyy-mm-dd" data-date-container='#dateevent_fin' data-provide="datepicker"
-                                            data-date-autoclose="true">
+                                            data-date-autoclose="true" value="{{ \Carbon\Carbon::parse($event->date_fin)->format('Y-m-d') }}">
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label for="heure_debut">Heure de début</label>
                                     <div class="input-group" id="heureevent_debut">
-                                        <input id="heure_debut" type="text" name="heure_debut" class="form-control" data-provide="timepicker">
-                                        <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
+                                        <input id="heure_debut" type="text" name="heure_debut" value="{{ \Carbon\Carbon::parse($event->heure_debut)->format('H:i') }}" class="form-control" 
+                                        data-provide="timepicker" required>
+                                        <span class="input-group-text"><i class="mdi mdi-clock-outline" ></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label for="heure_fin">Heure de fin</label>
                                     <div class="input-group" id="heureevent_fin">
-                                        <input id="heure_fin" type="text" name="heure_fin" class="form-control" data-provide="timepicker">
-                                        <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
+                                        <input id="heure_fin" type="text" name="heure_fin" class="form-control" value="{{ \Carbon\Carbon::parse($event->heure_fin)->format('H:i') }}" data-provide="timepicker">
+                                        <span class="input-group-text"><i class="mdi mdi-clock-outline" ></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label class="form-label">Nombre de places</label>
-                                    <input name="places" type="number" class="form-control" value="1" min="1">
+                                    <input name="places" type="number" value="{{ $event->places }}" class="form-control" value="1" min="1">
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <h5 class="font-size-14 mb-3">Payant?</h5>
@@ -99,26 +100,63 @@
 
                                 <div class="col-md-6 mb-4" id="event-prix-block">
                                     <label class="form-label">Prix</label>
-                                    <input name="prix" type="number" class="form-control" min="0">
+                                    <input name="prix" id="event-prix" type="number" value="{{ $event->prix }}" class="form-control" min="0">
                                 </div>
-                                <div class="col-md-12 mb-4">
-                                    <label class="form-label">Image</label>
-                                    <div class="input-group">
-                                        <input type="file" accept="image/*" name="image" class="form-control" id="event-image">
-                                        <label class="input-group-text" for="event-image">Télécharger</label>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="image">Image</label>
+                                    <input type="file" name="image" class="form-control" required>
+                                    @if ($event->image)
+                                        <div class="mt-2">
+                                            <img src="{{ $event->image }}" alt="Image actuelle" style="width: 200px;">
+                                            <div>
+                                                    <a href="{{ route('events.events.deleteImage', $event->id) }}"
+                                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                        class="btn btn-primary waves-effect waves-light btn-sm">Supprimer
+                                                        <i class="mdi mdi-trash-can ms-1"></i></a>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
-                                <div class="col-md-12 mb-4">
-                                    <label class="form-label">Fichier joint</label>
-                                    <div class="input-group">
-                                        <input type="file" id="fichier" name="fichier" accept="application/pdf" class="form-control">
-                                        <label class="input-group-text" for="fichier">Télécharger</label>
-                                    </div>
+
+                                <div class="form-group">
+                                    <label for="fichier">Fichier</label>
+                                    <input type="file" name="fichier" class="form-control">
+                                    @if ($event->fichier)
+                                        <div class="mt-2">
+                                            <a href="{{ $event->fichier }}" target="_blank">Voir le fichier actuel</a>
+                                            <div>
+                                                <a href="{{ route('events.events.deleteFile', $event->id) }}"
+                                                    onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                    class="btn btn-primary waves-effect waves-light btn-sm">Supprimer
+                                                    <i class="mdi mdi-trash-can ms-1"></i></a>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="col-md-12 mb-5">
                                     <label class="form-label">Description</label>
-                                    <textarea name="description" class="form-control" rows="3"></textarea>
+                                    <textarea name="description" class="form-control" rows="3">{{ $event->description ?? '' }}</textarea>
                                 </div>
+                                <div class="form-group">
+                                    <label for="partenaires">Partenaires</label>
+                                    <input type="file" name="partenaires[]" class="form-control" multiple>
+                                    @if ($event->partenaires)
+                                        <div class="mt-2">
+                                            @foreach ($event->partenaires as $partenaire)
+                                                <div style="display:inline-block; margin:10px;">
+                                                    <img src="{{ asset('storage/' . $partenaire->image) }}" alt="Partenaire" style="width: 100px;">
+                                                    <div>
+                                                    <a href="{{ route('events.events.deletePartenaire', ['event' => $event->id, 'partenaire' => $partenaire->id]) }}"
+                                                        onclick="return confirm('Voulez-vous vraiment supprimer?')"
+                                                        class="btn btn-primary waves-effect waves-light btn-sm">Supprimer
+                                                        <i class="mdi mdi-trash-can ms-1"></i></a>
+                                                </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+
                                     <div class="col-md-12 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary">Enregistrer</button>
                                     </div>
@@ -143,31 +181,68 @@
         src="{{ asset('assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/libs/dropzone/min/dropzone.min.js') }}"></script>
     <script type="text/javascript">
-        $('#paiement').on('change', (e) => {
-            if ($(e.target).is(':checked')) {
+        $(document).ready(function() {
+
+        function togglePrixField() {
+            if ($('#paiement').is(':checked')) {
                 $('#event-prix-block').show();
-                // $('input[name="prix"]').val('');
+                $('#event-prix').prop('required', true);
             } else {
-                // $('input[name="prix"]').val('');
                 $('#event-prix-block').hide();
+                $('#event-prix').prop('required', false).val('');
             }
+        }
+
+        togglePrixField(); // Initial call
+
+        $('#paiement').on('change', function() {
+            togglePrixField();
         });
 
-        $('#heureevent-input').timepicker({
+        $('[data-toggle="touchspin"]').each(function (e, t) {
+            var a = $.extend({}, $(t).data());
+            $(t).TouchSpin(a);
+        });
+
+        $('#date_debut').timepicker({
             minuteStep: 1,
             template: 'dropdown',
             appendWidgetTo: '#heureevent',
             showSeconds: false,
             showMeridian: false,
             defaultTime: 'current',
-            icons: {
-                up: "mdi mdi-chevron-up",
-                down: "mdi mdi-chevron-down"
-            }
+            icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
         });
 
-        $(document).ready(function() {
-            $('#paiement').trigger("change");
+        $('#date_fin').timepicker({
+            minuteStep: 1,
+            template: 'dropdown',
+            appendWidgetTo: '#heureevent',
+            showSeconds: false,
+            showMeridian: false,
+            defaultTime: 'current',
+            icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
         });
+
+        $('#heure_debut').timepicker({
+            minuteStep: 1,
+            template: 'dropdown',
+            appendWidgetTo: '#heureevent',
+            showSeconds: false,
+            showMeridian: false,
+            defaultTime: 'current',
+            icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
+        });
+        $('#heure_fin').timepicker({
+            minuteStep: 1,
+            template: 'dropdown',
+            appendWidgetTo: '#heureevent',
+            showSeconds: false,
+            showMeridian: false,
+            defaultTime: 'current',
+            icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
+        });
+
+    });
     </script>
 @endsection

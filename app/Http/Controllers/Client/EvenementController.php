@@ -5,63 +5,52 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Evenement;
 use App\Models\Participant;
+use App\Models\Partenaire;
+use App\Models\EvenementPartenaire;
 use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+
 
 class EvenementController extends Controller
 {
     public function index()
     {
-        $events = Evenement::with(['participants'])->get();
-        return view('pages.events.home')->with('events', $events);
+        $events = Evenement::with(['participants', 'partenaires'])->get();
+        return view('pages.events.home', compact('events'));
     }
 
     public function add()
     {
-        return view('pages.events.add');
+        $partenaires = Partenaire::all(); 
+        return view('pages.events.add', compact('partenaires'));
     }
-
-    // public function store(Request $request)
-    // {
-    //     $data = $request->except('pay');
-    //     $image = $request->file('image');
-
-    //     if (!$request->pay == "on") {
-    //         $data['prix'] = null;
-    //     }
-
-    //     if (!empty($image)) {
-    //         $filename = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-    //         $data['image'] = url('storage/uploads/events') . '/' . $filename;
-    //         $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
-    //     }
-
-    //     Evenement::create($data);
-
-    //     Toastr::success('Évenement ajouté avec succès!', 'Succès');
-
-    //     return redirect()->intended(route('events.home'));
-    // }
 
     public function store(Request $request)
 {
-    // Validation des entrées
+    
     $request->validate([
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
-        'fichier' => 'nullable|mimes:pdf|max:5120', 
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'fichier' => 'nullable|mimes:pdf|max:5120',
+        'partenaires.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'date_debut' => 'nullable|date',
+        'date_fin' => 'nullable|date',
+        'heure_debut' => 'nullable|date_format:g:i A',
+        'heure_fin' => 'nullable|date_format:g:i A',
     ]);
 
-    $data = $request->except('pay');
+    $data = $request->except(['pay', 'partenaires']);
     $image = $request->file('image');
     $fichier = $request->file('fichier');
-    $date_debut =$request->input('date_debut');
-    $date_fin =$request->input('date_fin');
-    $heure_debut =$request->input('heure_debut');
-    $heure_fin =$request->input('heure_fin');
+    $partenaireImages = $request->file('partenaires');
+    $date_debut = $request->input('date_debut');
+    $date_fin = $request->input('date_fin');
+    $heure_debut = $request->input('heure_debut');
+    $heure_fin = $request->input('heure_fin');
 
-    if (!$request->pay == "on") {
+    if ($request->pay !== "on") {
         $data['prix'] = null;
     }
 
@@ -77,84 +66,122 @@ class EvenementController extends Controller
         $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
     }
 
-    
-    $data['heure_debut'] = Carbon::createFromFormat('g:i A', $heure_debut)->format('H:i');
+    if (!empty($heure_debut)) {
+        $data['heure_debut'] = Carbon::createFromFormat('g:i A', $heure_debut)->format('H:i');
+    }
 
-    $data['heure_fin'] = Carbon::createFromFormat('g:i A', $heure_fin)->format('H:i');
+    if (!empty($heure_fin)) {
+        $data['heure_fin'] = Carbon::createFromFormat('g:i A', $heure_fin)->format('H:i');
+    }
 
-    Evenement::create($data);
+    $event = Evenement::create($data);
 
-    Toastr::success('Évenement ajouté avec succès!', 'Succès');
+    if (!empty($partenaireImages)) {
+        foreach ($partenaireImages as $partenaireImage) {
+            $partenaireFilename = hexdec(uniqid()) . '.' . $partenaireImage->getClientOriginalExtension();
+            $partenairePath = 'uploads/partenaires/' . $partenaireFilename;
+            $partenaireImage->storeAs('uploads/partenaires/', $partenaireFilename, ['disk' => 'public']);
 
+            EvenementPartenaire::create([
+                'evenement_id' => $event->id,
+                'image' => $partenairePath,
+            ]);
+        }
+    }
+
+    Toastr::success('Événement ajouté avec succès!', 'Succès');
     return redirect()->intended(route('events.home'));
 }
 
-
     public function edit($id)
     {
-        $event = Evenement::find($id);
-        return view('pages.events.edit')->with('event', $event);
+        $event = Evenement::with('partenaires')->findOrFail($id);
+        return view('pages.events.edit', compact('event'));
     }
+
 
     public function show($id)
     {
-        $event = Evenement::with(['participants'])->find($id);
-        return view('pages.events.participant')->with('event', $event);
+        $event = Evenement::with(['participants', 'partenaires'])->find($id);
+    return view('pages.events.participant')->with('event', $event);
     }
-
-    public function update($id, Request $request)
+    
+    public function update(Request $request, Evenement $event)
     {
-        $data = $request->except('pay');
-        $image = $request->file('image');
-        $fichier = $request->file('fichier');
-        $event = Evenement::where('id', $id)->first();
+    
+    $request->validate([
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'fichier' => 'nullable|mimes:pdf|max:5120',
+        'partenaires.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+    ]);
 
-        if (!$request->pay == "on") {
-            $data['prix'] = null;
-        }
+    $data = $request->except(['pay', 'partenaires']);
+    $image = $request->file('image');
+    $fichier = $request->file('fichier');
+    $partenaireImages = $request->file('partenaires');
+    $date_debut = $request->input('date_debut');
+    $date_fin = $request->input('date_fin');
+    $heure_debut = $request->input('heure_debut');
+    $heure_fin = $request->input('heure_fin');
 
-        if (!empty($image)) {
-            $split = explode('/', $event->image);
-            $filename = end($split);
-            $path = storage_path("app/public/uploads/events/$filename");
-
-            if (File::exists($path)) {
-                File::delete($path);
-            }
-
-            $split = explode('.', $filename);
-
-            $filename = $split[0];
-
-            $filename = $filename . '.' . $image->getClientOriginalExtension();
-            $data['image'] = url('storage/uploads/events') . '/' . $filename;
-            $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
-        }
-
-        if (!empty($fichier)) {
-            $split = explode('/', $event->fichier);
-            $fichierFilename = end($split);
-            $path = storage_path("app/public/uploads/events/$fichierFilename");
-
-            if (File::exists($path)) {
-                File::delete($path);
-            }
-
-            $split = explode('.', $fichierFilename);
-
-            $fichierFilename = $split[0];
-
-            $fichierFilename = $fichierFilename . '.' . $fichier->getClientOriginalExtension();
-            $data['fichier'] = url('storage/uploads/events') . '/' . $fichierFilename;
-            $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
-        }
-
-        $event->update($data);
-
-        Toastr::success('Évenement mise à jour avec succès!', 'Succès');
-
-        return redirect()->intended(route('events.home'));
+    if ($request->pay !== "on") {
+        $data['prix'] = null;
     }
+
+    if (!empty($image)) {
+        // Supprimer l'ancienne image si elle existe
+        if (Storage::disk('public')->exists($event->image)) {
+            Storage::disk('public')->delete($event->image);
+        }
+
+        $filename = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+        $data['image'] = url('storage/uploads/events') . '/' . $filename;
+        $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
+    }
+
+    if (!empty($fichier)) {
+        
+        if (Storage::disk('public')->exists($event->fichier)) {
+            Storage::disk('public')->delete($event->fichier);
+        }
+
+        $fichierFilename = hexdec(uniqid()) . '.' . $fichier->getClientOriginalExtension();
+        $data['fichier'] = url('storage/uploads/events') . '/' . $fichierFilename;
+        $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
+    }
+
+    $data['date_debut'] = Carbon::parse($date_debut)->format('Y-m-d');
+    $data['date_fin'] = Carbon::parse($date_fin)->format('Y-m-d');
+
+    $data['heure_debut'] = Carbon::parse($heure_debut)->format('H:i');
+    $heure['heure_fin'] = Carbon::parse($heure_fin)->format('H:i');
+    // $data['heure_debut'] = Carbon::createFromFormat('g:i A', $heure_debut)->format('H:i');
+    // $data['heure_fin'] = Carbon::createFromFormat('g:i A', $heure_fin)->format('H:i');
+
+    
+    $event->update($data);
+
+    
+    if (!empty($partenaireImages)) {
+        foreach ($partenaireImages as $partenaireImage) {
+            $partenaireFilename = hexdec(uniqid()) . '.' . $partenaireImage->getClientOriginalExtension();
+            $partenairePath = 'uploads/partenaires/' . $partenaireFilename;
+            $partenaireImage->storeAs('uploads/partenaires/', $partenaireFilename, ['disk' => 'public']);
+
+           
+            $partenaire = Partenaire::create([
+                'image' => $partenairePath,
+            ]);
+
+            $event->partenaires()->attach($partenaire->id);
+        }
+    }
+
+    
+    Toastr::success('Événement mis à jour avec succès!', 'Succès');
+
+    return redirect()->intended(route('events.home'));
+}
 
 
     public function delete($id)
@@ -187,4 +214,58 @@ class EvenementController extends Controller
 
         return back();
     }
+
+    /**
+     * Supprime l'image associée à l'événement.
+     *
+     * @param  \App\Models\Evenement  $event
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteImage(Evenement $event)
+    {
+        if (Storage::disk('public')->exists($event->image)) {
+            Storage::disk('public')->delete($event->image);
+        }
+
+        $event->update(['image' => null]);
+
+        return back()->with('success', 'Image supprimée avec succès.');
+    }
+
+     /**
+     * Supprime le fichier associé à l'événement.
+     *
+     * @param  \App\Models\Evenement  $event
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteFile(Evenement $event)
+    {
+        if (Storage::disk('public')->exists($event->fichier)) {
+            Storage::disk('public')->delete($event->fichier);
+        }
+
+        $event->update(['fichier' => null]);
+
+        return back()->with('success', 'Fichier supprimé avec succès.');
+    }
+
+    /**
+     * Supprime un partenaire associé à l'événement.
+     *
+     * @param  \App\Models\Evenement  $event
+     * @param  \App\Models\EvenementPartenaire  $partenaire
+     * @return \Illuminate\Http\Response
+     */
+    public function deletePartenaire(Evenement $event, EvenementPartenaire $partenaire)
+    {
+        if (Storage::disk('public')->exists($partenaire->image)) {
+            Storage::disk('public')->delete($partenaire->image);
+        }
+
+        $partenaire->delete();
+
+        return back()->with('success', 'Partenaire supprimé avec succès.');
+    }
+
+
 }

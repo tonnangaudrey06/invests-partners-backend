@@ -14,6 +14,14 @@
     <!-- Responsive datatable examples -->
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
         type="text/css" />
+        <style>
+        .partner-image {
+            max-width: 50px; /* Taille maximale des images partenaires */
+            height: auto;
+            margin: 5px; /* Espacement autour des images */
+        }
+
+    </style>
 @endsection
 
 
@@ -72,9 +80,11 @@
                                     <thead>
                                         <tr>
                                             <th>Évenement</th>
-                                            <th>Date</th>
+                                            <th>Date début</th>
+                                            <th>Date fin</th>
                                             <th>Prix</th>
                                             <th>Places restant</th>
+                                            <th>Partenaires</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -91,7 +101,12 @@
                                                 <td>
                                                     <h5 class="font-size-14 mb-1 text-dark">@dateFormat($event->date_debut)
                                                     </h5>
-                                                    <p class="text-muted mb-0">à parti de @timeFormat($event->heure_debut)</p>
+                                                    <p class="text-muted mb-0">@timeFormat($event->heure_debut)</p>
+                                                </td>
+                                                <td>
+                                                    <h5 class="font-size-14 mb-1 text-dark">@dateFormat($event->date_fin)
+                                                    </h5>
+                                                    <p class="text-muted mb-0">@timeFormat($event->heure_fin)</p>
                                                 </td>
                                                 <td>
                                                     @if (!empty($event->prix))
@@ -104,6 +119,13 @@
                                                     <h5 class="font-size-14 mb-1 text-dark">{{$event->places - $event->total_reserve}} /
                                                         {{$event->places}} places</h5>
                                                     <p class="text-muted mb-0">{{$event->total_reserve}} places reservées</p>
+                                                </td>
+                                                <td>
+                                                <ul>
+                                                    @foreach($event->partenaires as $partenaire)
+                                                    <img src="{{ url('storage/' . $partenaire->image) }}" alt="Logo du partenaire" class="partner-image">
+                                                    @endforeach
+                                                </ul>
                                                 </td>
                                                 <td class="text-center">
                                                     @if (auth()->user()->role == 1)

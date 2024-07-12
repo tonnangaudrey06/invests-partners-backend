@@ -47,26 +47,26 @@
                                 <div class="col-md-12 mb-4">
                                     <label for="projectname">Titre de l'événement</label>
                                     <input id="projectname" name="libelle" type="text" class="form-control"
-                                        placeholder="Titre">
+                                        placeholder="Titre" required>
                                 </div>
                                 <div class="col-md-12 mb-4">
                                     <label for="projectname">Lieu de l'événement</label>
                                     <input id="projectname" name="lieu" type="text" class="form-control"
-                                        placeholder="Lieu">
+                                        placeholder="Lieu" required>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label git for="dateevent">Date de debut</label>
                                     <div class="input-group" id="dateevent">
-                                        <input type="date" class="form-control" name="date_debut" placeholder="dd M, yyyy"
+                                        <input class="form-control" name="date_debut" placeholder="dd M, yyyy"
                                             data-date-format="yyyy-mm-dd" data-date-container='#dateevent'
-                                            data-provide="datepicker" data-date-autoclose="true">
+                                            data-provide="datepicker" data-date-autoclose="true" required>
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label git for="dateevent">Date de fin</label>
                                     <div class="input-group" id="dateevent">
-                                        <input type="date" class="form-control" name="date_fin" placeholder="dd M, yyyy"
+                                        <input  class="form-control" name="date_fin" placeholder="dd M, yyyy"
                                             data-date-format="yyyy-mm-dd" data-date-container='#dateevent'
                                             data-provide="datepicker" data-date-autoclose="true">
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
@@ -76,7 +76,7 @@
                                     <label for="heureevent">Heure de debut</label>
                                     <div class="input-group" id="heureevent">
                                         <input id="heureevent-input" type="text" name="heure_debut" class="form-control"
-                                            data-provide="timepicker">
+                                            data-provide="timepicker" required>
                                         <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
                                     </div>
                                 </div>
@@ -92,6 +92,7 @@
                                     <label class="form-label">Nombre de places</label>
                                     <input name="places" type="number" class="form-control" value="1" min="1">
                                 </div>
+
                                 <div class="col-md-6 mb-4">
                                     <h5 class="font-size-14 mb-3">Payant?</h5>
                                     <div>
@@ -102,12 +103,13 @@
 
                                 <div class="col-md-6 mb-4" id="event-prix-block">
                                     <label class="form-label">Prix</label>
-                                    <input name="prix" type="number" class="form-control" min="0">
+                                    <input name="prix" id="event-prix" type="number" class="form-control" min="0">
                                 </div>
+
                                 <div class="col-md-12 mb-4">
                                     <label class="form-label">Image</label>
                                     <div class="input-group">
-                                        <input type="file" accept="image/*" name="image" class="form-control" id="event-image">
+                                        <input type="file" accept="image/*" name="image" class="form-control" id="event-image" required>
                                         <label class="input-group-text" for="event-image">Télécharger</label>
                                     </div>
                                 </div>
@@ -120,7 +122,13 @@
                                 </div>
                                 <div class="col-md-12 mb-5">
                                     <label class="form-label">Description</label>
-                                    <textarea name="description" class="form-control" rows="3"></textarea>
+                                    <textarea name="description" class="form-control" rows="3" required></textarea>
+                                </div>
+                                <div class="col-md-12 mb-4">
+                                    <div class="input-group">
+                                        <input type="file" id="partenaires" accept="image/*" name="partenaires[]" class="form-control" multiple>
+                                        <label class="input-group-text" for="partenaires">Télécharger des partenaires</label>
+                                    </div>
                                 </div>
                                 <div class="col-md-12 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary">Enregistrer</button>
@@ -148,17 +156,28 @@
 <script type="text/javascript" src="{{ asset('assets/libs/dropzone/min/dropzone.min.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        if ($('#paiement').is(':checked')) {
-            $('#event-prix-block').show();
-            $('input[name="prix"]').val('');
-        } else {
-            $('#event-prix-block').hide();
-            $('input[name="prix"]').val('');
+         
+        function togglePrixField() {
+            if ($('#paiement').is(':checked')) {
+                $('#event-prix-block').show();
+                $('#event-prix').prop('required', true);
+            } else {
+                $('#event-prix-block').hide();
+                $('#event-prix').prop('required', false).val('');
+            }
         }
+
+        togglePrixField(); // Initial call
+
+        $('#paiement').on('change', function() {
+            togglePrixField();
+        });
+
         $('[data-toggle="touchspin"]').each(function (e, t) {
             var a = $.extend({}, $(t).data());
             $(t).TouchSpin(a);
-        })
+        });
+
 
         $('#date_debut').timepicker({
             minuteStep: 1,
@@ -198,17 +217,6 @@
             defaultTime: 'current',
             icons: { up: "mdi mdi-chevron-up", down: "mdi mdi-chevron-down" }
         });
-
-        $('#paiement').on('change', (e) => {
-            if ($(e.target).is(':checked')) {
-                $('#event-prix-block').show();
-                $('input[name="prix"]').val('');
-            } else {
-                $('input[name="prix"]').val('');
-                $('#event-prix-block').hide();
-            }
-        });
-        
     });
 </script>
 @endsection

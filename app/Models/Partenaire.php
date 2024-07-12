@@ -13,11 +13,13 @@ class Partenaire extends Model
 
     protected $fillable = ['image']; 
 
-//     public function evenements()
-// {
-//     return $this->hasMany(Evenement::class, 'partenaire_id');
-// }
+    public function evenements()
+    {
+        return $this->belongsToMany(Evenement::class, 'evenement_partner', 'partenaire_id', 'evenement_id');
+    }
 
-    
-     
+    public function getImageNameAttribute()
+    {
+        return basename($this->image);
+    }
 }

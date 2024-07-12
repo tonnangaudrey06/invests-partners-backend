@@ -34,7 +34,6 @@
                                         <a href="javascript: void(0);">{{ config('app.name') }}</a>
                                     </li>
                                     <li class="breadcrumb-item active">Évenement</li>
-                                    {{-- <li class="breadcrumb-item active">Profil</li> --}}
                                 </ol>
                             </div>
 
@@ -45,26 +44,9 @@
                 <div class="row">
                     <div class="col-xl-4">
                         <div class="card overflow-hidden">
-                            {{-- <div class="bg-primary bg-soft">
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="text-primary p-3">
-                                        <h5 class="text-primary">Bon retour {{ $user->prenom }}!</h5>
-                                        <p>Cela semblera simplifié</p>
-                                    </div>
-                                </div>
-                                <div class="col-4 align-self-end">
-                                    <img src="{{ asset('assets/images/profile-img.png') }}" alt="" class="img-fluid">
-                                </div>
-                            </div>
-                        </div> --}}
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        {{-- <div class="avatar-md profile-user-wid mb-4">
-                                        <img src="{{ $event->image ? $event->image : asset('assets/images/profil.jpg') }}"
-                                            alt="" class="img-thumbnail avatar-md rounded-circle">
-                                    </div> --}}
                                         <h5 class="font-size-15 text-truncate">{{ $event->libelle }}</h5>
                                         <p class="text-muted mb-0 text-truncate">{{ $event->lieu }}</p>
                                     </div>
@@ -117,7 +99,10 @@
                                             <tr>
                                                 <th scope="row">Date :</th>
                                                 <td>
-                                                    @dateFormat($event->date_debut) à @timeFormat($event->heure_debut)
+                                                    @dateFormat($event->date_debut) @timeFormat($event->heure_debut)
+                                                </td>
+                                                <td>
+                                                    @dateFormat($event->date_fin) @timeFormat($event->heure_fin)
                                                 </td>
                                             </tr>
                                             <tr>
@@ -138,18 +123,14 @@
                                                 <th scope="row">Places disponibles :</th>
                                                 <td>{{$event->places - $event->total_reserve}} / {{$event->places}} places</td>
                                             </tr>
-                                            {{-- <tr>
-                                                <th scope="row">Places restants :</th>
-                                                <td>$event->places - $event->total_reserve) places</td>
-                                            </tr> --}}
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
 
-                    <div class="col-xl-8">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Participants</h4>
@@ -158,8 +139,6 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">Nom complet</th>
-                                                {{-- <th scope="col">Email</th>
-                                                <th scope="col">Téléphone</th> --}}
                                                 <th scope="col">Reserver</th>
                                                 <th></th>
                                             </tr>
@@ -176,14 +155,13 @@
                                                             <small>{{ $participant->telephone }}</small>
                                                         </div>
                                                     </th>
-                                                    {{-- <td style="width: 20%">
-                                                        {{ $participant->email }}
-                                                    </td>
-                                                    <td style="width: 15%">
-                                                        {{ $participant->telephone }}
-                                                    </td> --}}
                                                     <td style="width: 15%">
                                                         {{$participant->places}} places
+                                                    </td>
+                                                    <td style="width: 5%" class="text-center">
+                                                        <a href="" class="btn btn-sm btn-warning float-right">
+                                                            <i class="bx bx-detail"></i>
+                                                        </a>
                                                     </td>
                                                     <td style="width: 5%" class="text-center">
                                                         <a href="{{ route('events.delete.participant', $participant->id) }}"
@@ -203,11 +181,30 @@
                 </div>
                 <!-- end row -->
 
-            </div>
+                <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Partenaires</h4>
+                                <div class="row row-cols-1 row-cols-md-3 g-4">
+                                    @foreach ($event->partenaires as $partenaire)
+                                        <div class="col-md-3 mt-5 mx-auto px-2">
+                                            <div class="card">
+                                                <img src="{{ url('storage/' . $partenaire->image) }}" class="card-img-top"
+                                                    alt="Image du partenaire">
+                                                <div class="card-body">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
         </div>
 
         @include('partials.footer')
     </div>
+    
 @endsection
 
 @section('script')

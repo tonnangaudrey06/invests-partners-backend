@@ -153,6 +153,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/edit/{id}', [EvenementController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [EvenementController::class, 'update'])->name('update');
         Route::get('/{id}', [EvenementController::class, 'show'])->name('show');
+        Route::get('events/{event}/deleteImage', [EvenementController::class, 'deleteImage'])->name('events.deleteImage');
+        Route::get('events/{event}/deleteFile', [EvenementController::class, 'deleteFile'])->name('events.deleteFile');
+        Route::get('events/{event}/deletePartenaire/{partenaire}', [EvenementController::class, 'deletePartenaire'])->name('events.deletePartenaire');
+   
     });
 
     Route::prefix('transactions')->name('transactions.')->group(function () {
