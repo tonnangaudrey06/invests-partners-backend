@@ -19,7 +19,6 @@
             ->get();
     @endphp
     <div class="main-content">
-
         <div class="page-content">
             <div class="container-fluid">
 
@@ -99,10 +98,14 @@
                                             <tr>
                                                 <th scope="row">Date :</th>
                                                 <td>
-                                                    @dateFormat($event->date_debut) @timeFormat($event->heure_debut)
+                                                     @if (!empty($event->date_debut) && !empty($event->heure_debut))
+                                                        @dateFormat($event->date_debut) @timeFormat($event->heure_debut)
+                                                    @endif
                                                 </td>
                                                 <td>
-                                                    @dateFormat($event->date_fin) @timeFormat($event->heure_fin)
+                                                    @if (!empty($event->date_fin) && !empty($event->heure_fin))
+                                                        @dateFormat($event->date_fin) @timeFormat($event->heure_fin)
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <tr>
@@ -148,7 +151,7 @@
                                                 <tr>
                                                     <th class="text-truncate">
                                                         <p class="mb-0">
-                                                            {{ $participant->nom_complet }}
+                                                            {{ $participant->nom }}
                                                         </p>
                                                         <div class="d-flex gap-2">
                                                             <small>{{ $participant->email }}</small>
@@ -159,13 +162,15 @@
                                                         {{$participant->places}} places
                                                     </td>
                                                     <td style="width: 5%" class="text-center">
-                                                        <a href="" class="btn btn-sm btn-warning float-right">
+                                                        <a href="{{ route('events.show.participant', $participant->id) }}"
+                                                            class="btn btn-sm btn-warning">
                                                             <i class="bx bx-detail"></i>
-                                                        </a>
+                                                        </a>   
                                                     </td>
+
                                                     <td style="width: 5%" class="text-center">
                                                         <a href="{{ route('events.delete.participant', $participant->id) }}"
-                                                            onclick="return confirm('Voulez-vous vraiment supprimer la paticipation de {{ $participant->nom_complet }}?')"
+                                                            onclick="return confirm('Voulez-vous vraiment supprimer la paticipation de {{ $participant->nom }}?')"
                                                             class="btn btn-sm btn-danger">
                                                             <i class="bx bx-trash"></i>
                                                         </a>
@@ -200,24 +205,27 @@
                             </div>
                         </div>
                     </div>
+                </div>
         </div>
-
         @include('partials.footer')
     </div>
+
     
 @endsection
 
 @section('script')
-    <script type="text/javascript" src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
-    </script>
+    <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/pdfmake/build/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
 
-    <script type="text/javascript"
-        src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script type="text/javascript"
-        src="{{ asset('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
-
-    <script type="text/javascript" src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
-
-    <script type="text/javascript" src="{{ asset('assets/js/pages/profile.init.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/datatables.init.js') }}"></script>
 @endsection

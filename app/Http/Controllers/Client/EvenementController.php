@@ -39,6 +39,7 @@ class EvenementController extends Controller
         'date_fin' => 'nullable|date',
         'heure_debut' => 'nullable|date_format:g:i A',
         'heure_fin' => 'nullable|date_format:g:i A',
+        'prix' => 'nullable|numeric',
     ]);
 
     $data = $request->except(['pay', 'partenaires']);
@@ -50,8 +51,15 @@ class EvenementController extends Controller
     $heure_debut = $request->input('heure_debut');
     $heure_fin = $request->input('heure_fin');
 
+    // if ($request->pay !== "on") {
+    //     $data['prix'] = null;
+    // }
+
     if ($request->pay !== "on") {
         $data['prix'] = null;
+    } else {
+        // Ajoutez le prix au tableau $data
+        $data['prix'] = $request->prix;
     }
 
     if (!empty($image)) {
@@ -106,14 +114,8 @@ class EvenementController extends Controller
     return view('pages.events.participant')->with('event', $event);
     }
     
-    public function update(Request $request, Evenement $event)
+    public function update($id, Request $request)
     {
-    
-    $request->validate([
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'fichier' => 'nullable|mimes:pdf|max:5120',
-        'partenaires.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
-    ]);
 
     $data = $request->except(['pay', 'partenaires']);
     $image = $request->file('image');
@@ -123,13 +125,14 @@ class EvenementController extends Controller
     $date_fin = $request->input('date_fin');
     $heure_debut = $request->input('heure_debut');
     $heure_fin = $request->input('heure_fin');
+    $prix = $request->input('prix');
+    $event = Evenement::where('id', $id)->first();
 
-    if ($request->pay !== "on") {
-        $data['prix'] = null;
-    }
+    // if ($request->pay !== "on") {
+    //     $data['prix'] = null;
+    // }
 
     if (!empty($image)) {
-        // Supprimer l'ancienne image si elle existe
         if (Storage::disk('public')->exists($event->image)) {
             Storage::disk('public')->delete($event->image);
         }
@@ -213,6 +216,13 @@ class EvenementController extends Controller
         Toastr::success('Participant supprimé avec succès!', 'Success');
 
         return back();
+    }
+
+    public function showParticipant($id)
+    {
+        $participant = Participant::findOrFail($id);
+
+        return view('pages.events.showParticipant', compact('participant'));
     }
 
     /**

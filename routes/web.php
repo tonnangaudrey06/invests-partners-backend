@@ -149,6 +149,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/add', [EvenementController::class, 'add'])->name('add');
         Route::post('/store', [EvenementController::class, 'store'])->name('store');
         Route::get('/delete/participant/{id}', [EvenementController::class, 'deleteParticipant'])->name('delete.participant');
+        Route::get('/show/participant/{id}', [EvenementController::class, 'showParticipant'])->name('show.participant');
         Route::get('/delete/{id}', [EvenementController::class, 'delete'])->name('delete');
         Route::get('/edit/{id}', [EvenementController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [EvenementController::class, 'update'])->name('update');

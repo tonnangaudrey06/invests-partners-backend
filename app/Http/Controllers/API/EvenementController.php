@@ -15,7 +15,7 @@ class EvenementController extends Controller
     public function index()
     {
         $events = Evenement::get();
-        $month = Evenement::whereMonth('date_debut', '=', Carbon::now()->month)->get();
+        $month = Evenement::whereMonth('date_debut', '=', \Carbon\Carbon::now()->month)->get();
 
         return $this->sendResponse(['all' => $events, 'month' => $month], 'All events');
     }
@@ -26,12 +26,12 @@ class EvenementController extends Controller
         return $this->sendResponse($events, 'Latest events');
     }
 
-    public function participer($id, Request $request)
+        public function participer($id, Request $request)
     {
         $data = $request->input();
         $data['evenement'] = $id;
 
-        $user = Participant::where("nom_complet", $request->nom_complet)->where("evenement", $id)->first();
+        $user = Participant::where("email", $request->email)->where("evenement", $id)->first();
 
         if (!empty($user)) {
             $user->places += (int)$request->places;
@@ -54,8 +54,9 @@ class EvenementController extends Controller
             $message = 'Impossible d\'envoyer un mail car l\'email n\'existe pas.';
         }
 
-        return $this->sendResponse($event, $message);
+        return $this->sendResponse($user, $message);
     }
+
 
     public function downloadFile($id, Request $request)
     {

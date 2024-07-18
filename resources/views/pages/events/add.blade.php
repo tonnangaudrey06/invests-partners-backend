@@ -96,7 +96,7 @@
                                 <div class="col-md-6 mb-4">
                                     <h5 class="font-size-14 mb-3">Payant?</h5>
                                     <div>
-                                        <input type="checkbox" id="paiement" switch="bool" checked />
+                                        <input type="checkbox" id="paiement" name="paiement" switch="bool" checked />
                                         <label for="paiement" data-on-label="Oui" data-off-label="Non"></label>
                                     </div>
                                 </div>
@@ -159,12 +159,20 @@
          
         function togglePrixField() {
             if ($('#paiement').is(':checked')) {
-                $('#event-prix-block').show();
-                $('#event-prix').prop('required', true);
+            $('#event-prix-block').show();
+            $('input[name="prix"]').val('');
             } else {
                 $('#event-prix-block').hide();
-                $('#event-prix').prop('required', false).val('');
+                $('input[name="prix"]').val('');
             }
+
+            // if ($('#paiement').is(':checked')) {
+            //     $('#event-prix-block').show();
+            //     $('#event-prix').prop('required', true);
+            // } else {
+            //     $('#event-prix-block').hide();
+            //     $('#event-prix').prop('required', false).val('');
+            // }
         }
 
         togglePrixField(); // Initial call

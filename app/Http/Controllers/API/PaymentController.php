@@ -17,7 +17,7 @@ class PaymentController extends Controller
             "trans_id" => $request->trans_id,
             "methode" => $request->methode,
             "telephone" => $request->telephone,
-            // "montant" => $request->montant,
+            "event_id" => $request->event,
             "type" => $request->type
         ];
 
@@ -49,7 +49,7 @@ class PaymentController extends Controller
 
         $userMail = $transaction->is_client ? $transaction->user->email : $transaction->participant->email;
 
-        // if ($transaction->etat == 'REUSSI') {
+        if ($transaction->etat == 'REUSSI') {
             try {
                 Mail::to($userMail)
                     ->queue(new PayementClientMail(
@@ -58,7 +58,7 @@ class PaymentController extends Controller
             } catch (\Throwable $th) {
                 return $this->sendResponse($transaction, 'Transaction effectuer');
             }
-        // }
+        }
 
         return $this->sendResponse($transaction, 'Transaction effectuer');
     }

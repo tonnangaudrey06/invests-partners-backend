@@ -76,14 +76,14 @@
                                                 <td>
                                                     @if ($transaction->is_client)
                                                         <p class="text-muted mb-0 fw-bolder">
-                                                            {{ $transaction->user->nom_complet }}</p>
+                                                            {{ $transaction->user->nom }}</p>
                                                         <div class="d-flex align-items-center gap-2">
                                                             <small>{{ $transaction->user->email }}</small>
                                                             <small>{{ $transaction->user->telephone }}</small>
                                                         </div>
                                                     @else
                                                         <p class="text-muted mb-0 fw-bolder">
-                                                            {{ $transaction->participant->nom_complet }}</p>
+                                                            {{ $transaction->participant->nom }}</p>
                                                         <div class="d-flex align-items-center gap-2">
                                                             <small>{{ $transaction->participant->email }}</small>
                                                             <small>{{ $transaction->participant->telephone }}</small>

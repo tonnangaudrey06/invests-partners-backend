@@ -11,7 +11,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::with(['user', 'projet', 'event'])
+        $transactions = Transaction::with(['user', 'projet','participant', 'event'])
                                ->orderBy('created_at', 'DESC')
                                ->get();
 

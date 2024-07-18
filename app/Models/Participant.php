@@ -10,10 +10,22 @@ class Participant extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom_complet',
+        'nom',
+        'prenom',
+        'dateNais',
+        'sexe',
+        'ville',
+        'numeroCNI',
+        'porteurProjet',
+        'presentationUn',
+        'presentationDeux',
+        'environnement',
+        'impact',
+        'financement',
         'telephone',
         'email',
         'places',
-        'evenement'
+        'evenement',
+
     ];
 }

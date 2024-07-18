@@ -12,6 +12,6 @@ if (!function_exists('dateFormat')) {
 if (!function_exists('timeFormat')) {
     function timeFormat($date)
     {
-        return Carbon::parse($date)->format('H\hi\m\i\n');
+        return \Carbon\Carbon::parse($date)->format('H\hi\m\i\n');
     }
 }

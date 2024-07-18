@@ -46,6 +46,7 @@ Route::get('/profilinvestisseur', [ProfilInvestisseurController::class, 'index']
 Route::prefix('event')->group(function () {
     Route::get('/', [EvenementController::class, 'index']);
     Route::get('/latest', [EvenementController::class, 'new']);
+    Route::post('/participants', [EvenementController::class, 'participants']);
     Route::get('/{id}', [EvenementController::class, 'show']);
     Route::post('/{id}/participer', [EvenementController::class, 'participer']);
     Route::post('/{id}/participer/check/seat', [EvenementController::class, 'checkSeat']);

@@ -93,7 +93,7 @@
                                 <div class="col-md-6 mb-4">
                                     <h5 class="font-size-14 mb-3">Payant?</h5>
                                     <div>
-                                        <input type="checkbox" id="paiement" switch="bool" checked />
+                                        <input type="checkbox" id="paiement" name="paiement" switch="bool" checked />
                                         <label for="paiement" data-on-label="Oui" data-off-label="Non"></label>
                                     </div>
                                 </div>
@@ -104,7 +104,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="image">Image</label>
-                                    <input type="file" name="image" class="form-control" required>
+                                    <input type="file" name="image" class="form-control" value="{{ $event->image }}" readonly>
+                                    @if ($event->image)
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Image actuelle: {{ basename($event->image) }}</span>
+                                        </div>
+                                    @endif
                                     @if ($event->image)
                                         <div class="mt-2">
                                             <img src="{{ $event->image }}" alt="Image actuelle" style="width: 200px;">
@@ -183,21 +188,32 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-        function togglePrixField() {
             if ($('#paiement').is(':checked')) {
-                $('#event-prix-block').show();
-                $('#event-prix').prop('required', true);
+            $('#event-prix-block').show();
+            // $('input[name="prix"]').val('');
             } else {
                 $('#event-prix-block').hide();
-                $('#event-prix').prop('required', false).val('');
+                $('input[name="prix"]').val('');
             }
-        }
+            // if ($('#paiement').is(':checked')) {
+            //     $('#event-prix-block').show();
+            //     $('#event-prix').prop('required', true);
+            // } else {
+            //     $('#event-prix-block').hide();
+            //     $('#event-prix').prop('required', false).val('');
+            // }
 
-        togglePrixField(); // Initial call
-
-        $('#paiement').on('change', function() {
-            togglePrixField();
+            $('#paiement').on('change', (e) => {
+            if ($(e.target).is(':checked')) {
+                $('#event-prix-block').show();
+                $('input[name="prix"]').val('');
+            } else {
+                $('input[name="prix"]').val('');
+                $('#event-prix-block').hide();
+            }
         });
+
+
 
         $('[data-toggle="touchspin"]').each(function (e, t) {
             var a = $.extend({}, $(t).data());
