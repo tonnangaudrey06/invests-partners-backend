@@ -6,6 +6,12 @@
     <link href="{{ asset('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+
+    <style>
+        .text-c44636 {
+            color: #c44636;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -29,49 +35,49 @@
                         <div class="card-body">
                             <h5 class="card-title">Informations Personnelles</h5>
                             <div class="row mb-3">
-                                <label for="nom" class="col-sm-4 col-form-label">Nom</label>
+                                <label for="nom" class="col-sm-4 col-form-label text-c44636">Nom</label>
                                 <div class="col-sm-8">
                                     <p class="form-control-plaintext">{{ $participant->nom }}</p>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="prenom" class="col-sm-4 col-form-label">Prénom</label>
+                                <label for="prenom" class="col-sm-4 col-form-label text-c44636">Prénom</label>
                                 <div class="col-sm-8">
                                     <p class="form-control-plaintext">{{ $participant->prenom }}</p>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="dateNais" class="col-sm-4 col-form-label">Date de naissance</label>
+                                <label for="dateNais" class="col-sm-4 col-form-label text-c44636">Date de naissance</label>
                                 <div class="col-sm-8">
                                     <p class="form-control-plaintext">{{ \Carbon\Carbon::parse($participant->dateNais)->format('d/m/Y') }}</p>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="sexe" class="col-sm-4 col-form-label">Sexe</label>
+                                <label for="sexe" class="col-sm-4 col-form-label text-c44636">Sexe</label>
                                 <div class="col-sm-8">
                                     <p class="form-control-plaintext">{{ $participant->sexe }}</p>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="ville" class="col-sm-4 col-form-label">Ville</label>
+                                <label for="ville" class="col-sm-4 col-form-label text-c44636">Ville</label>
                                 <div class="col-sm-8">
                                     <p class="form-control-plaintext">{{ $participant->ville }}</p>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="numeroCNI" class="col-sm-4 col-form-label">Numéro de CNI</label>
+                                <label for="numeroCNI" class="col-sm-4 col-form-label text-c44636">Numéro de CNI</label>
                                 <div class="col-sm-8">
                                     <p class="form-control-plaintext">{{ $participant->numeroCNI }}</p>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="telephone" class="col-sm-4 col-form-label">Téléphone</label>
+                                <label for="telephone" class="col-sm-4 col-form-label text-c44636">Téléphone</label>
                                 <div class="col-sm-8">
                                     <p class="form-control-plaintext">{{ $participant->telephone }}</p>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="email" class="col-sm-4 col-form-label">Email</label>
+                                <label for="email" class="col-sm-4 col-form-label text-c44636">Email</label>
                                 <div class="col-sm-8">
                                     <p class="form-control-plaintext">{{ $participant->email }}</p>
                                 </div>
@@ -87,24 +93,24 @@
                             <h5 class="card-title">Projet</h5>
                             @if($participant->porteurProjet)
                             <div class="row mb-3">
-                                <label for="porteurProjet" class="col-sm-2 col-form-label">Porteur de projet</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-12">
+                                    <label for="porteurProjet" class="col-form-label text-c44636">PRESENTATION DU PORTEUR DE PROJET (Parcours,expériences,ambitions,motivation)</label>
                                     <p class="form-control-plaintext">{{ $participant->porteurProjet }}</p>
                                 </div>
                             </div>
                             @endif
                             @if($participant->presentationUn)
                             <div class="row mb-3">
-                                <label for="presentationUn" class="col-sm-2 col-form-label">Présentation</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-12">
+                                    <label for="presentationUn" class="col-form-label text-c44636">PRESENTATION DU PROJET (genèse et histoire du projet, identification du besoin ou du problème à résoudre)</label>
                                     <p class="form-control-plaintext">{{ $participant->presentationUn }}</p>
                                 </div>
                             </div>
                             @endif
                             @if($participant->presentationDeux)
                             <div class="row mb-3">
-                                <label for="presentationDeux" class="col-sm-2 col-form-label">Présentation 2</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-12">
+                                    <label for="presentationDeux" class="col-form-label text-c44636">PRESENTATION DU PROJET (présentez la solution que vous apportez au problème que vous avez identifié)</label>
                                     <p class="form-control-plaintext">{{ $participant->presentationDeux }}</p>
                                 </div>
                             </div>
@@ -122,24 +128,24 @@
                             <h5 class="card-title">Autres Informations</h5>
                             @if($participant->environnement)
                             <div class="row mb-3">
-                                <label for="environnement" class="col-sm-2 col-form-label">Environnement</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-12">
+                                     <label for="environnement" class="col-form-label text-c44636">PRESENTATION DU MARCHE DE L'ENVIRONNEMENT (Stratégie et réseau de distribution, clients, fournisseurs, partenaires, concurents)</label>
                                     <p class="form-control-plaintext">{{ $participant->environnement }}</p>
                                 </div>
                             </div>
                             @endif
                             @if($participant->impact)
                             <div class="row mb-3">
-                                <label for="impact" class="col-sm-2 col-form-label">Impact</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-12">
+                                    <label for="impact" class="col-form-label text-c44636">IMPACT SOCIO ECONOMIQUE DU PROJET  (objectifs attendus, impact socio economique et environnemental, responsabilité sociétale)</label>
                                     <p class="form-control-plaintext">{{ $participant->impact }}</p>
                                 </div>
                             </div>
                             @endif
                             @if($participant->financement)
                             <div class="row mb-3">
-                                <label for="financement" class="col-sm-2 col-form-label">Financement</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-12">
+                                    <label for="financement" class="col-form-label text-c44636">Plan de financement (Détail budgétaire, prévisions financières, retours sur investissement)</label>
                                     <p class="form-control-plaintext">{{ $participant->financement }}</p>
                                 </div>
                             </div>

@@ -221,3 +221,4 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/get/user/{user_id}', [SecteurController::class, 'GetUserEdit']);
 });
+

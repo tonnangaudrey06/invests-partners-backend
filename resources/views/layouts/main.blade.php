@@ -66,7 +66,6 @@
     {{-- <script type="text/javascript" src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
 
     @yield('script')
-
     <script type="text/javascript">
         window.user = {
             id: {{ optional(auth()->user())->id }}
@@ -169,6 +168,7 @@
             load_data();
 
             });
+            
     </script>
 
 

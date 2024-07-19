@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image as Image;
 use Illuminate\Support\Facades\File;
 
+
 class HomeController extends Controller
 {
     public function HomeSlider()

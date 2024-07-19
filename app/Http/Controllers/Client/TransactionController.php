@@ -14,12 +14,7 @@ class TransactionController extends Controller
         $transactions = Transaction::with(['user', 'projet','participant', 'event'])
                                ->orderBy('created_at', 'DESC')
                                ->get();
-
-        // Formater les dates pour le fuseau horaire du Cameroun
-        foreach ($transactions as $transaction) {
-        $transaction->created_at = $transaction->created_at;
-    }
-    return view('pages.transaction.home')->with('transactions', $transactions);
+        return view('pages.transaction.home')->with('transactions', $transactions);
     }
 
     public function delete($id)

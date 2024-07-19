@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 class ActualiteController extends Controller
 {
@@ -46,6 +47,9 @@ class ActualiteController extends Controller
 
     public function store(Request $request, $type, $id)
     {
+        $defaultTimezone = config('app.timezone');
+        $timezone = $request->input('timezone', $defaultTimezone); // Utilise le fuseau horaire par défaut si non spécifié
+        $now = Carbon::now($timezone);
         $data = array();
 
         if ($request->has('image')) {
@@ -60,6 +64,8 @@ class ActualiteController extends Controller
 
         $data['libelle'] = $request->libelle;
         $data['description'] = $request->description;
+        $data['created_at'] = $now;
+        $data['updated_at'] = $now;
 
         if ($type == 'secteur') {
             $data['secteur'] = $id;
@@ -149,7 +155,6 @@ class ActualiteController extends Controller
 
     public function update(Request $request, $type, $id, $idPS)
     {
-
         $data = Actualite::find($id);
 
         if ($request->has('image')) {
@@ -171,6 +176,7 @@ class ActualiteController extends Controller
 
         $data->libelle = $request->libelle;
         $data->description = $request->description;
+        $data->updated_at = Carbon::now(config('app.timezone')); // Met à jour l'heure avec le fuseau horaire
 
         $data->save();
 
@@ -179,7 +185,6 @@ class ActualiteController extends Controller
 
     public function delete($type, $id, $idPS)
     {
-
         $actualite = Actualite::find($id);
 
         $path = parse_url($actualite->image);
@@ -188,7 +193,6 @@ class ActualiteController extends Controller
 
         Actualite::find($id)->delete();
         Toastr::success('Actualité supprimée avec succès!', 'Success');
-
 
         return redirect()->intended(route('actualites.home', [$type, $idPS]));
     }
