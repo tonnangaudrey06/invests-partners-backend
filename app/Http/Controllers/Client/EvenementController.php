@@ -116,75 +116,73 @@ class EvenementController extends Controller
     
     public function update($id, Request $request)
     {
-
-    $data = $request->except(['pay', 'partenaires']);
-    $image = $request->file('image');
-    $fichier = $request->file('fichier');
-    $partenaireImages = $request->file('partenaires');
-    $date_debut = $request->input('date_debut');
-    $date_fin = $request->input('date_fin');
-    $heure_debut = $request->input('heure_debut');
-    $heure_fin = $request->input('heure_fin');
-    $prix = $request->input('prix');
-    $event = Evenement::where('id', $id)->first();
-
-    // if ($request->pay !== "on") {
-    //     $data['prix'] = null;
-    // }
-
-    if (!empty($image)) {
-        if (Storage::disk('public')->exists($event->image)) {
-            Storage::disk('public')->delete($event->image);
-        }
-
-        $filename = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-        $data['image'] = url('storage/uploads/events') . '/' . $filename;
-        $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
-    }
-
-    if (!empty($fichier)) {
-        
-        if (Storage::disk('public')->exists($event->fichier)) {
-            Storage::disk('public')->delete($event->fichier);
-        }
-
-        $fichierFilename = hexdec(uniqid()) . '.' . $fichier->getClientOriginalExtension();
-        $data['fichier'] = url('storage/uploads/events') . '/' . $fichierFilename;
-        $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
-    }
-
-    $data['date_debut'] = Carbon::parse($date_debut)->format('Y-m-d');
-    $data['date_fin'] = Carbon::parse($date_fin)->format('Y-m-d');
-
-    $data['heure_debut'] = Carbon::parse($heure_debut)->format('H:i');
-    $heure['heure_fin'] = Carbon::parse($heure_fin)->format('H:i');
-    // $data['heure_debut'] = Carbon::createFromFormat('g:i A', $heure_debut)->format('H:i');
-    // $data['heure_fin'] = Carbon::createFromFormat('g:i A', $heure_fin)->format('H:i');
-
+        $data = $request->except(['pay', 'partenaires']);
+        $image = $request->file('image');
+        $fichier = $request->file('fichier');
+        $partenaireImages = $request->file('partenaires');
+        $date_debut = $request->input('date_debut');
+        $date_fin = $request->input('date_fin');
+        $heure_debut = $request->input('heure_debut');
+        $heure_fin = $request->input('heure_fin');
+        $prix = $request->input('prix');
+        $event = Evenement::where('id', $id)->first();
     
-    $event->update($data);
-
-    
-    if (!empty($partenaireImages)) {
-        foreach ($partenaireImages as $partenaireImage) {
-            $partenaireFilename = hexdec(uniqid()) . '.' . $partenaireImage->getClientOriginalExtension();
-            $partenairePath = 'uploads/partenaires/' . $partenaireFilename;
-            $partenaireImage->storeAs('uploads/partenaires/', $partenaireFilename, ['disk' => 'public']);
-
-           
-            $partenaire = Partenaire::create([
-                'image' => $partenairePath,
-            ]);
-
-            $event->partenaires()->attach($partenaire->id);
+        // Validation date_debut and date_fin
+        if (!empty($date_fin) && Carbon::parse($date_debut)->gt(Carbon::parse($date_fin))) {
+            return redirect()->back()->with('error', 'La date de début doit être inférieure à la date de fin.');
         }
-    }
-
     
-    Toastr::success('Événement mis à jour avec succès!', 'Succès');
-
-    return redirect()->intended(route('events.home'));
-}
+        // Validation heure_debut and heure_fin uniquement si heure_fin est renseignée
+        if (!empty($heure_fin) && Carbon::parse($heure_debut)->gt(Carbon::parse($heure_fin))) {
+            return redirect()->back()->with('error', 'L\'heure de début doit être inférieure à l\'heure de fin.');
+        }
+    
+        if (!empty($image)) {
+            if (Storage::disk('public')->exists($event->image)) {
+                Storage::disk('public')->delete($event->image);
+            }
+    
+            $filename = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            $data['image'] = url('storage/uploads/events') . '/' . $filename;
+            $image->storeAs('uploads/events/', $filename, ['disk' => 'public']);
+        }
+    
+        if (!empty($fichier)) {
+            if (Storage::disk('public')->exists($event->fichier)) {
+                Storage::disk('public')->delete($event->fichier);
+            }
+    
+            $fichierFilename = hexdec(uniqid()) . '.' . $fichier->getClientOriginalExtension();
+            $data['fichier'] = url('storage/uploads/events') . '/' . $fichierFilename;
+            $fichier->storeAs('uploads/events/', $fichierFilename, ['disk' => 'public']);
+        }
+    
+        $data['date_debut'] = Carbon::parse($date_debut)->format('Y-m-d');
+        $data['date_fin'] = !empty($date_fin) ? Carbon::parse($date_fin)->format('Y-m-d') : null;
+        $data['heure_debut'] = Carbon::parse($heure_debut)->format('H:i');
+        $data['heure_fin'] = !empty($heure_fin) ? Carbon::parse($heure_fin)->format('H:i') : null;
+    
+        $event->update($data);
+    
+        if (!empty($partenaireImages)) {
+            foreach ($partenaireImages as $partenaireImage) {
+                $partenaireFilename = hexdec(uniqid()) . '.' . $partenaireImage->getClientOriginalExtension();
+                $partenairePath = 'uploads/partenaires/' . $partenaireFilename;
+                $partenaireImage->storeAs('uploads/partenaires/', $partenaireFilename, ['disk' => 'public']);
+    
+                $partenaire = Partenaire::create([
+                    'image' => $partenairePath,
+                ]);
+    
+                $event->partenaires()->attach($partenaire->id);
+            }
+        }
+    
+        Toastr::success('Événement mis à jour avec succès!', 'Succès');
+    
+        return redirect()->intended(route('events.home'));
+    }
+    
 
 
     public function delete($id)

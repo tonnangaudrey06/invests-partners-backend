@@ -46,17 +46,17 @@
                                     method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="col-md-12 mb-4">
-                                    <label for="projectname">Titre de l'événement</label>
+                                    <label for="projectname">Titre de l'événement*</label>
                                     <input id="projectname" name="libelle" type="text" class="form-control" value="{{ $event->libelle }}" placeholder="Titre" required>
                                 </div>
                                 <div class="col-md-12 mb-4">
-                                    <label for="lieu">Lieu de l'événement</label>
+                                    <label for="lieu">Lieu de l'événement*</label>
                                     <input id="lieu" name="lieu" type="text" class="form-control" value="{{ $event->lieu }}" placeholder="Lieu" required>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="date_debut">Date de début</label>
+                                    <label for="date_debut">Date de début*</label>
                                     <div class="input-group" id="dateevent_debut">
-                                        <input id="date_debut" type="text" class="form-control" name="date_debut" placeholder="dd M, yyyy"
+                                        <input id="date_debut" type="text" class="form-control" name="date_debut" placeholder="dd M, yyyy*"
                                             data-date-format="yyyy-mm-dd" data-date-container='#dateevent_debut' data-provide="datepicker"
                                             data-date-autoclose="true" value="{{ \Carbon\Carbon::parse($event->date_debut)->format('Y-m-d') }}">
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
@@ -67,12 +67,13 @@
                                     <div class="input-group" id="dateevent_fin">
                                         <input id="date_fin" type="text" class="form-control" name="date_fin" placeholder="dd M, yyyy"
                                             data-date-format="yyyy-mm-dd" data-date-container='#dateevent_fin' data-provide="datepicker"
-                                            data-date-autoclose="true" value="{{ \Carbon\Carbon::parse($event->date_fin)->format('Y-m-d') }}">
+                                            data-date-autoclose="true"
+                                            value="{{ $event->date_fin ? \Carbon\Carbon::parse($event->date_fin)->format('Y-m-d') : '' }}">
                                         <span class="input-group-text"><i class="mdi mdi-calendar"></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="heure_debut">Heure de début</label>
+                                    <label for="heure_debut">Heure de début*</label>
                                     <div class="input-group" id="heureevent_debut">
                                         <input id="heure_debut" type="text" name="heure_debut" value="{{ \Carbon\Carbon::parse($event->heure_debut)->format('H:i') }}" class="form-control" 
                                         data-provide="timepicker" required>
@@ -82,8 +83,9 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="heure_fin">Heure de fin</label>
                                     <div class="input-group" id="heureevent_fin">
-                                        <input id="heure_fin" type="text" name="heure_fin" class="form-control" value="{{ \Carbon\Carbon::parse($event->heure_fin)->format('H:i') }}" data-provide="timepicker">
-                                        <span class="input-group-text"><i class="mdi mdi-clock-outline" ></i></span>
+                                        <input id="heure_fin" type="text" name="heure_fin" class="form-control"
+                                            value="{{ $event->heure_fin ? \Carbon\Carbon::parse($event->heure_fin)->format('H:i') : '' }}" data-provide="timepicker">
+                                        <span class="input-group-text"><i class="mdi mdi-clock-outline"></i></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
@@ -93,9 +95,9 @@
                                 <div class="col-md-6 mb-4">
                                     <h5 class="font-size-14 mb-3">Payant?</h5>
                                     <div>
-                                        <input type="checkbox" id="paiement" name="paiement" switch="bool" checked />
-                                        <label for="paiement" data-on-label="Oui" data-off-label="Non"></label>
-                                    </div>
+        <input type="checkbox" id="paiement" name="paiement" switch="bool" {{ $event->prix ? 'checked' : '' }} />
+        <label for="paiement" data-on-label="Oui" data-off-label="Non"></label>
+    </div>
                                 </div>
 
                                 <div class="col-md-6 mb-4" id="event-prix-block">
@@ -103,7 +105,7 @@
                                     <input name="prix" id="event-prix" type="number" value="{{ $event->prix }}" class="form-control" min="0">
                                 </div>
                                 <div class="form-group">
-                                    <label for="image">Image</label>
+                                    <label for="image">Image*</label>
                                     <input type="file" name="image" class="form-control" value="{{ $event->image }}" readonly>
                                     @if ($event->image)
                                         <div class="input-group-append">
@@ -193,7 +195,7 @@
             // $('input[name="prix"]').val('');
             } else {
                 $('#event-prix-block').hide();
-                $('input[name="prix"]').val('');
+                //$('input[name="prix"]').val('');
             }
             // if ($('#paiement').is(':checked')) {
             //     $('#event-prix-block').show();
@@ -206,9 +208,9 @@
             $('#paiement').on('change', (e) => {
             if ($(e.target).is(':checked')) {
                 $('#event-prix-block').show();
-                $('input[name="prix"]').val('');
+                //$('input[name="prix"]').val('');
             } else {
-                $('input[name="prix"]').val('');
+                //$('input[name="prix"]').val('');
                 $('#event-prix-block').hide();
             }
         });

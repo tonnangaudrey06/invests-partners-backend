@@ -7,6 +7,9 @@ Set axis.mode to "time" to enable. See the section "Time series data" in
 API.txt for details.
 
 */
+const moment = require('moment');
+require('moment-timezone');
+
 
 (function($) {
 

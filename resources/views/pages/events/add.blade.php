@@ -45,17 +45,17 @@
                             <form class="row" action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="col-md-12 mb-4">
-                                    <label for="projectname">Titre de l'événement</label>
+                                    <label for="projectname">Titre de l'événement*</label>
                                     <input id="projectname" name="libelle" type="text" class="form-control"
                                         placeholder="Titre" required>
                                 </div>
                                 <div class="col-md-12 mb-4">
-                                    <label for="projectname">Lieu de l'événement</label>
+                                    <label for="projectname">Lieu de l'événement*</label>
                                     <input id="projectname" name="lieu" type="text" class="form-control"
                                         placeholder="Lieu" required>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label git for="dateevent">Date de debut</label>
+                                    <label git for="dateevent">Date de debut*</label>
                                     <div class="input-group" id="dateevent">
                                         <input class="form-control" name="date_debut" placeholder="dd M, yyyy"
                                             data-date-format="yyyy-mm-dd" data-date-container='#dateevent'
@@ -73,7 +73,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="heureevent">Heure de debut</label>
+                                    <label for="heureevent">Heure de debut*</label>
                                     <div class="input-group" id="heureevent">
                                         <input id="heureevent-input" type="text" name="heure_debut" class="form-control"
                                             data-provide="timepicker" required>
@@ -107,7 +107,7 @@
                                 </div>
 
                                 <div class="col-md-12 mb-4">
-                                    <label class="form-label">Image</label>
+                                    <label class="form-label">Image*</label>
                                     <div class="input-group">
                                         <input type="file" accept="image/*" name="image" class="form-control" id="event-image" required>
                                         <label class="input-group-text" for="event-image">Télécharger</label>
@@ -121,7 +121,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-5">
-                                    <label class="form-label">Description</label>
+                                    <label class="form-label">Description*</label>
                                     <textarea name="description" class="form-control" rows="3" required></textarea>
                                 </div>
                                 <div class="col-md-12 mb-4">
@@ -159,20 +159,13 @@
          
         function togglePrixField() {
             if ($('#paiement').is(':checked')) {
-            $('#event-prix-block').show();
-            $('input[name="prix"]').val('');
+                $('#event-prix-block').show();
+                $('input[name="prix"]').attr('required', true); // Rendre le champ obligatoire
             } else {
                 $('#event-prix-block').hide();
-                $('input[name="prix"]').val('');
+                $('input[name="prix"]').removeAttr('required'); // Rendre le champ non obligatoire
             }
 
-            // if ($('#paiement').is(':checked')) {
-            //     $('#event-prix-block').show();
-            //     $('#event-prix').prop('required', true);
-            // } else {
-            //     $('#event-prix-block').hide();
-            //     $('#event-prix').prop('required', false).val('');
-            // }
         }
 
         togglePrixField(); // Initial call
