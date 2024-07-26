@@ -23,6 +23,7 @@ class Actualite extends Model
     {
         return $this->belongsTo(Secteur::class, 'secteur', 'id')->with('conseiller_data');
     }
+    
 
     public function projet_invest()
     {

@@ -25,4 +25,9 @@ class Secteur extends Model
     {
         return $this->hasMany(Projet::class, 'secteur', 'id');
     }
+
+    public function actualites()
+    {
+        return $this->hasMany(Actualite::class, 'secteur', 'id');
+    }
 }

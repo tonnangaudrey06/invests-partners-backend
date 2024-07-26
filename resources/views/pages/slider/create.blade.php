@@ -40,25 +40,25 @@
                                 <form class="row" action="{{ route('slider.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group col-md-6 mb-3">
-                                        <label>Titre</label>
-                                        <input type="text" class="form-control" name="title" placeholder="Titre">
+                                        <label>Titre <span class="text-c44636">*</span></label>
+                                        <input type="text" class="form-control" name="title" placeholder="Titre" required>
                                     </div>
                                     <div class="form-group col-md-6 mb-3">
-                                        <label>Titre en anglais</label>
+                                        <label>Titre en anglais <span class="text-c44636">*</span></label>
                                         <input type="text" class="form-control" name="title_en"
-                                            placeholder="Titre en anglais">
+                                            placeholder="Titre en anglais" required>
                                     </div>
                                     <div class="form-group col-md-6 mb-3">
-                                        <label>Description</label>
-                                        <textarea class="form-control" name="description" rows="3"></textarea>
+                                        <label>Description <span class="text-c44636">*</span></label>
+                                        <textarea class="form-control" name="description" rows="3" required></textarea>
                                     </div>
                                     <div class="form-group col-md-6 mb-3">
-                                        <label>Description en anglais</label>
-                                        <textarea class="form-control" name="description_en" rows="3"></textarea>
+                                        <label>Description en anglais <span class="text-c44636">*</span></label>
+                                        <textarea class="form-control" name="description_en" rows="3" required></textarea>
                                     </div>
                                     <div class="form-group col-md-12 mb-3">
-                                        <label>Image</label>
-                                        <input type="file" class="form-control" name="image">
+                                        <label>Image <span class="text-c44636">*</span></label>
+                                        <input type="file" accept="image/*"  class="form-control" name="image" required>
                                     </div>
                                     <div class="form-footer pt-4 pt-5 mt-4 border-top text-center">
                                         <button type="submit" class="btn btn-primary btn-default">Enregistrer</button>

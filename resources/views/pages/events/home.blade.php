@@ -104,9 +104,9 @@
                                                     <p class="text-muted mb-0">@timeFormat($event->heure_debut)</p>
                                                 </td>
                                                 <td>
-                                                    <h5 class="font-size-14 mb-1 text-dark">@dateFormat($event->date_fin)
+                                                    <h5 class="font-size-14 mb-1 text-dark"> {{ $event->date_fin ? dateFormat($event->date_fin) : '' }}
                                                     </h5>
-                                                    <p class="text-muted mb-0">@timeFormat($event->heure_fin)</p>
+                                                    <p class="text-muted mb-0">{{$event->heure_fin ? timeFormat($event->heure_fin) : ''}}</p>
                                                 </td>
                                                 <td>
                                                     @if (!empty($event->prix))
@@ -123,7 +123,7 @@
                                                 <td>
                                                 <ul>
                                                     @foreach($event->partenaires as $partenaire)
-                                                    <img src="{{ url('storage/' . $partenaire->image) }}" alt="Logo du partenaire" class="partner-image">
+                                                    <img src="{{ asset('storage/uploads/partenaires/' . basename($partenaire->image)) }}" alt="Logo du partenaire" class="partner-image">
                                                     @endforeach
                                                 </ul>
                                                 </td>

@@ -89,7 +89,8 @@ class EvenementController extends Controller
 
     public function show($id)
     {
-        $event = Evenement::where('id', $id)->first();
+        //$event = Evenement::where('id', $id)->first();
+        $event = Evenement::with( 'partenaires')->find($id);
         return $this->sendResponse($event, 'One event');
     }
 }

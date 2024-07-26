@@ -56,7 +56,7 @@ $module = $type == 'IP' ? 1 : ($type == 'AUTRE' ? 5 : 13);
                             @endif
                             @endif
 
-                            <button class="btn btn-sm btn-primary" onclick="reload()">Actualiser</button>
+                            <button class="btn btn-sm btn-primary" onclick="resetFilters()">Actualiser</button>
                         </div>
                     </div>
 
@@ -202,6 +202,19 @@ $(function() {
         }
     });
 });
+
+    function resetFilters() {
+        // Réinitialiser le formulaire
+        document.getElementById('filterForm').reset();
+        
+        // Réinitialiser les valeurs des champs de date de daterangepicker
+        $('input[name="start_date"]').daterangepicker('clear');
+        $('input[name="end_date"]').daterangepicker('clear');
+        
+        // Réinitialiser les valeurs des champs de sélection
+        $('select[name="status"]').val('');
+        $('select[name="avancement"]').val('');
+    }
 
 </script>
 @endsection

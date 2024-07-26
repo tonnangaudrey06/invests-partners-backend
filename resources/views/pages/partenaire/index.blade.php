@@ -28,7 +28,7 @@
                             <div class="card">
                                 <img src="{{asset($multi->image)}}" alt="" >
                             </div> <br>
-                            <a href="{{url('partenaires/delete/'.$multi->id)}}" class="btn btn-danger">Supprimer</a>
+                            <a href="{{url('partenaires/delete/'.$multi->id)}}" onclick="return confirm('Voulez-vous vraiment supprimer?')" class="btn btn-danger">Supprimer</a>
                         </div>
 
                         
@@ -50,7 +50,7 @@
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Ajouter vos partenaires</label>
-                                    <input type="file" name="image[]" class="form-control" id="exampleInputEmail1"
+                                    <input type="file" name="image[]" accept="image/*" class="form-control" id="exampleInputEmail1"
                                         aria-describedby="emailHelp" multiple="">
 
 

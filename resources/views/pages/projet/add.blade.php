@@ -411,12 +411,12 @@
 
                                 <div class="form-group col-md-6 mb-3">
                                     <label for="logo-projet">Logo</label>
-                                    <input type="file" name="logo" class="form-control" id="logo-projet">
+                                    <input type="file" accept="image/*" name="logo" class="form-control" id="logo-projet">
                                 </div>
 
                                 <div class="form-group col-md-6 mb-3">
                                     <label for="medias-projet">Fichiers joints</label>
-                                    <input type="file" name="medias[]" class="form-control" multiple id="medias-projet">
+                                    <input type="file" accept="application/pdf" name="medias[]" class="form-control" multiple id="medias-projet">
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">
                                     <button type="submit" class="btn btn-primary">Enregistrer</button>

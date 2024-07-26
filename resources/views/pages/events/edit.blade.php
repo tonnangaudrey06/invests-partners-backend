@@ -46,15 +46,15 @@
                                     method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="col-md-12 mb-4">
-                                    <label for="projectname">Titre de l'événement*</label>
+                                    <label for="projectname">Titre de l'événement <span class="text-c44636">*</span></label>
                                     <input id="projectname" name="libelle" type="text" class="form-control" value="{{ $event->libelle }}" placeholder="Titre" required>
                                 </div>
                                 <div class="col-md-12 mb-4">
-                                    <label for="lieu">Lieu de l'événement*</label>
+                                    <label for="lieu">Lieu de l'événement <span class="text-c44636">*</span></label>
                                     <input id="lieu" name="lieu" type="text" class="form-control" value="{{ $event->lieu }}" placeholder="Lieu" required>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="date_debut">Date de début*</label>
+                                    <label for="date_debut">Date de début <span class="text-c44636">*</span></label>
                                     <div class="input-group" id="dateevent_debut">
                                         <input id="date_debut" type="text" class="form-control" name="date_debut" placeholder="dd M, yyyy*"
                                             data-date-format="yyyy-mm-dd" data-date-container='#dateevent_debut' data-provide="datepicker"
@@ -73,7 +73,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="heure_debut">Heure de début*</label>
+                                    <label for="heure_debut">Heure de début <span class="text-c44636">*</span></label>
                                     <div class="input-group" id="heureevent_debut">
                                         <input id="heure_debut" type="text" name="heure_debut" value="{{ \Carbon\Carbon::parse($event->heure_debut)->format('H:i') }}" class="form-control" 
                                         data-provide="timepicker" required>
@@ -101,11 +101,11 @@
                                 </div>
 
                                 <div class="col-md-6 mb-4" id="event-prix-block">
-                                    <label class="form-label">Prix</label>
-                                    <input name="prix" id="event-prix" type="number" value="{{ $event->prix }}" class="form-control" min="0">
+                                    <label class="form-label">Prix <span class="text-c44636">*</span><span class="text-c44636">*</span></label>
+                                    <input name="prix" id="event-prix" type="number" value="{{ $event->prix }}" class="form-control" min="0" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="image">Image*</label>
+                                    <label for="image">Image <span class="text-c44636">*</span></label>
                                     <input type="file" name="image" class="form-control" value="{{ $event->image }}" readonly>
                                     @if ($event->image)
                                         <div class="input-group-append">
@@ -141,7 +141,7 @@
                                     @endif
                                 </div>
                                 <div class="col-md-12 mb-5">
-                                    <label class="form-label">Description</label>
+                                    <label class="form-label">Description <span class="text-c44636">*</span></label>
                                     <textarea name="description" class="form-control" rows="3">{{ $event->description ?? '' }}</textarea>
                                 </div>
                                 <div class="form-group">
@@ -151,7 +151,7 @@
                                         <div class="mt-2">
                                             @foreach ($event->partenaires as $partenaire)
                                                 <div style="display:inline-block; margin:10px;">
-                                                    <img src="{{ asset('storage/' . $partenaire->image) }}" alt="Partenaire" style="width: 100px;">
+                                                    <img src="{{ asset('storage/uploads/partenaires/' . basename($partenaire->image)) }}" alt="Partenaire" style="width: 100px;">
                                                     <div>
                                                     <a href="{{ route('events.events.deletePartenaire', ['event' => $event->id, 'partenaire' => $partenaire->id]) }}"
                                                         onclick="return confirm('Voulez-vous vraiment supprimer?')"
@@ -197,13 +197,6 @@
                 $('#event-prix-block').hide();
                 //$('input[name="prix"]').val('');
             }
-            // if ($('#paiement').is(':checked')) {
-            //     $('#event-prix-block').show();
-            //     $('#event-prix').prop('required', true);
-            // } else {
-            //     $('#event-prix-block').hide();
-            //     $('#event-prix').prop('required', false).val('');
-            // }
 
             $('#paiement').on('change', (e) => {
             if ($(e.target).is(':checked')) {

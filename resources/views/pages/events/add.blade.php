@@ -12,6 +12,12 @@
 <link href="{{ asset('assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
     type="text/css" />
 
+    <style>
+        .text-c44636 {
+            color: #c44636;
+        }
+    </style>
+
 @endsection
 
 @section('content')
@@ -45,17 +51,20 @@
                             <form class="row" action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="col-md-12 mb-4">
-                                    <label for="projectname">Titre de l'événement*</label>
+                                    <label for="projectname">Titre de l'événement <span class="text-c44636">*</span></label>
                                     <input id="projectname" name="libelle" type="text" class="form-control"
                                         placeholder="Titre" required>
+                                        @error('libelle')
+                                        <span class="text-danger"> {{ $message }}</span>
+                                        @enderror
                                 </div>
                                 <div class="col-md-12 mb-4">
-                                    <label for="projectname">Lieu de l'événement*</label>
+                                    <label for="projectname">Lieu de l'événement <span class="text-c44636">*</span></label>
                                     <input id="projectname" name="lieu" type="text" class="form-control"
                                         placeholder="Lieu" required>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label git for="dateevent">Date de debut*</label>
+                                    <label git for="dateevent">Date de debut <span class="text-c44636">*</span></label>
                                     <div class="input-group" id="dateevent">
                                         <input class="form-control" name="date_debut" placeholder="dd M, yyyy"
                                             data-date-format="yyyy-mm-dd" data-date-container='#dateevent'
@@ -73,7 +82,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="heureevent">Heure de debut*</label>
+                                    <label for="heureevent">Heure de debut <span class="text-c44636">*</span></label>
                                     <div class="input-group" id="heureevent">
                                         <input id="heureevent-input" type="text" name="heure_debut" class="form-control"
                                             data-provide="timepicker" required>
@@ -102,12 +111,12 @@
                                 </div>
 
                                 <div class="col-md-6 mb-4" id="event-prix-block">
-                                    <label class="form-label">Prix</label>
-                                    <input name="prix" id="event-prix" type="number" class="form-control" min="0">
+                                    <label class="form-label">Prix <span class="text-c44636">*</span></label>
+                                    <input name="prix" id="event-prix" type="number" class="form-control" min="0" required>
                                 </div>
 
                                 <div class="col-md-12 mb-4">
-                                    <label class="form-label">Image*</label>
+                                    <label class="form-label">Image <span class="text-c44636">*</span></label>
                                     <div class="input-group">
                                         <input type="file" accept="image/*" name="image" class="form-control" id="event-image" required>
                                         <label class="input-group-text" for="event-image">Télécharger</label>
@@ -121,7 +130,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-5">
-                                    <label class="form-label">Description*</label>
+                                    <label class="form-label">Description <span class="text-c44636">*</span></label>
                                     <textarea name="description" class="form-control" rows="3" required></textarea>
                                 </div>
                                 <div class="col-md-12 mb-4">
@@ -156,22 +165,22 @@
 <script type="text/javascript" src="{{ asset('assets/libs/dropzone/min/dropzone.min.js') }}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-         
-        function togglePrixField() {
-            if ($('#paiement').is(':checked')) {
-                $('#event-prix-block').show();
-                $('input[name="prix"]').attr('required', true); // Rendre le champ obligatoire
+        if ($('#paiement').is(':checked')) {
+            $('#event-prix-block').show();
+             $('input[name="prix"]').val('');
             } else {
                 $('#event-prix-block').hide();
-                $('input[name="prix"]').removeAttr('required'); // Rendre le champ non obligatoire
+                $('input[name="prix"]').val('');
             }
 
-        }
-
-        togglePrixField(); // Initial call
-
-        $('#paiement').on('change', function() {
-            togglePrixField();
+            $('#paiement').on('change', (e) => {
+            if ($(e.target).is(':checked')) {
+                $('#event-prix-block').show();
+                $('input[name="prix"]').val('');
+            } else {
+                $('input[name="prix"]').val('');
+                $('#event-prix-block').hide();
+            }
         });
 
         $('[data-toggle="touchspin"]').each(function (e, t) {

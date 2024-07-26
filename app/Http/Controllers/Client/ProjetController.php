@@ -137,14 +137,6 @@ class ProjetController extends Controller
             $filtres[$key] = $filtres[$key]->where('secteur', $request->secteur);
         }
 
-        // Filtre par secteur
-        // if ($secteur) {
-        //     $filtres[$key] = $filtres[$key]->where('secteur', $secteur);
-        // }
-
-        // Filtrer par état excluant "CLOTURE" et "REJETE"
-        
-
         $secteurs[$key]->projets = $filtres[$key]
             ->where(function ($query) {
                 return $query->where('etat', '!=', 'CLOTURE');
@@ -153,8 +145,6 @@ class ProjetController extends Controller
             ->get();
     }
 
-
-    //print_r($secteurs);
     // Retourner la vue avec les données filtrées
     return view('pages.projet.home', compact('secteurs', 'startDate', 'endDate', 'status', 'avancement', 'secteur'))
            ->with('type', 'IP');

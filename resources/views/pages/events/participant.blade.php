@@ -189,12 +189,28 @@
                 <div class="col-xl-12">
                         <div class="card">
                             <div class="card-body">
+                                <h4 class="card-title mb-4">Images</h4>
+                                <div class="row row-cols-1 row-cols-md-3 g-4">
+                                @if($event->image)
+                                    <div class="form-group">
+                                        <img src="{{ asset('storage/uploads/events/' . basename($event->image)) }}" alt="Current Image" width="50">
+                                    </div>
+                                @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
                                 <h4 class="card-title mb-4">Partenaires</h4>
                                 <div class="row row-cols-1 row-cols-md-3 g-4">
                                     @foreach ($event->partenaires as $partenaire)
                                         <div class="col-md-3 mt-5 mx-auto px-2">
                                             <div class="card">
-                                                <img src="{{ url('storage/' . $partenaire->image) }}" class="card-img-top"
+                                                <img src="{{ asset('storage/uploads/partenaires/' . basename($partenaire->image)) }}" class="card-img-top"
                                                     alt="Image du partenaire">
                                                 <div class="card-body">
                                                 </div>

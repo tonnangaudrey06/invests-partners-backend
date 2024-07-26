@@ -34,34 +34,34 @@
 
                                 <div class="row">
                                     <div class="form-group col-md-6 mb-3">
-                                        <label>Nom complet</label>
-                                        <input type="text" required class="form-control" name="nom_complet"
-                                            placeholder="Nom & prenom" value="{{$expert->nom_complet}}">
+                                        <label>Nom complet <span class="text-c44636">*</span></label>
+                                        <input type="text" class="form-control" name="nom_complet"
+                                            placeholder="Nom & prenom" value="{{$expert->nom_complet}}" required>
                                     </div>
                                     <div class="form-group col-md-6 mb-3">
-                                        <label>Occupation</label>
-                                        <input type="text" required class="form-control" name="fonction"
-                                            placeholder="Occupation" value="{{$expert->fonction}}">
+                                        <label>Occupation <span class="text-c44636">*</span></label>
+                                        <input type="text" class="form-control" name="fonction"
+                                            placeholder="Occupation" value="{{$expert->fonction}}" >
                                     </div>
                                     <div class="form-group col-md-6 mb-3">
-                                        <label>Email</label>
+                                        <label>Email <span class="text-c44636">*</span></label>
                                         <input type="email" class="form-control" name="email"
-                                            placeholder="Email" value="{{$expert->email}}">
+                                            placeholder="Email" value="{{$expert->email}}" required>
                                     </div>
                                     <div class="form-group col-md-6 mb-3">
-                                        <label>Téléphone</label>
+                                        <label>Téléphone <span class="text-c44636">*</span></label>
                                         <input type="text" class="form-control" name="telephone"
-                                            placeholder="Téléphone" value="{{$expert->telephone}}">
+                                            placeholder="Téléphone" value="{{$expert->telephone}}" required>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
-                                        <label class="form-label">Description</label>
-                                        <textarea name="description" class="form-control" rows="3">{{$expert->description}}</textarea>
+                                        <label class="form-label">Description <span class="text-c44636">*</span></label>
+                                        <textarea name="description" class="form-control" rows="3" required>{{$expert->description}}</textarea>
                                     </div>
 
                                     <div class="form-group col-md-12 mb-3">
-                                        <label>Nouvelle photo</label>
-                                        <input type="file" name="photo" class="form-control" accept="image/*">
+                                        <label>Nouvelle photo </label>
+                                        <input type="file" name="photo" class="form-control" accept="image/*" readonly>
                                     </div>
 
                                     <div class="form-group col-md-12 mb-3">

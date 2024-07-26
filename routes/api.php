@@ -12,6 +12,7 @@ use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\ProjectController;
 use App\Http\Controllers\API\SecteurController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\ActualiteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +53,10 @@ Route::prefix('event')->group(function () {
     Route::post('/{id}/participer/check/seat', [EvenementController::class, 'checkSeat']);
     Route::post('/fichier', [EvenementController::class, 'downloadFile']);
 
+});
+Route::prefix('actualite')->group(function (){
+    Route::get('/', [ActualiteController::class, 'index']);
+    Route::get('/{id}', [ActualiteController::class, 'show']);
 });
 
 Route::prefix('app')->group(function () {

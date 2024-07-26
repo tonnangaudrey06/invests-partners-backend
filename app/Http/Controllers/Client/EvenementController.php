@@ -32,6 +32,7 @@ class EvenementController extends Controller
 {
     
     $request->validate([
+        'libelle' => 'nullable|varchar',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'fichier' => 'nullable|mimes:pdf|max:5120',
         'partenaires.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -40,7 +41,17 @@ class EvenementController extends Controller
         'heure_debut' => 'nullable|date_format:g:i A',
         'heure_fin' => 'nullable|date_format:g:i A',
         'prix' => 'nullable|numeric',
-    ]);
+    ],
+    [
+        'libelle.required' => 'Champ obligatoire!',
+        'image.required' => 'Champ obligatoire!',
+        'fichier.required' => 'Champ obligatoire!',
+        'partenaires.required' => 'Champ obligatoire!',
+        'date_debut.required' => 'Champ obligatoire!',
+        'heure_debut.required' => 'Champ obligatoire!',
+        'prix.required' => 'Champ obligatoire!',
+    ]
+);
 
     $data = $request->except(['pay', 'partenaires']);
     $image = $request->file('image');
@@ -50,16 +61,12 @@ class EvenementController extends Controller
     $date_fin = $request->input('date_fin');
     $heure_debut = $request->input('heure_debut');
     $heure_fin = $request->input('heure_fin');
+    $prix = $request->input('prix');
 
-    // if ($request->pay !== "on") {
-    //     $data['prix'] = null;
-    // }
-
-    if ($request->pay !== "on") {
-        $data['prix'] = null;
-    } else {
-        // Ajoutez le prix au tableau $data
-        $data['prix'] = $request->prix;
+    // Validation date_debut and date_fin
+    if (!empty($date_fin) && Carbon::parse($date_debut)->gt(Carbon::parse($date_fin))) {
+        Toastr::error('La date de début doit être inférieure à la date de fin.');
+        return redirect()->back();
     }
 
     if (!empty($image)) {
@@ -87,7 +94,7 @@ class EvenementController extends Controller
     if (!empty($partenaireImages)) {
         foreach ($partenaireImages as $partenaireImage) {
             $partenaireFilename = hexdec(uniqid()) . '.' . $partenaireImage->getClientOriginalExtension();
-            $partenairePath = 'uploads/partenaires/' . $partenaireFilename;
+            $partenairePath = url('storage/uploads/partenaires/') . '/' . $partenaireFilename;
             $partenaireImage->storeAs('uploads/partenaires/', $partenaireFilename, ['disk' => 'public']);
 
             EvenementPartenaire::create([
@@ -116,10 +123,11 @@ class EvenementController extends Controller
     
     public function update($id, Request $request)
     {
-        $data = $request->except(['pay', 'partenaires']);
+        $data = $request->except(['pay', 'partenaires', 'existing_partenaires']);
         $image = $request->file('image');
         $fichier = $request->file('fichier');
         $partenaireImages = $request->file('partenaires');
+        $existingPartenaires = $request->input('existing_partenaires', []);
         $date_debut = $request->input('date_debut');
         $date_fin = $request->input('date_fin');
         $heure_debut = $request->input('heure_debut');
@@ -129,13 +137,10 @@ class EvenementController extends Controller
     
         // Validation date_debut and date_fin
         if (!empty($date_fin) && Carbon::parse($date_debut)->gt(Carbon::parse($date_fin))) {
-            return redirect()->back()->with('error', 'La date de début doit être inférieure à la date de fin.');
+            Toastr::error('La date de début doit être inférieure à la date de fin.');
+            return redirect()->back();
         }
-    
-        // Validation heure_debut and heure_fin uniquement si heure_fin est renseignée
-        if (!empty($heure_fin) && Carbon::parse($heure_debut)->gt(Carbon::parse($heure_fin))) {
-            return redirect()->back()->with('error', 'L\'heure de début doit être inférieure à l\'heure de fin.');
-        }
+
     
         if (!empty($image)) {
             if (Storage::disk('public')->exists($event->image)) {
@@ -163,20 +168,20 @@ class EvenementController extends Controller
         $data['heure_fin'] = !empty($heure_fin) ? Carbon::parse($heure_fin)->format('H:i') : null;
     
         $event->update($data);
-    
-        if (!empty($partenaireImages)) {
-            foreach ($partenaireImages as $partenaireImage) {
-                $partenaireFilename = hexdec(uniqid()) . '.' . $partenaireImage->getClientOriginalExtension();
-                $partenairePath = 'uploads/partenaires/' . $partenaireFilename;
-                $partenaireImage->storeAs('uploads/partenaires/', $partenaireFilename, ['disk' => 'public']);
-    
-                $partenaire = Partenaire::create([
-                    'image' => $partenairePath,
-                ]);
-    
-                $event->partenaires()->attach($partenaire->id);
-            }
+         // Gérer les nouveaux partenaires ajoutés
+    if (!empty($partenaireImages)) {
+        foreach ($partenaireImages as $partenaireImage) {
+            $partenaireFilename = hexdec(uniqid()) . '.' . $partenaireImage->getClientOriginalExtension();
+            $partenairePath = url('storage/uploads/partenaires') . '/' .$partenaireFilename;
+            $partenaireImage->storeAs('uploads/partenaires/', $partenaireFilename, ['disk' => 'public']);
+
+            EvenementPartenaire::create([
+                'evenement_id' => $event->id,
+                'image' => $partenairePath,
+            ]);
         }
+        
+    }
     
         Toastr::success('Événement mis à jour avec succès!', 'Succès');
     

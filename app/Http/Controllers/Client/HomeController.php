@@ -41,11 +41,6 @@ class HomeController extends Controller
         $last_img = $up_location . $img_name;
         $slider_image->move($up_location, $img_name);
 
-        // $name_gen = hexdec(uniqid()) . '.' . $slider_image->getClientOriginalExtension();
-        // Image::make($slider_image)->resize(1920, 1088)->save('images/slides/' . $name_gen);
-
-        // $last_img = 'images/slides/' . $name_gen;
-
         $data = array();
         $data['title'] = $request->title;
         $data['description'] = $request->description;
@@ -55,7 +50,7 @@ class HomeController extends Controller
         $data['created_at'] = Carbon::now();
         DB::table('sliders')->insert($data);
 
-        return Redirect()->route('slider.home')->with('success', 'Slide inserted succesfully');
+        return Redirect()->route('slider.home')->with('success', 'Slide ajouté avec succès');
     }
 
     public function EditSlide($id)
@@ -88,7 +83,7 @@ class HomeController extends Controller
         }
 
         DB::table('sliders')->where('id', $id)->update($data);
-        return Redirect()->route('slider.home')->with('success', 'Slide updated succesfully');
+        return Redirect()->route('slider.home')->with('success', 'Slide modifié avec succès');
     }
 
     public function DeleteSlide($id)
@@ -100,7 +95,7 @@ class HomeController extends Controller
 
         DB::table('sliders')->where('id', $id)->delete();
 
-        return Redirect()->route('slider.home')->with('success', 'Slide deleted succesfully');;
+        return Redirect()->route('slider.home')->with('success', 'Slide supprimé avec succès');;
     }
 
 
@@ -163,7 +158,7 @@ public function StorePartenaires(Request $request)
 
         DB::table('partenaires')->where('id', $id)->delete();
 
-        return Redirect()->route('partenaires.home')->with('success', 'Partenaire deleted succesfully');
+        return Redirect()->route('partenaires.home')->with('success', 'Partenaire supprimé avec succès');
     }
 
 
@@ -199,12 +194,12 @@ public function StorePartenaires(Request $request)
             $path = parse_url($oldimage);
             File::delete(public_path($path['path']));
 
-            return Redirect()->route('home.chiffre')->with('success', 'Chiffres updated succesfully');
+            return Redirect()->route('home.chiffre')->with('success', 'Chiffres modifié avec succès');
         } else {
 
             $data['image'] = $oldimage;
             DB::table('chiffres')->where('id', $id)->update($data);
-            return Redirect()->back()->with('success', 'Chiffres updated succesfully');
+            return Redirect()->back()->with('success', 'Chiffres modifié avec succès');
         }
     }
 }

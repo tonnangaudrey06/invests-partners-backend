@@ -50,11 +50,6 @@ class Evenement extends Model
         return $this->hasMany(Participant::class, 'evenement', 'id');
     }
 
-    // public function partenaires()
-    // {
-    //     return $this->belongsToMany(Partenaire::class, 'evenement_partner', 'evenement_id', 'partenaire_id');
-    // }
-
     public function partenaires()
     {
         return $this->hasMany(EvenementPartenaire::class);

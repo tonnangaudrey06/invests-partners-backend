@@ -86,7 +86,7 @@ class ExpertController extends Controller
 
         Expert::find($id)->delete();
 
-        Toastr::success('Expert supprimée avec succès!', 'Success');
+        Toastr::success('Expert supprimé avec succès!', 'Success');
 
         return back();
     }
