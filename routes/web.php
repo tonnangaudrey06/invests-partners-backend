@@ -18,6 +18,7 @@ use App\Http\Controllers\Client\NewsletterController;
 use App\Http\Controllers\Client\ProfilPorteurProjetController;
 use App\Http\Controllers\Client\TransactionController;
 
+
 use Illuminate\Support\Facades\Route;
 
 /*

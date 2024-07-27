@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Bienvenue chez IP Investment'])
+@extends('emails.template', ['subject' => 'Bienvenue chez IP Investment SA'])
 
 @section('content')
     <p>
@@ -8,13 +8,13 @@
     @if ($user['role'] == 4)
         <p>
             Investissez maintenant !
-            (<strong><a href="https://invest--partners.com/projets">https://invest--partners.com</a>.</strong>).
+            (<strong><a href="https://www.ip-investmentsa.com/projets">https://www.ip-investmentsa.com</a>.</strong>).
         </p>
     @else
         <p>
             Soumettre un projet
             (<strong><a
-                    href="https://invest--partners.com/dashboard/projets/add">https://invest--partners.com</a>.</strong>).
+                    href="https://www.ip-investmentsa.com/dashboard/projets/add">https://www.ip-investmentsa.com</a>.</strong>).
         </p>
     @endif
 

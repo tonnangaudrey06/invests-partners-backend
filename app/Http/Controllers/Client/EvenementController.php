@@ -32,7 +32,6 @@ class EvenementController extends Controller
 {
     
     $request->validate([
-        'libelle' => 'nullable|varchar',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'fichier' => 'nullable|mimes:pdf|max:5120',
         'partenaires.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',

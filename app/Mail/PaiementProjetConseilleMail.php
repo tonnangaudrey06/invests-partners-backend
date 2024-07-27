@@ -30,7 +30,7 @@ class PaiementProjetConseilleMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'IP Investment')->view('emails.paiement-projet')
+        return $this->from('info@invest--partners.com', 'IP Investment SA')->view('emails.paiement-projet')
                     ->subject("Paiement des frais d'etude du projet '{$this->projet['intitule']}'");
     }
 }

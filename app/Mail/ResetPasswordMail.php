@@ -30,7 +30,7 @@ class ResetPasswordMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'IP Investment')
+        return $this->from('info@invest--partners.com', 'IP Investment SA')
             ->subject('Réinitialiser le mot de passe')
             ->view('emails.reset-password');
     }

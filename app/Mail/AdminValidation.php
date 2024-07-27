@@ -30,7 +30,7 @@ class AdminValidation extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'IP Investment')
+        return $this->from('info@invest--partners.com', 'IP Investment SA')
             ->view('emails.adminvalidation')
             ->subject("Validation de votre projet " . $this->projet['intitule']);
     }

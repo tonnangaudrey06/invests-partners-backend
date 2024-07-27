@@ -218,7 +218,7 @@
                                 <div class="mb-4 d-flex align-items-center">
                                     <i class="bx bx-briefcase-alt-2 text-primary h1 me-3"></i>
                                     <h3 class="h3 flex-grow-1">
-                                        @numberFormat($nbProjets->count()) projets enregistrés
+                                        @numberFormat($nbProjets->count()) projet(s) enregistré(s)
                                     </h3>
                                 </div>
                                 {{-- <h4 class="h4" class="card-title d-flex align-items-center gap-3 mb-4">
@@ -250,7 +250,7 @@
                                                                     class="text-muted text-truncate mb-2 font-weight-bold text-uppercase">
                                                                     <a href="{{ route('projet.home_ip') }}"
                                                                         class="text-muted">
-                                                                        IP INVESTMENT</a>
+                                                                        IP INVESTMENT SA</a>
                                                                 </p>
                                                             </strong>
                                                             <h5 class="mb-0 text-primary">@numberFormat($ip)</h5>
@@ -469,7 +469,7 @@
                                                     data-bs-target="#collapse-{{ $key }}" aria-expanded="false"
                                                     aria-controls="collapse-{{ $key }}">
                                                     <h5 class="font-size-14 fw-bolder">
-                                                        {{ $item->pays_activite }} ({{ $item->total_projets }} projets)
+                                                        {{ $item->pays_activite }} ({{ $item->total_projets }} projet(s))
                                                     </h5>
                                                 </div>
                                             </div>

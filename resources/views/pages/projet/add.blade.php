@@ -6,6 +6,11 @@
 <!-- dropzone css -->
 <link href="{{ asset('assets/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
 
+<style>
+        .text-c44636 {
+            color: #c44636;
+        }
+</style>
 
 @endsection
 
@@ -42,7 +47,7 @@
 
                                 @csrf
                                 <div class="form-group col-md-6 mb-3">
-                                    <label for="projectname">Nom du projet</label>
+                                    <label for="projectname">Nom du projet <span class="text-c44636">*</span></label>
                                     <input id="projectname" name="intitule" type="text" class="form-control">
                                     @error('intitule')
                                     <span class="text-danger"> {{ $message }}</span>
@@ -50,7 +55,7 @@
                                 </div>
 
                                 <div class="form-group col-md-6 mb-3">
-                                    <label>Secteur d'activité</label>
+                                    <label>Secteur d'activité <span class="text-c44636">*</span></label>
                                     <select class="form-control" name="secteur">
                                         <option value="">Choisir un secteur d'activité</option>
                                         @foreach ($secteurs as $secteur)
@@ -64,7 +69,7 @@
                                 </div>
 
                                 <div class="form-group col-md-12 mb-3">
-                                    <label for="projectdesc">Description</label>
+                                    <label for="projectdesc">Description <span class="text-c44636">*</span></label>
                                     <textarea class="form-control" name="description" rows="3"
                                         placeholder="Entrer la description de votre projet"></textarea>
 
@@ -76,7 +81,7 @@
 
 
                                 <div class="form-group col-md-6 mb-3">
-                                    <label>Etat d'avancement</label>
+                                    <label>Etat d'avancement <span class="text-c44636">*</span></label>
                                     <select class="form-control" name="avancement">
                                         <option value="IDEE" selected>IDEE</option>
                                         <option value="PROTOTYPE">PROTOTYPE</option>
@@ -86,7 +91,7 @@
 
                                 <div class="form-group col-md-6 mb-3">
                                     <label for="projectbudget">Besoin en
-                                        financement</label>
+                                        financement <span class="text-c44636">*</span></label>
                                     <input id="projectbudget" name="financement" type="text"
                                         placeholder="Entrez le budget dont vous avez besoin" class="form-control">
 
@@ -96,7 +101,7 @@
                                 </div>
 
                                 <div class="form-group col-md-6 mb-3">
-                                    <label>Pays d'activité</label>
+                                    <label>Pays d'activité <span class="text-c44636">*</span></label>
                                     <select class="form-control" id="exampleSelectGender" name="pays_activite">
                                         <option value="Afghanistan">Afghanistan </option>
                                         <option value="Afrique_Centrale">Afrique_Centrale </option>
@@ -359,7 +364,7 @@
                                 </div>
 
                                 <div class="form-group col-md-6 mb-3">
-                                    <label>Ville d'activité</label>
+                                    <label>Ville d'activité <span class="text-c44636">*</span></label>
                                     <input id="ville_activite" name="ville_activite" type="text" class="form-control"
                                         placeholder="Entrez la ville">
 
@@ -370,7 +375,7 @@
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label for="taux_rentabilite">Taux de
-                                        rentabilité </label>
+                                        rentabilité <span class="text-c44636">*</span></label>
                                     <input id="taux_rentabilite" name="taux_rentabilite" type="text"
                                         class="form-control">
 
@@ -380,7 +385,7 @@
                                 </div>
 
                                 <div class="form-group col-md-6 mb-3">
-                                    <label for="duree">Durée du projet (en mois)
+                                    <label for="duree">Durée du projet (en mois) <span class="text-c44636">*</span>
                                     </label>
                                     <input id="duree" name="duree" type="text" class="form-control">
 
@@ -391,7 +396,7 @@
 
                                 <div class="form-group col-md-6 mb-3">
                                     <label for="delai_recup">Délai de recupération (en
-                                        mois) </label>
+                                        mois) <span class="text-c44636">*</span></label>
                                     <input id="delai_recup" name="delai_recup" type="text" class="form-control">
 
                                     @error('delai_recup')
@@ -401,7 +406,7 @@
 
                                 <div class="form-group col-md-12 mb-3">
                                     <label for="ca_previsionnel">Chiffre d'affaires
-                                        prévisionnel </label>
+                                        prévisionnel <span class="text-c44636">*</span></label>
                                     <input id="ca_previsionnel" name="ca_previsionnel" type="text" class="form-control">
 
                                     @error('ca_previsionnel')
@@ -410,12 +415,12 @@
                                 </div>
 
                                 <div class="form-group col-md-6 mb-3">
-                                    <label for="logo-projet">Logo</label>
+                                    <label for="logo-projet">Logo <span class="text-c44636">*</span></label>
                                     <input type="file" accept="image/*" name="logo" class="form-control" id="logo-projet">
                                 </div>
 
                                 <div class="form-group col-md-6 mb-3">
-                                    <label for="medias-projet">Fichiers joints</label>
+                                    <label for="medias-projet">Fichiers joints <span class="text-c44636">*</span></label>
                                     <input type="file" accept="application/pdf" name="medias[]" class="form-control" multiple id="medias-projet">
                                 </div>
                                 <div class="d-flex justify-content-center mt-3">

@@ -5,6 +5,12 @@
 @section('style')
 <!-- dropzone css -->
 <link href="{{ asset('assets/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
+
+<style>
+        .text-c44636 {
+            color: #c44636;
+        }
+    </style>
 @endsection
 
 

@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Avis de réception de votre paiement sur IP Investment'])
+@extends('emails.template', ['subject' => 'Avis de réception de votre paiement sur IP Investment SA'])
 
 @section('content')
     @if ($transaction['is_client'])
@@ -22,8 +22,7 @@
         @endswitch
     </p>
     <p>
-        <strong>Merci pour votre confiance et à bientôt sur <a href="https://invest--partners.com">Invest &
-                Partners</a></strong>.
+        <strong>Merci pour votre confiance et à bientôt sur <a href="https://www.ip-investmentsa.com">IP Investment SA</a></strong>.
     </p>
 
     <p><strong><em>Construire Ensemble!</em></strong></p>

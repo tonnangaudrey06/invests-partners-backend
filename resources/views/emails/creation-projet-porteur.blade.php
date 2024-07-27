@@ -11,11 +11,11 @@
         l'aboutissement du projet.
     </p>
     <p>
-        Alors, n'hésitez pas à nous contacter directement sur la plateforme <strong>TCHOUAH </strong> <a href="www.invest--partners.com">www.invest--partners.com</a>  ou par mail
+        Alors, n'hésitez pas à nous contacter directement sur la plateforme <strong>TCHOUAH </strong> <a href="https://www.ip-investmentsa.com">https://www.ip-investmentsa.com</a>  ou par mail
         à l'adresse <a href="mailto:info@invest--partners.com">info@invest--partners.com</a>
     </p>
     <p>
-        <strong>IP INVESTMENT, Construire Ensemble !</strong>
+        <strong>IP INVESTMENT SA, Construire Ensemble !</strong>
     </p>
     @include('partials.signature')
 @endsection

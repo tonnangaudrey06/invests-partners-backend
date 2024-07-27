@@ -1,4 +1,4 @@
-@extends('emails.template', ['subject' => 'Bienvenue chez IP Investment'])
+@extends('emails.template', ['subject' => 'Bienvenue chez IP Investment SA'])
 
 @section('content')
     <p>
@@ -12,7 +12,7 @@
     </p>
     <p>
         Connectez-vous maintenant !
-        (<strong><a href="https://invest--partners.com/auth">https://invest--partners.com</a>.</strong>).
+        (<strong><a href="https://www.ip-investmentsa.com/auth">https://www.ip-investmentsa.com/</a>.</strong>).
     </p>
 
     <p><strong><em>Construire Ensemble!</em></strong></p>

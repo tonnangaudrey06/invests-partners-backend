@@ -30,7 +30,7 @@ class NewsletterMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'IP Investment')->view('emails.newsletter')
+        return $this->from('info@invest--partners.com', 'IP Investment SA')->view('emails.newsletter')
                     ->subject($this->data['titre']);
     }
 }

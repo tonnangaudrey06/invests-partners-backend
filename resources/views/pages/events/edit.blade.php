@@ -101,8 +101,8 @@
                                 </div>
 
                                 <div class="col-md-6 mb-4" id="event-prix-block">
-                                    <label class="form-label">Prix <span class="text-c44636">*</span><span class="text-c44636">*</span></label>
-                                    <input name="prix" id="event-prix" type="number" value="{{ $event->prix }}" class="form-control" min="0" required>
+                                    <label class="form-label">Prix <span class="text-c44636">*</span></label>
+                                    <input name="prix" id="event-prix" type="number" value="{{ $event->prix }}" class="form-control" min="0" >
                                 </div>
                                 <div class="form-group">
                                     <label for="image">Image <span class="text-c44636">*</span></label>
@@ -195,7 +195,7 @@
             // $('input[name="prix"]').val('');
             } else {
                 $('#event-prix-block').hide();
-                //$('input[name="prix"]').val('');
+                $('input[name="prix"]').val('');
             }
 
             $('#paiement').on('change', (e) => {
@@ -203,7 +203,7 @@
                 $('#event-prix-block').show();
                 //$('input[name="prix"]').val('');
             } else {
-                //$('input[name="prix"]').val('');
+                $('input[name="prix"]').val('');
                 $('#event-prix-block').hide();
             }
         });

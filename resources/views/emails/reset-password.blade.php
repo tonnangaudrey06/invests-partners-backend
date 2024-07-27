@@ -7,6 +7,6 @@
 
   <p>Cordialement,</p>
 
-  <p><strong>IP Investment</strong></p>
+  <p><strong>IP Investment SA</strong></p>
   @include('partials.signature')
 @endsection

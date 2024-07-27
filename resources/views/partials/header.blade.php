@@ -5,7 +5,7 @@
             <div class="navbar-brand-box d-flex align-items-center p-0">
                 <a href="{{ route('dashboard') }}" class="font-weight-bold font-size-18">
                     <img src="{{ asset('assets/images/logo-dark.png') }}" alt="" height="70">
-                    IP Investment
+                    IP Investment SA
                 </a>
             </div>
 

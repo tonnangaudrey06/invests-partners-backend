@@ -10,6 +10,14 @@
 
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"
         id="bootstrap-style" rel="stylesheet" type="text/css" />
+
+        <style>
+        .taille {
+            height: 100px;
+            width: 100px;
+            margin-top:3;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -185,8 +193,8 @@
                     </div>
                 </div>
                 <!-- end row -->
-
-                <div class="col-xl-12">
+            <div class="row">
+                    <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Images</h4>
@@ -200,20 +208,33 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Fichier</h4>
+                                <div class="row row-cols-1 row-cols-md-3 g-4">
+                                @if(isset($event->fichier))
+                                    <a href="{{ asset('storage/' . $event->fichier) }}" target="_blank">Voir le fichier PDF</a>
+                                @endif
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
+            </div>
+               
                 <div class="col-xl-12">
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Partenaires</h4>
                                 <div class="row row-cols-1 row-cols-md-3 g-4">
                                     @foreach ($event->partenaires as $partenaire)
-                                        <div class="col-md-3 mt-5 mx-auto px-2">
+                                        <div class="col-md-4 mt-3 mx-auto px-1">
                                             <div class="card">
-                                                <img src="{{ asset('storage/uploads/partenaires/' . basename($partenaire->image)) }}" class="card-img-top"
+                                                <img src="{{ asset('storage/uploads/partenaires/' . basename($partenaire->image)) }}" class="taille"
                                                     alt="Image du partenaire">
-                                                <div class="card-body">
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     @endforeach

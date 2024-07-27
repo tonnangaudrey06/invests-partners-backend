@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Message;
+use App\Mail\MessageMail;
 use App\Models\User;
 use App\Models\Archive;
 use App\Models\Projet;
 use App\Notifications\MessageNotification;
 use Illuminate\Support\Str;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Mail;
 
 class MessageController extends Controller
 {
@@ -195,16 +197,23 @@ class MessageController extends Controller
                 }
             }
         }
+        
 
         $user = User::find($receiver);
+        $rec = User::find($sender);
+        $proj = Projet::with(['user_data', 'secteur_data', 'investissements'])->find($projet);
 
         if (!empty($user->device_token)) {
             $user->sendFcmNotification($data['message']);
         }
         
         try {
+            
             $user->notify(new MessageNotification($message));
-        } catch (\Throwable $th) {}
+            Mail::to($user->email)->queue(new MessageMail($rec->toArray(), $proj->toArray()));
+        } catch (\Throwable $th) {
+            echo($th);
+        }
 
         Toastr::success('Votre message a été envoyé', 'Succès');
 

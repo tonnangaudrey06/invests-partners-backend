@@ -32,7 +32,7 @@ class InteresseProjetMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'IP Investment')->view('emails.interesse-projet')
+        return $this->from('info@invest--partners.com', 'IP Investment SA')->view('emails.interesse-projet')
                     ->subject("Nouvelle investiisseur pour le projet '{$this->projet['intitule']}'");
     }
 }

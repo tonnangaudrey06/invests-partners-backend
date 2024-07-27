@@ -32,8 +32,8 @@ class EventMail extends Mailable
      */
     public function build()
     {
-        return $this->from('info@invest--partners.com', 'IP Investment')
+        return $this->from('info@invest--partners.com', 'IP Investment SA')
         ->view('emails.event')
-        ->subject("Particitpation à l'événement '{$this->event['libelle']}' organisé par IP Investment");
+        ->subject("Particitpation à l'événement '{$this->event['libelle']}' organisé par IP Investment SA");
     }
 }

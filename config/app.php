@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'IP Investment'),
+    'name' => env('APP_NAME', 'IP Investment SA'),
 
     /*
     |--------------------------------------------------------------------------
