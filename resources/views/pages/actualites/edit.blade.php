@@ -2,6 +2,11 @@
 
 @section('title', 'Ajouter une actualité - ' . config('app.name'))
 
+<style>
+        .text-c44636 {
+            color: #c44636;
+        }
+    </style>
 @section('content')
 
 
@@ -39,7 +44,7 @@
 
                             <div class="row">
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Libelle</label>
+                                    <label>Libelle <span class="text-c44636">*</span></label>
                                     <input type="text" class="form-control" name="libelle" value="{{$actualite->libelle}}" required>
 
                                 </div>
@@ -47,7 +52,7 @@
                             
 
                                 <div class="form-group col-md-12 mb-3">
-                                    <label for="exampleFormControlTextarea1">Description</label>
+                                    <label for="exampleFormControlTextarea1">Description <span class="text-c44636">*</span></label>
                                     <textarea class="form-control" name="description"  id="summernote">{!! $actualite->description !!}</textarea>
                                 </div>
 

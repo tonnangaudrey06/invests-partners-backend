@@ -5,6 +5,11 @@
 @section('style')
 {{-- <link href="{{ asset('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" /> --}}
 
+<style>
+    .text-c44636 {
+        color: #c44636;
+    }
+</style>
 
 @endsection
 
@@ -49,7 +54,7 @@
                                 @csrf
 
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Ajouter vos partenaires</label>
+                                    <label for="exampleInputEmail1">Ajouter vos partenaires <span class="text-c44636">*</span></label>
                                     <input type="file" name="image[]" accept="image/*" class="form-control" id="exampleInputEmail1"
                                         aria-describedby="emailHelp" multiple="">
 

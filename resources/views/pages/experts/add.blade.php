@@ -2,6 +2,16 @@
 
 @section('title', 'Ajouter un expert - ' . config('app.name'))
 
+@section('style')
+
+    <style>
+        .text-c44636 {
+            color: #c44636;
+        }
+    </style>
+
+@endsection
+
 @section('content')
     <div class="main-content">
         <div class="page-content">

@@ -2,10 +2,17 @@
 
 @section('title', 'Ajouter un secteur - ' . config('app.name'))
 
+@section('style')
+
+    <style>
+        .text-c44636 {
+            color: #c44636;
+        }
+    </style>
+
+@endsection
+
 @section('content')
-
-
-
 <div class="main-content">
 
     <div class="page-content">
@@ -38,7 +45,7 @@
 
                             <div class="row">
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Libelle</label>
+                                    <label>Libelle <span class="text-c44636">*</span></label>
                                     <input type="text" class="form-control" name="libelle" placeholder="Libelle">
 
                                     @error('libelle')
@@ -46,7 +53,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Spécialiste</label>
+                                    <label>Spécialiste <span class="text-c44636">*</span></label>
                                     <select class="form-control" name="user">
                                         @foreach ($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->nom_complet }}</option>
@@ -59,7 +66,7 @@
 
                                 </div>
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Image</label>
+                                    <label>Image <span class="text-c44636">*</span></label>
                                     <input type="file" name="image" class="form-control" 
                                         aria-describedby="emailHelp">
 

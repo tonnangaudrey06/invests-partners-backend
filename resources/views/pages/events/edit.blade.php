@@ -145,7 +145,7 @@
                                     <textarea name="description" class="form-control" rows="3">{{ $event->description ?? '' }}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="partenaires">Partenaires</label>
+                                    <label class="form-label">Partenaire(s)</label>
                                     <input type="file" name="partenaires[]" class="form-control" multiple>
                                     @if ($event->partenaires)
                                         <div class="mt-2">

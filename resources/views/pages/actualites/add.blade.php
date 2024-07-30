@@ -4,6 +4,12 @@
 
 @section('style')
 <link href="https://cdn.jsdelivr.net/npm/summernote@latest/dist/summernote-bs4.min.css" rel="stylesheet">
+
+    <style>
+        .text-c44636 {
+            color: #c44636;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -46,7 +52,7 @@
 
                             <div class="row">
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Libelle</label>
+                                    <label>Libelle <span class="text-c44636">*</span></label>
                                     <input type="text" class="form-control" name="libelle" required>
                                     @error('libelle')
                                     <span class="text-danger"> {{ $message }}</span>
@@ -54,12 +60,12 @@
                                 </div>
 
                                 <div class="form-group col-md-12 mb-3">
-                                    <label for="exampleFormControlTextarea1">Description</label>
+                                    <label for="exampleFormControlTextarea1">Description <span class="text-c44636">*</span></label>
                                     <textarea class="form-control" name="description" id="exampleFormControlTextarea1"></textarea>
                                 </div>
 
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Image</label>
+                                    <label>Image <span class="text-c44636">*</span></label>
                                     <input type="file" name="image" class="form-control" aria-describedby="emailHelp">
                                     @error('image')
                                     <span class="text-danger"> {{ $message }}</span>
@@ -93,7 +99,7 @@
         $('#exampleFormControlTextarea1').summernote({
             placeholder: "Écrire une courte description...",
             tabsize: 2,
-            height: 100
+            height: 100,
         });
     });
 </script>

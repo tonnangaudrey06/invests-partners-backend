@@ -2,10 +2,17 @@
 
 @section('title', 'Modifier un secteur - ' . config('app.name'))
 
+@section('style')
+
+    <style>
+        .text-c44636 {
+            color: #c44636;
+        }
+    </style>
+
+@endsection
+
 @section('content')
-
-
-
 <div class="main-content">
 
     <div class="page-content">
@@ -41,7 +48,7 @@
 
                             <div class="row">
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Libelle</label>
+                                    <label>Libelle <span class="text-c44636">*</span></label>
                                     <input type="text" class="form-control" name="libelle"
                                         value="{{$secteur->libelle}}">
 
@@ -50,7 +57,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Spécialiste</label>
+                                    <label>Spécialiste <span class="text-c44636">*</span></label>
                                     <select class="form-control" name="user">
                                         @foreach ($users as $user)
                                         <option value="{{ $user->id }}" <?php if($user->id == $secteur->user){
@@ -65,7 +72,7 @@
                                 </div>
 
                                 <div class="form-group col-md-12 mb-3">
-                                    <label>Image</label>
+                                    <label>Image </label>
                                     <input type="file" class="form-control" id="exampleFormControlFile1"
                                         name="image">
 

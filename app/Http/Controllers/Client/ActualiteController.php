@@ -47,6 +47,7 @@ class ActualiteController extends Controller
 
     public function store(Request $request, $type, $id)
     {
+        
         $defaultTimezone = config('app.timezone');
         $timezone = $request->input('timezone', $defaultTimezone); // Utilise le fuseau horaire par défaut si non spécifié
         $now = Carbon::now($timezone);
@@ -63,7 +64,9 @@ class ActualiteController extends Controller
         }
 
         $data['libelle'] = $request->libelle;
-        $data['description'] = $request->description;
+        $maxLength = 255; 
+        $data['description'] = substr($request->description, 0, $maxLength);
+        //$data['description'] = $request->description;
         $data['created_at'] = $now;
         $data['updated_at'] = $now;
 
@@ -170,15 +173,16 @@ class ActualiteController extends Controller
             File::delete(public_path($path['path']));
 
             $data->image = url($up_location) . '/' . $img_name;
-
-            Toastr::success('Actualité mise à jour avec succès!', 'Success');
         }
 
         $data->libelle = $request->libelle;
-        $data->description = $request->description;
+        $maxLength = 255; 
+        $data['description'] = substr($request->description, 0, $maxLength);
+        //$data->description = $request->description;
         $data->updated_at = Carbon::now(config('app.timezone')); // Met à jour l'heure avec le fuseau horaire
 
         $data->save();
+        Toastr::success('Actualité mise à jour avec succès!', 'Success');
 
         return redirect()->intended(route('actualites.home', [$type, $idPS]));
     }

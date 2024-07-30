@@ -1,7 +1,15 @@
 @extends('layouts.main')
 
 @section('title', 'Ajouter un profil porteur de projet - ' . config('app.name'))
+@section('style')
 
+    <style>
+        .text-c44636 {
+            color: #c44636;
+        }
+    </style>
+
+@endsection
 @section('content')
     <div class="main-content">
         <div class="page-content">
@@ -45,7 +53,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Frais des projets</label>
+                                        <label>Frais des projets <span class="text-c44636">*</span></label>
                                         <input required type="number" class="form-control" name="montant" min="1" placeholder="0 XAF">
 
                                         @error('montant')

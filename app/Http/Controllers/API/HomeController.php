@@ -38,6 +38,7 @@ class HomeController extends Controller
     public function projet()
     {
         $projets = Projet::with(['secteur_data', 'likes'])
+            ->where('type', 'IP')
             ->whereIn('etat', ['PUBLIE'])
             ->latest()->limit(20)
             ->get();

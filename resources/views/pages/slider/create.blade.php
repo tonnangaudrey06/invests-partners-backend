@@ -9,6 +9,13 @@
         type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
         type="text/css" />
+
+<style>
+    .text-c44636 {
+        color: #c44636;
+    }
+</style>
+
 @endsection
 
 @section('content')

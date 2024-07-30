@@ -2,6 +2,15 @@
 
 @section('title', 'Modifier un profil porteur de projet - ' . config('app.name'))
 
+@section('style')
+
+    <style>
+        .text-c44636 {
+            color: #c44636;
+        }
+    </style>
+
+@endsection
 @section('content')
     <div class="main-content">
 
@@ -49,7 +58,7 @@
                                         @enderror
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Montant</label>
+                                        <label>Montant <span class="text-c44636">*</span></label>
                                         <input required type="number" class="form-control" name="montant"
                                             value={{ $profil->montant }}>
 

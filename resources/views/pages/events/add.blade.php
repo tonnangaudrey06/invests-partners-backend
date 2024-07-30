@@ -140,6 +140,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 d-flex justify-content-end">
+                                    <label class="form-label">Partenaire(s)</label>
                                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                                 </div>
                             </form>

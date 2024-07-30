@@ -15,3 +15,14 @@ if (!function_exists('timeFormat')) {
         return \Carbon\Carbon::parse($date)->format('H\hi\m\i\n');
     }
 }
+
+function extractFirstImage($html)
+{
+    $dom = new DOMDocument();
+    @$dom->loadHTML($html);
+    $images = $dom->getElementsByTagName('img');
+    if ($images->length > 0) {
+        return $images->item(0)->getAttribute('src');
+    }
+    return null;
+}
