@@ -16,13 +16,3 @@ if (!function_exists('timeFormat')) {
     }
 }
 
-function extractFirstImage($html)
-{
-    $dom = new DOMDocument();
-    @$dom->loadHTML($html);
-    $images = $dom->getElementsByTagName('img');
-    if ($images->length > 0) {
-        return $images->item(0)->getAttribute('src');
-    }
-    return null;
-}
