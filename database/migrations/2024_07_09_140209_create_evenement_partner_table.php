@@ -16,7 +16,7 @@ class CreateEvenementPartnerTable extends Migration
         Schema::create('evenement_partner', function (Blueprint $table) {
             $table->id();
             $table->foreignId('evenement_id')->constrained()->onDelete('cascade');
-            $table->foreignId('partenaire_id')->constrained()->onDelete('cascade');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
