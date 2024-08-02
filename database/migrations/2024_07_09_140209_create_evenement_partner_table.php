@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEenementPartnerTable extends Migration
+class CreateEvenementPartnerTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,8 +15,8 @@ class CreateEenementPartnerTable extends Migration
     {
         Schema::create('evenement_partner', function (Blueprint $table) {
             $table->id();
-            $table->foreign('evenement')->references('id')->on('evenements')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('partenaire')->references('id')->on('partenaires')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('evenement_id')->constrained()->onDelete('cascade');
+            $table->foreignId('partenaire_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
