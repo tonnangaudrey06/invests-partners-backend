@@ -1,4 +1,4 @@
 /vendor
-node_modules/
-.git/
-public/js/bundle.js
+/node_modules
+/.git
+/public/js/bundle.js
