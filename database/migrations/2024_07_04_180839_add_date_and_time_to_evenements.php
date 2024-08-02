@@ -34,7 +34,7 @@ class AddDateAndTimeToEvenements extends Migration
             $table->dropColumn('date_debut');
             $table->dropColumn('date_fin');
             $table->dropColumn('heure_debut');
-            $table->dropColumn('heure_debut');
+            $table->dropColumn('heure_fin');
         });
     }
 }
